@@ -7,7 +7,7 @@ export default function Home() {
     <main className="flex flex-col items-center min-h-screen">
       <WelcomeBanner />
       <JobSearch />
-      <div className="w-full bg-gray-50">
+      <div className="w-full bg-gray-z">
         <JobsArea />
       </div>
     </main>

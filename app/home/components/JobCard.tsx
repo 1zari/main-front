@@ -29,7 +29,7 @@ export default function JobCard() {
         </h3>
         <div className="flex justify-between items-center mt-4">
           <p className="text-gray-500">서울 용산구</p>
-          <p className="text-gray-400">2025.05.25 마감</p>
+          <p className="text-gray-500">2025.05.25 마감</p>
         </div>
       </div>
     </>
