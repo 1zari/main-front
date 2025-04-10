@@ -1,3 +1,5 @@
+"use client"
+
 import SaveBtn from "../../../components/\bSaveBtn"
 
 export default function JobListItem() {
@@ -7,7 +9,10 @@ export default function JobListItem() {
         <div className="absolute top-5 right-0">
           <SaveBtn />
         </div>
-        <div className="flex flex-col md:flex-row items-start gap-6 justify-between py-7 border border-t-0 border-l-0 border-r-0 border-b-1 border-gray-300">
+        <div
+          className="flex flex-col md:flex-row items-start gap-6 justify-between py-7 border border-t-0 border-l-0 border-r-0 border-b-1 border-gray-300 cursor-pointer"
+          onClick={() => (window.location.href = "/jobs/detail")}
+        >
           <div className="flex flex-col gap-1 items-start">
             <h2 className="text-xl font-semibold">넥스트러너스</h2>
             <p className="text-gray-600">서울 강남구</p>
