@@ -1,3 +1,17 @@
+import JobFilter from "./components/JobFilter"
+import JobsList from "./components/JobsList"
+import JobsNav from "./components/JobsNav"
+
 export default function JobsPage() {
-  return <h1 className="text-2xl font-bold">채용공고페이지</h1>;
+  return (
+    <div>
+      <JobsNav />
+      <div className="min-h-screen flex flex-col items-center">
+        <div className="w-full max-w-7xl mx-auto px-6">
+          <JobFilter />
+          <JobsList />
+        </div>
+      </div>
+    </div>
+  )
 }
