@@ -25,6 +25,7 @@ export default function JobSearch() {
         <div className="flex justify-between items-start mb-4">
           <h2 className="text-2xl font-bold">빠르게 일자리를 찾아보기⚡️ </h2>
           <h2 className="text-primary">메인 컬러 적용</h2>
+          <h2 className="text-primary">ACTIONS TEST </h2>
         </div>
       </section>
     </>

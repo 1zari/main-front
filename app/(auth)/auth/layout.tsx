@@ -1,12 +1,9 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-export default function AuthLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+function InnerAuthLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const from = searchParams.get("from");
@@ -23,5 +20,17 @@ export default function AuthLayout({
       </nav>
       <div className="flex-1 flex items-center justify-center">{children}</div>
     </main>
+  );
+}
+
+export default function AuthLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <Suspense fallback={<div>로딩 중...</div>}>
+      <InnerAuthLayout>{children}</InnerAuthLayout>
+    </Suspense>
   );
 }
