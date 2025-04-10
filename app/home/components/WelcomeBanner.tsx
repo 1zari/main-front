@@ -7,7 +7,7 @@ export default function WelcomeBanner() {
           alt=""
           className="w-full h-full object-cover"
         />
-        <div className="absolute  inset-0 bg-black bg-opacity-50   flex justify-center items-center ">
+        <div className="absolute  inset-0 bg-black bg-opacity-60   flex justify-center items-center ">
           <div className="w-full max-w-7xl p-4 flex flex-col items-start justify-start">
             <h2 className=" text-white text-3xl font-semibold">
               시니어 세대가 다시 빛나는 순간!
