@@ -9,15 +9,15 @@ export default function WelcomeBanner() {
         />
         <div className="absolute  inset-0 bg-black bg-opacity-60   flex justify-center items-center ">
           <div className="w-full max-w-7xl p-4 flex flex-col items-start justify-start">
-            <h2 className=" text-white text-3xl font-semibold">
+            <h2 className="text-white text-3xl font-semibold break-keep">
               시니어 세대가 다시 빛나는 순간!
             </h2>
-            <h3 className="text-white text-2 font-semibold mt-2 opacity-80">
+            <h3 className="text-white text-2 font-semibold mt-2 opacity-80 break-keep">
               <span className="text-2xl">경험</span>과
               <span className="text-2xl">가치</span>를 이어가는 새로운 일자리
               매칭
             </h3>
-            <h3 className="text-white text-2xl font-semibold mt-2 opacity-80">
+            <h3 className="text-white text-2xl font-semibold mt-2 opacity-80 break-keep">
               <span className="relative inline-block">
                 <span className="z-10 relative">일자리</span>
                 <span className="absolute left-0 bottom-0 w-full h-3 bg-green-500 z-0"></span>

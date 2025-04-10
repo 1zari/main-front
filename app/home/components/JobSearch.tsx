@@ -8,15 +8,15 @@ export default function JobSearch() {
             빠르게 일자리를 찾아보기⚡️{" "}
           </h2>
           <div className="max-w-2xl flex gap-2 mt-4 justify-between items-center">
-            <button className="w-full border border-gray-300 px-4 py-3 rounded-md flex justify-center items-center gap-2 text-gray-500">
+            <button className="w-full border border-gray-300 px-2 py-3 rounded-md flex justify-center items-center gap-2 text-gray-500">
               근무지역
               <FaCaretDown />
             </button>
-            <button className="w-full border border-gray-300 px-4 py-3 rounded-md flex justify-center items-center gap-2 text-gray-500">
+            <button className="w-full border border-gray-300 px-2 py-3 rounded-md flex justify-center items-center gap-2 text-gray-500">
               직종
               <FaCaretDown />
             </button>
-            <button className="w-full bg-primary text-white px-4 py-3 rounded-md flex justify-center items-center gap-2">
+            <button className="w-full bg-primary text-white px-2 py-3 rounded-md flex justify-center items-center gap-2">
               검색하기
             </button>
           </div>
