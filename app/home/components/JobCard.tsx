@@ -1,24 +1,23 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { FaRegStar, FaStar } from "react-icons/fa"
+import SaveBtn from "../../../components/\bSaveBtn"
 
-export default function SaveBtn() {
-  const [isSaved, setIsSaved] = useState(false)
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) return null
-
+export default function JobCard() {
   return (
-    <button
-      className="rounded-full p-2 text-xl"
-      onClick={() => setIsSaved(!isSaved)}
-    >
-      {isSaved ? <FaStar className="text-primary" /> : <FaRegStar />}
-    </button>
+    <>
+      <div className="bg-white shadow-md rounded-lg p-4">
+        <div className="flex justify-between items-center">
+          <p className="text-gray-500">맥도날드 서울역점</p>
+          <SaveBtn />
+        </div>
+        <h3 className="text-lg font-semibold py-2">
+          [자유로운 스케줄]맥도날드 서울역점과 함께할 크루를 모집합니다.
+        </h3>
+        <div className="flex justify-between items-center mt-4">
+          <p className="text-gray-500">서울 용산구</p>
+          <p className="text-gray-500">2025.05.25 마감</p>
+        </div>
+      </div>
+    </>
   )
 }
