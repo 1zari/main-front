@@ -1,3 +1,4 @@
+import JobDetailContent from "./JobDetailContent"
 import JobDetailNav from "./JobDetailNav"
 
 export default function page() {
@@ -5,9 +6,8 @@ export default function page() {
     <>
       <div>
         <JobDetailNav />
-        <div className="min-h-screen flex flex-col items-center">
-          <div className="w-full max-w-7xl mx-auto px-6">detail page</div>
-        </div>
+     
+        <JobDetailContent />
       </div>
     </>
   )
