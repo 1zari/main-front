@@ -20,6 +20,28 @@ export default function JobSearch() {
               검색하기
             </button>
           </div>
+          <div className="max-w-2xl flex gap-2 mt-4 justify-between items-center">
+            <div className="flex flex-wrap gap-2 mt-4">
+              <button className="bg-gray-200 text-gray-700 px-3 py-1 rounded-md">
+                공공 일자리
+              </button>
+              <button className="bg-gray-200 text-gray-700 px-3 py-1 rounded-md">
+                사무
+              </button>
+              <button className="bg-gray-200 text-gray-700 px-3 py-1 rounded-md">
+                서비스
+              </button>
+              <button className="bg-gray-200 text-gray-700 px-3 py-1 rounded-md">
+                기술직
+              </button>
+              <button className="bg-gray-200 text-gray-700 px-3 py-1 rounded-md">
+                교육/강사
+              </button>
+              <button className="bg-gray-200 text-gray-700 px-3 py-1 rounded-md">
+                운전/배송
+              </button>
+            </div>
+          </div>
         </div>
       </section>
     </>
