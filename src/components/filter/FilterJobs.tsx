@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 const JOB_CATEGORIES = {
-  "돌봄 서비스직(간병·육아)": ["전체", "주방장 및 조리사", "식당 서비스원"],
+  "돌봄 서비스직(간병·육아)": ["전체", "간병인", "등하교도우미"],
   "음식 서비스직": ["전체", "주방장 및 조리사", "식당 서비스원"],
   "운전·운송직": [],
   "예술·디자인·방송직": [],
@@ -20,9 +20,18 @@ export default function FilterJobs() {
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
 
   const toggleCheck = (item: string) => {
-    setCheckedItems((prev) => 
-      prev.includes(item) ? prev.filter((v) => v !== item) : [...prev, item]
-    );
+    setCheckedItems((prev) => {
+      const isSelected = prev.includes(item);
+
+      if (item === "전체") {
+        return isSelected ? [] : ["전체"];
+      }
+
+      const updated = isSelected ? prev.filter((v) => v !== item) : [...prev, item];
+
+      // If selecting a specific item, remove '전체'
+      return updated.filter((v) => v !== "전체");
+    });
   };
 
   return (
