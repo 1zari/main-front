@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import SaveBtn from "../../../components/\bSaveBtn"
+import SaveBtn from "../../../components/SaveBtn";
 
 export default function JobListItem() {
   return (
@@ -29,5 +29,5 @@ export default function JobListItem() {
         </div>
       </div>
     </>
-  )
+  );
 }
