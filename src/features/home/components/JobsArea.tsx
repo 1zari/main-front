@@ -1,5 +1,5 @@
-import { FaChevronRight } from "react-icons/fa"
-import JobCard from "./JobCard"
+import { FaChevronRight } from "react-icons/fa";
+import JobCard from "./JobCard";
 
 export default function JobsArea() {
   function MoreButton() {
@@ -8,7 +8,7 @@ export default function JobsArea() {
         더 보기
         <FaChevronRight />
       </button>
-    )
+    );
   }
   return (
     <>
@@ -34,5 +34,5 @@ export default function JobsArea() {
         </div>
       </section>
     </>
-  )
+  );
 }
