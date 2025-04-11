@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import SaveBtn from "../../../components/\bSaveBtn"
+import SaveBtn from "../../../components/SaveBtn";
 
 export default function JobListItem() {
   return (
@@ -17,7 +17,7 @@ export default function JobListItem() {
             <h2 className="text-xl font-semibold">넥스트러너스</h2>
             <p className="text-gray-600">서울 강남구</p>
           </div>
-          <div className="flex gap-1 flex-wrap flex-col items-start flex-grow ">
+          <div className="flex gap-1 flex-wrap flex-col items-start grow ">
             <h2 className="text-xl font-semibold">
               안성/샌드위치/주간350/야간400/주6일/쉬운포장/중장년층
             </h2>
@@ -29,5 +29,5 @@ export default function JobListItem() {
         </div>
       </div>
     </>
-  )
+  );
 }

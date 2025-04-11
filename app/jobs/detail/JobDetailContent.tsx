@@ -17,7 +17,7 @@ export default function JobDetailContent() {
               <h2 className="text-xl text-primary font-semibold mb-2">
                 고용조건
               </h2>
-              <div className="grid grid-cols-[auto,1fr] gap-y-4 gap-x-10">
+              <div className="grid grid-cols-[auto_1fr] gap-y-4 gap-x-10">
                 <p>급여</p>
                 <p className="font-bold">2,138,900</p>
                 <p>고용형태</p>
@@ -36,7 +36,7 @@ export default function JobDetailContent() {
               <h2 className="text-xl text-primary font-semibold mb-2">
                 모집조건
               </h2>
-              <div className="grid grid-cols-[auto,1fr] gap-y-4 gap-x-10">
+              <div className="grid grid-cols-[auto_1fr] gap-y-4 gap-x-10">
                 <p>마감일</p>
                 <p className="font-bold">2025.03.31</p>
                 <p>경력사항</p>
@@ -133,7 +133,7 @@ export default function JobDetailContent() {
               <h2 className="text-xl text-primary font-semibold mb-2">
                 채용담당자 연락처
               </h2>
-              <div className="grid grid-cols-[auto,1fr] gap-y-4 gap-x-10">
+              <div className="grid grid-cols-[auto_1fr] gap-y-4 gap-x-10">
                 <p>담당자</p>
                 <p className="font-bold">김오즈</p>
                 <p>전화</p>
@@ -145,7 +145,7 @@ export default function JobDetailContent() {
 
             {/* 지원하기 버튼 */}
             <div className="text-center py-6 sticky bottom-0 bg-white z-10">
-              <button className="w-full  bg-primary hover:bg-green-700 text-white font-bold py-4 px-6 rounded">
+              <button className="w-full  bg-primary hover:bg-green-700 text-white font-bold py-4 px-6 rounded-sm">
                 지원하기
               </button>
             </div>

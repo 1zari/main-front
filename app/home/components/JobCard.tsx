@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import SaveBtn from "../../../components/\bSaveBtn"
+import SaveBtn from "../../../components/SaveBtn";
 
 export default function JobCard() {
   return (
@@ -19,5 +19,5 @@ export default function JobCard() {
         </div>
       </div>
     </>
-  )
+  );
 }

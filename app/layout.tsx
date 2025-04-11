@@ -1,17 +1,13 @@
-import Footer from "../components/Footer"
-import Navigation from "../components/Navigation"
-import "./globals.css"
+import Footer from "../components/Footer";
+import Navigation from "../components/Navigation";
+import "./globals.css";
 
 export const metadata = {
   title: "시니어내일",
-  description: "시니어를 위한 채용 플랫폼"
-}
+  description: "시니어를 위한 채용 플랫폼",
+};
 
-export default function RootLayout({
-  children
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
       <head>
@@ -23,5 +19,5 @@ export default function RootLayout({
         <Footer />
       </body>
     </html>
-  )
+  );
 }
