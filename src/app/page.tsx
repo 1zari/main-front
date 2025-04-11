@@ -1,6 +1,6 @@
-import JobsArea from "./home/components/JobsArea"
-import JobSearch from "./home/components/JobSearch"
-import WelcomeBanner from "./home/components/WelcomeBanner"
+import JobsArea from "../features/home/components/JobsArea"
+import JobSearch from "../features/home/components/JobSearch"
+import WelcomeBanner from "../features/home/components/WelcomeBanner"
 
 export default function Home() {
   return (
