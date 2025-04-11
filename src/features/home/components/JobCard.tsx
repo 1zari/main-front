@@ -1,6 +1,8 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import SaveBtn from "../../../components/SaveBtn";
+
 const JOBSINFOS = [
   {
     id: 1,
@@ -85,19 +87,29 @@ const JOBSINFOS = [
 ];
 
 function JobCard({ job }: { job: (typeof JOBSINFOS)[number] }) {
+  const router = useRouter();
+
   return (
-    <div className="bg-white shadow-sm rounded-lg p-4">
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <img src={job.logo} alt={`${job.companyName} 로고`} className="w-6 h-6 object-contain" />
-          <p className="text-black/70">{job.companyName}</p>
+    <div onClick={() => router.push("/jobs/detail")} className="cursor-pointer">
+      <div className="bg-white shadow-sm rounded-lg p-4 transition duration-200 hover:shadow-md hover:-translate-y-1">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <img
+              src={job.logo}
+              alt={`${job.companyName} 로고`}
+              className="w-6 h-6 object-contain"
+            />
+            <p className="text-black/70">{job.companyName}</p>
+          </div>
+          <div onClick={(e) => e.stopPropagation()}>
+            <SaveBtn />
+          </div>
         </div>
-        <SaveBtn />
-      </div>
-      <h3 className="text-2 font-semibold py-2">{job.title}</h3>
-      <div className="flex justify-between items-center mt-4">
-        <p className="text-black/70">{job.location}</p>
-        <p className="text-black/70">{job.deadline} 마감</p>
+        <h3 className="text-2 font-semibold py-2">{job.title}</h3>
+        <div className="flex justify-between items-center mt-4">
+          <p className="text-black/70">{job.location}</p>
+          <p className="text-black/70">{job.deadline} 마감</p>
+        </div>
       </div>
     </div>
   );

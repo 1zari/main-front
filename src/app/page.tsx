@@ -13,7 +13,7 @@ export default function Home() {
       <div className="w-full bg-gray-z">
         <LandingReview />
       </div>
-      <div className="w-full bg-white">
+      <div className="w-full bg-white ">
         <LandingPartnerCompany />
       </div>
       <div className="w-full bg-gray-z">
