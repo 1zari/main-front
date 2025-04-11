@@ -74,9 +74,31 @@ export default function FilterLocation() {
   const [checkedDistricts, setCheckedDistricts] = useState<string[]>([]);
 
   const toggleDistrict = (district: string) => {
-    setCheckedDistricts((prev) =>
-      prev.includes(district) ? prev.filter((d) => d !== district) : [...prev, district],
-    );
+    setCheckedDistricts((prev) => {
+      const isSelected = prev.includes(district);
+
+      // Handle '전체' selection for the current region
+      if (district.endsWith("전체")) {
+        return isSelected ? prev.filter((d) => d !== district) : [district];
+      }
+
+      // Get the current region's districts
+      const currentRegionDistricts = REGIONS[selectedRegion] || [];
+
+      // If selecting a specific district while '전체' is already selected
+      if (currentRegionDistricts.includes(district) && prev.includes(`${selectedRegion} 전체`)) {
+        return [...prev.filter((d) => d !== `${selectedRegion} 전체`), district];
+      }
+
+      const updated = isSelected ? prev.filter((d) => d !== district) : [...prev, district];
+
+      // If after update, any district in the current region is selected, remove '전체'
+      if (currentRegionDistricts.includes(district)) {
+        return updated.filter((d) => d !== `${selectedRegion} 전체`);
+      }
+
+      return updated;
+    });
   };
 
   return (

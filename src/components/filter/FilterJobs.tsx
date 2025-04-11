@@ -20,8 +20,8 @@ export default function FilterJobs() {
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
 
   const toggleCheck = (item: string) => {
-    setCheckedItems((prev) =>
-      prev.includes(item) ? prev.filter((v) => v !== item) : [...prev, item],
+    setCheckedItems((prev) => 
+      prev.includes(item) ? prev.filter((v) => v !== item) : [...prev, item]
     );
   };
 
