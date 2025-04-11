@@ -14,10 +14,10 @@ export default function JobDetailNav() {
           </li>
 
           <li>
-            <button className="flex items-center  gap-2">
+            <div className="flex items-center  gap-2">
               <SaveBtn />
               저장하기
-            </button>
+            </div>
           </li>
         </ul>
       </nav>
