@@ -1,6 +1,6 @@
-import JobFilter from "./components/JobFilter"
-import JobsList from "./components/JobsList"
-import JobsNav from "./components/JobsNav"
+import JobFilter from "../../features/jobs/components/JobFilter"
+import JobsList from "../../features/jobs/components/JobsList"
+import JobsNav from "../../features/jobs/components/JobsNav"
 
 export default function JobsPage() {
   return (
