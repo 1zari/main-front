@@ -20,11 +20,10 @@ export default function Navigation() {
               <Image src="/images/logo.png" alt="시니어내일 로고" width={120} height={40} />
             </Link>
             <div className="flex justify-end gap-2 items-center">
-              {/* <span>글씨 크기 조정하기:</span> */}
-              <button onClick={decrease} className="px-2 py-1 border rounded text-sm">
+              <button onClick={decrease} className="px-2 py-1 border rounded text-sm hover:bg-gray-100 transition-colors duration-200">
                 가-
               </button>
-              <button onClick={increase} className="px-2 py-1 border rounded text-sm">
+              <button onClick={increase} className="px-2 py-1 border rounded text-sm hover:bg-gray-100 transition-colors duration-200">
                 가+
               </button>
             </div>
