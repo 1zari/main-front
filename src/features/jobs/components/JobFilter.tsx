@@ -4,7 +4,7 @@ import { IoMdRefresh } from "react-icons/io";
 import FilterJobs from "../../../components/filter/FilterJobs";
 import FilterLocation from "../../../components/filter/FilterLocation";
 import FilterOtherConditions from "../../../components/filter/FilterOtherConditions";
-import { useFilterStore } from "../../../stores/useJobFilterStore";
+import { useFilterTabStore } from "../../../stores/useJobFilterStore";
 
 export default function JobFilter() {
   const {
@@ -14,7 +14,12 @@ export default function JobFilter() {
     setShowLocation,
     setShowJobs,
     setShowOtherConditions,
-  } = useFilterStore();
+  } = useFilterTabStore();
+
+  const navBtnClassName =
+    "w-full border border-gray-300 px-2 py-3 rounded-md flex justify-center items-center gap-2 text-gray-500";
+
+  const navBtnSelectedClassName = "border-primary font-bold text-primary";
 
   return (
     <>
@@ -27,7 +32,7 @@ export default function JobFilter() {
           </h2>
           <div className="max-w-2xl flex gap-2 mt-4 justify-between items-center">
             <button
-              className="w-full border border-gray-300 px-2 py-3 rounded-md flex justify-center items-center gap-2 text-gray-500"
+              className={`${navBtnClassName} ${showLocation ? navBtnSelectedClassName : ""}`}
               onClick={() => setShowLocation(!showLocation)}
             >
               지역
@@ -38,7 +43,7 @@ export default function JobFilter() {
               </span>
             </button>
             <button
-              className="w-full border border-gray-300 px-2 py-3 rounded-md flex justify-center items-center gap-2 text-gray-500"
+              className={`${navBtnClassName} ${showJobs ? navBtnSelectedClassName : ""}`}
               onClick={() => setShowJobs(!showJobs)}
             >
               직종
@@ -47,7 +52,7 @@ export default function JobFilter() {
               </span>
             </button>
             <button
-              className="w-full border border-gray-300 px-2 py-3 rounded-md flex justify-center items-center gap-2 text-gray-500"
+              className={`${navBtnClassName} ${showOtherConditions ? navBtnSelectedClassName : ""}`}
               onClick={() => setShowOtherConditions(!showOtherConditions)}
             >
               상세

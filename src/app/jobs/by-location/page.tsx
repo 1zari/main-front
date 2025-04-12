@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect } from "react";
-import { useFilterStore } from "../../../stores/useJobFilterStore";
 import JobCard from "../../../features/home/components/JobCard";
 import JobFilter from "../../../features/jobs/components/JobFilter";
+import { useFilterTabStore } from "../../../stores/useJobFilterStore";
 
 export default function JobsByLocationPage() {
-  const setShowLocation = useFilterStore((state) => state.setShowLocation);
+  const setShowLocation = useFilterTabStore((state) => state.setShowLocation);
+  const showLocation = useFilterTabStore((state) => state.showLocation);
 
   useEffect(() => {
     setShowLocation(true);

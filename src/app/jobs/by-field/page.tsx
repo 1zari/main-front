@@ -3,10 +3,10 @@
 import { useEffect } from "react";
 import JobCard from "../../../features/home/components/JobCard";
 import JobFilter from "../../../features/jobs/components/JobFilter";
-import { useFilterStore } from "../../../stores/useJobFilterStore";
+import { useFilterTabStore } from "../../../stores/useJobFilterStore";
 
 export default function JobsByFieldPage() {
-  const setShowJobs = useFilterStore((state) => state.setShowJobs);
+  const setShowJobs = useFilterTabStore((state) => state.setShowJobs);
 
   useEffect(() => {
     setShowJobs(true);

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type FilterStore = {
+type FilterTabStore = {
   showLocation: boolean;
   showJobs: boolean;
   showOtherConditions: boolean;
@@ -9,7 +9,7 @@ type FilterStore = {
   setShowOtherConditions: (value: boolean) => void;
 };
 
-export const useFilterStore = create<FilterStore>((set) => ({
+export const useFilterTabStore = create<FilterTabStore>((set) => ({
   showLocation: false,
   showJobs: false,
   showOtherConditions: false,
