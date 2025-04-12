@@ -1,7 +1,20 @@
+"use client";
+import { useEffect } from "react";
 import JobCard from "../../../features/home/components/JobCard";
 import JobFilter from "../../../features/jobs/components/JobFilter";
+import { useFilterTabStore } from "../../../stores/useJobFilterStore";
 
 export default function PublicJobsPage() {
+  const setShowLocation = useFilterTabStore((state) => state.setShowLocation);
+  const setShowJobs = useFilterTabStore((state) => state.setShowJobs);
+  const setShowOtherConditions = useFilterTabStore((state) => state.setShowOtherConditions);
+
+  useEffect(() => {
+    setShowLocation(false);
+    setShowJobs(false);
+    setShowOtherConditions(false);
+  }, []);
+
   return (
     <>
       <div className="w-full max-w-7xl mx-auto px-6">
