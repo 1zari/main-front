@@ -12,11 +12,11 @@ export default function JobsArea() {
   }
   return (
     <>
+      <div className="sticky top-0 px-4 z-999 bg-gray-z flex justify-between items-center py-6 mb-4">
+        <h2 className="text-2xl font-semibold">최근에 등록된 공고</h2>
+        <MoreButton />
+      </div>
       <section className="w-full max-w-7xl mx-auto my-8 px-4 ">
-        <div className="flex justify-between items-center py-6 mb-4">
-          <h2 className="text-2xl font-semibold">최근에 등록된 공고</h2>
-          <MoreButton />
-        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
           <JobCard />
         </div>
