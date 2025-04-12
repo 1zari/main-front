@@ -16,7 +16,7 @@ export default function Navigation() {
     <>
       <nav className="bg-white text-black p-4 relative">
         <div
-          className={`flex flex-col md:flex-row justify-between items-start md:items-center max-w-7xl mx-auto gap-3 md:gap-0 ${fontSize}`}
+          className={`flex flex-col md:flex-row justify-center items-center md:items-center max-w-7xl mx-auto gap-3 md:gap-0 ${fontSize}`}
         >
           <div className="w-full flex justify-between text-xl">
             <Link href="/">
@@ -37,8 +37,8 @@ export default function Navigation() {
               </button>
             </div>
           </div>
-          <div className="w-full justify-end flex flex-wrap md:flex-nowrap flex-col md:flex-row items-start md:items-center gap-2 md:gap-4 md:ml-auto whitespace-nowrap overflow-x-auto max-w-full">
-            <ul className="w-full flex gap-4 pb-2 justify-evenly">
+          <div className="w-full justify-end flex flex-wrap md:flex-nowrap flex-col md:flex-row items-center gap-2 md:gap-4 md:ml-auto whitespace-nowrap overflow-x-auto max-w-full h-full">
+            <ul className="w-full flex gap-4 justify-evenly items-center h-full">
               <li>
                 <Link
                   href="/"
@@ -89,7 +89,6 @@ export default function Navigation() {
           </div>
         </div>
       </nav>
-      
     </>
   );
 }
