@@ -25,7 +25,7 @@ export default function FilterOtherConditions() {
   );
 
   return (
-    <div className="border rounded-md p-4 flex flex-col gap-4">
+    <div className="border rounded-md rounded-t-none  bg-white p-4 flex flex-col gap-4">
       {checkboxGroup("고용형태", ["정규직", "계약직"])}
       {checkboxGroup("경력여부", ["경력무관", "경력"])}
       {checkboxGroup("학력", ["학력무관", "고졸", "대졸이상"])}
