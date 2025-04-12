@@ -1,5 +1,6 @@
 import Footer from "../components/Footer";
 import Navigation from "../components/Navigation";
+import { FontSizeProvider } from "../hooks/useFontSize";
 import "./globals.css";
 
 export const metadata = {
@@ -14,9 +15,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" href="/images/favicon.ico" sizes="any" />
       </head>
       <body>
-        <Navigation />
-        <main>{children}</main>
-        <Footer />
+        <FontSizeProvider>
+          <Navigation />
+          <main>{children}</main>
+          <Footer />
+        </FontSizeProvider>
       </body>
     </html>
   );
