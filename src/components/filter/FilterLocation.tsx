@@ -102,9 +102,9 @@ export default function FilterLocation() {
   };
 
   return (
-    <div className="flex border rounded-md overflow-hidden">
+    <div className="flex border  rounded-md rounded-t-none  bg-white overflow-hidden">
       {/* 지역 목록 */}
-      <div className="w-32 max-h-80 border-r overflow-y-auto p-2 scroll-auto">
+      <div className="w-32  border-r overflow-y-auto p-2 scroll-auto">
         {Object.keys(REGIONS).map((region) => (
           <div
             key={region}
@@ -119,7 +119,7 @@ export default function FilterLocation() {
       </div>
 
       {/* 구/군 체크박스 목록 */}
-      <div className="grid grid-cols-3 gap-x-2 gap-y-3 p-4 w-full h-full overflow-y-auto">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-x-2 gap-y-3 p-4 w-full h-full overflow-y-auto">
         {(REGIONS[selectedRegion] || []).map((district) => (
           <label key={district} className="flex items-center gap-2">
             <input

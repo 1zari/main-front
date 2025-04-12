@@ -35,7 +35,7 @@ export default function FilterJobs() {
   };
 
   return (
-    <div className="flex border rounded-md overflow-hidden">
+    <div className="flex border rounded-md rounded-t-none bg-white overflow-hidden">
       {/* Left: Job categories */}
       <div className="w-70 max-h-80 border-r overflow-y-auto p-2 scroll-auto">
         {Object.keys(JOB_CATEGORIES).map((category) => (
