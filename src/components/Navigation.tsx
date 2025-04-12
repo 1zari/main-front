@@ -15,15 +15,21 @@ export default function Navigation() {
         <div
           className={`flex flex-col md:flex-row justify-between items-start md:items-center max-w-7xl mx-auto gap-3 md:gap-0 ${fontSize}`}
         >
-          <div className="w-full flex justify-between text-xl font-bold">
+          <div className="w-full flex justify-between text-xl">
             <Link href="/">
               <Image src="/images/logo.png" alt="시니어내일 로고" width={120} height={40} />
             </Link>
-            <div className="flex justify-end gap-2 items-center">
-              <button onClick={decrease} className="px-2 py-1 border rounded text-sm hover:bg-gray-100 transition-colors duration-200">
+            <div className="flex justify-end gap-2 items-center md:hidden lg:hidden">
+              <button
+                onClick={decrease}
+                className="px-2 py-1 border rounded text-sm hover:bg-gray-100 transition-colors duration-200"
+              >
                 가-
               </button>
-              <button onClick={increase} className="px-2 py-1 border rounded text-sm hover:bg-gray-100 transition-colors duration-200">
+              <button
+                onClick={increase}
+                className="px-2 py-1 border rounded text-sm hover:bg-gray-100 transition-colors duration-200"
+              >
                 가+
               </button>
             </div>
@@ -60,6 +66,20 @@ export default function Navigation() {
                 </Link>
               </li>
             </ul>
+          </div>
+          <div className="w-full justify-end gap-2 items-center hidden md:flex">
+            <button
+              onClick={decrease}
+              className="px-2 py-1 border rounded text-sm hover:bg-gray-100 transition-colors duration-200"
+            >
+              가-
+            </button>
+            <button
+              onClick={increase}
+              className="px-2 py-1 border rounded text-sm hover:bg-gray-100 transition-colors duration-200"
+            >
+              가+
+            </button>
           </div>
         </div>
       </nav>
