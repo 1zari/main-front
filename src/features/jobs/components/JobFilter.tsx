@@ -1,15 +1,20 @@
 "use client";
-import { useState } from "react";
 import { FaCaretDown } from "react-icons/fa";
 import { IoMdRefresh } from "react-icons/io";
 import FilterJobs from "../../../components/filter/FilterJobs";
 import FilterLocation from "../../../components/filter/FilterLocation";
 import FilterOtherConditions from "../../../components/filter/FilterOtherConditions";
+import { useFilterStore } from "../../../stores/useJobFilterStore";
 
 export default function JobFilter() {
-  const [showLocation, setShowLocation] = useState(false);
-  const [showJobs, setShowJobs] = useState(false);
-  const [showOtherConditions, setShowOtherConditions] = useState(false);
+  const {
+    showLocation,
+    showJobs,
+    showOtherConditions,
+    setShowLocation,
+    setShowJobs,
+    setShowOtherConditions,
+  } = useFilterStore();
 
   return (
     <>
@@ -23,13 +28,9 @@ export default function JobFilter() {
           <div className="max-w-2xl flex gap-2 mt-4 justify-between items-center">
             <button
               className="w-full border border-gray-300 px-2 py-3 rounded-md flex justify-center items-center gap-2 text-gray-500"
-              onClick={() => {
-                setShowLocation((prev) => !prev);
-                setShowJobs(false);
-                setShowOtherConditions(false);
-              }}
+              onClick={() => setShowLocation(!showLocation)}
             >
-              근무지역
+              지역
               <span
                 className={`transition-transform duration-300 ${showLocation ? "rotate-180" : ""}`}
               >
@@ -38,11 +39,7 @@ export default function JobFilter() {
             </button>
             <button
               className="w-full border border-gray-300 px-2 py-3 rounded-md flex justify-center items-center gap-2 text-gray-500"
-              onClick={() => {
-                setShowJobs((prev) => !prev);
-                setShowLocation(false);
-                setShowOtherConditions(false);
-              }}
+              onClick={() => setShowJobs(!showJobs)}
             >
               직종
               <span className={`transition-transform duration-300 ${showJobs ? "rotate-180" : ""}`}>
@@ -51,13 +48,9 @@ export default function JobFilter() {
             </button>
             <button
               className="w-full border border-gray-300 px-2 py-3 rounded-md flex justify-center items-center gap-2 text-gray-500"
-              onClick={() => {
-                setShowOtherConditions((prev) => !prev);
-                setShowLocation(false);
-                setShowJobs(false);
-              }}
+              onClick={() => setShowOtherConditions(!showOtherConditions)}
             >
-              상세조건
+              상세
               <span
                 className={`transition-transform duration-300 ${showOtherConditions ? "rotate-180" : ""}`}
               >

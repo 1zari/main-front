@@ -9,6 +9,9 @@ export default function Navigation() {
   const pathname = usePathname();
   const { fontSize, increase, decrease } = useFontSize();
 
+  const selectedNavBtnClassName = "text-primary font-semibold";
+  const hoverClassName = "hover:font-bold";
+
   return (
     <>
       <nav className="bg-white text-black p-4 relative">
@@ -34,17 +37,20 @@ export default function Navigation() {
               </button>
             </div>
           </div>
-          <div className="w-full justify-end flex flex-wrap md:flex-nowrap flex-col md:flex-row items-start md:items-center gap-2 md:gap-4 md:ml-auto whitespace-nowrap">
-            <ul className="flex gap-4">
+          <div className="w-full justify-end flex flex-wrap md:flex-nowrap flex-col md:flex-row items-start md:items-center gap-2 md:gap-4 md:ml-auto whitespace-nowrap overflow-x-auto max-w-full">
+            <ul className="w-full flex gap-4 pb-2 justify-evenly">
               <li>
-                <Link href="/" className={pathname === "/" ? "text-primary font-semibold" : ""}>
+                <Link
+                  href="/"
+                  className={`${pathname === "/" ? selectedNavBtnClassName : ""}  ${hoverClassName}`}
+                >
                   홈
                 </Link>
               </li>
               <li>
                 <Link
                   href="/jobs"
-                  className={pathname.startsWith("/jobs") ? "text-primary font-semibold" : ""}
+                  className={`${pathname.startsWith("/jobs") ? selectedNavBtnClassName : ""}  ${hoverClassName}`}
                 >
                   채용공고
                 </Link>
@@ -52,7 +58,7 @@ export default function Navigation() {
               <li>
                 <Link
                   href="/auth/login"
-                  className={pathname === "/auth/login" ? "text-primary font-semibold" : ""}
+                  className={`${pathname === "/auth/login" ? selectedNavBtnClassName : ""}  ${hoverClassName}`}
                 >
                   로그인
                 </Link>
@@ -60,7 +66,7 @@ export default function Navigation() {
               <li>
                 <Link
                   href="/auth/login"
-                  className={pathname === "/auth/login" ? "text-primary font-semibold" : ""}
+                  className={`${pathname === "/auth/login" ? selectedNavBtnClassName : ""}  ${hoverClassName}`}
                 >
                   기업로그인
                 </Link>
@@ -83,6 +89,7 @@ export default function Navigation() {
           </div>
         </div>
       </nav>
+      
     </>
   );
 }
