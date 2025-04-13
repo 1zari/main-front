@@ -11,10 +11,7 @@ function InnerAuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <main className="min-h-screen flex flex-col bg-gray-50">
       <nav className="flex items-center p-4 bg-white shadow-md">
-        <button
-          onClick={() => router.push(from || "/")}
-          className="text-blue-600 hover:underline"
-        >
+        <button onClick={() => router.push(from || "/")} className="text-primary hover:underline">
           ← 뒤로가기
         </button>
       </nav>
@@ -23,14 +20,11 @@ function InnerAuthLayout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function AuthLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <Suspense fallback={<div>로딩 중...</div>}>
       <InnerAuthLayout>{children}</InnerAuthLayout>
     </Suspense>
   );
 }
+
