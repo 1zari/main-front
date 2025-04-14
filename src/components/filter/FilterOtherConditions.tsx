@@ -40,7 +40,7 @@ export default function FilterOtherConditions() {
               <button
                 key={day}
                 onClick={() => toggleDay(day)}
-                className={`px-2 py-1 border rounded ${
+                className={`px-4 py-2 border rounded ${
                   selectedDays.includes(day) ? "bg-primary text-white" : "bg-white text-black"
                 }`}
               >
