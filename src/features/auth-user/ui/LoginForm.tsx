@@ -7,7 +7,7 @@ import { Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema, LoginFormValues } from "@/features/auth/model/validation";
+import { loginSchema, LoginFormValues } from "@/features/auth-user/model/validation";
 
 export default function LoginForm() {
   const [showEmailForm, setShowEmailForm] = useState(false);
