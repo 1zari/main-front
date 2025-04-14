@@ -1,5 +1,6 @@
 "use client";
 
+import { useSelectedFilterStore } from "@/stores/useJobFilterStore";
 import { useState } from "react";
 
 const JOB_CATEGORIES = {
@@ -16,22 +17,44 @@ const JOB_CATEGORIES = {
 };
 
 export default function FilterJobs() {
+  const { checkedJobs, setCheckedJobs, addSelectedFilter, removeSelectedFilter } = useSelectedFilterStore();
   const [selectedCategory, setSelectedCategory] = useState("돌봄 서비스직(간병·육아)");
-  const [checkedItems, setCheckedItems] = useState<string[]>([]);
 
   const toggleCheck = (item: string) => {
-    setCheckedItems((prev) => {
-      const isSelected = prev.includes(item);
+    const isSelected = checkedJobs.includes(item);
 
-      if (item === "전체") {
-        return isSelected ? [] : ["전체"];
+    if (item === "전체") {
+      const subItems = JOB_CATEGORIES[selectedCategory] || [];
+
+      if (isSelected) {
+        setCheckedJobs([]);
+        removeSelectedFilter("전체");
+      } else {
+        setCheckedJobs(["전체"]);
+        addSelectedFilter("전체");
+
+        subItems.forEach((sub) => {
+          if (sub !== "전체") {
+            removeSelectedFilter(sub);
+          }
+        });
       }
 
-      const updated = isSelected ? prev.filter((v) => v !== item) : [...prev, item];
+      return;
+    }
 
-      // If selecting a specific item, remove '전체'
-      return updated.filter((v) => v !== "전체");
-    });
+    const updated = isSelected
+      ? checkedJobs.filter((v) => v !== item)
+      : [...checkedJobs.filter((v) => v !== "전체"), item]; // "전체" 제거
+
+    setCheckedJobs(updated);
+
+    if (isSelected) {
+      removeSelectedFilter(item);
+    } else {
+      addSelectedFilter(item);
+      removeSelectedFilter("전체"); // 전체 chip도 제거
+    }
   };
 
   return (
@@ -57,7 +80,7 @@ export default function FilterJobs() {
           <label key={item} className="flex items-center gap-2">
             <input
               type="checkbox"
-              checked={checkedItems.includes(item)}
+              checked={checkedJobs.includes(item)}
               onChange={() => toggleCheck(item)}
             />
             {item}

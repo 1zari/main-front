@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useSelectedFilterStore } from "@/stores/useJobFilterStore";
+import { useState, useEffect } from "react";
 
 const REGIONS = {
   서울: [
@@ -72,32 +73,63 @@ const REGIONS = {
 export default function FilterLocation() {
   const [selectedRegion, setSelectedRegion] = useState("서울");
   const [checkedDistricts, setCheckedDistricts] = useState<string[]>([]);
+  const { selectedFilters, locationChecked, setLocationChecked } = useSelectedFilterStore();
+
+  useEffect(() => {
+    setCheckedDistricts(locationChecked);
+  }, [locationChecked]);
 
   const toggleDistrict = (district: string) => {
-    setCheckedDistricts((prev) => {
-      const isSelected = prev.includes(district);
+    const isSelected = checkedDistricts.includes(district);
+    const currentRegionDistricts = REGIONS[selectedRegion] || [];
 
-      // Handle '전체' selection for the current region
-      if (district.endsWith("전체")) {
-        return isSelected ? prev.filter((d) => d !== district) : [district];
+    let updated: string[] = [];
+
+    // Handle '전체' 선택
+    if (district.endsWith("전체")) {
+      if (isSelected) {
+        updated = checkedDistricts.filter((d) => d !== district);
+      } else {
+        if (!checkedDistricts.includes(district)) {
+          updated = [district];
+
+          // remove all individual districts from selectedFilters
+          currentRegionDistricts.forEach((d) => {
+            if (d !== district) {
+              updated = updated.filter((item) => item !== d);
+            }
+          });
+        } else {
+          updated = [...checkedDistricts];
+        }
       }
+      setCheckedDistricts(updated);
+      setLocationChecked(updated);
+      return;
+    }
+    // '전체'가 선택된 상태에서 개별 선택 시 전체 제거
+    else if (checkedDistricts.includes(`${selectedRegion} 전체`)) {
+      const full = `${selectedRegion} 전체`;
+      updated = [...checkedDistricts.filter((d) => d !== full), district];
+    } else {
+      updated = isSelected
+        ? checkedDistricts.filter((d) => d !== district)
+        : [...checkedDistricts, district];
+    }
 
-      // Get the current region's districts
-      const currentRegionDistricts = REGIONS[selectedRegion] || [];
+    // '전체' 제거 로직
+    if (currentRegionDistricts.includes(district)) {
+      updated = updated.filter((d) => d !== `${selectedRegion} 전체`);
+    }
 
-      // If selecting a specific district while '전체' is already selected
-      if (currentRegionDistricts.includes(district) && prev.includes(`${selectedRegion} 전체`)) {
-        return [...prev.filter((d) => d !== `${selectedRegion} 전체`), district];
-      }
-
-      const updated = isSelected ? prev.filter((d) => d !== district) : [...prev, district];
-
-      // If after update, any district in the current region is selected, remove '전체'
-      if (currentRegionDistricts.includes(district)) {
-        return updated.filter((d) => d !== `${selectedRegion} 전체`);
-      }
-
-      return updated;
+    // store 업데이트
+    const regionDistricts = updated.filter(d => REGIONS[selectedRegion].includes(d));
+    const label = `${selectedRegion}: ${regionDistricts.join(", ")}`;
+    const filters = selectedFilters.filter(f => !f.startsWith(`${selectedRegion}:`));
+    setLocationChecked(updated);
+    setCheckedDistricts(updated);
+    useSelectedFilterStore.setState({
+      selectedFilters: regionDistricts.length > 0 ? [...filters, label] : filters,
     });
   };
 
