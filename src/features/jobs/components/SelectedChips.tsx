@@ -102,11 +102,11 @@ export default function SelectedChips() {
           </div>
         ))}
       </div>
-      <div className="flex justify-end mt-4">
+      <div className="flex justify-end mt-4 mb-4">
         <button
           type="button"
           onClick={() => resetFilters()}
-          className="group flex justify-center items-center gap-2 bg-gray-300 px-4 py-2 rounded-md text-sm text-gray-800 cursor-pointer"
+          className="group flex justify-center items-center gap-2 border px-4 py-2 rounded-md text-sm text-gray-800 cursor-pointer"
         >
           <span className="group-hover:rotate-180 transform transition-transform duration-300">
             <IoMdRefresh />
