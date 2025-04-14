@@ -115,7 +115,10 @@ export default function LoginForm() {
                 </button>
               </div>
               {errors.password && (
-                <p className="text-xs text-red-500 mt-1">{errors.password.message}</p>
+                <p className="text-xs text-red-500 mt-1">
+                  비밀번호는 8자 이상 16자 이하이며, 영어 소문자, 숫자, 특수문자를 각각 1개 이상
+                  포함해야 합니다.
+                </p>
               )}
             </div>
 
