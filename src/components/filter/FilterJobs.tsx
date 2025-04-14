@@ -4,8 +4,8 @@ import { useSelectedFilterStore } from "@/stores/useJobFilterStore";
 import { useState } from "react";
 
 const JOB_CATEGORIES = {
-  "돌봄 서비스직(간병·육아)": ["전체", "간병인", "등하교도우미"],
-  "음식 서비스직": ["전체", "주방장 및 조리사", "식당 서비스원"],
+  "돌봄 서비스직(간병·육아)": ["돌봄 서비스직(간병·육아) 전체", "간병인", "등하교도우미"],
+  "음식 서비스직": ["음식 서비스직 전체", "주방장 및 조리사", "식당 서비스원"],
   "운전·운송직": [],
   "예술·디자인·방송직": [],
   "경호·경비직": [],
@@ -17,27 +17,29 @@ const JOB_CATEGORIES = {
 };
 
 export default function FilterJobs() {
-  const { checkedJobs, setCheckedJobs, addSelectedFilter, removeSelectedFilter } = useSelectedFilterStore();
+  const { checkedJobs, setCheckedJobs, addSelectedFilter, removeSelectedFilter } =
+    useSelectedFilterStore();
   const [selectedCategory, setSelectedCategory] = useState("돌봄 서비스직(간병·육아)");
 
   const toggleCheck = (item: string) => {
     const isSelected = checkedJobs.includes(item);
 
-    if (item === "전체") {
+    if (item.includes("전체")) {
       const subItems = JOB_CATEGORIES[selectedCategory] || [];
 
       if (isSelected) {
         setCheckedJobs([]);
-        removeSelectedFilter("전체");
+        removeSelectedFilter(item);
       } else {
-        setCheckedJobs(["전체"]);
-        addSelectedFilter("전체");
+        setCheckedJobs([item]);
 
+        // Remove all subItems from chips
         subItems.forEach((sub) => {
-          if (sub !== "전체") {
-            removeSelectedFilter(sub);
-          }
+          removeSelectedFilter(sub);
         });
+
+        // Add the '전체' item to chips
+        addSelectedFilter(item);
       }
 
       return;
@@ -45,15 +47,20 @@ export default function FilterJobs() {
 
     const updated = isSelected
       ? checkedJobs.filter((v) => v !== item)
-      : [...checkedJobs.filter((v) => v !== "전체"), item]; // "전체" 제거
+      : [...checkedJobs.filter((v) => !v.includes("전체")), item];
 
     setCheckedJobs(updated);
+    useSelectedFilterStore.setState({ checkedJobs: updated });
 
     if (isSelected) {
       removeSelectedFilter(item);
     } else {
       addSelectedFilter(item);
-      removeSelectedFilter("전체"); // 전체 chip도 제거
+      checkedJobs.forEach((job) => {
+        if (job.includes("전체")) {
+          removeSelectedFilter(job);
+        }
+      });
     }
   };
 

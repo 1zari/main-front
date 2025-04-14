@@ -47,7 +47,12 @@ type FilterSelectedStore = {
   dayNegotiable: boolean;
   setDayNegotiable: (value: boolean) => void;
   toggleDay: (day: string) => void; // Added toggleDay function signature
-  toggleDistrict: (district: string, selectedRegion: string, checkedDistricts: string[], setCheckedDistricts: (value: string[]) => void) => void; // Added toggleDistrict function signature
+  toggleDistrict: (
+    district: string,
+    selectedRegion: string,
+    checkedDistricts: string[],
+    setCheckedDistricts: (value: string[]) => void,
+  ) => void; // Added toggleDistrict function signature
 };
 
 export const useSelectedFilterStore = create<FilterSelectedStore>((set) => ({
@@ -63,8 +68,12 @@ export const useSelectedFilterStore = create<FilterSelectedStore>((set) => ({
     // 지역 필터 제거 처리
     if (filter.includes(":")) {
       const [region] = filter.split(":");
-      const rest = useSelectedFilterStore.getState().selectedFilters.filter(f => !f.startsWith(`${region}:`));
-      const updatedLocationChecked = useSelectedFilterStore.getState().locationChecked.filter(d => !filter.includes(d));
+      const rest = useSelectedFilterStore
+        .getState()
+        .selectedFilters.filter((f) => !f.startsWith(`${region}:`));
+      const updatedLocationChecked = useSelectedFilterStore
+        .getState()
+        .locationChecked.filter((d) => !filter.includes(d));
       useSelectedFilterStore.setState({
         locationChecked: updatedLocationChecked,
         selectedFilters: rest,
@@ -83,20 +92,25 @@ export const useSelectedFilterStore = create<FilterSelectedStore>((set) => ({
   toggleDay: (day: string) => {
     const currentDays = useSelectedFilterStore.getState().selectedDays;
     const isSelected = currentDays.includes(day);
-    const updated = isSelected
-      ? currentDays.filter((d) => d !== day)
-      : [...currentDays, day];
+    const updated = isSelected ? currentDays.filter((d) => d !== day) : [...currentDays, day];
     set({ selectedDays: updated });
 
     const label = `근무요일: ${updated.join(",")}`;
-    const filters = useSelectedFilterStore.getState().selectedFilters.filter(f => !f.startsWith("근무요일:"));
+    const filters = useSelectedFilterStore
+      .getState()
+      .selectedFilters.filter((f) => !f.startsWith("근무요일:"));
     useSelectedFilterStore.setState({
       selectedFilters: updated.length > 0 ? [...filters, label] : filters,
     });
   },
-  toggleDistrict: (district: string, selectedRegion: string, checkedDistricts: string[], setCheckedDistricts: (value: string[]) => void) => {
+  toggleDistrict: (
+    district: string,
+    selectedRegion: string,
+    checkedDistricts: string[],
+    setCheckedDistricts: (value: string[]) => void,
+  ) => {
     const updated = checkedDistricts.includes(district)
-      ? checkedDistricts.filter(d => d !== district)
+      ? checkedDistricts.filter((d) => d !== district)
       : [...checkedDistricts, district];
 
     currentRegionDistricts.forEach((d) => {
@@ -106,7 +120,9 @@ export const useSelectedFilterStore = create<FilterSelectedStore>((set) => ({
     });
 
     const label = `${selectedRegion}: ${district}`;
-    const filters = useSelectedFilterStore.getState().selectedFilters.filter(f => !f.startsWith(`${selectedRegion}:`));
+    const filters = useSelectedFilterStore
+      .getState()
+      .selectedFilters.filter((f) => !f.startsWith(`${selectedRegion}:`));
     setCheckedDistricts(updated);
     setLocationChecked(updated);
     useSelectedFilterStore.setState({
