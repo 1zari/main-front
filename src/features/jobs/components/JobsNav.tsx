@@ -12,7 +12,9 @@ export default function JobsNav() {
           <li>
             <Link
               href="/jobs/recommended-jobs"
-              className={pathname === "/jobs/recommended-jobs" || "/jobs" ? "font-bold" : ""}
+              className={
+                pathname === "/jobs/recommended-jobs" || pathname === "/jobs" ? "font-bold" : ""
+              }
             >
               추천 공고
             </Link>
