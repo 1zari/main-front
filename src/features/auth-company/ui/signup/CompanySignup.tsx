@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import SignupStepOneForm, { SignupFormValues } from '@/features/auth-common/ui/signup/SignupCommonStepOneForm';
-import SignupStepTwoCompany, { CompanyStepTwoValues } from './SignupCompanyStepTwoForm';
+import SignupStepOneForm from '@/features/auth-common/ui/signup/CommonSignupStepOneForm';
+import { SignupFormValues } from '@/features/auth-common/model/validation';
+import SignupStepTwoCompany, { CompanyStepTwoValues } from './CompanySignupStepTwoForm';
 
 export default function SignupFormCompany() {
   const [step, setStep] = useState<1 | 2>(1);

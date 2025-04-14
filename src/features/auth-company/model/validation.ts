@@ -29,7 +29,20 @@ export const companySchema = z.object({
 
   managerEmail: z
     .string()
-    .email('올바른 이메일 형식입니다.'),
+    .min(1, '이메일은 필수입니다.')
+    .email('올바른 이메일을 입력해주세요. 예 : user@naver.com'),
+
+  companyLogo: z
+    .any()
+    .optional()
+    .refine(
+      (file) => !file || file.length === 0 || ['image/png', 'image/jpeg', 'image/svg+xml'].includes(file[0]?.type),
+      'PNG, JPG, SVG 형식의 이미지 파일만 업로드 가능합니다.'
+    )
+    .refine(
+      (file) => !file || file.length === 0 || file[0]?.size <= 2 * 1024 * 1024,
+      '파일 크기는 2MB 이하여야 합니다.'
+    ),
 });
 
 export type CompanyFormValues = z.infer<typeof companySchema>;
