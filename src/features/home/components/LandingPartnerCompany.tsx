@@ -1,6 +1,16 @@
 "use client";
+import { useRef } from "react";
 
 export default function LandingPartnerCompany() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollLeft = () => {
+    scrollRef.current?.scrollBy({ left: -300, behavior: "smooth" });
+  };
+
+  const scrollRight = () => {
+    scrollRef.current?.scrollBy({ left: 300, behavior: "smooth" });
+  };
   const partnerLogos = [
     {
       src: "https://blog.kakaocdn.net/dn/oK4eO/btstG8nGf5o/TrsC4kKH8umv4jJ4BBC4FK/img.png",
@@ -39,11 +49,25 @@ export default function LandingPartnerCompany() {
       <section className="w-full max-w-7xl  mx-auto my-8 px-4">
         <div className="flex flex-col mb-6 items-center">
           <h2 className="text-2xl font-semibold py-6">함께하는 기업들이에요 😊</h2>
-          <div className="w-full overflow-x-auto py-10">
-            <div className="flex gap-6 mt-4 mb-5 min-w-max px-1">
-              {partnerLogos.map((logo, index) => (
-                <img key={index} src={logo.src} alt={logo.alt} className="h-12 object-contain" />
-              ))}
+          <div className="relative w-full py-10">
+            <button
+              onClick={scrollLeft}
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white w-10 h-10 flex justify-center items-center rounded-full shadow-md"
+            >
+              ◀
+            </button>
+            <button
+              onClick={scrollRight}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white w-10 h-10 flex justify-center items-center rounded-full shadow-md"
+            >
+              ▶
+            </button>
+            <div ref={scrollRef} className="w-full overflow-x-auto scrollbar-hide scroll-smooth">
+              <div className="flex gap-6 mt-4 mb-5 min-w-max px-10">
+                {partnerLogos.map((logo, index) => (
+                  <img key={index} src={logo.src} alt={logo.alt} className="h-12 object-contain" />
+                ))}
+              </div>
             </div>
           </div>
         </div>

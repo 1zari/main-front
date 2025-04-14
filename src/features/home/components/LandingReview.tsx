@@ -1,4 +1,17 @@
+"use client";
+
+import { useRef } from "react";
 export default function LandingReview() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollLeft = () => {
+    scrollRef.current?.scrollBy({ left: -300, behavior: "smooth" });
+  };
+
+  const scrollRight = () => {
+    scrollRef.current?.scrollBy({ left: 300, behavior: "smooth" });
+  };
+
   const reviews = [
     {
       id: 1,
@@ -58,22 +71,39 @@ export default function LandingReview() {
       <section className="w-full max-w-7xl  mx-auto my-8 px-4">
         <div className="flex flex-col mb-6 items-center">
           <h2 className="text-2xl font-semibold py-6">생생한 후기가 있어요 🙂</h2>
-          <div className="w-full overflow-x-auto pt-10">
-            <div className="flex gap-4 min-w-max px-1">
-              {reviews.map((review) => (
-                <div
-                  key={review.id}
-                  className="flex-shrink-0 w-55 mb-5 bg-white shadow-sm p-4 rounded-md flex flex-col items-center text-center"
-                >
-                  <img
-                    src={review.image}
-                    alt={`${review.author} 아바타`}
-                    className="w-30 h-30 object-cover rounded-full mt-2 mb-5"
-                  />
-                  <p className="text-sm text-gray-700 mb-2">"{review.content}"</p>
-                  <p className="text-xs text-gray-500">- {review.author}</p>
-                </div>
-              ))}
+          <div className="relative w-full pt-10">
+            <button
+              onClick={scrollLeft}
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white w-10 h-10 flex justify-center items-center rounded-full shadow-md"
+            >
+              ◀
+            </button>
+            <button
+              onClick={scrollRight}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white w-10 h-10 flex justify-center items-center rounded-full shadow-md"
+            >
+              ▶
+            </button>
+            <div
+              ref={scrollRef}
+              className="w-full overflow-x-auto pt-10 scrollbar-hide scroll-smooth"
+            >
+              <div className="flex gap-4 min-w-max px-1">
+                {reviews.map((review) => (
+                  <div
+                    key={review.id}
+                    className="flex-shrink-0 w-55 mb-5 bg-white shadow-sm p-4 rounded-md flex flex-col items-center text-center"
+                  >
+                    <img
+                      src={review.image}
+                      alt={`${review.author} 아바타`}
+                      className="w-30 h-30 object-cover rounded-full mt-2 mb-5"
+                    />
+                    <p className="text-sm text-gray-700 mb-2">"{review.content}"</p>
+                    <p className="text-xs text-gray-500">- {review.author}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
