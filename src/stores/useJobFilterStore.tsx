@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { REGIONS } from "../constants/regions";
 
 type FilterTabStore = {
   showLocation: boolean;
@@ -109,10 +110,11 @@ export const useSelectedFilterStore = create<FilterSelectedStore>((set) => ({
     checkedDistricts: string[],
     setCheckedDistricts: (value: string[]) => void,
   ) => {
-    const updated = checkedDistricts.includes(district)
+    let updated = checkedDistricts.includes(district)
       ? checkedDistricts.filter((d) => d !== district)
       : [...checkedDistricts, district];
 
+    const currentRegionDistricts = REGIONS[selectedRegion] || [];
     currentRegionDistricts.forEach((d) => {
       if (d !== district) {
         updated = updated.filter((item) => item !== d);
@@ -124,7 +126,7 @@ export const useSelectedFilterStore = create<FilterSelectedStore>((set) => ({
       .getState()
       .selectedFilters.filter((f) => !f.startsWith(`${selectedRegion}:`));
     setCheckedDistricts(updated);
-    setLocationChecked(updated);
+    useSelectedFilterStore.getState().setLocationChecked(updated);
     useSelectedFilterStore.setState({
       selectedFilters: [...filters, label],
     });
