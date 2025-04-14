@@ -1,7 +1,7 @@
 "use client";
 
 import { useSelectedFilterStore } from "@/stores/useJobFilterStore";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const REGIONS = {
   서울: [
@@ -99,6 +99,15 @@ export default function FilterLocation() {
               updated = updated.filter((item) => item !== d);
             }
           });
+
+          const label = `${selectedRegion}: ${district}`;
+          const filters = selectedFilters.filter((f) => !f.startsWith(`${selectedRegion}:`));
+          setCheckedDistricts(updated);
+          setLocationChecked(updated);
+          useSelectedFilterStore.setState({
+            selectedFilters: [...filters, label],
+          });
+          return;
         } else {
           updated = [...checkedDistricts];
         }
@@ -123,9 +132,9 @@ export default function FilterLocation() {
     }
 
     // store 업데이트
-    const regionDistricts = updated.filter(d => REGIONS[selectedRegion].includes(d));
+    const regionDistricts = updated.filter((d) => REGIONS[selectedRegion].includes(d));
     const label = `${selectedRegion}: ${regionDistricts.join(", ")}`;
-    const filters = selectedFilters.filter(f => !f.startsWith(`${selectedRegion}:`));
+    const filters = selectedFilters.filter((f) => !f.startsWith(`${selectedRegion}:`));
     setLocationChecked(updated);
     setCheckedDistricts(updated);
     useSelectedFilterStore.setState({
@@ -134,9 +143,9 @@ export default function FilterLocation() {
   };
 
   return (
-    <div className="flex border  rounded-md rounded-t-none  bg-white overflow-hidden">
+    <div className="flex border rounded-md rounded-t-none bg-white overflow-hidden">
       {/* 지역 목록 */}
-      <div className="w-32  border-r overflow-y-auto p-2 scroll-auto">
+      <div className="w-32 max-h-80 border-r overflow-y-auto p-2 scroll-auto">
         {Object.keys(REGIONS).map((region) => (
           <div
             key={region}
@@ -151,7 +160,7 @@ export default function FilterLocation() {
       </div>
 
       {/* 구/군 체크박스 목록 */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-x-2 gap-y-3 p-4 w-full h-full overflow-y-auto">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-x-2 gap-y-3 p-4 w-full max-h-80 h-full overflow-y-auto">
         {(REGIONS[selectedRegion] || []).map((district) => (
           <label key={district} className="flex items-center gap-2">
             <input

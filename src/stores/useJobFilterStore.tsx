@@ -98,14 +98,21 @@ export const useSelectedFilterStore = create<FilterSelectedStore>((set) => ({
     const updated = checkedDistricts.includes(district)
       ? checkedDistricts.filter(d => d !== district)
       : [...checkedDistricts, district];
-    setCheckedDistricts(updated);
 
-    const regionDistricts = updated.filter(d => REGIONS[selectedRegion].includes(d));
-    const label = `${selectedRegion}: ${regionDistricts.join(", ")}`;
-    const filters = useSelectedFilterStore.getState().selectedFilters.filter(f => !f.startsWith(`${selectedRegion}:`));
-    useSelectedFilterStore.setState({
-      selectedFilters: regionDistricts.length > 0 ? [...filters, label] : filters,
+    currentRegionDistricts.forEach((d) => {
+      if (d !== district) {
+        updated = updated.filter((item) => item !== d);
+      }
     });
+
+    const label = `${selectedRegion}: ${district}`;
+    const filters = useSelectedFilterStore.getState().selectedFilters.filter(f => !f.startsWith(`${selectedRegion}:`));
+    setCheckedDistricts(updated);
+    setLocationChecked(updated);
+    useSelectedFilterStore.setState({
+      selectedFilters: [...filters, label],
+    });
+    return;
   },
 }));
 
