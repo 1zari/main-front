@@ -1,5 +1,6 @@
 "use client";
 
+import SelectedChips from "@/features/jobs/components/SelectedChips";
 import { useEffect } from "react";
 import JobCard from "../../../features/home/components/JobCard";
 import JobFilter from "../../../features/jobs/components/JobFilter";
@@ -16,6 +17,7 @@ export default function JobsByFieldPage() {
     <>
       <div className="w-full max-w-7xl mx-auto px-6">
         <JobFilter />
+        <SelectedChips />
       </div>
       <div className="bg-gray-z-light py-6">
         <section className="w-full max-w-7xl mx-auto my-8 px-4 ">
