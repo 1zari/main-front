@@ -20,7 +20,6 @@ export default function RecommendedJobsPage() {
     <>
       <div className="w-full max-w-7xl mx-auto px-6">
         <JobFilter />
-        ㅁㅁ
         <SelectedChips />
       </div>
       <div className="bg-gray-z-light py-6">
