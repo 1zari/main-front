@@ -119,12 +119,43 @@ export default function LoginForm() {
               )}
             </div>
 
+            <div className="text-xs sm:text-sm text-gray-400 mb-4 text-right">
+              <span className="cursor-pointer hover:text-gray-600">이메일 찾기</span>
+              <span className="mx-2">|</span>
+              <span className="cursor-pointer hover:text-gray-600">비밀번호 찾기</span>
+            </div>
+
             <button
               onClick={handleSubmit(handleLogin)}
               className="w-full bg-primary text-white py-2 rounded hover:bg-green-700 cursor-pointer"
             >
               로그인
             </button>
+
+            <div className="w-full border-t border-gray-300 my-4" />
+
+            <button
+              onClick={() => signIn("kakao")}
+              className="w-full bg-[#FEE500] text-black py-2 rounded hover:bg-[#FFDC00] mb-2 flex items-center justify-center space-x-2 cursor-pointer"
+            >
+              <span>카카오로 로그인</span>
+            </button>
+
+            <button
+              onClick={() => signIn("naver")}
+              className="w-full bg-[#03C75A] text-white py-2 rounded hover:bg-[#02B152] mb-4 cursor-pointer"
+            >
+              네이버로 로그인
+            </button>
+
+            <div className="text-center">
+              <button
+                onClick={() => router.push("/user")}
+                className="text-xs sm:text-sm text-gray-500 hover:underline cursor-pointer"
+              >
+                회원가입
+              </button>
+            </div>
           </>
         ) : null}
 
@@ -138,10 +169,13 @@ export default function LoginForm() {
             </button>
             <button
               onClick={() => signIn("naver")}
-              className="w-full bg-[#03C75A] text-white py-2 rounded hover:bg-[#02B152] mb-4 cursor-pointer"
+              className="w-full bg-[#03C75A] text-white py-2 rounded hover:bg-[#02B152] mb-2 cursor-pointer"
             >
               네이버로 로그인
             </button>
+
+            <div className="w-full border-t border-gray-300 my-3" />
+
             <button
               className="text-sm text-gray-500 hover:underline cursor-pointer"
               onClick={() => setShowEmailForm(true)}
