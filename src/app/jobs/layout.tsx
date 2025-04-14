@@ -7,16 +7,9 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ko">
-      <head>
-        <link rel="icon" href="/images/favicon.ico" sizes="any" />
-      </head>
-      <body>
-        <div>
-          <JobsNav />
-          <main>{children}</main>
-        </div>
-      </body>
-    </html>
+    <div>
+      <JobsNav />
+      <main>{children}</main>
+    </div>
   );
 }
