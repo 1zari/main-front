@@ -86,9 +86,7 @@ const RecruitForm = ({ mode, jobPostingId }: RecruitFormProps) => {
         </div>
 
         <div className="mt-5">
-          <label className="text-lg text-[#0F8C3B] font-bold">
-            공고 기본 정보
-          </label>
+          <label className="text-lg text-[#0F8C3B] font-bold">공고 기본 정보</label>
 
           <div className="mt-5">
             <InputPlace value={workPlace} onChange={setWorkPlace} />
@@ -152,7 +150,6 @@ const RecruitForm = ({ mode, jobPostingId }: RecruitFormProps) => {
                 !workDays.length ||
                 (!workTimeNegotiable && (!workStartTime || !workEndTime)) ||
                 !payType ||
-                !textArea ||
                 !summary ||
                 !employee ||
                 !career ||
@@ -160,7 +157,8 @@ const RecruitForm = ({ mode, jobPostingId }: RecruitFormProps) => {
                 !volume ||
                 !deadline ||
                 !selectJobs.length
-              } mode={mode}
+              }
+              mode={mode}
             />
           </div>
         </div>
