@@ -91,9 +91,19 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
             control={control}
             render={({ field }) => (
               <>
-                <div className="flex gap-4">
-                  <GenderButton selected={field.value === 'male'} onClick={() => field.onChange('male')} label="남성" />
-                  <GenderButton selected={field.value === 'female'} onClick={() => field.onChange('female')} label="여성" />
+                <div className="flex flex-col sm:flex-row w-full sm:gap-4">
+                  <div className="flex w-full gap-3">
+                    <GenderButton
+                      selected={field.value === "male"}
+                      onClick={() => field.onChange("male")}
+                      label="남성"
+                    />
+                    <GenderButton
+                      selected={field.value === "female"}
+                      onClick={() => field.onChange("female")}
+                      label="여성"
+                    />
+                  </div>
                 </div>
                 {errors.gender && <p className="text-red-500 mt-1 ml-2">{errors.gender.message}</p>}
               </>
@@ -170,17 +180,17 @@ const InputWithButton = ({ label, name, placeholder, buttonText, onButtonClick, 
   return (
     <div>
       <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg">{label}</label>
-      <div className="flex gap-3 w-full">
+      <div className="flex flex-col sm:flex-row sm:items-start gap-3 w-full">
         <input
           type="text"
           placeholder={placeholder}
-          className="flex-1 h-[60px] rounded px-4 bg-white placeholder:text-gray-400 border border-gray-300 focus:outline-none focus:border-2 focus:border-primary"
+          className="w-full h-[60px] rounded px-4 bg-white placeholder:text-gray-400 border border-gray-300 focus:outline-none focus:border-2 focus:border-primary"
           {...register(name)}
         />
         <button
           type="button"
           onClick={onButtonClick}
-          className="h-[60px] px-4 border border-primary text-primary rounded hover:bg-primary hover:text-white transition whitespace-nowrap cursor-pointer"
+          className="w-full sm:w-auto h-[60px] px-4 border border-primary text-primary rounded hover:bg-primary hover:text-white transition whitespace-nowrap cursor-pointer"
         >
           {buttonText}
         </button>
@@ -190,13 +200,21 @@ const InputWithButton = ({ label, name, placeholder, buttonText, onButtonClick, 
   );
 };
 
-const GenderButton = ({ selected, onClick, label }: { selected: boolean; onClick: () => void; label: string }) => {
+const GenderButton = ({
+  selected,
+  onClick,
+  label,
+}: {
+  selected: boolean;
+  onClick: () => void;
+  label: string;
+}) => {
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`w-[120px] h-[60px] rounded font-semibold border cursor-pointer 
-        ${selected ? 'bg-primary text-white border-primary' : 'bg-white text-gray-700 border-gray-300'} 
+      className={`w-1/2 sm:w-[120px] h-[60px] rounded font-semibold border cursor-pointer
+        ${selected ? "bg-primary text-white border-primary" : "bg-white text-gray-700 border-gray-300"}
         focus:outline-none focus:ring-0`}
     >
       {label}
@@ -225,18 +243,18 @@ const ControlledCheckboxGroup = ({ label, name, options, control, error }: {
 
         return (
           <div className="mb-12">
-            <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg">{label}</label>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg whitespace-normal break-keep">{label}</label>
+            <div className="grid grid-cols-1 min-[500px]:grid-cols-2 sm:grid-cols-3 gap-3">
               {options.map((option, idx) => {
                 const isChecked = selected.includes(option);
                 return (
                   <div
                     key={idx}
                     onClick={() => toggleOption(option)}
-                    className={`flex items-center justify-between gap-2 px-4 py-[14px] min-w-[160px] h-auto rounded cursor-pointer font-medium border transition break-words text-center
-                      ${isChecked ? 'bg-primary text-white border-primary' : 'bg-white text-gray-700 border-gray-300'}`}
+                    className={`flex items-center justify-between gap-2 px-4 py-[14px] rounded cursor-pointer font-medium border transition break-words text-center
+                      ${isChecked ? "bg-primary text-white border-primary" : "bg-white text-gray-700 border-gray-300"}`}
                   >
-                    <span className="leading-tight flex items-center justify-center text-center w-full h-full">{option}</span>
+                    <span className="leading-tight flex items-center justify-center text-center w-full h-full whitespace-normal break-keep">{option}</span>
                     <input
                       type="checkbox"
                       value={option}

@@ -67,16 +67,16 @@ function EmailInputWithCheck({
   return (
     <div className="w-full">
       <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg">이메일</label>
-      <div className="flex items-center gap-3 w-full">
+      <div className="w-full space-y-3 sm:space-y-0 sm:flex sm:items-start sm:gap-3">
         <input
           type="text"
           placeholder="이메일 주소를 입력해주세요"
-          className="flex-1 h-[60px] border border-gray-300 rounded px-4 bg-white placeholder:text-gray-400 focus:outline-none focus:border-2 focus:border-primary"
-          {...register('email')}
+          className="w-full h-[60px] border border-gray-300 rounded px-4 bg-white placeholder:text-gray-400 focus:outline-none focus:border-2 focus:border-primary"
+          {...register("email")}
         />
         <button
           type="button"
-          className="h-[60px] px-4 border border-primary text-primary rounded hover:bg-primary hover:text-white transition whitespace-nowrap cursor-pointer"
+          className="w-full sm:w-auto h-[60px] px-4 border border-primary text-primary rounded hover:bg-primary hover:text-white transition whitespace-nowrap"
         >
           중복확인
         </button>

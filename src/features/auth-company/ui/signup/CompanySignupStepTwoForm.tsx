@@ -1,8 +1,7 @@
 "use client";
-
 import { useForm, useFormContext, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { companySchema, CompanyFormValues } from "@/features/auth-company/model/validation";
+import { companySchema, CompanyFormValues } from "@/features/auth-company/model/validation/companySignup";
 import { useState } from "react";
 
 export type CompanyStepTwoValues = CompanyFormValues;
@@ -14,8 +13,35 @@ type Props = {
 export default function SignupStepTwoCompany({ onSubmit }: Props) {
   const methods = useForm<CompanyFormValues>({
     resolver: zodResolver(companySchema),
-    mode: "onSubmit",
+    mode: "onBlur",
   });
+
+  const repName = methods.watch("representativeName");
+  const businessNumber = methods.watch("businessNumber");
+
+  const handleBusinessCheck = () => {
+    if (!repName) {
+      methods.setError("representativeName", {
+        type: "manual",
+        message: "대표자 성함을 입력해주세요.",
+      });
+    }
+    if (!businessNumber) {
+      methods.setError("businessNumber", {
+        type: "manual",
+        message: "사업자등록번호를 입력해주세요.",
+      });
+    }
+
+    if (repName && businessNumber) {
+      console.log("중복확인 요청", { repName, businessNumber });
+    }
+  };
+
+  function handleAddressSearch(){
+    // 주소 API 팝업 연결 예정
+    console.log("주소 검색 모달 열기");
+  };
 
   return (
     <FormProvider {...methods}>
@@ -23,28 +49,47 @@ export default function SignupStepTwoCompany({ onSubmit }: Props) {
         <h2 className="text-2xl font-semibold">기업 회원 정보</h2>
 
         <div className="w-full max-w-[700px] space-y-6">
-          <Input label="기업명" name="companyName" placeholder="시니어내일" register={methods.register} error={methods.formState.errors.companyName?.message} />
-          <Input label="개업년월일" name="startDate" type="date" placeholder="YYYY-MM-DD" register={methods.register} error={methods.formState.errors.startDate?.message} />
+          <Input 
+            label="기업명" 
+            name="companyName" 
+            placeholder="시니어내일" 
+            register={methods.register} 
+            error={methods.formState.errors.companyName?.message} 
+          />
+          <Input 
+            label="개업 년월일" 
+            name="startDate" 
+            type="date" 
+            placeholder="YYYY-MM-DD" 
+            register={methods.register} 
+            error={methods.formState.errors.startDate?.message} 
+          />
+          <Input 
+            label="대표자 성함" 
+            name="representativeName" 
+            placeholder="박오즈" 
+            register={methods.register} 
+            error={methods.formState.errors.representativeName?.message} 
+          />
           <InputWithButton
             label="사업자등록번호"
             name="businessNumber"
             placeholder="- 없이 숫자만 입력"
-            buttonText="중복확인"
-            onButtonClick={() => {
-              const value = methods.getValues("businessNumber");
-              if (!value) {
-                methods.setError("businessNumber", {
-                  type: "manual",
-                  message: "사업자등록번호는 필수입니다. 중복 확인 후 입력해주세요.",
-                });
-                return;
-              }
-              // 중복확인 로직 연결 예정
-            }}
+            buttonText="인증 확인"
+            onButtonClick={handleBusinessCheck}
             register={methods.register}
             error={methods.formState.errors.businessNumber?.message}
           />
-          <FileUpload error={methods.formState.errors.companyLogo?.message as string} />
+          <FileUpload 
+            name="businessFile" 
+            label="사업자등록증 첨부" 
+            error={methods.formState.errors.businessFile?.message as string} 
+          />
+          <FileUpload 
+            name="companyLogo" 
+            label="기업 로고 (권장)" 
+            error={methods.formState.errors.companyLogo?.message as string} 
+          />
           <TextArea
             label="기업 소개"
             name="companyIntro"
@@ -52,9 +97,36 @@ export default function SignupStepTwoCompany({ onSubmit }: Props) {
             register={methods.register}
             error={methods.formState.errors.companyIntro?.message}
           />
-          <Input label="담당자 성함" name="managerName" placeholder="김오즈" register={methods.register} error={methods.formState.errors.managerName?.message} />
-          <Input label="담당자 전화번호" name="managerPhone" placeholder="010-1234-5678" register={methods.register} error={methods.formState.errors.managerPhone?.message} />
-          <Input label="담당자 이메일" name="managerEmail" placeholder="manager@company.com" register={methods.register} error={methods.formState.errors.managerEmail?.message} />
+          <InputWithButton
+            label="사업장 주소"
+            name="companyAddress"
+            placeholder="도로명 주소 검색"
+            buttonText="주소 찾기"
+            onButtonClick={handleAddressSearch}
+            register={methods.register}
+            error={methods.formState.errors.companyAddress?.message as string}
+          />
+          <Input 
+            label="담당자 성함" 
+            name="managerName" 
+            placeholder="김오즈" 
+            register={methods.register} 
+            error={methods.formState.errors.managerName?.message} 
+          />
+          <Input 
+            label="담당자 전화번호" 
+            name="managerPhone" 
+            placeholder="010-1234-5678" 
+            register={methods.register} 
+            error={methods.formState.errors.managerPhone?.message} 
+          />
+          <Input 
+            label="담당자 이메일" 
+            name="managerEmail" 
+            placeholder="manager@company.com" 
+            register={methods.register} 
+            error={methods.formState.errors.managerEmail?.message} 
+          />
 
           <button
             type="submit"
@@ -67,7 +139,6 @@ export default function SignupStepTwoCompany({ onSubmit }: Props) {
     </FormProvider>
   );
 }
-
 type InputProps = {
   label: string;
   name: keyof CompanyFormValues;
@@ -126,48 +197,68 @@ function InputWithButton({ label, name, placeholder, buttonText, onButtonClick, 
   );
 }
 
-function FileUpload({ error }: { error?: string }) {
+type FileUploadProps = {
+  name: keyof CompanyFormValues;
+  label: string;
+  error?: string;
+};
+
+function FileUpload({ name, label, error }: FileUploadProps) {
   const { register, setError, clearErrors } = useFormContext<CompanyFormValues>();
   const [fileName, setFileName] = useState("");
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file) {
+      setFileName("");
+      setError(name, {
+        type: "manual",
+        message: "파일을 첨부해주세요.",
+      });
+      return;
+    }
 
     setFileName(file.name);
 
-    const validTypes = ['image/png', 'image/jpeg', 'image/svg+xml'];
-    if (!validTypes.includes(file.type)) {
-      setError("companyLogo", {
+    const hasValidExtension = /\.[^/.]+$/.test(file.name);
+    const validTypes = ["image/png", "image/jpeg", "image/svg+xml"];
+
+    if (!hasValidExtension) {
+      setError(name, {
+        type: "manual",
+        message: "파일 이름에 확장자가 포함되어야 합니다.",
+      });
+    } else if (!validTypes.includes(file.type)) {
+      setError(name, {
         type: "manual",
         message: "PNG, JPG, SVG 형식만 가능합니다.",
       });
-    } else if (file.size > 2 * 1024 * 1024) {
-      setError("companyLogo", {
+    } else if (file.size > 1 * 1024 * 1024) {
+      setError(name, {
         type: "manual",
-        message: "파일 크기는 2MB 이하여야 합니다.",
+        message: "파일 크기는 1MB 이하여야 합니다.",
       });
     } else {
-      clearErrors("companyLogo");
+      clearErrors(name);
     }
   };
 
   return (
     <div>
-      <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg">기업 로고 (권장)</label>
+      <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg">{label}</label>
       <div className="flex items-center gap-3 w-full">
         <label
-          htmlFor="companyLogo"
+          htmlFor={name}
           className="h-[60px] px-4 border border-primary text-primary rounded hover:bg-primary hover:text-white transition flex items-center justify-center cursor-pointer"
         >
           파일 선택
         </label>
         <input
-          id="companyLogo"
+          id={name}
           type="file"
           accept="image/png,image/jpeg,image/svg+xml"
           className="hidden"
-          {...register('companyLogo')}
+          {...register(name)}
           onChange={handleFileChange}
         />
         <input
@@ -182,6 +273,7 @@ function FileUpload({ error }: { error?: string }) {
     </div>
   );
 }
+
 
 function TextArea({ label, name, placeholder, register, error }: {
   label: string;
