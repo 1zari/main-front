@@ -7,7 +7,7 @@ import { Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema, LoginFormValues } from "@/features/auth-user/model/validation";
+import { loginSchema, LoginFormValues } from "@/features/auth-user/model/validation/login";
 
 export default function CompanyLoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -88,9 +88,19 @@ export default function CompanyLoginForm() {
         </div>
 
         <div className="text-xs sm:text-sm text-gray-400 mb-4 text-right">
-          <span className="cursor-pointer hover:text-gray-600">이메일 찾기</span>
+          <button
+            onClick={() => router.push("/auth/company/find-email")}
+            className="cursor-pointer hover:text-gray-600"
+          >
+            이메일 찾기
+          </button>
           <span className="mx-2">|</span>
-          <span className="cursor-pointer hover:text-gray-600">비밀번호 찾기</span>
+          <button
+            onClick={() => router.push("/auth/company/find-password")}
+            className="cursor-pointer hover:text-gray-600"
+          >
+            비밀번호 찾기
+          </button>
         </div>
 
         <button

@@ -1,6 +1,5 @@
 "use client";
 import { FaCaretDown } from "react-icons/fa";
-import { IoMdRefresh } from "react-icons/io";
 import FilterJobs from "../../../components/filter/FilterJobs";
 import FilterLocation from "../../../components/filter/FilterLocation";
 import FilterOtherConditions from "../../../components/filter/FilterOtherConditions";
@@ -69,18 +68,7 @@ export default function JobFilter() {
           {showLocation && <FilterLocation />}
           {showJobs && <FilterJobs />}
           {showOtherConditions && <FilterOtherConditions />}
-          <div className="flex  justify-end mt-4">
-            <button
-              type="button"
-              onClick={() => window.location.reload()}
-              className="group flex justify-center items-center gap-2 bg-gray-300 px-4 py-2 rounded-md text-sm text-gray-800 cursor-pointer"
-            >
-              <span className="group-hover:rotate-180 transform transition-transform duration-300">
-                <IoMdRefresh />
-              </span>
-              초기화
-            </button>
-          </div>
+
         </div>
       </section>
     </>
