@@ -18,7 +18,7 @@ const PayType = ({ value, onChange }: PayTypeProps) => {
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="ml-8 m-1 w-18 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0F8C3B] focus:border-transparent"
+        className="ml-8 m-1 w-18 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0F8C3B] focus:border-transparent "
       >
         <option value=""></option>
         {Pay_Type.map((type) => (
