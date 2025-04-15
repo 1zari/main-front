@@ -1,0 +1,69 @@
+"use client";
+
+import React from "react";
+import { useRouter } from "next/navigation";
+import { AUTH_ROUTES, LOGIN_CONFIG } from "@/features/auth-common/model/constants/auth";
+import { useLoginTab } from "@/features/auth-common/model/hooks/useLoginTab";
+import LoginBaseForm from "./LoginBaseForm";
+
+interface TabButtonProps {
+  isActive: boolean;
+  onClick: () => void;
+  position: "left" | "right";
+  children: React.ReactNode;
+}
+
+function TabButton({ isActive, onClick, position, children }: TabButtonProps) {
+  return (
+    <button
+      className={`
+        flex-1 py-4 text-lg font-semibold transition-colors
+        ${position === "left" ? "rounded-tl-lg" : "rounded-tr-lg"}
+        ${isActive ? "bg-primary text-white" : "text-gray-500 hover:bg-gray-50"}
+      `}
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
+}
+
+export default function LoginTabs() {
+  const router = useRouter();
+  const { activeTab, handleTabChange } = useLoginTab();
+
+  const config = LOGIN_CONFIG[activeTab];
+  const routes = AUTH_ROUTES[activeTab];
+
+  return (
+    <div className="w-full min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center bg-gray-50 py-6 sm:py-10 px-4">
+      <div className="w-full max-w-[min(600px,90vw)] sm:max-w-[500px] md:max-w-[550px] lg:max-w-[600px] animate-fadeIn">
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+          <div className="flex">
+            <TabButton
+              isActive={activeTab === "user"}
+              onClick={() => handleTabChange("user")}
+              position="left"
+            >
+              개인회원 로그인
+            </TabButton>
+            <TabButton
+              isActive={activeTab === "company"}
+              onClick={() => handleTabChange("company")}
+              position="right"
+            >
+              기업회원 로그인
+            </TabButton>
+          </div>
+          <LoginBaseForm
+            key={activeTab}
+            {...config}
+            onEmailFind={() => router.push(routes.emailFind)}
+            onPasswordFind={() => router.push(routes.passwordFind)}
+            onSignup={() => router.push(routes.signup)}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}

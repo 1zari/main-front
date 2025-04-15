@@ -5,9 +5,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import {
-  findPasswordSchema,
-  FindPasswordFormValues,
-} from "@/features/auth-company/model/validation/findCompanyPassword";
+  findCompanyPasswordSchema,
+  FindCompanyPasswordFormValues,
+} from "@/features/auth-company/model/validation/company-auth.schema";
 
 export default function CompanyFindPasswordForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -20,8 +20,8 @@ export default function CompanyFindPasswordForm() {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<FindPasswordFormValues>({
-    resolver: zodResolver(findPasswordSchema),
+  } = useForm<FindCompanyPasswordFormValues>({
+    resolver: zodResolver(findCompanyPasswordSchema),
     mode: "onBlur",
   });
 

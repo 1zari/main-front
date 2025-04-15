@@ -7,7 +7,7 @@ import { Copy, Check } from "lucide-react";
 import {
   findCompanyEmailSchema,
   FindCompanyEmailFormValues,
-} from "@/features/auth-company/model/validation/findCompanyEmail";
+} from "@/features/auth-company/model/validation/company-auth.schema";
 
 export default function CompanyFindEmailForm() {
   const {

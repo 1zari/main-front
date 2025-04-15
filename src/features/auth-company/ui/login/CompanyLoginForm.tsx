@@ -8,7 +8,6 @@ export default function CompanyLoginForm() {
 
   return (
     <LoginBaseForm
-      title="기업회원 로그인"
       role="employer"
       onEmailFind={() => router.push("/auth/company/find-email")}
       onPasswordFind={() => router.push("/auth/company/find-password")}

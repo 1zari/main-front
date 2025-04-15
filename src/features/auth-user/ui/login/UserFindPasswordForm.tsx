@@ -5,9 +5,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import {
-  findPasswordSchema,
-  FindPasswordFormValues,
-} from "@/features/auth-user/model/validation/findUserPassword";
+  findUserPasswordSchema,
+  FindUserPasswordFormValues,
+} from "@/features/auth-user/model/validation/user-auth.schema";
 
 export default function UserFindPasswordForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -20,8 +20,8 @@ export default function UserFindPasswordForm() {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<FindPasswordFormValues>({
-    resolver: zodResolver(findPasswordSchema),
+  } = useForm<FindUserPasswordFormValues>({
+    resolver: zodResolver(findUserPasswordSchema),
     mode: "onBlur",
   });
 
@@ -60,7 +60,6 @@ export default function UserFindPasswordForm() {
 
         {step === "input" && (
           <form onSubmit={handleSubmit(handlePasswordChange)} className="space-y-6">
-            {/* 이메일 입력 */}
             <div className="mb-6 text-left">
               <label className="block mb-2 text-sm font-medium">이메일</label>
               <div className="flex gap-2">
@@ -76,7 +75,6 @@ export default function UserFindPasswordForm() {
               {errors.email && <p className="text-red-500 text-sm mt-2">{errors.email.message}</p>}
             </div>
 
-            {/* 전화번호 */}
             <div className="mb-6 text-left">
               <label className="block mb-2 text-sm font-medium">전화번호</label>
               <div className="flex gap-2">
@@ -99,7 +97,6 @@ export default function UserFindPasswordForm() {
               {errors.phone && <p className="text-red-500 text-sm mt-2">{errors.phone.message}</p>}
             </div>
 
-            {/* 인증번호 */}
             <div className="mb-6 text-left">
               <label className="block mb-2 text-sm font-medium">인증번호</label>
               <div className="flex gap-2">
@@ -122,7 +119,6 @@ export default function UserFindPasswordForm() {
               {errors.code && <p className="text-red-500 text-sm mt-2">{errors.code.message}</p>}
             </div>
 
-            {/* 새 비밀번호 */}
             {isVerified && (
               <div className="mb-6 text-left">
                 <label className="block mb-2 text-sm font-medium">새 비밀번호 입력</label>
@@ -150,7 +146,6 @@ export default function UserFindPasswordForm() {
               </div>
             )}
 
-            {/* 변경 완료 버튼 */}
             {isVerified && (
               <button
                 type="submit"

@@ -8,7 +8,6 @@ export default function UserLoginForm() {
 
   return (
     <LoginBaseForm
-      title="개인회원 로그인"
       role="user"
       onEmailFind={() => router.push("/auth/user/find-email")}
       onPasswordFind={() => router.push("/auth/user/find-password")}
