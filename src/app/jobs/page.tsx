@@ -1,4 +1,4 @@
-import RecommendedJobsPage from "./recommended-jobs/page";
+import RecommendedJobsPage from "./(jobs-category)/recommended-jobs/page";
 
 export default function JobsPage() {
   return (

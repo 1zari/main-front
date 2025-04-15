@@ -3,18 +3,7 @@
 import { useSelectedFilterStore } from "@/stores/useJobFilterStore";
 import { useState } from "react";
 
-const JOB_CATEGORIES = {
-  "돌봄 서비스직(간병·육아)": ["돌봄 서비스직(간병·육아) 전체", "간병인", "등하교도우미"],
-  "음식 서비스직": ["음식 서비스직 전체", "주방장 및 조리사", "식당 서비스원"],
-  "운전·운송직": [],
-  "예술·디자인·방송직": [],
-  "경호·경비직": [],
-  "영업·판매직": [],
-  "청소 및 기타 개인서비스직": [],
-  사무직: [],
-  기타: [],
-  "IT·인터넷·게임": [],
-};
+import { JOB_CATEGORIES } from "@/constants/jobCategories";
 
 export default function FilterJobs() {
   const { checkedJobs, setCheckedJobs, addSelectedFilter, removeSelectedFilter } =
@@ -84,11 +73,12 @@ export default function FilterJobs() {
       {/* Right: Subcategories */}
       <div className="grid grid-col gap-x-2 gap-y-3 p-4 w-full h-full overflow-y-auto">
         {(JOB_CATEGORIES[selectedCategory] || []).map((item) => (
-          <label key={item} className="flex items-center gap-2">
+          <label key={item} className="flex items-start gap-2">
             <input
               type="checkbox"
               checked={checkedJobs.includes(item)}
               onChange={() => toggleCheck(item)}
+              className="mt-1.5"
             />
             {item}
           </label>
