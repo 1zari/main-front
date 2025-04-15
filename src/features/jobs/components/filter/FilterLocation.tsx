@@ -23,6 +23,13 @@ export default function FilterLocation() {
     if (district.endsWith("전체")) {
       if (isSelected) {
         updated = checkedDistricts.filter((d) => d !== district);
+        const filters = selectedFilters.filter((f) => !f.startsWith(`${selectedRegion}:`));
+        setCheckedDistricts(updated);
+        setLocationChecked(updated);
+        useSelectedFilterStore.setState({
+          selectedFilters: filters,
+        });
+        return;
       } else {
         if (!checkedDistricts.includes(district)) {
           updated = [district];

@@ -117,6 +117,17 @@ export const useSelectedFilterStore = create<FilterSelectedStore>()(
           }
         });
 
+        if (district.endsWith("전체") && checkedDistricts.includes(district)) {
+          updated = checkedDistricts.filter((d) => d !== district);
+          const filters = get().selectedFilters.filter((f) => !f.startsWith(`${selectedRegion}:`));
+          setCheckedDistricts(updated);
+          get().setLocationChecked(updated);
+          useSelectedFilterStore.setState({
+            selectedFilters: filters,
+          });
+          return;
+        }
+
         const label = `${selectedRegion}: ${district}`;
         const filters = get().selectedFilters.filter((f) => !f.startsWith(`${selectedRegion}:`));
         setCheckedDistricts(updated);
