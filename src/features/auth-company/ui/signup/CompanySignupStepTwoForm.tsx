@@ -1,8 +1,12 @@
 "use client";
-import { useForm, useFormContext, FormProvider } from "react-hook-form";
+import { useForm, useFormContext, FormProvider, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { companySchema, CompanyFormValues } from "@/features/auth-company/model/validation/companySignup";
 import { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { CalendarIcon } from "lucide-react";
+import { ko } from "date-fns/locale";
 
 export type CompanyStepTwoValues = CompanyFormValues;
 
@@ -38,10 +42,9 @@ export default function SignupStepTwoCompany({ onSubmit }: Props) {
     }
   };
 
-  function handleAddressSearch(){
-    // 주소 API 팝업 연결 예정
+  function handleAddressSearch() {
     console.log("주소 검색 모달 열기");
-  };
+  }
 
   return (
     <FormProvider {...methods}>
@@ -49,27 +52,56 @@ export default function SignupStepTwoCompany({ onSubmit }: Props) {
         <h2 className="text-2xl font-semibold">기업 회원 정보</h2>
 
         <div className="w-full max-w-[700px] space-y-6">
-          <Input 
-            label="기업명" 
-            name="companyName" 
-            placeholder="시니어내일" 
-            register={methods.register} 
-            error={methods.formState.errors.companyName?.message} 
+          <Input
+            label="기업명"
+            name="companyName"
+            placeholder="시니어내일"
+            register={methods.register}
+            error={methods.formState.errors.companyName?.message}
           />
-          <Input 
-            label="개업 년월일" 
-            name="startDate" 
-            type="date" 
-            placeholder="YYYY-MM-DD" 
-            register={methods.register} 
-            error={methods.formState.errors.startDate?.message} 
-          />
-          <Input 
-            label="대표자 성함" 
-            name="representativeName" 
-            placeholder="박오즈" 
-            register={methods.register} 
-            error={methods.formState.errors.representativeName?.message} 
+          <div className="w-full">
+            <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg">개업년월일</label>
+            <Controller
+              control={methods.control}
+              name="startDate"
+              render={({ field }) => (
+                <div className="relative w-full">
+                  <DatePicker
+                    selected={field.value ? new Date(field.value) : null}
+                    onChange={(date: Date | null) => {
+                      const formatted = date?.toISOString().split("T")[0] || "";
+                      field.onChange(formatted);
+                    }}
+                    dateFormat="yyyy-MM-dd"
+                    placeholderText="입력란을 클릭하여 달력에서 개업년월일을 선택해 주세요."
+                    locale={ko}
+                    maxDate={new Date()}
+                    showMonthDropdown
+                    showYearDropdown
+                    scrollableYearDropdown
+                    yearDropdownItemNumber={100}
+                    dropdownMode="select"
+                    className="w-full h-[60px] pr-12 pl-4 rounded bg-white placeholder:text-gray-400 border border-gray-300 focus:outline-none focus:border-2 focus:border-primary block"
+                    wrapperClassName="w-full"
+                  />
+                  <CalendarIcon
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+                    size={20}
+                  />
+                </div>
+              )}
+            />
+            {methods.formState.errors.startDate && (
+              <p className="text-red-500 mt-1 ml-2">{methods.formState.errors.startDate.message}</p>
+            )}
+          </div>
+
+          <Input
+            label="대표자 성함"
+            name="representativeName"
+            placeholder="박오즈"
+            register={methods.register}
+            error={methods.formState.errors.representativeName?.message}
           />
           <InputWithButton
             label="사업자등록번호"
@@ -80,15 +112,15 @@ export default function SignupStepTwoCompany({ onSubmit }: Props) {
             register={methods.register}
             error={methods.formState.errors.businessNumber?.message}
           />
-          <FileUpload 
-            name="businessFile" 
-            label="사업자등록증 첨부" 
-            error={methods.formState.errors.businessFile?.message as string} 
+          <FileUpload
+            name="businessFile"
+            label="사업자등록증 첨부"
+            error={methods.formState.errors.businessFile?.message as string}
           />
-          <FileUpload 
-            name="companyLogo" 
-            label="기업 로고 (권장)" 
-            error={methods.formState.errors.companyLogo?.message as string} 
+          <FileUpload
+            name="companyLogo"
+            label="기업 로고 (권장)"
+            error={methods.formState.errors.companyLogo?.message as string}
           />
           <TextArea
             label="기업 소개"
@@ -106,26 +138,26 @@ export default function SignupStepTwoCompany({ onSubmit }: Props) {
             register={methods.register}
             error={methods.formState.errors.companyAddress?.message as string}
           />
-          <Input 
-            label="담당자 성함" 
-            name="managerName" 
-            placeholder="김오즈" 
-            register={methods.register} 
-            error={methods.formState.errors.managerName?.message} 
+          <Input
+            label="담당자 성함"
+            name="managerName"
+            placeholder="김오즈"
+            register={methods.register}
+            error={methods.formState.errors.managerName?.message}
           />
-          <Input 
-            label="담당자 전화번호" 
-            name="managerPhone" 
-            placeholder="010-1234-5678" 
-            register={methods.register} 
-            error={methods.formState.errors.managerPhone?.message} 
+          <Input
+            label="담당자 전화번호"
+            name="managerPhone"
+            placeholder="010-1234-5678"
+            register={methods.register}
+            error={methods.formState.errors.managerPhone?.message}
           />
-          <Input 
-            label="담당자 이메일" 
-            name="managerEmail" 
-            placeholder="manager@company.com" 
-            register={methods.register} 
-            error={methods.formState.errors.managerEmail?.message} 
+          <Input
+            label="담당자 이메일"
+            name="managerEmail"
+            placeholder="manager@company.com"
+            register={methods.register}
+            error={methods.formState.errors.managerEmail?.message}
           />
 
           <button
@@ -139,6 +171,7 @@ export default function SignupStepTwoCompany({ onSubmit }: Props) {
     </FormProvider>
   );
 }
+
 type InputProps = {
   label: string;
   name: keyof CompanyFormValues;
@@ -173,21 +206,31 @@ type InputWithButtonProps = {
   error?: string;
 };
 
-function InputWithButton({ label, name, placeholder, buttonText, onButtonClick, register, error }: InputWithButtonProps) {
+function InputWithButton({
+  label,
+  name,
+  placeholder,
+  buttonText,
+  onButtonClick,
+  register,
+  error,
+}: InputWithButtonProps) {
   return (
     <div>
-      <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg">{label}</label>
-      <div className="flex gap-3">
+      <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg whitespace-normal break-keep">
+        {label}
+      </label>
+      <div className="flex flex-col sm:flex-row sm:items-start gap-3 w-full">
         <input
           type="text"
           placeholder={placeholder}
-          className="flex-1 h-[60px] border border-gray-300 rounded px-4 bg-white placeholder:text-gray-400 focus:outline-none focus:border-2 focus:border-primary"
+          className="w-full h-[60px] border border-gray-300 rounded px-4 bg-white placeholder:text-gray-400 focus:outline-none focus:border-2 focus:border-primary"
           {...register(name)}
         />
         <button
           type="button"
           onClick={onButtonClick}
-          className="h-[60px] px-4 border border-primary text-primary rounded hover:bg-primary hover:text-white transition whitespace-nowrap cursor-pointer"
+          className="w-full sm:w-auto h-[60px] px-4 border border-primary text-primary rounded hover:bg-primary hover:text-white transition whitespace-nowrap cursor-pointer"
         >
           {buttonText}
         </button>
@@ -245,11 +288,13 @@ function FileUpload({ name, label, error }: FileUploadProps) {
 
   return (
     <div>
-      <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg">{label}</label>
-      <div className="flex items-center gap-3 w-full">
+      <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg whitespace-normal break-keep">
+        {label}
+      </label>
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full">
         <label
           htmlFor={name}
-          className="h-[60px] px-4 border border-primary text-primary rounded hover:bg-primary hover:text-white transition flex items-center justify-center cursor-pointer"
+          className="w-full sm:w-auto h-[60px] px-4 border border-primary text-primary rounded hover:bg-primary hover:text-white transition flex items-center justify-center cursor-pointer text-center whitespace-nowrap"
         >
           파일 선택
         </label>
@@ -266,13 +311,14 @@ function FileUpload({ name, label, error }: FileUploadProps) {
           readOnly
           value={fileName}
           placeholder="파일을 첨부해주세요"
-          className="flex-1 h-[60px] border border-gray-300 rounded px-4 bg-gray-50 text-gray-400 placeholder:text-gray-400 focus:outline-none focus:border-2 focus:border-primary"
+          className="w-full h-[60px] border border-gray-300 rounded px-4 bg-gray-50 text-gray-400 placeholder:text-gray-400 focus:outline-none focus:border-2 focus:border-primary"
         />
       </div>
       {error && <p className="text-red-500 mt-1 ml-2">{error}</p>}
     </div>
   );
 }
+
 
 
 function TextArea({ label, name, placeholder, register, error }: {

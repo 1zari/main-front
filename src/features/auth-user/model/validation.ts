@@ -33,9 +33,23 @@ export const userSchema = z.object({
     .regex(/^\d+$/, "숫자만 입력해주세요."),
   birth: z
     .string()
-    .regex(/^\d{4}-\d{2}-\d{2}$/, "YYYY-MM-DD 형식으로 입력해주세요."),
+    .nonempty("생년월일은 필수입니다.")
+    .refine((val) => /^\d{4}-\d{2}-\d{2}$/.test(val), {
+      message: "입력란을 클릭하여 달력에서 생년월일을 선택해 주세요.",
+    }),
   gender: z
     .enum(['male', 'female'], { required_error: "성별을 선택해주세요." }),
+  preferredLocation: z
+    .string()
+    .min(1, "희망 근무지를 입력해주세요.")
+    .refine(
+      (val) => /^[가-힣a-zA-Z\s,]+$/.test(val),
+      { message: "쉼표(,) 외 특수문자는 입력할 수 없습니다." }
+    )
+    .refine(
+      (val) => val.split(",").every((region) => region.trim().length > 0),
+      { message: "쉼표(,)로 구분하여 입력해주세요. 예: 서울, 경기, 인천" }
+    ),
   interests: z
     .array(z.string())
     .optional(),

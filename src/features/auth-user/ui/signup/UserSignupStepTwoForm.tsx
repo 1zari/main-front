@@ -2,6 +2,10 @@
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userSchema, UserFormValues } from "@/features/auth-user/model/validation";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { ko } from "date-fns/locale";
+import { CalendarIcon } from "lucide-react";
 
 export type UserStepTwoValues = UserFormValues;
 
@@ -20,11 +24,17 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
   } = useForm<UserFormValues>({
     resolver: zodResolver(userSchema),
     defaultValues: {
+      name: "",
+      phone: "",
+      verifyCode: "",
+      birth: "", 
+      gender: undefined,
+      preferredLocation: "",
       interests: [],
       purposes: [],
       channels: [],
     },
-  });
+  });  
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center space-y-8">
@@ -38,14 +48,38 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
           error={errors.name?.message} 
         />
 
-        <Input
-          label="생년월일"
-          name="birth"
-          type="date"
-          placeholder="YYYY-MM-DD"
-          register={register}
-          error={errors.birth?.message}
-        />
+        <div className="w-full">
+          <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg">생년월일</label>
+          <Controller
+            control={control}
+            name="birth"
+            render={({ field }) => (
+              <div className="relative w-full">
+                <DatePicker
+                  selected={field.value ? new Date(field.value) : null}
+                  onChange={(date: Date | null) => {
+                    const formatted = date?.toISOString().split("T")[0] || "";
+                    field.onChange(formatted);
+                  }}
+                  dateFormat="yyyy-MM-dd"
+                  placeholderText="입력란을 클릭하여 달력에서 생년월일을 선택해 주세요."
+                  locale={ko}
+                  maxDate={new Date()}
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                  className="w-full h-[60px] pr-12 pl-4 rounded bg-white placeholder:text-gray-400 border border-gray-300 focus:outline-none focus:border-2 focus:border-primary block"
+                  wrapperClassName="w-full"
+                />
+                <CalendarIcon
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+                  size={20}
+                />
+              </div>
+            )}
+          />
+          {errors.birth && <p className="text-red-500 mt-1 ml-2">{errors.birth.message}</p>}
+        </div>
 
         <InputWithButton
           label="전화번호"
@@ -110,6 +144,14 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
             )}
           />
         </div>
+
+        <Input
+          label="희망 근무지 (복수 가능)"
+          name="preferredLocation"
+          placeholder="쉼표(,)로 구분하여 입력해주세요. 예: 서울, 경기, 인천"
+          register={register}
+          error={errors.preferredLocation?.message}
+        />
 
         <ControlledCheckboxGroup
           label="관심 분야 (중복 선택 가능)"
