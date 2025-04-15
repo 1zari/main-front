@@ -104,7 +104,7 @@ export default function CompanyLoginForm() {
 
         <div className="text-center">
           <button
-            onClick={() => router.push("/company")}
+            onClick={() => router.push("/auth/company/signup")}
             className="text-xs sm:text-sm text-gray-500 hover:underline cursor-pointer"
           >
             회원가입

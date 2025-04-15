@@ -15,7 +15,7 @@ function InnerAuthLayout({ children }: { children: React.ReactNode }) {
           ← 뒤로가기
         </button>
       </nav>
-      <div className="flex-1 flex items-center justify-center">{children}</div>
+      <div className="flex-1 flex items-center justify-center p-[50px] md:p-[100px]">{children}</div>
     </main>
   );
 }
