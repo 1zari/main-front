@@ -1,4 +1,4 @@
-import JobsNav from "../../features/jobs/components/JobsNav";
+import JobsNavWrapper from "@/features/jobs/components/JobsNavWrapper";
 
 export const metadata = {
   title: "시니어내일",
@@ -8,7 +8,7 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <div>
-      <JobsNav />
+      <JobsNavWrapper />
       <main>{children}</main>
     </div>
   );
