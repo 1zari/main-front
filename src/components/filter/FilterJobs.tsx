@@ -1,10 +1,11 @@
 "use client";
 
+import { useSelectedFilterStore } from "@/stores/useJobFilterStore";
 import { useState } from "react";
 
 const JOB_CATEGORIES = {
-  "돌봄 서비스직(간병·육아)": ["전체", "간병인", "등하교도우미"],
-  "음식 서비스직": ["전체", "주방장 및 조리사", "식당 서비스원"],
+  "돌봄 서비스직(간병·육아)": ["돌봄 서비스직(간병·육아) 전체", "간병인", "등하교도우미"],
+  "음식 서비스직": ["음식 서비스직 전체", "주방장 및 조리사", "식당 서비스원"],
   "운전·운송직": [],
   "예술·디자인·방송직": [],
   "경호·경비직": [],
@@ -16,22 +17,51 @@ const JOB_CATEGORIES = {
 };
 
 export default function FilterJobs() {
+  const { checkedJobs, setCheckedJobs, addSelectedFilter, removeSelectedFilter } =
+    useSelectedFilterStore();
   const [selectedCategory, setSelectedCategory] = useState("돌봄 서비스직(간병·육아)");
-  const [checkedItems, setCheckedItems] = useState<string[]>([]);
 
   const toggleCheck = (item: string) => {
-    setCheckedItems((prev) => {
-      const isSelected = prev.includes(item);
+    const isSelected = checkedJobs.includes(item);
 
-      if (item === "전체") {
-        return isSelected ? [] : ["전체"];
+    if (item.includes("전체")) {
+      const subItems = JOB_CATEGORIES[selectedCategory] || [];
+
+      if (isSelected) {
+        setCheckedJobs([]);
+        removeSelectedFilter(item);
+      } else {
+        setCheckedJobs([item]);
+
+        // Remove all subItems from chips
+        subItems.forEach((sub) => {
+          removeSelectedFilter(sub);
+        });
+
+        // Add the '전체' item to chips
+        addSelectedFilter(item);
       }
 
-      const updated = isSelected ? prev.filter((v) => v !== item) : [...prev, item];
+      return;
+    }
 
-      // If selecting a specific item, remove '전체'
-      return updated.filter((v) => v !== "전체");
-    });
+    const updated = isSelected
+      ? checkedJobs.filter((v) => v !== item)
+      : [...checkedJobs.filter((v) => !v.includes("전체")), item];
+
+    setCheckedJobs(updated);
+    useSelectedFilterStore.setState({ checkedJobs: updated });
+
+    if (isSelected) {
+      removeSelectedFilter(item);
+    } else {
+      addSelectedFilter(item);
+      checkedJobs.forEach((job) => {
+        if (job.includes("전체")) {
+          removeSelectedFilter(job);
+        }
+      });
+    }
   };
 
   return (
@@ -57,7 +87,7 @@ export default function FilterJobs() {
           <label key={item} className="flex items-center gap-2">
             <input
               type="checkbox"
-              checked={checkedItems.includes(item)}
+              checked={checkedJobs.includes(item)}
               onChange={() => toggleCheck(item)}
             />
             {item}
