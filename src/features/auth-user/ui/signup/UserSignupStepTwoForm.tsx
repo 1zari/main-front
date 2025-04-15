@@ -29,9 +29,14 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center space-y-8">
       <h2 className="text-2xl font-semibold">회원 정보</h2>
-
       <div className="w-full max-w-[700px] space-y-6">
-        <Input label="이름" name="name" placeholder="김오즈" register={register} error={errors.name?.message} />
+        <Input 
+          label="이름" 
+          name="name" 
+          placeholder="김오즈" 
+          register={register} 
+          error={errors.name?.message} 
+        />
 
         <Input
           label="생년월일"
@@ -231,7 +236,7 @@ const ControlledCheckboxGroup = ({ label, name, options, control, error }: {
                     className={`flex items-center justify-between gap-2 px-4 py-[14px] min-w-[160px] h-auto rounded cursor-pointer font-medium border transition break-words text-center
                       ${isChecked ? 'bg-primary text-white border-primary' : 'bg-white text-gray-700 border-gray-300'}`}
                   >
-                    <span className="block leading-tight">{option}</span>
+                    <span className="leading-tight flex items-center justify-center text-center w-full h-full">{option}</span>
                     <input
                       type="checkbox"
                       value={option}
