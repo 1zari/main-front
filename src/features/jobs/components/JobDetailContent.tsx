@@ -48,7 +48,12 @@ export default function JobDetailContent() {
           <section className="bg-white  space-y-8">
             {/* 회사정보 */}
             <div className="flex flex-col gap-2">
-              <p>넥스트러너스</p>
+              <img
+                src="https://blog.kakaocdn.net/dn/w1UK3/btqwTx0mNVX/ki6E4Mva5YavwrOFJQkCP1/img.jpg"
+                alt="작업 현장 이미지 1"
+                className="rounded w-12 h-12 object-contain"
+              />
+              <p>맥도날드</p>
               <h2 className="text-xl font-semibold mb-2">
                 안성/샌드위치/주간350/야간400/주6일/쉬운포장/중장년층
               </h2>
