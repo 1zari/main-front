@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense } from "react";
-import CompanyLoginForm from "@/features/auth-company/ui/CompanyLoginForm";
+import CompanyLoginForm from "@/features/auth-company/ui/login/CompanyLoginForm";
 
 export default function CompanyLoginPage() {
   return (
