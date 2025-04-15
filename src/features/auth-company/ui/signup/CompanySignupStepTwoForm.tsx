@@ -18,7 +18,21 @@ export default function SignupStepTwoCompany({ onSubmit }: Props) {
   const methods = useForm<CompanyFormValues>({
     resolver: zodResolver(companySchema),
     mode: "onBlur",
+    defaultValues: {
+      companyName: "",
+      startDate: "",
+      representativeName: "",
+      businessNumber: "",
+      companyIntro: "",
+      companyAddress: "",
+      managerName: "",
+      managerPhone: "",
+      managerEmail: "",
+      businessFile: undefined,
+      companyLogo: undefined,
+    },
   });
+  
 
   const repName = methods.watch("representativeName");
   const businessNumber = methods.watch("businessNumber");

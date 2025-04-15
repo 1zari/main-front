@@ -7,8 +7,7 @@ export const companySchema = z.object({
     .max(50, "기업명은 50자 이하여야 합니다."),
   startDate: z
     .string()
-    .trim()
-    .min(1, "개업년월일은 필수입니다.") // 공백 대응
+    .nonempty("개업년월일은 필수입니다.")
     .refine((val) => /^\d{4}-\d{2}-\d{2}$/.test(val), {
       message: "입력란을 클릭하여 달력에서 개업년월일을 선택해 주세요.",
     }),
