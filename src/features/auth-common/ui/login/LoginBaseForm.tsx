@@ -18,7 +18,6 @@ interface LoginBaseFormProps {
   onSignup: () => void;
   showSocialLogin?: boolean;
   showEmailDomainSelect?: boolean;
-  key?: string;
 }
 
 export default function LoginBaseForm({
@@ -28,7 +27,6 @@ export default function LoginBaseForm({
   onSignup,
   showSocialLogin = true,
   showEmailDomainSelect = true,
-  key,
 }: LoginBaseFormProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [domainOption, setDomainOption] = useState<EmailDomain>("직접입력");
