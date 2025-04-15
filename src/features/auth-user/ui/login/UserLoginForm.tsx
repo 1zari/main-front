@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import LoginBaseForm from "@/features/auth-common/ui/login/LoginBaseForm";
+import { AUTH_ROUTES } from "@/features/auth-common/model/constants/auth";
 
 export default function UserLoginForm() {
   const router = useRouter();
@@ -9,9 +10,9 @@ export default function UserLoginForm() {
   return (
     <LoginBaseForm
       role="user"
-      onEmailFind={() => router.push("/auth/user/find-email")}
-      onPasswordFind={() => router.push("/auth/user/find-password")}
-      onSignup={() => router.push("/auth/user/signup")}
+      onEmailFind={() => router.push(AUTH_ROUTES.user.emailFind)}
+      onPasswordFind={() => router.push(AUTH_ROUTES.user.passwordFind)}
+      onSignup={() => router.push(AUTH_ROUTES.user.signup)}
       showSocialLogin={true}
       showEmailDomainSelect={true}
     />

@@ -33,7 +33,7 @@ export default function CompanyFindEmailForm() {
   const handleFindEmail = (data: FindCompanyEmailFormValues) => {
     if (
       data.companyName === "시니어내일" &&
-      data.businessNumber === "1234567890" &&
+      data.businessNumber === "123-45-67890" &&
       data.phone === "010-1234-5678" &&
       data.code === "658745"
     ) {
@@ -79,7 +79,7 @@ export default function CompanyFindEmailForm() {
               <label className="block mb-2 text-sm font-medium">사업자등록번호</label>
               <input
                 {...register("businessNumber")}
-                placeholder="숫자만 입력"
+                placeholder="123-45-67890"
                 className="w-full border px-3 py-2 rounded"
               />
               {errors.businessNumber && (
