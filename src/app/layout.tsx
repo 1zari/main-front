@@ -1,3 +1,4 @@
+import Script from "next/script";
 import Footer from "../components/Footer";
 import Navigation from "../components/Navigation";
 import { FontSizeProvider } from "../hooks/useFontSize";
@@ -13,6 +14,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="ko">
       <head>
         <link rel="icon" href="/images/favicon.ico" sizes="any" />
+        {/* ✅ Kakao SDK 스크립트 삽입 */}
+        <Script
+          src="https://developers.kakao.com/sdk/js/kakao.min.js"
+          strategy="beforeInteractive"
+        />
       </head>
       <body>
         <FontSizeProvider>
