@@ -68,16 +68,20 @@ export default function LoginBaseForm({
   };
 
   return (
-    <div className="p-6 sm:p-8">
+    <form className="p-6 sm:p-8" onSubmit={handleSubmit(handleLogin)}>
       <Image src="/images/logo.png" alt="로고" width={200} height={200} className="mx-auto mb-6" />
 
       <div className="mb-6 text-left">
-        <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg">이메일</label>
+        <label htmlFor="email" className="block mb-3 ml-2 font-semibold text-base sm:text-lg">
+          이메일
+        </label>
         {role === "user" && showEmailDomainSelect ? (
           <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-end">
             <div className="w-full sm:flex-1 border-b border-gray-300 pb-1">
               <input
                 {...register("email")}
+                id="email"
+                name="email"
                 type="text"
                 placeholder="이메일을 입력해주세요."
                 className="w-full border-none outline-none px-2 py-3 bg-transparent leading-tight min-h-[2.75rem]"
@@ -104,6 +108,8 @@ export default function LoginBaseForm({
           <div className="relative border-b border-gray-300 pb-1">
             <input
               {...register("email")}
+              id="email"
+              name="email"
               type="email"
               placeholder="이메일을 입력해주세요."
               className="w-full border-none outline-none px-2 py-3 bg-transparent leading-tight min-h-[2.75rem]"
@@ -116,10 +122,14 @@ export default function LoginBaseForm({
       </div>
 
       <div className="mb-6 text-left">
-        <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg">비밀번호</label>
+        <label htmlFor="password" className="block mb-3 ml-2 font-semibold text-base sm:text-lg">
+          비밀번호
+        </label>
         <div className="relative border-b border-gray-300 pb-1">
           <input
             {...register("password")}
+            id="password"
+            name="password"
             type={showPassword ? "text" : "password"}
             placeholder="비밀번호를 입력해주세요."
             className="w-full border-none outline-none px-2 py-3 pr-8 bg-transparent leading-tight min-h-[2.75rem]"
@@ -151,7 +161,7 @@ export default function LoginBaseForm({
       </div>
 
       <button
-        onClick={handleSubmit(handleLogin)}
+        type="submit"
         className="w-full bg-primary text-white py-3 rounded hover:bg-green-700 cursor-pointer mb-2"
       >
         로그인
@@ -181,6 +191,6 @@ export default function LoginBaseForm({
           회원가입
         </button>
       </div>
-    </div>
+    </form>
   );
 }
