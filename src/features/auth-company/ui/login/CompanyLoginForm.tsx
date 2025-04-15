@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import LoginBaseForm from "@/features/auth-common/ui/login/LoginBaseForm";
-import { AUTH_ROUTES } from "@/features/auth-common/model/constants/auth";
+import { AUTH_ROUTES } from "@/features/auth-common/model/constants/auth.config";
 
 export default function CompanyLoginForm() {
   const router = useRouter();

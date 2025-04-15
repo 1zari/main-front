@@ -5,7 +5,10 @@ import { Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema, LoginFormValues } from "@/features/auth-common/model/validation/auth.schema";
+import {
+  loginSchema,
+  LoginFormValues,
+} from "@/features/auth-common/model/validation/login-auth.schema";
 import { EMAIL_DOMAINS, type EmailDomain } from "@/features/auth-user/model/constants/email";
 
 interface LoginBaseFormProps {
