@@ -14,14 +14,15 @@ export default function Home() {
       <div className="w-full bg-gray-z">
         <LandingReview />
       </div>
-      <div className="w-full bg-white ">
-        <LandingPartnerCompany />
+      <div className="w-full bg-white">
+        <SavedJobsArea />
       </div>
+
       <div className="w-full bg-gray-z">
         <JobsArea />
       </div>
-      <div className="w-full bg-white">
-        <SavedJobsArea />
+      <div className="w-full bg-white ">
+        <LandingPartnerCompany />
       </div>
     </main>
   );
