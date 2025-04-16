@@ -8,7 +8,10 @@ import { useEffect, useState } from "react";
 export default function JobLocationFilter() {
   const [selectedRegion, setSelectedRegion] = useState("서울");
   const [checkedDistricts, setCheckedDistricts] = useState<string[]>([]);
-  const { selectedFilters, locationChecked, setLocationChecked } = useSelectedFilterStore();
+
+  const selectedFilters = useSelectedFilterStore((state) => state.selectedFilters);
+  const locationChecked = useSelectedFilterStore((state) => state.locationChecked);
+  const setLocationChecked = useSelectedFilterStore((state) => state.setLocationChecked);
 
   useEffect(() => {
     setCheckedDistricts(locationChecked);
