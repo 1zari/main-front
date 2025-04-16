@@ -4,7 +4,7 @@ import { REGIONS } from "@/constants/regions";
 import { useSelectedFilterStore } from "@/stores/useJobFilterStore";
 import { useEffect, useState } from "react";
 
-export default function FilterLocation() {
+export default function JobLocationFilter() {
   const [selectedRegion, setSelectedRegion] = useState("서울");
   const [checkedDistricts, setCheckedDistricts] = useState<string[]>([]);
   const { selectedFilters, locationChecked, setLocationChecked } = useSelectedFilterStore();
