@@ -40,7 +40,7 @@ export default function LoginTabs() {
   const routes = AUTH_ROUTES[activeTab];
 
   return (
-    <div className="w-full min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center bg-gray-50 py-6 sm:py-10 px-4">
+    <div className="w-full min-h-[calc(100vh-4rem)] flex flex-col items-center justify-start bg-gray-50 py-6 sm:py-10 px-4">
       <div className="w-full max-w-[min(600px,90vw)] sm:max-w-[500px] md:max-w-[550px] lg:max-w-[600px] animate-fadeIn">
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
           <div className="flex border-b border-gray-100">
