@@ -26,7 +26,7 @@ export default function JobFilter() {
     <>
       <section className="w-full max-w-7xl mx-auto my-8">
         <div className="flex flex-col mb-4">
-          <Heading sizeOffset={2} className="font-bold py-6 break-keep">
+          <Heading sizeOffset={3} className="font-bold py-6 break-keep">
             <span className="text-primary">전체 지역, 모든 직종</span>에 대한 채용공고에요!
             <br />
             검색 조건을 변경하고 싶으신가요?
