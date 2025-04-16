@@ -3,9 +3,9 @@
 import React from "react";
 
 interface CheckNegotiableProps {
-  id: string; // 체크박스 ID (여러 곳에서 쓸 수 있도록 분리)
-  checked: boolean; // 현재 체크 여부 (form에서 상태 관리용)
-  onChange: (checked: boolean) => void; // 체크 시 실행할 함수
+  id: string; 
+  checked: boolean; 
+  onChange: (checked: boolean) => void; 
 }
 
 const CheckNegotiable = ({ id, checked, onChange }: CheckNegotiableProps) => {

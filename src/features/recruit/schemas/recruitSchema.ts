@@ -12,6 +12,7 @@ export const recruitFormSchema = z.object({
   workStartTime: z.string().optional(),
   workEndTime: z.string().optional(),
   workTimeNegotiable: z.boolean().optional(),
+  workDaysNegotiable: z.boolean().optional(),
   volume: z.string().min(1),
   deadline: z.date(),
   summary: z.string().min(1),

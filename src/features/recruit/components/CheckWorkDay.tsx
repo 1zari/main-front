@@ -1,6 +1,6 @@
 "use client";
 import { useFormContext } from "react-hook-form";
-import CheckNegotiable from "./common/Negotiable";
+import CheckNegotiable from "./common/CheckNegotiable";
 
 const Days = ["월", "화", "수", "목", "금", "토", "일"];
 
