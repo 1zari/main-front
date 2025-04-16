@@ -42,19 +42,21 @@ export default function JobConditionsFilter() {
                 checked={isChecked}
                 onChange={() => {
                   if (isChecked) {
+                    //체크박스 해제시 액션
                     removeSelectedFilter(value);
-                    // 지역 필터 제거 처리
+                    // bug:체크해제시 그룹 모두 체크해제 됨
                     if (value.includes(":")) {
-                      const [region] = value.split(":");
-                      const rest = useSelectedFilterStore
+                      const updatedFilters = useSelectedFilterStore
                         .getState()
-                        .selectedFilters.filter((f) => !f.startsWith(`${region}:`));
+                        .selectedFilters.filter((f) => f !== value);
+
                       const updatedLocationChecked = useSelectedFilterStore
                         .getState()
-                        .locationChecked.filter((d) => !value.includes(d));
+                        .locationChecked.filter((d) => d !== value);
+
                       useSelectedFilterStore.setState({
+                        selectedFilters: updatedFilters,
                         locationChecked: updatedLocationChecked,
-                        selectedFilters: rest,
                       });
                     }
                   } else {
@@ -75,6 +77,8 @@ export default function JobConditionsFilter() {
       {checkboxGroup("고용형태", ["정규직", "계약직"], "고용형태")}
       {checkboxGroup("경력여부", ["경력무관", "경력"], "경력여부")}
       {checkboxGroup("학력", ["학력무관", "고졸", "대졸이상"], "학력")}
+
+      {/* 근무요일 */}
 
       <div className="grid grid-cols-[4rem_1fr] items-start gap-x-3">
         <span className="w-16 font-bold">근무요일</span>
