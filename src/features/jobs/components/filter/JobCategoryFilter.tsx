@@ -55,7 +55,7 @@ export default function JobCategoryFilter() {
 
   return (
     <div className="flex border rounded-md rounded-t-none bg-white overflow-hidden">
-      {/* Left: Job categories */}
+      {/* 대분류*/}
       <div className="w-70 max-h-80 border-r overflow-y-auto p-2 scroll-auto">
         {Object.keys(JOB_CATEGORIES).map((category) => (
           <div
@@ -70,7 +70,7 @@ export default function JobCategoryFilter() {
         ))}
       </div>
 
-      {/* Right: Subcategories */}
+      {/* 중분류 */}
       <div className="grid grid-col max-h-80 gap-x-2 gap-y-3 p-4 w-full h-full overflow-y-auto">
         {(JOB_CATEGORIES[selectedCategory] || []).map((item) => (
           <label key={item} className="flex items-start gap-2">
