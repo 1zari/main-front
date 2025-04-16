@@ -13,13 +13,13 @@ export default function AuthTypeTabs({ type, pageType }: AuthTypeTabsProps) {
   };
 
   return (
-    <div className="flex border-b border-gray-200 mb-8">
+    <div className="relative flex rounded-lg bg-gray-100 p-1 mb-8">
       <button
         type="button"
-        className={`flex-1 pb-4 text-center font-medium text-lg ${
+        className={`relative flex-1 py-3 text-center text-base font-medium transition-all duration-200 ${
           type === "user"
-            ? "text-primary border-b-2 border-primary"
-            : "text-gray-500 hover:text-gray-700"
+            ? "text-primary bg-white rounded-md shadow-sm"
+            : "text-gray-600 hover:text-gray-900"
         }`}
         onClick={() => handleTabChange("user")}
       >
@@ -27,10 +27,10 @@ export default function AuthTypeTabs({ type, pageType }: AuthTypeTabsProps) {
       </button>
       <button
         type="button"
-        className={`flex-1 pb-4 text-center font-medium text-lg ${
+        className={`relative flex-1 py-3 text-center text-base font-medium transition-all duration-200 ${
           type === "company"
-            ? "text-primary border-b-2 border-primary"
-            : "text-gray-500 hover:text-gray-700"
+            ? "text-primary bg-white rounded-md shadow-sm"
+            : "text-gray-600 hover:text-gray-900"
         }`}
         onClick={() => handleTabChange("company")}
       >
