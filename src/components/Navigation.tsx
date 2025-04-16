@@ -65,10 +65,10 @@ export default function Navigation() {
               </li>
               <li>
                 <Link
-                  href="/auth/login"
-                  className={`${pathname === "/auth/login" ? selectedNavBtnClassName : ""}  ${hoverClassName}`}
+                  href="/auth/signup"
+                  className={`${pathname === "/auth/signup" ? selectedNavBtnClassName : ""}  ${hoverClassName}`}
                 >
-                  기업로그인
+                  회원가입
                 </Link>
               </li>
             </ul>

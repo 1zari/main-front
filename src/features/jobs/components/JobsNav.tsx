@@ -12,7 +12,11 @@ export default function JobsNav() {
           <li>
             <Link
               href="/jobs/recommended-jobs"
-              className={pathname === "/jobs/recommended-jobs" || "/jobs" ? "font-bold" : ""}
+              className={
+                pathname === "/jobs/recommended-jobs" || pathname === "/jobs"
+                  ? selectedNavBtnClassName
+                  : ""
+              }
             >
               추천 공고
             </Link>
@@ -20,7 +24,7 @@ export default function JobsNav() {
           <li>
             <Link
               href="/jobs/public-jobs"
-              className={pathname === "/jobs/public-jobs" ? "font-bold" : ""}
+              className={pathname === "/jobs/public-jobs" ? selectedNavBtnClassName : ""}
             >
               공공일자리
             </Link>
@@ -28,7 +32,7 @@ export default function JobsNav() {
           <li>
             <Link
               href="/jobs/by-location"
-              className={pathname === "/jobs/by-location" ? "font-bold" : ""}
+              className={pathname === "/jobs/by-location" ? selectedNavBtnClassName : ""}
             >
               지역별
             </Link>
@@ -36,7 +40,7 @@ export default function JobsNav() {
           <li>
             <Link
               href="/jobs/by-field"
-              className={pathname === "/jobs/by-field" ? "font-bold" : ""}
+              className={pathname === "/jobs/by-field" ? selectedNavBtnClassName : ""}
             >
               직종별
             </Link>
