@@ -1,6 +1,6 @@
 "use client";
 
-import CheckNegotiable from "./Negotiable";
+import CheckNegotiable from "./common/Negotiable";
 
 // 🔧 컴포넌트에서 사용할 props 타입 정의
 interface WorkTimeProps {

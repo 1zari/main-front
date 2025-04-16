@@ -1,5 +1,5 @@
 "use client";
-import CheckNegotiable from "./Negotiable";
+import CheckNegotiable from "./common/Negotiable";
 import { useState } from "react";
 
 interface WorkDayProps {
@@ -40,15 +40,15 @@ const CheckDays = ({ value, onChange }: WorkDayProps) => {
             </button>
           ))}
         </div>
-        </div>
-        <div className="mt-1 ml-14">
-          {/* 드롭다운 정렬 맞추기 위해 label 너비만큼 왼쪽 여백 */}
-          <CheckNegotiable
-            id="workTimeNegotiable"
-            checked={isNegotiable}
-            onChange={setIsNegotiable}
-          />
-        </div>
+      </div>
+      <div className="mt-1 ml-14">
+        {/* 드롭다운 정렬 맞추기 위해 label 너비만큼 왼쪽 여백 */}
+        <CheckNegotiable
+          id="workTimeNegotiable"
+          checked={isNegotiable}
+          onChange={setIsNegotiable}
+        />
+      </div>
     </div>
   );
 };
