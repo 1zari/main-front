@@ -4,7 +4,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { AUTH_ROUTES, LOGIN_CONFIG } from "@/features/auth-common/model/constants/auth.config";
 import { useLoginTab } from "@/features/auth-common/model/hooks/useLoginTab";
-import LoginBaseForm from "./LoginBaseForm";
+import LoginBaseForm from "../baseForms/LoginBaseForm";
 
 interface TabButtonProps {
   isActive: boolean;

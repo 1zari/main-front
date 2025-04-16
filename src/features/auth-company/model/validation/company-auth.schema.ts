@@ -2,8 +2,8 @@ import { z } from "zod";
 
 export const COMPANY_VALIDATION = {
   businessRegistrationNumber: {
-    pattern: /^\d{3}-\d{2}-\d{5}$/,
-    message: "올바른 사업자등록번호 형식이 아닙니다.",
+    pattern: /^\d{10}$/,
+    message: "사업자등록번호는 10자리 숫자입니다.",
   },
   phone: {
     pattern: /^\d{3}-\d{3,4}-\d{4}$/,
@@ -11,7 +11,7 @@ export const COMPANY_VALIDATION = {
   },
   verificationCode: {
     pattern: /^\d{6}$/,
-    message: "인증번호는 6자리 숫자여야 합니다.",
+    message: "인증번호는 6자리 숫자입니다.",
   },
 };
 
