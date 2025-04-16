@@ -1,11 +1,5 @@
 "use client";
 
-declare global {
-  interface Window {
-    Kakao: any;
-  }
-}
-
 import { JOB_DETAIL_TEXT } from "@/features/jobs/model/constants/jobDetailText";
 import { useEffect } from "react";
 
@@ -23,7 +17,7 @@ export default function JobDetailContent() {
         content: {
           title: "채용 공고를 확인해보세요!",
           description: JOB_DETAIL_TEXT.title,
-          imageUrl: JOB_DETAIL_TEXT.company_image_url, // 실제 이미지로 교체
+          imageUrl: JOB_DETAIL_TEXT.company_image_url,
           link: {
             mobileWebUrl: window.location.href,
             webUrl: window.location.href,
