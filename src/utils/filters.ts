@@ -5,5 +5,7 @@ export const formatFilterValue = (groupKey: string, option: string) => {
 
 /** 근무요일 필터 문자열 생성 (예: 근무요일: 월,화,수) */
 export const formatWorkDays = (days: string[]) => {
-    return `근무요일: ${days.join(",")}`;
+    const dayOrder = ["월", "화", "수", "목", "금", "토", "일"];
+    const sorted = dayOrder.filter((d) => days.includes(d));
+    return `근무요일: ${sorted.join(",")}`;
 };
