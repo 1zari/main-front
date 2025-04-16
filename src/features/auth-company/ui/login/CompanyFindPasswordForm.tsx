@@ -5,11 +5,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import {
-  findPasswordSchema,
-  FindPasswordFormValues,
-} from "@/features/auth-user/model/validation/findUserPassword";
+  findCompanyPasswordSchema,
+  FindCompanyPasswordFormValues,
+} from "@/features/auth-company/model/validation/company-auth.schema";
 
-export default function UserFindPasswordForm() {
+export default function CompanyFindPasswordForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [copied, setCopied] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
@@ -20,8 +20,8 @@ export default function UserFindPasswordForm() {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<FindPasswordFormValues>({
-    resolver: zodResolver(findPasswordSchema),
+  } = useForm<FindCompanyPasswordFormValues>({
+    resolver: zodResolver(findCompanyPasswordSchema),
     mode: "onBlur",
   });
 
@@ -30,9 +30,9 @@ export default function UserFindPasswordForm() {
   const code = watch("code");
 
   const MOCK_USER = {
-    email: "honggildong@example.com",
-    phone: "010-1234-1234",
-    code: "123456",
+    email: "manager@seniorMyJob.com",
+    phone: "010-1234-5678",
+    code: "658745",
   };
 
   const handleVerifyCode = () => {
@@ -76,9 +76,25 @@ export default function UserFindPasswordForm() {
               {errors.email && <p className="text-red-500 text-sm mt-2">{errors.email.message}</p>}
             </div>
 
+            {/* 사업자등록번호 */}
+            <div className="mb-6 text-left">
+              <label className="block mb-2 text-sm font-medium">사업자등록번호</label>
+              <div className="relative border-b border-gray-300 pb-1">
+                <input
+                  {...register("businessNumber")}
+                  type="text"
+                  placeholder="숫자만 입력 (예: 1234567890)"
+                  className="w-full border-none outline-none px-1 bg-transparent text-sm sm:text-base"
+                />
+              </div>
+              {errors.businessNumber && (
+                <p className="text-red-500 text-sm mt-2">{errors.businessNumber.message}</p>
+              )}
+            </div>
+
             {/* 전화번호 */}
             <div className="mb-6 text-left">
-              <label className="block mb-2 text-sm font-medium">전화번호</label>
+              <label className="block mb-2 text-sm font-medium">담당자 전화번호</label>
               <div className="flex gap-2">
                 <div className="relative border-b border-gray-300 pb-1 flex-1">
                   <input
@@ -168,7 +184,7 @@ export default function UserFindPasswordForm() {
               비밀번호가 성공적으로 변경되었습니다.
             </p>
             <button
-              onClick={() => (window.location.href = "/auth/user/login")}
+              onClick={() => (window.location.href = "/company/login")}
               className="w-full bg-primary text-white py-3 rounded hover:bg-primary/80 cursor-pointer"
             >
               로그인 페이지로 이동

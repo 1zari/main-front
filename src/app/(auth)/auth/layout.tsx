@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import AuthLoading from "@/features/auth-common/ui/loading/AuthLoading";
 
 function InnerAuthLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -15,16 +16,15 @@ function InnerAuthLayout({ children }: { children: React.ReactNode }) {
           ← 뒤로가기
         </button>
       </nav>
-      <div className="flex-1 flex items-center justify-center p-[50px] md:p-[100px]">{children}</div>
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-6">{children}</div>
     </main>
   );
 }
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <Suspense fallback={<div>로딩 중...</div>}>
+    <Suspense fallback={<AuthLoading />}>
       <InnerAuthLayout>{children}</InnerAuthLayout>
     </Suspense>
   );
 }
-

@@ -1,7 +1,7 @@
 "use client";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { userSchema, UserFormValues } from "@/features/auth-user/model/validation";
+import { userSchema, UserFormValues } from "@/features/auth-user/model/validation/login";
 
 export type UserStepTwoValues = UserFormValues;
 
@@ -31,7 +31,13 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
       <h2 className="text-2xl font-semibold">회원 정보</h2>
 
       <div className="w-full max-w-[700px] space-y-6">
-        <Input label="이름" name="name" placeholder="김오즈" register={register} error={errors.name?.message} />
+        <Input
+          label="이름"
+          name="name"
+          placeholder="김오즈"
+          register={register}
+          error={errors.name?.message}
+        />
 
         <Input
           label="생년월일"
@@ -50,7 +56,10 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
           onButtonClick={() => {
             const phone = getValues("phone");
             if (!phone) {
-              setError("phone", { type: "manual", message: "전화번호를 입력 후 인증을 진행해주세요." });
+              setError("phone", {
+                type: "manual",
+                message: "전화번호를 입력 후 인증을 진행해주세요.",
+              });
               return;
             }
             // 인증 로직 연결 예정
@@ -87,8 +96,16 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
             render={({ field }) => (
               <>
                 <div className="flex gap-4">
-                  <GenderButton selected={field.value === 'male'} onClick={() => field.onChange('male')} label="남성" />
-                  <GenderButton selected={field.value === 'female'} onClick={() => field.onChange('female')} label="여성" />
+                  <GenderButton
+                    selected={field.value === "male"}
+                    onClick={() => field.onChange("male")}
+                    label="남성"
+                  />
+                  <GenderButton
+                    selected={field.value === "female"}
+                    onClick={() => field.onChange("female")}
+                    label="여성"
+                  />
                 </div>
                 {errors.gender && <p className="text-red-500 mt-1 ml-2">{errors.gender.message}</p>}
               </>
@@ -99,7 +116,7 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
         <ControlledCheckboxGroup
           label="관심 분야 (중복 선택 가능)"
           name="interests"
-          options={['사무', '서비스', '기술직', '교육/강사', '서울시 공공 일자리', '운전/배송']}
+          options={["사무", "서비스", "기술직", "교육/강사", "서울시 공공 일자리", "운전/배송"]}
           control={control}
           error={errors.interests?.message}
         />
@@ -107,7 +124,12 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
         <ControlledCheckboxGroup
           label="어떤 정보를 얻고 싶어서 가입하셨나요? (중복 선택 가능)"
           name="purposes"
-          options={['일자리 관련 정보', '교육 및 재취업 준비', '창업 및 부업 정보', '네트워킹 및 커뮤니티']}
+          options={[
+            "일자리 관련 정보",
+            "교육 및 재취업 준비",
+            "창업 및 부업 정보",
+            "네트워킹 및 커뮤니티",
+          ]}
           control={control}
           error={errors.purposes?.message}
         />
@@ -115,7 +137,14 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
         <ControlledCheckboxGroup
           label="유입 경로 (중복 선택 가능)"
           name="channels"
-          options={['네이버 검색', '구글 검색', '네이버 카페', '인스타그램/유튜브', '복지관/고용센터/박람회', '지인추천']}
+          options={[
+            "네이버 검색",
+            "구글 검색",
+            "네이버 카페",
+            "인스타그램/유튜브",
+            "복지관/고용센터/박람회",
+            "지인추천",
+          ]}
           control={control}
           error={errors.channels?.message}
         />
@@ -131,12 +160,19 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
   );
 }
 
-const Input = ({ label, name, type = 'text', placeholder, register, error }: {
+const Input = ({
+  label,
+  name,
+  type = "text",
+  placeholder,
+  register,
+  error,
+}: {
   label: string;
   name: keyof UserFormValues;
   type?: string;
   placeholder?: string;
-  register: ReturnType<typeof useForm<UserFormValues>>['register'];
+  register: ReturnType<typeof useForm<UserFormValues>>["register"];
   error?: string;
 }) => {
   return (
@@ -153,13 +189,21 @@ const Input = ({ label, name, type = 'text', placeholder, register, error }: {
   );
 };
 
-const InputWithButton = ({ label, name, placeholder, buttonText, onButtonClick, register, error }: {
+const InputWithButton = ({
+  label,
+  name,
+  placeholder,
+  buttonText,
+  onButtonClick,
+  register,
+  error,
+}: {
   label: string;
   name: keyof UserFormValues;
   placeholder?: string;
   buttonText: string;
   onButtonClick: () => void;
-  register: ReturnType<typeof useForm<UserFormValues>>['register'];
+  register: ReturnType<typeof useForm<UserFormValues>>["register"];
   error?: string;
 }) => {
   return (
@@ -185,13 +229,21 @@ const InputWithButton = ({ label, name, placeholder, buttonText, onButtonClick, 
   );
 };
 
-const GenderButton = ({ selected, onClick, label }: { selected: boolean; onClick: () => void; label: string }) => {
+const GenderButton = ({
+  selected,
+  onClick,
+  label,
+}: {
+  selected: boolean;
+  onClick: () => void;
+  label: string;
+}) => {
   return (
     <button
       type="button"
       onClick={onClick}
       className={`w-[120px] h-[60px] rounded font-semibold border cursor-pointer 
-        ${selected ? 'bg-primary text-white border-primary' : 'bg-white text-gray-700 border-gray-300'} 
+        ${selected ? "bg-primary text-white border-primary" : "bg-white text-gray-700 border-gray-300"} 
         focus:outline-none focus:ring-0`}
     >
       {label}
@@ -199,11 +251,17 @@ const GenderButton = ({ selected, onClick, label }: { selected: boolean; onClick
   );
 };
 
-const ControlledCheckboxGroup = ({ label, name, options, control, error }: {
+const ControlledCheckboxGroup = ({
+  label,
+  name,
+  options,
+  control,
+  error,
+}: {
   label: string;
   name: keyof UserFormValues;
   options: string[];
-  control: ReturnType<typeof useForm<UserFormValues>>['control'];
+  control: ReturnType<typeof useForm<UserFormValues>>["control"];
   error?: string;
 }) => {
   return (
@@ -229,7 +287,7 @@ const ControlledCheckboxGroup = ({ label, name, options, control, error }: {
                     key={idx}
                     onClick={() => toggleOption(option)}
                     className={`flex items-center justify-between gap-2 px-4 py-[14px] min-w-[160px] h-auto rounded cursor-pointer font-medium border transition break-words text-center
-                      ${isChecked ? 'bg-primary text-white border-primary' : 'bg-white text-gray-700 border-gray-300'}`}
+                      ${isChecked ? "bg-primary text-white border-primary" : "bg-white text-gray-700 border-gray-300"}`}
                   >
                     <span className="block leading-tight">{option}</span>
                     <input

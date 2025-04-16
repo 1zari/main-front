@@ -5,9 +5,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Copy, Check } from "lucide-react";
 import {
-  findEmailSchema,
-  FindEmailFormValues,
-} from "@/features/auth-user/model/validation/findUserEmail";
+  findUserEmailSchema,
+  FindUserEmailFormValues,
+} from "@/features/auth-user/model/validation/user-auth.schema";
 
 export default function UserFindEmailForm() {
   const MOCK_USER = {
@@ -22,8 +22,8 @@ export default function UserFindEmailForm() {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<FindEmailFormValues>({
-    resolver: zodResolver(findEmailSchema),
+  } = useForm<FindUserEmailFormValues>({
+    resolver: zodResolver(findUserEmailSchema),
     mode: "onBlur",
   });
 

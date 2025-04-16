@@ -5,11 +5,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import {
-  findPasswordSchema,
-  FindPasswordFormValues,
-} from "@/features/auth-company/model/validation/findCompanyPassword";
+  findUserPasswordSchema,
+  FindUserPasswordFormValues,
+} from "@/features/auth-user/model/validation/user-auth.schema";
 
-export default function CompanyFindPasswordForm() {
+export default function UserFindPasswordForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [copied, setCopied] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
@@ -20,8 +20,8 @@ export default function CompanyFindPasswordForm() {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<FindPasswordFormValues>({
-    resolver: zodResolver(findPasswordSchema),
+  } = useForm<FindUserPasswordFormValues>({
+    resolver: zodResolver(findUserPasswordSchema),
     mode: "onBlur",
   });
 
@@ -30,9 +30,9 @@ export default function CompanyFindPasswordForm() {
   const code = watch("code");
 
   const MOCK_USER = {
-    email: "manager@seniorMyJob.com",
-    phone: "010-1234-5678",
-    code: "658745",
+    email: "honggildong@example.com",
+    phone: "010-1234-1234",
+    code: "123456",
   };
 
   const handleVerifyCode = () => {
@@ -60,7 +60,6 @@ export default function CompanyFindPasswordForm() {
 
         {step === "input" && (
           <form onSubmit={handleSubmit(handlePasswordChange)} className="space-y-6">
-            {/* 이메일 입력 */}
             <div className="mb-6 text-left">
               <label className="block mb-2 text-sm font-medium">이메일</label>
               <div className="flex gap-2">
@@ -76,25 +75,8 @@ export default function CompanyFindPasswordForm() {
               {errors.email && <p className="text-red-500 text-sm mt-2">{errors.email.message}</p>}
             </div>
 
-            {/* 사업자등록번호 */}
             <div className="mb-6 text-left">
-              <label className="block mb-2 text-sm font-medium">사업자등록번호</label>
-              <div className="relative border-b border-gray-300 pb-1">
-                <input
-                  {...register("businessNumber")}
-                  type="text"
-                  placeholder="숫자만 입력 (예: 1234567890)"
-                  className="w-full border-none outline-none px-1 bg-transparent text-sm sm:text-base"
-                />
-              </div>
-              {errors.businessNumber && (
-                <p className="text-red-500 text-sm mt-2">{errors.businessNumber.message}</p>
-              )}
-            </div>
-
-            {/* 전화번호 */}
-            <div className="mb-6 text-left">
-              <label className="block mb-2 text-sm font-medium">담당자 전화번호</label>
+              <label className="block mb-2 text-sm font-medium">전화번호</label>
               <div className="flex gap-2">
                 <div className="relative border-b border-gray-300 pb-1 flex-1">
                   <input
@@ -115,7 +97,6 @@ export default function CompanyFindPasswordForm() {
               {errors.phone && <p className="text-red-500 text-sm mt-2">{errors.phone.message}</p>}
             </div>
 
-            {/* 인증번호 */}
             <div className="mb-6 text-left">
               <label className="block mb-2 text-sm font-medium">인증번호</label>
               <div className="flex gap-2">
@@ -138,7 +119,6 @@ export default function CompanyFindPasswordForm() {
               {errors.code && <p className="text-red-500 text-sm mt-2">{errors.code.message}</p>}
             </div>
 
-            {/* 새 비밀번호 */}
             {isVerified && (
               <div className="mb-6 text-left">
                 <label className="block mb-2 text-sm font-medium">새 비밀번호 입력</label>
@@ -166,7 +146,6 @@ export default function CompanyFindPasswordForm() {
               </div>
             )}
 
-            {/* 변경 완료 버튼 */}
             {isVerified && (
               <button
                 type="submit"
@@ -184,7 +163,7 @@ export default function CompanyFindPasswordForm() {
               비밀번호가 성공적으로 변경되었습니다.
             </p>
             <button
-              onClick={() => (window.location.href = "/company/login")}
+              onClick={() => (window.location.href = "/auth/user/login")}
               className="w-full bg-primary text-white py-3 rounded hover:bg-primary/80 cursor-pointer"
             >
               로그인 페이지로 이동
