@@ -1,10 +1,10 @@
 import { REGIONS } from "@/constants/regions";
+import { formatFilterValue, formatWorkDays } from "@/utils/filters";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 // 타입 정의
 type FilterSelectedStore = {
-
   selectedFilters: string[];
   addSelectedFilter: (filter: string) => void;
   removeSelectedFilter: (filter: string) => void;
@@ -68,7 +68,7 @@ export const useSelectedFilterStore = create<FilterSelectedStore>()(
         const updated = isSelected ? currentDays.filter((d) => d !== day) : [...currentDays, day];
         set({ selectedDays: updated });
 
-        const label = `근무요일: ${updated.join(",")}`;
+        const label = formatWorkDays(updated);
         const filters = get().selectedFilters.filter((f) => !f.startsWith("근무요일:"));
         set({
           selectedFilters: updated.length > 0 ? [...filters, label] : filters,
@@ -93,7 +93,7 @@ export const useSelectedFilterStore = create<FilterSelectedStore>()(
 
         if (district.endsWith("전체") && checkedDistricts.includes(district)) {
           updated = checkedDistricts.filter((d) => d !== district);
-          const filters = get().selectedFilters.filter((f) => !f.startsWith(`${selectedRegion}:`));
+          const filters = get().selectedFilters.filter((f) => !f.startsWith(formatFilterValue(selectedRegion, "")));
           setCheckedDistricts(updated);
           get().setLocationChecked(updated);
           useSelectedFilterStore.setState({
@@ -102,7 +102,7 @@ export const useSelectedFilterStore = create<FilterSelectedStore>()(
           return;
         }
 
-        const label = `${selectedRegion}: ${district}`;
+        const label = formatFilterValue(selectedRegion, district);
         const filters = get().selectedFilters.filter((f) => !f.startsWith(`${selectedRegion}:`));
         setCheckedDistricts(updated);
         get().setLocationChecked(updated);

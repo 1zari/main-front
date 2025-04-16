@@ -1,6 +1,7 @@
 "use client";
 
 import { useSelectedFilterStore } from "@/features/jobs/stores/job-filters/useSelectedFiltersStore";
+import { formatFilterValue, formatWorkDays } from "@/utils/filters";
 
 export default function JobConditionsFilter() {
   const {
@@ -19,7 +20,7 @@ export default function JobConditionsFilter() {
     const updated = isSelected ? currentDays.filter((d) => d !== day) : [...currentDays, day];
     setSelectedDays(updated);
 
-    const label = `근무요일: ${updated.join(",")}`;
+    const label = formatWorkDays(updated);
     const filters = useSelectedFilterStore
       .getState()
       .selectedFilters.filter((f) => !f.startsWith("근무요일:"));
@@ -33,7 +34,7 @@ export default function JobConditionsFilter() {
       <span className="w-16 font-bold">{label}</span>
       <div className="flex gap-4 flex-wrap">
         {options.map((option) => {
-          const value = `${groupKey}:${option}`;
+          const value = formatFilterValue(groupKey, option);
           const isChecked = selectedFilters.includes(value);
           return (
             <label key={value} className="flex items-center gap-1">
