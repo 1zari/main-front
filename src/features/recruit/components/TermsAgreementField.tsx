@@ -7,7 +7,7 @@ const Agreement = () => {
   const [showTerms, setShowTerms] = useState(false);
 
   return (
-    <div className="flex flex-col gap-2 mt-4">
+    <div className="flex flex-col gap-2 mt-2">
       {/* 체크박스 */}
       <div className="flex items-center">
         <input
