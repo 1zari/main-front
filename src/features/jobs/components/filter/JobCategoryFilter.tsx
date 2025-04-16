@@ -71,7 +71,7 @@ export default function JobCategoryFilter() {
       </div>
 
       {/* Right: Subcategories */}
-      <div className="grid grid-col gap-x-2 gap-y-3 p-4 w-full h-full overflow-y-auto">
+      <div className="grid grid-col max-h-80 gap-x-2 gap-y-3 p-4 w-full h-full overflow-y-auto">
         {(JOB_CATEGORIES[selectedCategory] || []).map((item) => (
           <label key={item} className="flex items-start gap-2">
             <input
