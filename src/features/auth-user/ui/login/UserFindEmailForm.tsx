@@ -8,9 +8,6 @@ import {
   FindUserEmailFormValues,
 } from "@/features/auth-user/model/validation/user-auth.schema";
 import FindEmailBaseForm from "@/features/auth-common/ui/baseForms/FindEmailBaseForm";
-import { FindStep } from "@/features/auth-common/types/auth";
-import { useVerification } from "@/features/auth-common/hooks/useVerification";
-import { AUTH_MESSAGES } from "@/features/auth-common/constants/messages";
 
 export default function UserFindEmailForm() {
   const MOCK_USER = {
@@ -30,14 +27,23 @@ export default function UserFindEmailForm() {
     mode: "onBlur",
   });
 
-  const { isVerified, verificationMessage, handleVerification } = useVerification();
-  const [step, setStep] = useState<FindStep>("input");
+  const [isVerified, setIsVerified] = useState(false);
+  const [verificationMessage, setVerificationMessage] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
+  const [step, setStep] = useState<"input" | "verified">("input");
   const [email, setEmail] = useState("");
   const name = watch("name");
 
   const handleVerifyCode = () => {
     const code = watch("code");
-    handleVerification(code === MOCK_USER.code);
+    if (code === MOCK_USER.code) {
+      setIsVerified(true);
+      setVerificationMessage({ type: "success", text: "인증번호가 확인되었습니다." });
+    } else {
+      setVerificationMessage({ type: "error", text: "인증번호가 올바르지 않습니다." });
+    }
   };
 
   const handleFindEmail = () => {
@@ -47,7 +53,7 @@ export default function UserFindEmailForm() {
       setEmail(MOCK_USER.email);
       setStep("verified");
     } else {
-      alert(AUTH_MESSAGES.findEmail.notFound);
+      alert("입력하신 정보로 등록된 이메일이 없습니다.");
     }
   };
 

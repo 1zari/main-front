@@ -8,9 +8,6 @@ import {
   FindCompanyEmailFormValues,
 } from "@/features/auth-company/model/validation/company-auth.schema";
 import FindEmailBaseForm from "@/features/auth-common/ui/baseForms/FindEmailBaseForm";
-import { FindStep } from "@/features/auth-common/types/auth";
-import { useVerification } from "@/features/auth-common/hooks/useVerification";
-import { AUTH_MESSAGES } from "@/features/auth-common/constants/messages";
 
 export default function CompanyFindEmailForm() {
   const {
@@ -24,9 +21,13 @@ export default function CompanyFindEmailForm() {
   });
 
   const companyName = watch("companyName");
-  const { isVerified, verificationMessage, handleVerification } = useVerification();
-  const [step, setStep] = useState<FindStep>("input");
   const [email, setEmail] = useState("");
+  const [step, setStep] = useState<"input" | "verified">("input");
+  const [isVerified, setIsVerified] = useState(false);
+  const [verificationMessage, setVerificationMessage] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
 
   const handleFindEmail = (data: FindCompanyEmailFormValues) => {
     if (
@@ -38,13 +39,18 @@ export default function CompanyFindEmailForm() {
       setEmail("manager@seniorMyJob.com");
       setStep("verified");
     } else {
-      alert(AUTH_MESSAGES.findEmail.notFound);
+      alert("입력하신 정보가 정확하지 않거나 인증에 실패했습니다.");
     }
   };
 
   const handleVerifyCode = () => {
     const code = watch("code");
-    handleVerification(code === "658745");
+    if (code === "658745") {
+      setIsVerified(true);
+      setVerificationMessage({ type: "success", text: "인증번호가 확인되었습니다." });
+    } else {
+      setVerificationMessage({ type: "error", text: "인증번호가 올바르지 않습니다." });
+    }
   };
 
   return (
