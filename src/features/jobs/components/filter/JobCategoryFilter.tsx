@@ -5,7 +5,7 @@ import { useState } from "react";
 
 import { JOB_CATEGORIES } from "@/constants/jobCategories";
 
-export default function FilterJobs() {
+export default function JobCategoryFilter() {
   const { checkedJobs, setCheckedJobs, addSelectedFilter, removeSelectedFilter } =
     useSelectedFilterStore();
   const [selectedCategory, setSelectedCategory] = useState("돌봄 서비스직(간병·육아)");

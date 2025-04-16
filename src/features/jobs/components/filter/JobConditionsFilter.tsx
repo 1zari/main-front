@@ -2,7 +2,7 @@
 
 import { useSelectedFilterStore } from "@/stores/useJobFilterStore";
 
-export default function FilterOtherConditions() {
+export default function JobConditionsFilter() {
   const {
     selectedDays,
     setSelectedDays,

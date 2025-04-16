@@ -1,8 +1,8 @@
 "use client";
 import { FaCaretDown } from "react-icons/fa";
-import FilterJobs from "./filter/FilterJobs";
-import FilterLocation from "./filter/FilterLocation";
-import FilterOtherConditions from "./filter/FilterOtherConditions";
+import FilterJobs from "./filter/JobCategoryFilter";
+import FilterLocation from "./filter/JobLocationFilter";
+import FilterOtherConditions from "./filter/JobConditionsFilter";
 import { useFilterTabStore } from "../../../stores/useJobFilterStore";
 
 export default function JobFilter() {
