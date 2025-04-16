@@ -11,7 +11,7 @@ import { useEffect } from "react";
 export default function JobDetailContent() {
   useEffect(() => {
     if (window.Kakao && !window.Kakao.isInitialized()) {
-      window.Kakao.init("77cf611fcce8e7787a081e44df937ec3");
+      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
     }
   }, []);
 
