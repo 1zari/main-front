@@ -44,21 +44,6 @@ export default function JobConditionsFilter() {
                   if (isChecked) {
                     //체크박스 해제시 액션
                     removeSelectedFilter(value);
-                    // bug:체크해제시 그룹 모두 체크해제 됨
-                    if (value.includes(":")) {
-                      const updatedFilters = useSelectedFilterStore
-                        .getState()
-                        .selectedFilters.filter((f) => f !== value);
-
-                      const updatedLocationChecked = useSelectedFilterStore
-                        .getState()
-                        .locationChecked.filter((d) => d !== value);
-
-                      useSelectedFilterStore.setState({
-                        selectedFilters: updatedFilters,
-                        locationChecked: updatedLocationChecked,
-                      });
-                    }
                   } else {
                     addSelectedFilter(value);
                   }

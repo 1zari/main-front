@@ -4,7 +4,7 @@ import { persist } from "zustand/middleware";
 
 // 타입 정의
 type FilterSelectedStore = {
-  
+
   selectedFilters: string[];
   addSelectedFilter: (filter: string) => void;
   removeSelectedFilter: (filter: string) => void;
@@ -35,10 +35,13 @@ export const useSelectedFilterStore = create<FilterSelectedStore>()(
           selectedFilters: [...state.selectedFilters, filter],
         })),
       removeSelectedFilter: (filter) => {
+        const isLocationFilter = filter.includes(":") && REGIONS[filter.split(":")[0]];
+
         set((state) => ({
           selectedFilters: state.selectedFilters.filter((f) => f !== filter),
         }));
-        if (filter.includes(":")) {
+
+        if (isLocationFilter) {
           const [region] = filter.split(":");
           const rest = get().selectedFilters.filter((f) => !f.startsWith(`${region}:`));
           const updatedLocationChecked = get().locationChecked.filter((d) => !filter.includes(d));
@@ -55,8 +58,10 @@ export const useSelectedFilterStore = create<FilterSelectedStore>()(
       setCheckedJobs: (value) => set({ checkedJobs: value }),
       selectedDays: [],
       setSelectedDays: (value) => set({ selectedDays: value }),
+
       dayNegotiable: false,
       setDayNegotiable: (value) => set({ dayNegotiable: value }),
+
       toggleDay: (day: string) => {
         const currentDays = get().selectedDays;
         const isSelected = currentDays.includes(day);
