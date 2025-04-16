@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -8,6 +8,7 @@ import {
   FindCompanyEmailFormValues,
 } from "@/features/auth-company/model/validation/company-auth.schema";
 import FindEmailBaseForm from "@/features/auth-common/ui/baseForms/FindEmailBaseForm";
+import { MOCK_COMPANY } from "@/features/auth-common/mock/auth.mock";
 
 export default function CompanyFindEmailForm() {
   const {
@@ -20,36 +21,48 @@ export default function CompanyFindEmailForm() {
     mode: "onBlur",
   });
 
-  const companyName = watch("companyName");
-  const [email, setEmail] = useState("");
-  const [step, setStep] = useState<"input" | "verified">("input");
   const [isVerified, setIsVerified] = useState(false);
   const [verificationMessage, setVerificationMessage] = useState<{
     type: "success" | "error";
     text: string;
   } | null>(null);
+  const [step, setStep] = useState<"input" | "verified">("input");
+  const [email, setEmail] = useState("");
+  const companyName = watch("companyName");
 
-  const handleFindEmail = (data: FindCompanyEmailFormValues) => {
-    if (
-      data.companyName === "시니어내일" &&
-      data.businessNumber === "1234567890" &&
-      data.phone === "010-1234-5678" &&
-      data.code === "658745"
-    ) {
-      setEmail("manager@seniorMyJob.com");
-      setStep("verified");
-    } else {
-      alert("입력하신 정보가 정확하지 않거나 인증에 실패했습니다.");
-    }
-  };
+  // 컴포넌트 언마운트 시 상태 초기화
+  useEffect(() => {
+    return () => {
+      setIsVerified(false);
+      setVerificationMessage(null);
+      setStep("input");
+      setEmail("");
+    };
+  }, []);
 
   const handleVerifyCode = () => {
     const code = watch("code");
-    if (code === "658745") {
+    if (code === MOCK_COMPANY.code) {
       setIsVerified(true);
       setVerificationMessage({ type: "success", text: "인증번호가 확인되었습니다." });
     } else {
       setVerificationMessage({ type: "error", text: "인증번호가 올바르지 않습니다." });
+    }
+  };
+
+  const handleFindEmail = () => {
+    const companyName = watch("companyName");
+    const businessNumber = watch("businessNumber");
+    const phone = watch("phone");
+    if (
+      companyName === MOCK_COMPANY.companyName &&
+      businessNumber === MOCK_COMPANY.businessNumber &&
+      phone === MOCK_COMPANY.phone
+    ) {
+      setEmail(MOCK_COMPANY.email);
+      setStep("verified");
+    } else {
+      alert("입력하신 정보로 등록된 이메일이 없습니다.");
     }
   };
 

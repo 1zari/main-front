@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -8,15 +8,9 @@ import {
   FindUserEmailFormValues,
 } from "@/features/auth-user/model/validation/user-auth.schema";
 import FindEmailBaseForm from "@/features/auth-common/ui/baseForms/FindEmailBaseForm";
+import { MOCK_USER } from "@/features/auth-common/mock/auth.mock";
 
 export default function UserFindEmailForm() {
-  const MOCK_USER = {
-    name: "홍길동",
-    phone: "010-1234-1234",
-    code: "123456",
-    email: "honggildong@example.com",
-  };
-
   const {
     register,
     handleSubmit,
@@ -35,6 +29,16 @@ export default function UserFindEmailForm() {
   const [step, setStep] = useState<"input" | "verified">("input");
   const [email, setEmail] = useState("");
   const name = watch("name");
+
+  // 컴포넌트 언마운트 시 상태 초기화
+  useEffect(() => {
+    return () => {
+      setIsVerified(false);
+      setVerificationMessage(null);
+      setStep("input");
+      setEmail("");
+    };
+  }, []);
 
   const handleVerifyCode = () => {
     const code = watch("code");
