@@ -5,6 +5,16 @@ import { useState } from "react";
 import { UseFormRegister, FieldErrors } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import AuthTypeTabs from "../components/AuthTypeTabs";
+import { FindUserEmailFormValues } from "@/features/auth-user/model/validation/user-auth.schema";
+import { FindCompanyEmailFormValues } from "@/features/auth-company/model/validation/company-auth.schema";
+
+type FindEmailFormValues = {
+  name?: string;
+  companyName?: string;
+  businessNumber?: string;
+  phone?: string;
+  code?: string;
+};
 
 interface FindEmailBaseFormProps {
   type: "user" | "company";
@@ -16,8 +26,8 @@ interface FindEmailBaseFormProps {
     type: "success" | "error";
     text: string;
   } | null;
-  register: UseFormRegister<any>;
-  errors: FieldErrors<any>;
+  register: UseFormRegister<FindEmailFormValues>;
+  errors: FieldErrors<FindEmailFormValues>;
   onVerifyCode: () => void;
   onSubmit: (e: React.FormEvent) => void;
 }
