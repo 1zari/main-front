@@ -2,10 +2,9 @@ import { REGIONS } from "@/constants/regions";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-
-
-
+// 타입 정의
 type FilterSelectedStore = {
+  
   selectedFilters: string[];
   addSelectedFilter: (filter: string) => void;
   removeSelectedFilter: (filter: string) => void;
@@ -24,7 +23,7 @@ type FilterSelectedStore = {
     selectedRegion: string,
     checkedDistricts: string[],
     setCheckedDistricts: (value: string[]) => void,
-  ) => void; // Added toggleDistrict function signature
+  ) => void;
 };
 
 export const useSelectedFilterStore = create<FilterSelectedStore>()(
