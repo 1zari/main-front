@@ -8,7 +8,7 @@ import { useSelectedFilterStore } from "@/features/jobs/stores/job-filters/useSe
 export default function JobCategoryFilter() {
   const { checkedJobs, setCheckedJobs, addSelectedFilter, removeSelectedFilter } =
     useSelectedFilterStore();
-  const [selectedCategory, setSelectedCategory] = useState("돌봄 서비스직(간병·육아)");
+  const [selectedCategory, setSelectedCategory] = useState("외식·음료");
 
   const toggleCheck = (item: string) => {
     const isSelected = checkedJobs.includes(item);

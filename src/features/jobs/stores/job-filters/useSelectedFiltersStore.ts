@@ -18,7 +18,7 @@ type FilterSelectedStore = {
   setSelectedDays: (value: string[]) => void;
   dayNegotiable: boolean;
   setDayNegotiable: (value: boolean) => void;
-  toggleDay: (day: string) => void; // Added toggleDay function signature
+  toggleDay: (day: string) => void;
   toggleDistrict: (
     district: string,
     selectedRegion: string,
