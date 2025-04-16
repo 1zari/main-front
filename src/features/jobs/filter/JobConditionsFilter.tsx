@@ -1,6 +1,6 @@
 "use client";
 
-import { useSelectedFilterStore } from "@/stores/useJobFilterStore";
+import { useSelectedFilterStore } from "@/features/jobs/stores/job-filters/useSelectedFiltersStore";
 
 export default function JobConditionsFilter() {
   const {
@@ -16,13 +16,13 @@ export default function JobConditionsFilter() {
   const toggleDay = (day: string) => {
     const currentDays = useSelectedFilterStore.getState().selectedDays;
     const isSelected = currentDays.includes(day);
-    const updated = isSelected
-      ? currentDays.filter((d) => d !== day)
-      : [...currentDays, day];
+    const updated = isSelected ? currentDays.filter((d) => d !== day) : [...currentDays, day];
     setSelectedDays(updated);
 
     const label = `근무요일: ${updated.join(",")}`;
-    const filters = useSelectedFilterStore.getState().selectedFilters.filter(f => !f.startsWith("근무요일:"));
+    const filters = useSelectedFilterStore
+      .getState()
+      .selectedFilters.filter((f) => !f.startsWith("근무요일:"));
     useSelectedFilterStore.setState({
       selectedFilters: updated.length > 0 ? [...filters, label] : filters,
     });
@@ -46,8 +46,12 @@ export default function JobConditionsFilter() {
                     // 지역 필터 제거 처리
                     if (value.includes(":")) {
                       const [region] = value.split(":");
-                      const rest = useSelectedFilterStore.getState().selectedFilters.filter(f => !f.startsWith(`${region}:`));
-                      const updatedLocationChecked = useSelectedFilterStore.getState().locationChecked.filter(d => !value.includes(d));
+                      const rest = useSelectedFilterStore
+                        .getState()
+                        .selectedFilters.filter((f) => !f.startsWith(`${region}:`));
+                      const updatedLocationChecked = useSelectedFilterStore
+                        .getState()
+                        .locationChecked.filter((d) => !value.includes(d));
                       useSelectedFilterStore.setState({
                         locationChecked: updatedLocationChecked,
                         selectedFilters: rest,

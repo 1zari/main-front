@@ -1,7 +1,8 @@
 "use client";
 
 import { REGIONS } from "@/constants/regions";
-import { useSelectedFilterStore } from "@/stores/useJobFilterStore";
+import { useSelectedFilterStore } from "@/features/jobs/stores/job-filters/useSelectedFiltersStore";
+
 import { useEffect, useState } from "react";
 
 export default function JobLocationFilter() {

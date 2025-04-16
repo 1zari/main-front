@@ -1,7 +1,11 @@
 "use client";
 
 import { REGIONS } from "@/constants/regions";
-import { resetFilters, useSelectedFilterStore } from "@/stores/useJobFilterStore";
+import {
+  resetFilters,
+  useSelectedFilterStore,
+} from "@/features/jobs/stores/job-filters/useSelectedFiltersStore";
+
 import { IoMdRefresh } from "react-icons/io";
 
 export default function SelectedChips() {

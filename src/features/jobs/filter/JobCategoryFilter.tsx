@@ -1,9 +1,9 @@
 "use client";
 
-import { useSelectedFilterStore } from "@/stores/useJobFilterStore";
 import { useState } from "react";
 
 import { JOB_CATEGORIES } from "@/constants/jobCategories";
+import { useSelectedFilterStore } from "@/features/jobs/stores/job-filters/useSelectedFiltersStore";
 
 export default function JobCategoryFilter() {
   const { checkedJobs, setCheckedJobs, addSelectedFilter, removeSelectedFilter } =

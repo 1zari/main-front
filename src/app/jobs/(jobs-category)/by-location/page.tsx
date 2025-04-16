@@ -4,7 +4,6 @@ import SelectedChips from "@/features/jobs/components/SelectedChips";
 import { useEffect } from "react";
 import JobCard from "../../../../features/home/components/JobCard";
 import JobFilter from "../../../../features/jobs/components/JobFilter";
-import { useFilterTabStore } from "../../../../stores/useJobFilterStore";
 
 export default function JobsByLocationPage() {
   const setShowLocation = useFilterTabStore((state) => state.setShowLocation);
