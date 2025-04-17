@@ -48,13 +48,19 @@ export default function VoiceInput() {
   };
 
   return (
-    <div className="p-4 space-y-2">
-      <button onClick={startListening} className="px-4 py-2 bg-blue-600 text-white rounded">
+    <div className="p-4 it flex flex-col  items-end space-y-2">
+      {isListening && (
+        <p className="bg-white p-3 rounded-2xl shadow-2xl">
+          🎙️ 듣고 있어요... 어떤 일자리를 찾고 계신지 알려주세요🙂
+        </p>
+      )}
+      {result && <p className="bg-white p-3 rounded-2xl shadow-2xl">📝 인식된 문장: {result}</p>}
+      <button
+        onClick={startListening}
+        className="px-4 py-2 shadow-2xl rounded-3xl bg-blue-600 text-white"
+      >
         🎤 말해서 검색하기
       </button>
-
-      {isListening && <p>🎙️ 듣고 있어요...</p>}
-      {result && <p>📝 인식된 문장: {result}</p>}
 
       {keywords.length > 0 && (
         <div>
