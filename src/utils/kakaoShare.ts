@@ -1,5 +1,5 @@
 import { JOB_DETAIL_TEXT } from "@/features/jobs/model/constants/jobDetailText";
-
+//api 연결후 실제 데이터로 넣어야함
 export const handleKakaoShare = () => {
   if (typeof window !== "undefined" && window.Kakao) {
     window.Kakao.Share.sendDefault({
