@@ -1,10 +1,10 @@
 "use client";
 
 import SelectedChips from "@/features/jobs/components/SelectedChips";
+import { useFilterTabStore } from "@/features/jobs/stores/job-filters/useJobFilterTabsStore";
 import { useEffect } from "react";
 import JobCard from "../../../../features/home/components/JobCard";
 import JobFilter from "../../../../features/jobs/components/JobFilter";
-import { useFilterTabStore } from "../../../../stores/useJobFilterStore";
 
 export default function RecommendedJobsPage() {
   const setShowLocation = useFilterTabStore((state) => state.setShowLocation);

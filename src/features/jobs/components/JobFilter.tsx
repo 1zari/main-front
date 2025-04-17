@@ -2,10 +2,11 @@
 
 import { Heading } from "@/components/ui/Heading";
 import { FaCaretDown } from "react-icons/fa";
-import { useFilterTabStore } from "../../../stores/useJobFilterStore";
-import FilterJobs from "../filter/JobCategoryFilter";
-import FilterOtherConditions from "../filter/JobConditionsFilter";
-import FilterLocation from "../filter/JobLocationFilter";
+
+import { useFilterTabStore } from "@/features/jobs/stores/job-filters/useJobFilterTabsStore";
+import FilterJobs from "./filter/JobCategoryFilter";
+import FilterOtherConditions from "./filter/JobConditionsFilter";
+import FilterLocation from "./filter/JobLocationFilter";
 
 export default function JobFilter() {
   const {

@@ -1,73 +1,75 @@
 "use client";
+import { useFormContext, Controller } from "react-hook-form";
+import { useState, useRef, useEffect } from "react";
 
-import { useState, useEffect, useRef } from "react";
+const JOB_OPTIONS = ["서비스", "운반", "청소", "배달", "인바운드", "경비", "고객상담"];
 
-interface JobProps {
-  value: string[];
-  onChange: (value: string[]) => void;
-}
+const SelectJobs = () => {
+  const {
+    control,
 
-const JobList = ["서비스", "운반", "청소", "배달", "인바운드", "경비", "고객상담"];
-
-const SelectJobs = ({ value, onChange }: JobProps) => {
+  } = useFormContext();
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const toggleCategory = (category: string) => {
-    if (value.includes(category)) {
-      onChange(value.filter((item) => item !== category));
-    } else {
-      onChange([...value, category]);
-    }
-  };
-
+  // 외부 클릭시 드롭다운 닫기
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setOpen(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
+    if (open) document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [open]);
 
   return (
-    <div className="flex justify-between items-center text-gray-700 relative" ref={dropdownRef}>
-      {/* 왼쪽: 레이블 */}
-      <label className="text-sm font-medium text-gray-700 whitespace-nowrap">직종</label>
-
-      {/* 오른쪽: 드롭다운 버튼 */}
-      <div className="ml-8 w-full relative">
-        <button
-          type="button"
-          onClick={() => setOpen(!open)}
-          className="w-full text-left px-3 py-2 border border-gray-300 rounded-md text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#0F8C3B]"
-        >
-          <span className={value.length === 0 ? "text-gray-400" : "text-gray-700"}>
-            {value.length === 0 ? "직종을 선택하세요" : value.join(", ")}
-          </span>
-        </button>
-
-        {/* 드롭다운 목록 */}
-        {open && (
-          <div className="absolute z-10 w-full mt-1 border border-gray-300 bg-white rounded-md shadow-md max-h-48 overflow-auto">
-            {JobList.map((job) => (
-              <label
-                key={job}
-                className="flex items-center px-3 py-2 text-sm cursor-pointer hover:bg-gray-100"
-              >
-                <input
-                  type="checkbox"
-                  className="mr-2"
-                  checked={value.includes(job)}
-                  onChange={() => toggleCategory(job)}
-                />
-                {job}
-              </label>
-            ))}
-          </div>
+    <div className=" flex mt-2 relative items-center" ref={dropdownRef}>
+      <label className="w-18 block text-sm font-medium text-gray-700 mb-1">직종</label>
+      <Controller
+        control={control}
+        name="selectJobs"
+        render={({ field: { value = [], onChange } }) => (
+          <>
+            <button
+              type="button"
+              className={`w-full text-left px-3 py-2 border rounded-md text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#0F8C3B] 
+              `}
+              onClick={() => setOpen((prev) => !prev)}
+            >
+              {value.length === 0 ? (
+                <span className="text-gray-400">직종을 선택하세요</span>
+              ) : (
+                value.join(", ")
+              )}
+            </button>
+            {open && (
+              <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-48 overflow-auto">
+                {JOB_OPTIONS.map((job) => (
+                  <label
+                    key={job}
+                    className="flex items-center px-3 py-2 cursor-pointer hover:bg-[#F0FFF5] text-sm"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={value.includes(job)}
+                      onChange={() => {
+                        if (value.includes(job)) {
+                          onChange(value.filter((v: string) => v !== job));
+                        } else {
+                          onChange([...value, job]);
+                        }
+                      }}
+                      className="mr-2"
+                    />
+                    {job}
+                  </label>
+                ))}
+              </div>
+            )}
+          </>
         )}
-      </div>
+      />
     </div>
   );
 };

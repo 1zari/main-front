@@ -1,53 +1,17 @@
 "use client";
 
-import { REGIONS } from "@/constants/regions";
-import { resetFilters, useSelectedFilterStore } from "@/stores/useJobFilterStore";
+import { Heading } from "@/components/ui/Heading";
+import {
+  resetFilters,
+  useSelectedFilterStore,
+} from "@/features/jobs/stores/job-filters/useSelectedFiltersStore";
+
 import { IoMdRefresh } from "react-icons/io";
 
 export default function SelectedChips() {
-  const {
-    selectedFilters,
-    removeSelectedFilter,
-    locationChecked,
-    setLocationChecked,
-    addSelectedFilter,
-  } = useSelectedFilterStore();
+  const { selectedFilters, removeSelectedFilter } = useSelectedFilterStore();
 
   if (selectedFilters.length === 0) return null;
-
-  const checkboxGroup = (label: string, options: string[], groupKey: string) => (
-    <div className="grid grid-cols-[4rem_2fr] items-start gap-x-3">
-      <span className="w-16 font-bold">{label}</span>
-      <div className="flex gap-4 flex-wrap">
-        {options.map((option) => {
-          const value = `${groupKey}:${option}`;
-          const isChecked = selectedFilters.includes(value);
-          return (
-            <label key={value} className="flex items-center gap-1">
-              <input
-                type="checkbox"
-                checked={isChecked}
-                onChange={() => {
-                  const updated = options.filter((o) => o !== option);
-                  const regionDistricts = updated.filter((d) =>
-                    REGIONS[selectedRegion].includes(d),
-                  );
-                  const label = `${groupKey}: ${regionDistricts.join(", ")}`;
-                  const filters = useSelectedFilterStore
-                    .getState()
-                    .selectedFilters.filter((f) => !f.startsWith(`${groupKey}:`));
-                  useSelectedFilterStore.setState({
-                    selectedFilters: regionDistricts.length > 0 ? [...filters, label] : filters,
-                  });
-                }}
-              />
-              {option}
-            </label>
-          );
-        })}
-      </div>
-    </div>
-  );
 
   return (
     <>
@@ -55,9 +19,10 @@ export default function SelectedChips() {
         {selectedFilters.map((filter, index) => (
           <div
             key={`${filter}-${index}`}
-            className="flex items-center bg-gray-200 px-3 py-1 rounded-full text-sm text-gray-700"
+            className="flex items-center bg-gray-200 px-3 py-1 rounded-full text-gray-700"
           >
-            <span>{filter}</span>
+            {" "}
+            <Heading sizeOffset={-1}> {filter}</Heading>
             <button
               onClick={() => {
                 removeSelectedFilter(filter);
@@ -84,6 +49,7 @@ export default function SelectedChips() {
                   });
                 }
 
+                // 학력/경력여부/고용형태 그룹 제거 처리 bug:하나 uncheck하면, 모두 unchecked
                 const [group, label] = filter.split(":");
                 if (group === "학력" || group === "경력여부" || group === "고용형태") {
                   removeSelectedFilter(`${group}:${label}`);
@@ -95,10 +61,10 @@ export default function SelectedChips() {
                   });
                 }
               }}
-              className="ml-2 text-gray-500 hover:text-red-500"
+              className="ml-2 pb-1 text-gray-500 hover:font-bold hover:scale-105"
               aria-label={`Remove ${filter}`}
             >
-              &times;
+              <Heading sizeOffset={2}> &times;</Heading>
             </button>
           </div>
         ))}
