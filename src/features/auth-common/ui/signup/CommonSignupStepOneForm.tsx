@@ -41,7 +41,7 @@ export default function SignupStepOneForm({ onNext, userType }: Props) {
         <EmailInputWithCheck register={register} error={errors.email?.message} />
         <PasswordInput
           label="비밀번호"
-          register={register('password')}
+          register={register("password")}
           show={showPassword}
           onToggle={() => setShowPassword((prev) => !prev)}
           error={errors.password?.message}
@@ -61,7 +61,7 @@ function EmailInputWithCheck({
   register,
   error,
 }: {
-  register: ReturnType<typeof useForm<SignupFormValues>>['register'];
+  register: ReturnType<typeof useForm<SignupFormValues>>["register"];
   error?: string;
 }) {
   return (
@@ -104,7 +104,7 @@ function PasswordInput({
       <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg">{label}</label>
       <div className="relative">
         <input
-          type={show ? 'text' : 'password'}
+          type={show ? "text" : "password"}
           placeholder="영문 소문자, 숫자, 특수문자 포함 8~16자"
           className="w-full h-[60px] border border-gray-300 rounded px-4 pr-12 bg-white placeholder:text-gray-400 focus:outline-none focus:border-2 focus:border-primary"
           {...register}
