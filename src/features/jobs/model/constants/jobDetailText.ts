@@ -10,6 +10,8 @@ export const JOB_DETAIL_TEXT = {
     education: "무관",
     headcount: "2명",
     address: "경기 안성시 공단1로 87 (삼천리동) 투코리아",
+    work_times: "09:00 ~18:00",
+    work_days: "월,화,수,목,금",
     contact: {
       name: "김오즈",
       phone: "02-1234-1234",
