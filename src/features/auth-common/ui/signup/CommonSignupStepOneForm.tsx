@@ -33,8 +33,8 @@ export default function SignupStepOneForm({ onNext, userType }: Props) {
       onSubmit={handleSubmit(handleSubmitStep)}
       className="flex flex-col items-center space-y-8"
     >
-      <h2 className="text-2xl font-semibold">
-        {userType === "company" ? "기업 회원가입" : "회원가입"}
+      <h2 className="text-3xl font-semibold">
+        {userType === "company" ? "기업 회원가입" : "개인 회원가입"}
       </h2>
 
       <div className="w-full max-w-[700px] space-y-6">
