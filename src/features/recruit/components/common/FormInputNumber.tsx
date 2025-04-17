@@ -49,7 +49,7 @@ const FormNumberInput = ({
                 value={formatWithComma(field.value)}
                 onChange={(e) => {
                   const raw = e.target.value.replace(/[^0-9]/g, "");
-                  field.onChange(raw ? parseInt(raw, 10) : "");
+                  field.onChange(raw);
                 }}
                 className={`border border-gray-300 rounded-md px-3 py-2 text-sm ${inputWidth} placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0F8C3B] focus:border-transparent`}
                 placeholder="숫자만 입력"

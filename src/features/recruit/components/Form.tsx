@@ -1,4 +1,7 @@
 "use client";
+
+import { useEffect } from "react";
+
 import { useForm, FormProvider } from "react-hook-form";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,6 +17,7 @@ import CheckDays from "./CheckWorkDay";
 import TextArea from "./common/TextArea";
 import Deadline from "./DeadlineDatePicker";
 import SelectJobs from "./JobCategories";
+import { useRecruitForm } from "../hooks/useRecruitForm";
 
 interface RecruitFormProps {
   mode: "new" | "edit";
@@ -23,15 +27,13 @@ interface RecruitFormProps {
 const RecruitForm = ({ mode, jobPostingId }: RecruitFormProps) => {
   const [showDelModal, setShowDelModal] = useState(false);
 
-  const methods = useForm<RecruitFormSchema>({
-    resolver: zodResolver(recruitFormSchema),
-    mode: "onChange",
-  });
+  const methods = useRecruitForm();
 
   const {
     handleSubmit,
     formState: { errors, isValid },
   } = methods;
+
 
   const onSubmit = (data: RecruitFormSchema) => {
     console.log("제출 데이터", data);
@@ -172,7 +174,7 @@ const RecruitForm = ({ mode, jobPostingId }: RecruitFormProps) => {
                 <TextArea />
               </div>
 
-              <Agreement/>
+              <Agreement />
 
               <div className="mt-5 flex justify-between items-center">
                 {mode === "edit" && (
