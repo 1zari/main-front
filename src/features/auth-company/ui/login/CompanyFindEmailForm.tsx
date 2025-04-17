@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   findCompanyEmailSchema,
   FindCompanyEmailFormValues,
-} from "@/features/auth-company/model/validation/company-auth.schema";
+} from "@/features/auth-company/validation/company-auth.schema";
 import FindEmailBaseForm from "@/features/auth-common/ui/baseForms/FindEmailBaseForm";
 import { MOCK_COMPANY } from "@/features/auth-common/mock/auth.mock";
 
