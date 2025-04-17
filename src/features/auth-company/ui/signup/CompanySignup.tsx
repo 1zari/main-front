@@ -10,7 +10,7 @@ export default function SignupFormCompany() {
 
   return (
     <div className="flex justify-center items-center flex-1">
-      <div className="bg-white rounded-xl shadow-md px-10 py-[100px] w-full max-w-[1000px]">
+      <div className="bg-white rounded-lg shadow-md px-10 py-[100px] w-full max-w-[1000px]">
       {step === 1 ? (
         <SignupStepOneForm
           onNext={(data) => {
