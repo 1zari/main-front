@@ -32,7 +32,7 @@ export default function JobFilter() {
             <br />
             검색 조건을 변경하고 싶으신가요?
           </Heading>
-          <div className="max-w-2xl flex gap-2 mt-4 justify-between items-center mb-3">
+          <div className="flex gap-2 mt-4 justify-between items-center mb-3">
             <button
               className={`${navBtnClassName} ${showLocation ? navBtnSelectedClassName : ""}`}
               onClick={() => setShowLocation(!showLocation)}
@@ -69,9 +69,16 @@ export default function JobFilter() {
               검색하기
             </button> */}
           </div>
-          {showLocation && <FilterLocation />}
-          {showJobs && <FilterJobs />}
-          {showOtherConditions && <FilterOtherConditions />}
+          {showLocation && (
+            <FilterLocation setShowLocation={setShowLocation} showLocation={showLocation} />
+          )}
+          {showJobs && <FilterJobs setShowJobs={setShowJobs} showJobs={showJobs} />}
+          {showOtherConditions && (
+            <FilterOtherConditions
+              setShowOtherConditions={setShowOtherConditions}
+              showOtherConditions={showOtherConditions}
+            />
+          )}
         </div>
       </section>
     </>
