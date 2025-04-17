@@ -1,40 +1,33 @@
 "use client";
 
+import SectionDivider from "@/components/ui/SectionDivider";
+import JobDetailSection from "@/features/jobs/components/JobDetailSection";
 import { JOB_DETAIL_TEXT } from "@/features/jobs/model/constants/jobDetailText";
+import { handleKakaoShare } from "@/utils/kakaoShare";
 import { useEffect } from "react";
 
 export default function JobDetailContent() {
+  const {
+    company_image_url,
+    company,
+    title,
+    salary,
+    contact,
+    summary,
+    deadline,
+    experience,
+    education,
+    headcount,
+    address,
+    description,
+    contract,
+  } = JOB_DETAIL_TEXT;
+
   useEffect(() => {
     if (window.Kakao && !window.Kakao.isInitialized()) {
       window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
     }
   }, []);
-
-  const handleKakaoShare = () => {
-    if (window.Kakao) {
-      window.Kakao.Share.sendDefault({
-        objectType: "feed",
-        content: {
-          title: "채용 공고를 확인해보세요!",
-          description: JOB_DETAIL_TEXT.title,
-          imageUrl: JOB_DETAIL_TEXT.company_image_url,
-          link: {
-            mobileWebUrl: window.location.href,
-            webUrl: window.location.href,
-          },
-        },
-        buttons: [
-          {
-            title: "공고 보기",
-            link: {
-              mobileWebUrl: window.location.href,
-              webUrl: window.location.href,
-            },
-          },
-        ],
-      });
-    }
-  };
 
   return (
     <>
@@ -43,79 +36,65 @@ export default function JobDetailContent() {
           <section className="bg-white  space-y-8">
             {/* 회사정보 */}
             <div className="flex flex-col gap-2">
-              <img
-                src={JOB_DETAIL_TEXT.company_image_url}
-                className="rounded w-12 h-12 object-contain"
-              />
-              <p>{JOB_DETAIL_TEXT.company}</p>
-              <h2 className="text-xl font-semibold mb-2">{JOB_DETAIL_TEXT.title}</h2>
+              <img src={company_image_url} className="rounded w-12 h-12 object-contain" />
+              <p>{company}</p>
+              <h2 className="text-xl font-semibold mb-2">{title}</h2>
             </div>
 
             {/* 고용조건 */}
-            <div className="flex flex-col gap-2">
-              <h2 className="text-xl text-primary font-semibold mb-2">고용조건</h2>
-              <div className="grid grid-cols-[auto_1fr] gap-y-4 gap-x-10">
-                <p>급여</p>
-                <p className="font-bold">{JOB_DETAIL_TEXT.salary}</p>
-                <p>고용형태</p>
-                <p className="font-bold">{JOB_DETAIL_TEXT.contract}</p>
-                <p>근무요약</p>
-                <p className="font-bold">{JOB_DETAIL_TEXT.summary}</p>
-              </div>
-            </div>
+            <JobDetailSection
+              title="고용조건"
+              items={[
+                { label: "급여", value: salary },
+                { label: "고용형태", value: contract },
+                { label: "근무요약", value: summary },
+              ]}
+            />
 
-            <div className="h-2 bg-gray-z "></div>
+            <SectionDivider />
 
             {/* 모집조건 */}
-            <div className="flex flex-col gap-2">
-              <h2 className="text-xl text-primary font-semibold mb-2">모집조건</h2>
-              <div className="grid grid-cols-[auto_1fr] gap-y-4 gap-x-10">
-                <p>마감일</p>
-                <p className="font-bold">{JOB_DETAIL_TEXT.deadline}</p>
-                <p>경력사항</p>
-                <p className="font-bold">{JOB_DETAIL_TEXT.experience}</p>
-                <p>최종학력</p>
-                <p className="font-bold">{JOB_DETAIL_TEXT.education}</p>
-                <p>모집인원</p>
-                <p className="font-bold">{JOB_DETAIL_TEXT.headcount}</p>
-              </div>
-            </div>
+            <JobDetailSection
+              title="모집조건"
+              items={[
+                { label: "마감일", value: deadline },
+                { label: "경력사항", value: experience },
+                { label: "최종학력", value: education },
+                { label: "모집인원", value: headcount },
+              ]}
+            />
 
-            <div className="h-2 bg-gray-z "></div>
+            <SectionDivider />
 
             {/* 근무지 */}
             <div className="flex flex-col gap-2">
               <h2 className="text-xl text-primary font-semibold mb-2">근무지</h2>
-              <p>{JOB_DETAIL_TEXT.address}</p>
+              <p>{address}</p>
               <div className="w-full h-48 bg-gray-100 flex items-center justify-center text-gray-500">
                 지도 영역
               </div>
             </div>
 
-            <div className="h-2 bg-gray-z "></div>
+            <SectionDivider />
 
             {/* 상세요강 */}
             <div className="flex flex-col gap-2">
               <h2 className="text-xl text-primary font-semibold mb-2">상세요강</h2>
-              <p className="whitespace-pre-line text-sm text-gray-700">
-                {JOB_DETAIL_TEXT.description}
-              </p>
+              <p className="whitespace-pre-line text-sm text-gray-700">{description}</p>
             </div>
 
-            <div className="h-2 bg-gray-z "></div>
+            <SectionDivider />
 
             {/* 채용담당자 연락처 */}
-            <div className="flex flex-col gap-2">
-              <h2 className="text-xl text-primary font-semibold mb-2">채용담당자 연락처</h2>
-              <div className="grid grid-cols-[auto_1fr] gap-y-4 gap-x-10">
-                <p>담당자</p>
-                <p className="font-bold">{JOB_DETAIL_TEXT.contact.name}</p>
-                <p>전화</p>
-                <p className="font-bold">{JOB_DETAIL_TEXT.contact.phone}</p>
-              </div>
-            </div>
+            <JobDetailSection
+              title="채용담당자 연락처"
+              items={[
+                { label: "담당자", value: contact.name },
+                { label: "전화", value: contact.phone },
+              ]}
+            />
 
-            <div className="h-2 bg-gray-z "></div>
+            <SectionDivider />
 
             {/* 지원하기 버튼 */}
             <div className="text-center py-6 sticky bottom-0 bg-white z-10">
