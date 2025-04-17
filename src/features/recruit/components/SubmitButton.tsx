@@ -1,12 +1,10 @@
 "use client";
 
-// 🧾 props 타입 정의
 interface SubmitProps {
   disabled: boolean;
-  mode: "new" | "edit"; // 등록 or 수정 구분
+  mode: "new" | "edit";
 }
 
-// 📦 버튼 컴포넌트
 const SubmitButton = ({ disabled, mode }: SubmitProps) => {
   return (
     <button
@@ -21,6 +19,7 @@ const SubmitButton = ({ disabled, mode }: SubmitProps) => {
       {mode === "new" ? "채용공고 등록" : "채용공고 수정"}
     </button>
   );
-};
+}
 
 export default SubmitButton;
+

@@ -1,20 +1,21 @@
 "use client";
 
 import { useState } from "react";
+import { useFormContext } from "react-hook-form";
 
 const Agreement = () => {
-  const [agreed, setAgreed] = useState(false);
+  const { register, watch } = useFormContext();
+  const agreed = watch("agreement");
   const [showTerms, setShowTerms] = useState(false);
 
   return (
-    <div className="flex flex-col gap-2 mt-4">
+    <div className="flex flex-col gap-2 mt-2">
       {/* 체크박스 */}
       <div className="flex items-center">
         <input
           id="agreement"
           type="checkbox"
-          checked={agreed}
-          onChange={(e) => setAgreed(e.target.checked)}
+          {...register("agreement")}
           className={`
           appearance-none w-4 h-4 border-2 rounded-sm
           mr-2 transition-colors
