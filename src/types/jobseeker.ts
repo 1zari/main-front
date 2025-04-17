@@ -1,22 +1,20 @@
-// 로그인 폼, 응답 데이터 타입
-export interface LoginRequest {
-  email: string;
-  password: string;
-}
-
-export interface LoginResponse {
-  accessToken: string;
-  user: User & {
-    createdAt: string;
-    updatedAt: string;
-  };
-}
-
-export type UserRole = "jobseeker" | "employer" | "admin";
-
-export interface User {
-  id: string;
+import { UserBase } from "./user";
+export interface JobSeekerUser extends UserBase {
+  role: "jobseeker";
   name: string;
-  email: string;
-  role: UserRole;
+}
+
+export interface JobSeekerProfile {
+  userId: string;
+  name: string;
+  gender?: string;
+  birthday?: string;
+  phone_number?: string;
+  interest?: string[];
+  wish_work_place?: string[];
+  purpose_subscription?: string[];
+  route?: string[];
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
 }

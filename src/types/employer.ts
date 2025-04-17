@@ -6,11 +6,6 @@ export interface EmployerUser extends UserBase {
   role: "employer";
 }
 
-export interface EmployerLoginResponse {
-  accessToken: string;
-  user: EmployerUser;
-}
-
 export interface EmployerProfile {
   companyId: string;
   company_name: string;
