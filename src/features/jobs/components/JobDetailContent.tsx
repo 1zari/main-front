@@ -1,6 +1,5 @@
 "use client";
 
-import SectionDivider from "@/components/ui/SectionDivider";
 import JobDetailSection from "@/features/jobs/components/JobDetailSection";
 import { JOB_DETAIL_TEXT } from "@/features/jobs/model/constants/jobDetailText";
 import { handleKakaoShare } from "@/utils/kakaoShare";
@@ -50,7 +49,6 @@ export default function JobDetailContent() {
                 { label: "근무요약", value: summary },
               ]}
             />
-            <SectionDivider />
 
             {/* 모집조건 */}
             <JobDetailSection
@@ -62,15 +60,12 @@ export default function JobDetailContent() {
                 { label: "모집인원", value: headcount },
               ]}
             />
-            <SectionDivider />
 
             {/* 근무지 */}
             <JobDetailSection title="근무지" items={[{ value: address }]} />
-            <SectionDivider />
 
             {/* 상세요강 */}
             <JobDetailSection title="상세요강" items={[{ value: description }]} />
-            <SectionDivider />
 
             {/* 채용담당자 연락처 */}
             <JobDetailSection
@@ -80,7 +75,6 @@ export default function JobDetailContent() {
                 { label: "전화", value: contact.phone },
               ]}
             />
-            <SectionDivider />
 
             {/* 지원하기 버튼 */}
             <div className="text-center py-6 sticky bottom-0 bg-white z-10">

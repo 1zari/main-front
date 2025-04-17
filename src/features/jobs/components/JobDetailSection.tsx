@@ -1,3 +1,4 @@
+import SectionDivider from "@/components/ui/SectionDivider";
 import React from "react";
 
 interface JobDetailSectionProps {
@@ -10,9 +11,8 @@ interface JobDetailSectionProps {
 
 export default function JobDetailSection({ title, items }: JobDetailSectionProps) {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-4 mb-2">
       <h2 className="text-xl text-primary font-semibold mb-2">{title}</h2>
-
       {title === "상세요강" ? (
         <div className="flex flex-col gap-2">
           <p className="whitespace-pre-line text-gray-700">{items[0].value}</p>
@@ -43,7 +43,8 @@ export default function JobDetailSection({ title, items }: JobDetailSectionProps
             </React.Fragment>
           ))}
         </div>
-      )}
+      )}{" "}
+      <SectionDivider />
     </div>
   );
 }
