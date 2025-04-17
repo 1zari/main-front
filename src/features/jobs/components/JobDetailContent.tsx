@@ -22,6 +22,8 @@ export default function JobDetailContent() {
     address,
     description,
     contract,
+    work_times,
+    work_days,
   } = JOB_DETAIL_TEXT;
 
   const bottomButtonRef = useRef<HTMLDivElement>(null);
@@ -67,6 +69,8 @@ export default function JobDetailContent() {
                 { label: "급여", value: salary },
                 { label: "고용형태", value: contract },
                 { label: "근무요약", value: summary },
+                { label: "근무요일", value: work_days },
+                { label: "근무시간", value: work_times },
               ]}
             />
             <JobDetailSection
