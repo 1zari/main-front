@@ -19,7 +19,7 @@ export default function SelectedChips() {
         {selectedFilters.map((filter, index) => (
           <div
             key={`${filter}-${index}`}
-            className="flex items-center bg-gray-200 px-3 py-1 rounded-full text-gray-700"
+            className="flex items-center bg-gray-200 px-3 py-1 mb-3 rounded-full text-gray-700"
           >
             {" "}
             <Heading sizeOffset={-1}> {filter}</Heading>
@@ -69,16 +69,19 @@ export default function SelectedChips() {
           </div>
         ))}
       </div>
-      <div className="flex justify-end mt-4 mb-4">
+      <div className="flex justify-center gap-4 mt-4 mb-4">
         <button
           type="button"
           onClick={() => resetFilters()}
-          className="group flex justify-center items-center gap-2 border px-4 py-2 rounded-md text-sm text-gray-800 cursor-pointer"
+          className="w-32 group flex justify-center items-center border gap-2  px-4 py-2 rounded-md text-sm text-gray-800 cursor-pointer"
         >
           <span className="group-hover:rotate-180 transform transition-transform duration-300">
             <IoMdRefresh />
           </span>
           초기화
+        </button>
+        <button className="w-44 md:w-32 grid-rows-5 bg-primary text-white  px-2 py-3 rounded-md flex justify-center items-center gap-2">
+          검색하기
         </button>
       </div>
     </>

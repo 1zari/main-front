@@ -64,9 +64,10 @@ export default function JobFilter() {
                 <FaCaretDown />
               </span>
             </button>
-            <button className="w-full bg-primary text-white px-2 py-3 rounded-md flex justify-center items-center gap-2">
+
+            {/* <button className="w-full bg-primary text-white px-2 py-3 rounded-md flex justify-center items-center gap-2">
               검색하기
-            </button>
+            </button> */}
           </div>
           {showLocation && <FilterLocation />}
           {showJobs && <FilterJobs />}
