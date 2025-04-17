@@ -4,9 +4,9 @@ import { useState } from "react";
 import { UseFormRegister, FieldErrors } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { FindUserPasswordFormValues } from "@/features/auth-user/model/validation/user-auth.schema";
-import { FindCompanyPasswordFormValues } from "@/features/auth-company/model/validation/company-auth.schema";
-import AuthTypeTabs from "../components/AuthTypeTabs";
+import { FindUserPasswordFormValues } from "@/features/auth-user/validation/user-auth.schema";
+import { FindCompanyPasswordFormValues } from "@/features/auth-company/validation/company-auth.schema";
+import AuthTypeTabs from "@/features/auth-common/components/AuthTypeTabs";
 
 interface FindPasswordBaseFormProps {
   type: "user" | "company";

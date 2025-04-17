@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { LOGIN_CONFIG } from "../constants/auth.config";
+import { LOGIN_CONFIG } from "@/features/auth-common/constants/auth.config";
 
 export type LoginTab = keyof typeof LOGIN_CONFIG;
 

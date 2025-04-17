@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   findCompanyPasswordSchema,
   FindCompanyPasswordFormValues,
-} from "@/features/auth-company/model/validation/company-auth.schema";
+} from "@/features/auth-company/validation/company-auth.schema";
 import FindPasswordBaseForm from "@/features/auth-common/ui/baseForms/FindPasswordBaseForm";
 
 export default function CompanyFindPasswordForm() {

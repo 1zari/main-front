@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { LoginResponse } from "./types";
+import { LoginResponse } from "@/types/jobseeker";
 
 interface LoginState {
   token: string | null;

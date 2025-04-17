@@ -1,7 +1,10 @@
 "use client";
 import { useForm, useFormContext, FormProvider, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { companySignupSchema, CompanyFormValues } from "@/features/auth-company/model/validation/company-auth.schema";
+import {
+  companySignupSchema,
+  CompanyFormValues,
+} from "@/features/auth-company/validation/company-auth.schema";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -32,7 +35,6 @@ export default function SignupStepTwoCompany({ onSubmit }: Props) {
       companyLogo: undefined,
     },
   });
-  
 
   const repName = methods.watch("representativeName");
   const businessNumber = methods.watch("businessNumber");
@@ -62,7 +64,10 @@ export default function SignupStepTwoCompany({ onSubmit }: Props) {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)} className="flex flex-col items-center space-y-8">
+      <form
+        onSubmit={methods.handleSubmit(onSubmit)}
+        className="flex flex-col items-center space-y-8"
+      >
         <h2 className="text-2xl font-semibold">기업 회원 정보</h2>
 
         <div className="w-full max-w-[700px] space-y-6">
@@ -191,11 +196,11 @@ type InputProps = {
   name: keyof CompanyFormValues;
   type?: string;
   placeholder?: string;
-  register: ReturnType<typeof useForm<CompanyFormValues>>['register'];
+  register: ReturnType<typeof useForm<CompanyFormValues>>["register"];
   error?: string;
 };
 
-function Input({ label, name, type = 'text', placeholder, register, error }: InputProps) {
+function Input({ label, name, type = "text", placeholder, register, error }: InputProps) {
   return (
     <div>
       <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg">{label}</label>
@@ -216,7 +221,7 @@ type InputWithButtonProps = {
   placeholder?: string;
   buttonText: string;
   onButtonClick: () => void;
-  register: ReturnType<typeof useForm<CompanyFormValues>>['register'];
+  register: ReturnType<typeof useForm<CompanyFormValues>>["register"];
   error?: string;
 };
 
@@ -333,13 +338,17 @@ function FileUpload({ name, label, error }: FileUploadProps) {
   );
 }
 
-
-
-function TextArea({ label, name, placeholder, register, error }: {
+function TextArea({
+  label,
+  name,
+  placeholder,
+  register,
+  error,
+}: {
   label: string;
   name: keyof CompanyFormValues;
   placeholder?: string;
-  register: ReturnType<typeof useForm<CompanyFormValues>>['register'];
+  register: ReturnType<typeof useForm<CompanyFormValues>>["register"];
   error?: string;
 }) {
   return (

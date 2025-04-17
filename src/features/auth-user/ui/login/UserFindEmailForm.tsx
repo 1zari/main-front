@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   findUserEmailSchema,
   FindUserEmailFormValues,
-} from "@/features/auth-user/model/validation/user-auth.schema";
+} from "@/features/auth-user/validation/user-auth.schema";
 import FindEmailBaseForm from "@/features/auth-common/ui/baseForms/FindEmailBaseForm";
 import { MOCK_USER } from "@/features/auth-common/mock/auth.mock";
 
