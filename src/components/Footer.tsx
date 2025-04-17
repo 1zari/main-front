@@ -16,9 +16,7 @@ export default function Footer() {
               <a href="/privacy" className="text-gray-400 hover:text-white">
                 개인정보 처리방침
               </a>
-              <a href="/privacy" className="text-gray-400 hover:text-white">
-                광고문의
-              </a>
+
               <a href="/privacy" className="text-gray-400 hover:text-white">
                 제휴문의
               </a>
@@ -31,12 +29,11 @@ export default function Footer() {
         <div className="bg-gray-900 text-white py-2">
           <div className="container mx-auto text-center">
             <p className="text-xs">
-              시니어내일은 시니어를 위한 일자리 플랫폼입니다. 더 나은 내일을
-              위해 함께합니다.
+              시니어내일은 시니어를 위한 일자리 플랫폼입니다. 더 나은 내일을 위해 함께합니다.
             </p>
           </div>
         </div>
       </footer>
     </>
-  )
+  );
 }

@@ -1,14 +1,14 @@
 "use client";
 
-import { useSelectedFilterStore } from "@/stores/useJobFilterStore";
 import { useState } from "react";
 
 import { JOB_CATEGORIES } from "@/constants/jobCategories";
+import { useSelectedFilterStore } from "@/features/jobs/stores/job-filters/useSelectedFiltersStore";
 
 export default function JobCategoryFilter() {
   const { checkedJobs, setCheckedJobs, addSelectedFilter, removeSelectedFilter } =
     useSelectedFilterStore();
-  const [selectedCategory, setSelectedCategory] = useState("돌봄 서비스직(간병·육아)");
+  const [selectedCategory, setSelectedCategory] = useState("외식·음료");
 
   const toggleCheck = (item: string) => {
     const isSelected = checkedJobs.includes(item);
@@ -55,7 +55,7 @@ export default function JobCategoryFilter() {
 
   return (
     <div className="flex border rounded-md rounded-t-none bg-white overflow-hidden">
-      {/* Left: Job categories */}
+      {/* 대분류*/}
       <div className="w-70 max-h-80 border-r overflow-y-auto p-2 scroll-auto">
         {Object.keys(JOB_CATEGORIES).map((category) => (
           <div
@@ -70,8 +70,8 @@ export default function JobCategoryFilter() {
         ))}
       </div>
 
-      {/* Right: Subcategories */}
-      <div className="grid grid-col gap-x-2 gap-y-3 p-4 w-full h-full overflow-y-auto">
+      {/* 중분류 */}
+      <div className="grid grid-col max-h-80 gap-x-2 gap-y-3 p-4 w-full h-full overflow-y-auto">
         {(JOB_CATEGORIES[selectedCategory] || []).map((item) => (
           <label key={item} className="flex items-start gap-2">
             <input

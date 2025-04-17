@@ -1,3 +1,4 @@
+"use client";
 import { useFontSize } from "@/hooks/useFontSize";
 import { getFontSizeWithOffset } from "@/utils/fontSize";
 

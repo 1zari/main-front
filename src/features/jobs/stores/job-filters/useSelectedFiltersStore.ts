@@ -1,40 +1,9 @@
+import { REGIONS } from "@/constants/regions";
+import { formatFilterValue, formatWorkDays } from "@/utils/filters";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { REGIONS } from "../constants/regions";
 
-type FilterTabStore = {
-  showLocation: boolean;
-  showJobs: boolean;
-  showOtherConditions: boolean;
-  setShowLocation: (value: boolean) => void;
-  setShowJobs: (value: boolean) => void;
-  setShowOtherConditions: (value: boolean) => void;
-};
-
-export const useFilterTabStore = create<FilterTabStore>((set) => ({
-  showLocation: false,
-  showJobs: false,
-  showOtherConditions: false,
-  setShowLocation: (value) =>
-    set(() => ({
-      showLocation: value,
-      showJobs: false,
-      showOtherConditions: false,
-    })),
-  setShowJobs: (value) =>
-    set(() => ({
-      showJobs: value,
-      showLocation: false,
-      showOtherConditions: false,
-    })),
-  setShowOtherConditions: (value) =>
-    set(() => ({
-      showOtherConditions: value,
-      showLocation: false,
-      showJobs: false,
-    })),
-}));
-
+// 타입 정의
 type FilterSelectedStore = {
   selectedFilters: string[];
   addSelectedFilter: (filter: string) => void;
@@ -48,13 +17,13 @@ type FilterSelectedStore = {
   setSelectedDays: (value: string[]) => void;
   dayNegotiable: boolean;
   setDayNegotiable: (value: boolean) => void;
-  toggleDay: (day: string) => void; // Added toggleDay function signature
+  toggleDay: (day: string) => void;
   toggleDistrict: (
     district: string,
     selectedRegion: string,
     checkedDistricts: string[],
     setCheckedDistricts: (value: string[]) => void,
-  ) => void; // Added toggleDistrict function signature
+  ) => void;
 };
 
 export const useSelectedFilterStore = create<FilterSelectedStore>()(
@@ -66,10 +35,13 @@ export const useSelectedFilterStore = create<FilterSelectedStore>()(
           selectedFilters: [...state.selectedFilters, filter],
         })),
       removeSelectedFilter: (filter) => {
+        const isLocationFilter = filter.includes(":") && REGIONS[filter.split(":")[0]];
+
         set((state) => ({
           selectedFilters: state.selectedFilters.filter((f) => f !== filter),
         }));
-        if (filter.includes(":")) {
+
+        if (isLocationFilter) {
           const [region] = filter.split(":");
           const rest = get().selectedFilters.filter((f) => !f.startsWith(`${region}:`));
           const updatedLocationChecked = get().locationChecked.filter((d) => !filter.includes(d));
@@ -86,15 +58,17 @@ export const useSelectedFilterStore = create<FilterSelectedStore>()(
       setCheckedJobs: (value) => set({ checkedJobs: value }),
       selectedDays: [],
       setSelectedDays: (value) => set({ selectedDays: value }),
+
       dayNegotiable: false,
       setDayNegotiable: (value) => set({ dayNegotiable: value }),
+
       toggleDay: (day: string) => {
         const currentDays = get().selectedDays;
         const isSelected = currentDays.includes(day);
         const updated = isSelected ? currentDays.filter((d) => d !== day) : [...currentDays, day];
         set({ selectedDays: updated });
 
-        const label = `근무요일: ${updated.join(",")}`;
+        const label = formatWorkDays(updated);
         const filters = get().selectedFilters.filter((f) => !f.startsWith("근무요일:"));
         set({
           selectedFilters: updated.length > 0 ? [...filters, label] : filters,
@@ -119,7 +93,7 @@ export const useSelectedFilterStore = create<FilterSelectedStore>()(
 
         if (district.endsWith("전체") && checkedDistricts.includes(district)) {
           updated = checkedDistricts.filter((d) => d !== district);
-          const filters = get().selectedFilters.filter((f) => !f.startsWith(`${selectedRegion}:`));
+          const filters = get().selectedFilters.filter((f) => !f.startsWith(formatFilterValue(selectedRegion, "")));
           setCheckedDistricts(updated);
           get().setLocationChecked(updated);
           useSelectedFilterStore.setState({
@@ -128,7 +102,7 @@ export const useSelectedFilterStore = create<FilterSelectedStore>()(
           return;
         }
 
-        const label = `${selectedRegion}: ${district}`;
+        const label = formatFilterValue(selectedRegion, district);
         const filters = get().selectedFilters.filter((f) => !f.startsWith(`${selectedRegion}:`));
         setCheckedDistricts(updated);
         get().setLocationChecked(updated);

@@ -12,16 +12,16 @@ export default function Home() {
 
       <JobSearch />
       <div className="w-full bg-gray-z">
-        <LandingReview />
-      </div>
-      <div className="w-full bg-white ">
-        <LandingPartnerCompany />
-      </div>
-      <div className="w-full bg-gray-z">
         <JobsArea />
       </div>
       <div className="w-full bg-white">
         <SavedJobsArea />
+      </div>
+      <div className="w-full bg-gray-z">
+        <LandingReview />
+      </div>
+      <div className="w-full bg-white ">
+        <LandingPartnerCompany />
       </div>
     </main>
   );
