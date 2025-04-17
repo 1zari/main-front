@@ -2,7 +2,7 @@
 import { useState } from "react";
 import SignupStepOneForm from "@/features/auth-common/ui/signup/CommonSignupStepOneForm";
 import SignupStepTwoUser, { UserStepTwoValues } from "@/features/auth-user/ui/signup/UserSignupStepTwoForm";
-import { SignupFormValues } from "@/features/auth-common/model/validation";
+import { SignupFormValues } from "@/features/auth-common/model/validation/signup-auth.schema";
 
 export default function UserSignup() {
   const [step, setStep] = useState<1 | 2>(1);
