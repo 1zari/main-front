@@ -1,7 +1,7 @@
 "use client";
 import { useForm, useFormContext, FormProvider, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { companySchema, CompanyFormValues } from "@/features/auth-company/model/validation/companySignup";
+import { companySignupSchema, CompanyFormValues } from "@/features/auth-company/model/validation/company-auth.schema";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -16,7 +16,7 @@ type Props = {
 
 export default function SignupStepTwoCompany({ onSubmit }: Props) {
   const methods = useForm<CompanyFormValues>({
-    resolver: zodResolver(companySchema),
+    resolver: zodResolver(companySignupSchema),
     mode: "onBlur",
     defaultValues: {
       companyName: "",

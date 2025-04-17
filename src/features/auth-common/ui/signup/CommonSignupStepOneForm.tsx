@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm, UseFormRegister } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
-import { signupSchema, SignupFormValues } from "@/features/auth-common/model/validation";
+import { signupSchema, SignupFormValues } from "@/features/auth-common/model/validation/signup-auth.schema";
 
 type Props = {
   onNext: (data: SignupFormValues) => void;

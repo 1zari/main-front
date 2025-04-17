@@ -1,12 +1,11 @@
 "use client";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { userSchema, UserFormValues } from "@/features/auth-user/model/validation";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
-import { userSchema, UserFormValues } from "@/features/auth-user/model/validation/login";
+import { userSignupSchema, UserFormValues } from "@/features/auth-user/model/validation/user-auth.schema";
 
 export type UserStepTwoValues = UserFormValues;
 
@@ -23,7 +22,7 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
     setError,
     formState: { errors },
   } = useForm<UserFormValues>({
-    resolver: zodResolver(userSchema),
+    resolver: zodResolver(userSignupSchema),
     defaultValues: {
       name: "",
       phone: "",
@@ -41,30 +40,12 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center space-y-8">
       <h2 className="text-2xl font-semibold">회원 정보</h2>
       <div className="w-full max-w-[700px] space-y-6">
-<<<<<<< HEAD
-        <Input 
-          label="이름" 
-          name="name" 
-          placeholder="김오즈" 
-          register={register} 
-          error={errors.name?.message} 
-=======
         <Input
           label="이름"
           name="name"
           placeholder="김오즈"
           register={register}
           error={errors.name?.message}
-        />
-
-        <Input
-          label="생년월일"
-          name="birth"
-          type="date"
-          placeholder="YYYY-MM-DD"
-          register={register}
-          error={errors.birth?.message}
->>>>>>> develop
         />
 
         <div className="w-full">
@@ -77,8 +58,8 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
                 <DatePicker
                   selected={field.value ? new Date(field.value) : null}
                   onChange={(date: Date | null) => {
-                    const formatted = date?.toISOString().split("T")[0] || "";
-                    field.onChange(formatted);
+                    const formatted = date?.toISOString().split("T")[0] || ""
+                    field.onChange(formatted)
                   }}
                   dateFormat="yyyy-MM-dd"
                   placeholderText="입력란을 클릭하여 달력에서 생년월일을 선택해 주세요."
@@ -86,6 +67,8 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
                   maxDate={new Date()}
                   showMonthDropdown
                   showYearDropdown
+                  scrollableYearDropdown
+                  yearDropdownItemNumber={100}
                   dropdownMode="select"
                   className="w-full h-[60px] pr-12 pl-4 rounded bg-white placeholder:text-gray-400 border border-gray-300 focus:outline-none focus:border-2 focus:border-primary block"
                   wrapperClassName="w-full"
