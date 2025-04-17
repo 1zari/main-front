@@ -9,7 +9,7 @@ export default function JobsNav() {
   const selectedNavBtnClassName = "text-primary font-semibold";
   return (
     <>
-      <nav className="bg-gray-z text-black p-4 sticky top-0 z-10">
+      <nav className="bg-gray-z text-black p-4 sticky top-0 z-10 ">
         <ul className="flex flex-wrap justify-center gap-5">
           <li className="flex items-center">
             <Link
@@ -48,7 +48,7 @@ export default function JobsNav() {
             </Link>
           </li>
           <li className="flex items-center">
-            <button className="bg-white p-2 rounded-full flex items-center justify-center w-8 h-8">
+            <button className="bg-white p-2 rounded-full shadow-sm flex items-center justify-center w-8 h-8">
               <FiSearch size={18} />
             </button>
           </li>
