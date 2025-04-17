@@ -3,6 +3,7 @@
 const LocationServiceTerms = () => {
   return (
     <div className="m-1 text-gray-700 text-sm">
+      <h2 className="font-bold mb-4 p-1 border-b-1">시니어내일 위치기반서비스 이용약관</h2>
       <section className="m-1">
         <h2 className="font-bold">제1조 (목적)</h2>
         <div>
