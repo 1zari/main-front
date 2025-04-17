@@ -58,7 +58,7 @@ export default function FindEmailBaseForm({
 
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
-      <div className="w-[600px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full sm:w-[600px] mx-auto px-4 sm:px-6 lg:px-8">
         <form onSubmit={onSubmit} className="bg-white rounded-lg shadow-md">
           <div className="p-6 sm:p-8">
             <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8">
