@@ -50,7 +50,6 @@ export default function JobDetailContent() {
                 { label: "근무요약", value: summary },
               ]}
             />
-
             <SectionDivider />
 
             {/* 모집조건 */}
@@ -63,26 +62,14 @@ export default function JobDetailContent() {
                 { label: "모집인원", value: headcount },
               ]}
             />
-
             <SectionDivider />
 
             {/* 근무지 */}
-            <div className="flex flex-col gap-2">
-              <h2 className="text-xl text-primary font-semibold mb-2">근무지</h2>
-              <p>{address}</p>
-              <div className="w-full h-48 bg-gray-100 flex items-center justify-center text-gray-500">
-                지도 영역
-              </div>
-            </div>
-
+            <JobDetailSection title="근무지" items={[{ value: address }]} />
             <SectionDivider />
 
             {/* 상세요강 */}
-            <div className="flex flex-col gap-2">
-              <h2 className="text-xl text-primary font-semibold mb-2">상세요강</h2>
-              <p className="whitespace-pre-line text-sm text-gray-700">{description}</p>
-            </div>
-
+            <JobDetailSection title="상세요강" items={[{ value: description }]} />
             <SectionDivider />
 
             {/* 채용담당자 연락처 */}
@@ -93,7 +80,6 @@ export default function JobDetailContent() {
                 { label: "전화", value: contact.phone },
               ]}
             />
-
             <SectionDivider />
 
             {/* 지원하기 버튼 */}
