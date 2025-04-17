@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   findUserPasswordSchema,
   FindUserPasswordFormValues,
-} from "@/features/auth-user/model/validation/user-auth.schema";
+} from "@/features/auth-user/validation/user-auth.schema";
 import FindPasswordBaseForm from "@/features/auth-common/ui/baseForms/FindPasswordBaseForm";
 
 export default function UserFindPasswordForm() {

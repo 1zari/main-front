@@ -4,9 +4,9 @@ import { Copy, Check } from "lucide-react";
 import { useState } from "react";
 import { UseFormRegister, FieldErrors } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import AuthTypeTabs from "../components/AuthTypeTabs";
-import { FindUserEmailFormValues } from "@/features/auth-user/model/validation/user-auth.schema";
-import { FindCompanyEmailFormValues } from "@/features/auth-company/model/validation/company-auth.schema";
+import AuthTypeTabs from "@/features/auth-common/components/AuthTypeTabs";
+import { FindUserEmailFormValues } from "@/features/auth-user/validation/user-auth.schema";
+import { FindCompanyEmailFormValues } from "@/features/auth-company/validation/company-auth.schema";
 
 type FindEmailFormValues = {
   name?: string;

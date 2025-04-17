@@ -5,7 +5,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
-import { userSignupSchema, UserFormValues } from "@/features/auth-user/model/validation/user-auth.schema";
+import { userSignupSchema, UserFormValues } from "@/features/auth-user/validation/user-auth.schema";
 
 export type UserStepTwoValues = UserFormValues;
 
@@ -27,14 +27,14 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
       name: "",
       phone: "",
       verifyCode: "",
-      birth: "", 
+      birth: "",
       gender: undefined,
       preferredLocation: "",
       interests: [],
       purposes: [],
       channels: [],
     },
-  });  
+  });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center space-y-8">
@@ -58,8 +58,8 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
                 <DatePicker
                   selected={field.value ? new Date(field.value) : null}
                   onChange={(date: Date | null) => {
-                    const formatted = date?.toISOString().split("T")[0] || ""
-                    field.onChange(formatted)
+                    const formatted = date?.toISOString().split("T")[0] || "";
+                    field.onChange(formatted);
                   }}
                   dateFormat="yyyy-MM-dd"
                   placeholderText="입력란을 클릭하여 달력에서 생년월일을 선택해 주세요."
@@ -323,7 +323,9 @@ const ControlledCheckboxGroup = ({
 
         return (
           <div className="mb-12">
-            <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg whitespace-normal break-keep">{label}</label>
+            <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg whitespace-normal break-keep">
+              {label}
+            </label>
             <div className="grid grid-cols-1 min-[500px]:grid-cols-2 sm:grid-cols-3 gap-3">
               {options.map((option, idx) => {
                 const isChecked = selected.includes(option);
@@ -334,7 +336,9 @@ const ControlledCheckboxGroup = ({
                     className={`flex items-center justify-between gap-2 px-4 py-[14px] min-w-[160px] h-auto rounded cursor-pointer font-medium border transition break-words text-center
                       ${isChecked ? "bg-primary text-white border-primary" : "bg-white text-gray-700 border-gray-300"}`}
                   >
-                    <span className="leading-tight flex items-center justify-center text-center w-full h-full whitespace-normal break-keep">{option}</span>
+                    <span className="leading-tight flex items-center justify-center text-center w-full h-full whitespace-normal break-keep">
+                      {option}
+                    </span>
                     <input
                       type="checkbox"
                       value={option}
