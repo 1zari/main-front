@@ -23,7 +23,7 @@ export default function Home() {
       <div className="w-full bg-white ">
         <LandingPartnerCompany />
       </div>
-      <div className="fixed bottom-4 z-999 right-4 z-50">
+      <div className="fixed bottom-4 z-999 right-4 ">
         <VoiceInput />
       </div>
     </main>
