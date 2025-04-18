@@ -72,9 +72,11 @@ export async function POST(req: Request) {
 
   const data = await openaiRes.json();
   const text = data.choices?.[0]?.message?.content ?? "[]";
-  console.log("🧠 GPT 응답 원문:", data);
-  console.log("🧠 GPT 응답 원문:", text);
-  console.log("keywords",keywordList)
+  if (process.env.NODE_ENV !== "production") {
+    console.log("🧠 GPT 응답 원문:", data);
+    console.log("🧠 GPT 응답 원문:", text);
+    console.log("keywords", keywordList);
+  }
   let keywords: string[] = [];
 
   try {
