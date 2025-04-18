@@ -84,13 +84,28 @@ export default function JobDetailContent() {
             />
             <JobDetailSection title="근무지" items={[{ value: address }]} />
             <JobDetailSection title="상세요강" items={[{ value: description }]} />
-            <JobDetailSection
-              title="채용담당자 연락처"
-              items={[
-                { label: "담당자", value: contact.name },
-                { label: "전화", value: contact.phone },
-              ]}
-            />
+            <div>
+              {" "}
+              <JobDetailSection
+                title="채용담당자 연락처"
+                items={[
+                  { label: "회사명", value: company },
+                  {
+                    label: "로고",
+                    value: (
+                      <img
+                        src={company_image_url}
+                        alt="회사 로고"
+                        className="rounded object-contain w-24 h-24"
+                      />
+                    ),
+                  },
+                  { label: "담당자", value: contact.name },
+                  { label: "전화", value: contact.phone },
+                ]}
+              />
+            </div>
+
             <StikyApplyKakaoShareButton isBottomVisible={isBottomVisible} />
             <div ref={bottomButtonRef}>
               <ApplyButton />

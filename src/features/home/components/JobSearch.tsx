@@ -1,12 +1,21 @@
+"use client";
+
+import SearchPage from "@/components/SearchPage";
+import { useState } from "react";
 import { IoSearchSharp } from "react-icons/io5";
 export default function JobSearch() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <>
       <section className="w-full max-w-7xl  mx-auto my-8 px-4">
         <div className="flex flex-col mb-6 items-center">
           <h2 className="text-2xl font-semibold py-6">일자리, 손쉽게 찾아볼까요?⚡️</h2>
           <div className="w-full max-w-2xl flex gap-2 mt-4 justify-between items-center">
-            <button className="w-full max-w-2xl border border-gray-300 px-4 py-3 rounded-md flex justify-between items-center text-gray-500 hover:shadow-md transition-shadow">
+            <button
+              onClick={() => setIsOpen(true)}
+              className="w-full max-w-2xl border border-gray-300 px-4 py-3 rounded-md flex justify-between items-center text-gray-500 hover:shadow-md transition-shadow"
+            >
               관심있는 일자리를 알려주세요.
               <span className="text-lg">
                 <IoSearchSharp />
@@ -38,6 +47,19 @@ export default function JobSearch() {
           </div>
         </div>
       </section>
+      {isOpen && (
+        <div className="fixed inset-0 z-9999 flex justify-center items-end bg-black/40 backdrop-blur-sm">
+          <div className="w-full h-full  bg-white rounded-t-2xl p-4 animate-slide-up shadow-lg">
+            <button
+              onClick={() => setIsOpen(false)}
+              className="text-sm text-gray-400 mb-4 float-right"
+            >
+              닫기 ✕
+            </button>
+            <SearchPage />
+          </div>
+        </div>
+      )}
     </>
   );
 }

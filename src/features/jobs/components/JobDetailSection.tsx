@@ -30,7 +30,7 @@ export default function JobDetailSection({ title, items }: JobDetailSectionProps
         <div className="grid grid-cols-[auto_1fr] gap-y-4 gap-x-10">
           {items.map((item, index) => (
             <React.Fragment key={index}>
-              {item.label && <p>{item.label}</p>}
+              {item.label && <p className="text-gray-500">{item.label}</p>}
               <p className="font-bold">
                 {item.label === "전화" && typeof item.value === "string" ? (
                   <a href={`tel:${item.value}`} className="underline">
@@ -43,7 +43,7 @@ export default function JobDetailSection({ title, items }: JobDetailSectionProps
             </React.Fragment>
           ))}
         </div>
-      )}{" "}
+      )}
       <SectionDivider />
     </div>
   );
