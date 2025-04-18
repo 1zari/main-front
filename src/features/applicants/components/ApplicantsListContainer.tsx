@@ -9,6 +9,7 @@ export default function ApplicantsListContainer() {
   const router = useRouter();
   const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [showUnreadOnly, setShowUnreadOnly] = useState(false);
+  const [selectedJobTitle, setSelectedJobTitle] = useState("채용공고 전체");
   const applicants = Applicants;
 
   return (
@@ -16,19 +17,31 @@ export default function ApplicantsListContainer() {
       <ApplicantsListControlArea
         showUnreadOnly={showUnreadOnly}
         setShowUnreadOnly={setShowUnreadOnly}
+        selectedJobTitle={selectedJobTitle}
+        setSelectedJobTitle={setSelectedJobTitle}
       />
       <div></div>
       <p className="text-gray-500 mb-2">
         총 {""}
         <span className="text-primary">
-          {applicants.filter((applicant) => !showUnreadOnly || !applicant.isRead).length}
+          {
+            applicants.filter(
+              (applicant) =>
+                (!showUnreadOnly || !applicant.isRead) &&
+                (selectedJobTitle === "채용공고 전체" || applicant.jobTitle === selectedJobTitle),
+            ).length
+          }
         </span>
         건의 지원서
       </p>
       <section>
         <div className="border rounded-md divide-y">
           {applicants
-            .filter((applicant) => !showUnreadOnly || !applicant.isRead)
+            .filter(
+              (applicant) =>
+                (!showUnreadOnly || !applicant.isRead) &&
+                (selectedJobTitle === "채용공고 전체" || applicant.jobTitle === selectedJobTitle),
+            )
             .map((applicant) => (
               <div
                 key={applicant.id}

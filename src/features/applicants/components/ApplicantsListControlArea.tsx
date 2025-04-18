@@ -1,13 +1,30 @@
-export default function ApplicantsListControlArea({ showUnreadOnly, setShowUnreadOnly }: Props) {
+interface Props {
+  showUnreadOnly: boolean;
+  setShowUnreadOnly: (value: boolean) => void;
+  selectedJobTitle: string;
+  setSelectedJobTitle: (value: string) => void;
+}
+import { Applicants } from "../data/mockApplicants";
+
+export default function ApplicantsListControlArea({
+  showUnreadOnly,
+  setShowUnreadOnly,
+  selectedJobTitle,
+  setSelectedJobTitle,
+}: Props) {
   return (
     <>
       <div className="flex flex-col md:flex-row gap-3 justify-between">
         <div className="flex items-center gap-4">
-          <select className="w-full border px-3 py-2 rounded-md">
+          <select
+            className="w-full border px-3 py-2 rounded-md"
+            value={selectedJobTitle}
+            onChange={(e) => setSelectedJobTitle(e.target.value)}
+          >
             <option>채용공고 전체</option>
-            <option>디자인 인턴</option>
-            <option>프론트엔드 개발자</option>
-            <option>운영 지원</option>
+            {Array.from(new Set(Applicants.map((a) => a.jobTitle))).map((title) => (
+              <option key={title}>{title}</option>
+            ))}
           </select>
         </div>
         <div className="flex justify-end gap-4">

@@ -4,7 +4,7 @@ export const Applicants = [
     name: "홍길동",
     date: "2025-04-10",
     coverLetter: "저는 디자인에 진심인 사람입니다...",
-    jobTitle: "[주말 단기] 시니어 대상 편의점 안내 및 정리",
+    jobTitle: "[오전반] 상담실 안내",
     isRead: true,
   },
   {
@@ -12,7 +12,7 @@ export const Applicants = [
     name: "김개발",
     date: "2025-04-08",
     coverLetter: "React와 Next.js를 다룰 수 있습니다...",
-    jobTitle: "[평일 오전] 시니어 대상 편의점 안내 및 정리",
+    jobTitle: "[단기] 행사장 접수 및 안내",
     isRead: false,
   },
   {
@@ -20,7 +20,7 @@ export const Applicants = [
     name: "이지원",
     date: "2025-04-07",
     coverLetter: "고객 응대에 자신이 있습니다.",
-    jobTitle: "[오후 반일] 안내 및 정리 요원",
+    jobTitle: "[주말] 마트 계산원 보조",
     isRead: true,
   },
   {
@@ -28,7 +28,7 @@ export const Applicants = [
     name: "박성민",
     date: "2025-04-06",
     coverLetter: "근면 성실하게 일하겠습니다.",
-    jobTitle: "[주말 전일] 안내 및 환경 정비",
+    jobTitle: "[오전반] 상담실 안내",
     isRead: false,
   },
   {
@@ -36,7 +36,7 @@ export const Applicants = [
     name: "최유정",
     date: "2025-04-05",
     coverLetter: "고령자와의 소통이 자연스럽습니다.",
-    jobTitle: "[평일 전일] 안내 도우미",
+    jobTitle: "[단기] 행사장 접수 및 안내",
     isRead: false,
   },
   {
@@ -44,7 +44,7 @@ export const Applicants = [
     name: "정지훈",
     date: "2025-04-04",
     coverLetter: "팀워크와 책임감 있는 태도가 장점입니다.",
-    jobTitle: "[단기] 시니어 문화행사 안내",
+    jobTitle: "[주말] 마트 계산원 보조",
     isRead: true,
   },
   {
@@ -52,7 +52,7 @@ export const Applicants = [
     name: "한예린",
     date: "2025-04-03",
     coverLetter: "매장 관리 경험이 있습니다.",
-    jobTitle: "[단기] 마트 매장 지원",
+    jobTitle: "[오전반] 상담실 안내",
     isRead: false,
   },
   {
@@ -60,7 +60,7 @@ export const Applicants = [
     name: "윤정호",
     date: "2025-04-02",
     coverLetter: "시간 약속을 철저히 지킵니다.",
-    jobTitle: "[주말 단기] 카페 서빙 도우미",
+    jobTitle: "[단기] 행사장 접수 및 안내",
     isRead: false,
   },
   {
@@ -68,7 +68,7 @@ export const Applicants = [
     name: "김소영",
     date: "2025-04-01",
     coverLetter: "밝고 긍정적인 에너지로 일하겠습니다.",
-    jobTitle: "[단기] 실버타운 행사 지원",
+    jobTitle: "[주말] 마트 계산원 보조",
     isRead: true,
   },
   {
@@ -76,7 +76,7 @@ export const Applicants = [
     name: "오세훈",
     date: "2025-03-30",
     coverLetter: "전직 교사 경력을 살려 안내에 임하겠습니다.",
-    jobTitle: "[평일 오후] 방문객 안내 도우미",
+    jobTitle: "[오전반] 상담실 안내",
     isRead: false,
   },
   {
@@ -84,7 +84,7 @@ export const Applicants = [
     name: "장하늘",
     date: "2025-03-29",
     coverLetter: "조용히 맡은 바 임무를 수행하는 성격입니다.",
-    jobTitle: "[주말] 마트 계산원 보조",
+    jobTitle: "[단기] 행사장 접수 및 안내",
     isRead: true,
   },
   {
@@ -92,7 +92,7 @@ export const Applicants = [
     name: "김한결",
     date: "2025-03-28",
     coverLetter: "초보지만 열정은 누구보다 있습니다.",
-    jobTitle: "[단기] 행사장 접수 및 안내",
+    jobTitle: "[주말] 마트 계산원 보조",
     isRead: false,
   },
   {
@@ -100,7 +100,7 @@ export const Applicants = [
     name: "백수연",
     date: "2025-03-27",
     coverLetter: "자세한 설명과 안내가 가능합니다.",
-    jobTitle: "[주중 단기] 시니어 대상 프로그램 도우미",
+    jobTitle: "[오전반] 상담실 안내",
     isRead: false,
   },
   {
@@ -108,7 +108,7 @@ export const Applicants = [
     name: "이강민",
     date: "2025-03-26",
     coverLetter: "오랜 회사 생활로 커뮤니케이션 능력이 좋습니다.",
-    jobTitle: "[오전반] 상담실 안내",
+    jobTitle: "[단기] 행사장 접수 및 안내",
     isRead: true,
   },
   {
@@ -116,7 +116,7 @@ export const Applicants = [
     name: "조은비",
     date: "2025-03-25",
     coverLetter: "배려와 경청으로 응대하겠습니다.",
-    jobTitle: "[단기] 시니어 케어센터 안내",
+    jobTitle: "[주말] 마트 계산원 보조",
     isRead: false,
   },
   {
@@ -124,7 +124,7 @@ export const Applicants = [
     name: "남시우",
     date: "2025-03-24",
     coverLetter: "몸과 마음 모두 건강하게 일하고 싶습니다.",
-    jobTitle: "[주말 단기] 요양시설 입구 안내",
+    jobTitle: "[오전반] 상담실 안내",
     isRead: true,
   },
   {
@@ -132,7 +132,7 @@ export const Applicants = [
     name: "송지우",
     date: "2025-03-23",
     coverLetter: "서비스직 경력이 있습니다.",
-    jobTitle: "[오후 단기] 백화점 고객안내",
+    jobTitle: "[단기] 행사장 접수 및 안내",
     isRead: false,
   },
   {
@@ -140,7 +140,7 @@ export const Applicants = [
     name: "문채원",
     date: "2025-03-22",
     coverLetter: "시니어 대상 응대에 익숙합니다.",
-    jobTitle: "[평일 전일] 시니어 문화센터 안내",
+    jobTitle: "[주말] 마트 계산원 보조",
     isRead: true,
   },
   {
@@ -148,7 +148,7 @@ export const Applicants = [
     name: "이도윤",
     date: "2025-03-21",
     coverLetter: "경험은 없지만 배우려는 자세로 임하겠습니다.",
-    jobTitle: "[단기] 복지관 접수 담당",
+    jobTitle: "[오전반] 상담실 안내",
     isRead: false,
   },
   {
@@ -156,7 +156,7 @@ export const Applicants = [
     name: "강수민",
     date: "2025-03-20",
     coverLetter: "지원에 최선을 다하겠습니다.",
-    jobTitle: "[주말 오전] 공공시설 안내 요원",
+    jobTitle: "[단기] 행사장 접수 및 안내",
     isRead: true,
   },
 ];
