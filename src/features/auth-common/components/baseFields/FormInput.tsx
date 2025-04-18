@@ -1,24 +1,24 @@
 "use client"
-import { useFormContext } from "react-hook-form"
-import { CompanyFormValues } from "@/features/auth-company/validation/company-auth.schema"
 
-type Props = {
+import { useFormContext, FieldValues, Path } from "react-hook-form"
+
+type Props<T extends FieldValues> = {
   label: string
-  name: keyof CompanyFormValues
+  name: Path<T>
   type?: string
   placeholder?: string
 }
 
-export default function FormInput({
+export default function FormInput<T extends FieldValues>({
   label,
   name,
   type = "text",
   placeholder,
-}: Props) {
+}: Props<T>) {
   const {
     register,
     formState: { errors },
-  } = useFormContext<CompanyFormValues>()
+  } = useFormContext<T>()
 
   return (
     <div>

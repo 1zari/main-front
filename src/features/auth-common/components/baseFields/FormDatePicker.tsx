@@ -1,21 +1,26 @@
 "use client"
-import { Controller, useFormContext } from "react-hook-form"
+
+import { Controller, useFormContext, FieldValues, Path } from "react-hook-form"
 import { CalendarIcon } from "lucide-react"
 import DatePicker from "react-datepicker"
 import { ko } from "date-fns/locale"
-import { CompanyFormValues } from "@/features/auth-company/validation/company-auth.schema"
 import "react-datepicker/dist/react-datepicker.css"
 
-type Props = {
+type Props<T extends FieldValues> = {
   label: string
-  name: keyof CompanyFormValues
+  name: Path<T>
+  placeholder?: string 
 }
 
-export default function FormDatePicker({ label, name }: Props) {
+export default function FormDatePicker<T extends FieldValues>({
+  label,
+  name,
+  placeholder,
+}: Props<T>) {
   const {
     control,
     formState: { errors },
-  } = useFormContext<CompanyFormValues>()
+  } = useFormContext<T>()
 
   return (
     <div className="w-full">
@@ -34,7 +39,7 @@ export default function FormDatePicker({ label, name }: Props) {
                 field.onChange(formatted)
               }}
               dateFormat="yyyy-MM-dd"
-              placeholderText="입력란을 클릭하여 달력에서 개업년월일을 선택해 주세요."
+              placeholderText={placeholder || "날짜를 선택해주세요."}
               locale={ko}
               maxDate={new Date()}
               showMonthDropdown
