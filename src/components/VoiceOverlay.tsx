@@ -55,7 +55,7 @@ export default function VoiceOverlay({ isOpen, onClose, children }: VoiceOverlay
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[9999] bg-black/30 flex items-center justify-center"
+      className="fixed inset-0 z-[9999] bg-black/70 flex items-center justify-center"
       onClick={onClose}
     >
       <div
