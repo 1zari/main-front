@@ -1,5 +1,6 @@
 "use client";
 
+import VoiceOverlay from "@/components/VoiceOverlay";
 import { extractKeywords } from "@/utils/extractKeywords";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -8,6 +9,7 @@ export default function VoiceInput() {
   const [isListening, setIsListening] = useState(false);
   const [result, setResult] = useState("");
   const [keywords, setKeywords] = useState<string[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
 
   const router = useRouter();
 
@@ -56,12 +58,13 @@ export default function VoiceInput() {
       )}
       {result && <p className="bg-white p-3 rounded-2xl shadow-2xl">📝 인식된 문장: {result}</p>}
       <button
-        onClick={startListening}
+        // onClick={startListening}
+        onClick={() => setIsOpen(true)}
         className="px-4 py-2 shadow-2xl rounded-3xl bg-blue-600 text-white"
       >
         🎤 말해서 검색하기
       </button>
-
+      <VoiceOverlay isOpen={isOpen} onClose={() => setIsOpen(false)} />
       {keywords.length > 0 && (
         <div>
           <p>🔑 추출된 키워드:</p>
