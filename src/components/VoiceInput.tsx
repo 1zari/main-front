@@ -51,7 +51,7 @@ export default function VoiceInput() {
   };
 
   return (
-    <div className="p-4 it flex flex-col  items-end space-y-2">
+    <div className="p-4 flex flex-col  items-end space-y-2">
       <button
         // onClick={startListening}
         onClick={() => setIsOpen(true)}
