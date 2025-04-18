@@ -43,7 +43,7 @@ export default function JobDetailSection({ title, items }: JobDetailSectionProps
             </React.Fragment>
           ))}
         </div>
-      )}{" "}
+      )}
       <SectionDivider />
     </div>
   );
