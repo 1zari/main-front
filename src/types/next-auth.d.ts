@@ -1,5 +1,5 @@
-import NextAuth from "next-auth";
-import { UserRole } from "./user";
+import "next-auth";
+import { UserRole } from "@/features/auth-common/types/user";
 
 declare module "next-auth" {
   interface Session {

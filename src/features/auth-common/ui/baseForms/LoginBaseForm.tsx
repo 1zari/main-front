@@ -7,8 +7,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, LoginFormValues } from "@/features/auth-common/validation/login-auth.schema";
 import { EMAIL_DOMAINS, type EmailDomain } from "@/features/auth-user/constants/email";
-import KakaoLogo from "@/assets/social/KakaoLogo.png";
-import NaverLogo from "@/assets/social/NaverLogo.png";
 
 interface LoginBaseFormProps {
   role: "user" | "employer";
@@ -175,25 +173,19 @@ export default function LoginBaseForm({
             onClick={() => signIn("kakao")}
             className="w-full bg-[#FEE500] text-black py-3 rounded hover:bg-[#FFDC00] mb-3 flex items-center justify-center space-x-2 cursor-pointer"
           >
-            <Image src={KakaoLogo} alt="카카오 로고" width={22} height={22} className="mr-2" />
             <span>카카오로 로그인</span>
           </button>
           <button
             onClick={() => signIn("naver")}
-            className="w-full bg-[#03C75A] text-white py-3 rounded hover:bg-[#02B152] flex items-center justify-center space-x-2 cursor-pointer"
+            className="w-full bg-[#03C75A] text-white py-3 rounded hover:bg-[#02B152] cursor-pointer"
           >
-            <Image src={NaverLogo} alt="네이버 로고" width={25} height={25} className="mr-2" />
-            <span>네이버로 로그인</span>
+            네이버로 로그인
           </button>
         </div>
       )}
 
       <div className="text-center">
-        <button
-          type="button"
-          onClick={() => router.push(`/auth/signup`)}
-          className="text-gray-500 hover:underline cursor-pointer"
-        >
+        <button onClick={onSignup} className="text-gray-500 hover:underline cursor-pointer">
           회원가입
         </button>
       </div>

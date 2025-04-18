@@ -1,5 +1,5 @@
 import { useRouter } from "next/navigation";
-import { AUTH_ROUTES, LOGIN_CONFIG } from "@/features/auth-common/model/constants/auth.config";
+import { AUTH_ROUTES, LOGIN_CONFIG } from "@/features/auth-common/constants/auth.config";
 
 export function useLoginConfig(role: "user" | "company") {
   const router = useRouter();
