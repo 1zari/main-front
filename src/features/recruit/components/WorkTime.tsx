@@ -15,7 +15,7 @@ const WorkTime = () => {
   return (
     <div className="text-gray-700">
       <div className="flex items-center">
-        <label className="text-sm font-medium text-gray-700 min-w-[64px]">근무 시간</label>
+        <label className="text-sm font-semibold text-gray-700 min-w-[64px]">근무 시간</label>
         <div className="flex items-center gap-1">
           <Controller
             control={control}

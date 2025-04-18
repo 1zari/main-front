@@ -1,5 +1,6 @@
 "use client";
 
+import CompanyTerms from "@/assets/terms/CompanyTerms";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 
@@ -41,8 +42,8 @@ const Agreement = () => {
 
       {/* 약관 내용 */}
       {showTerms && (
-        <div className="text-xs border rounded-md p-3 bg-gray-50 text-gray-700 max-h-40 overflow-y-auto">
-          <p>이용약관내용들</p>
+        <div className="w-full text-xs border rounded-md p-3 bg-gray-50 text-gray-700 max-h-100 overflow-y-auto">
+          <CompanyTerms />
         </div>
       )}
     </div>
