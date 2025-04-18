@@ -26,6 +26,16 @@ export default function SelectedChips() {
             <button
               onClick={() => {
                 removeSelectedFilter(filter);
+                // 직종 필터 제거 처리
+                if (
+                  filter &&
+                  Object.values(useSelectedFilterStore.getState().checkedJobs).includes(filter)
+                ) {
+                  const updatedCheckedJobs = useSelectedFilterStore
+                    .getState()
+                    .checkedJobs.filter((job) => job !== filter);
+                  useSelectedFilterStore.getState().setCheckedJobs(updatedCheckedJobs);
+                }
 
                 // 지역 필터 제거 처리
                 if (filter.includes(":")) {
