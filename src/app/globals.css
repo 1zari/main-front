@@ -29,3 +29,18 @@
     cursor: pointer;
   }
 }
+
+
+/* 음성인식 아이콘 애니메이션*/
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}
+
+.animate-heartbeat {
+  animation: heartbeat 1.5s ease-in-out infinite;
+}
