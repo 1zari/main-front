@@ -1,12 +1,12 @@
-import { UserBase } from "./user";
+import { UserBase } from "./commonUser";
 
-export type CompanyRole = "employer" | "admin";
+export type CompanyRole = "company" | "admin";
 
-export interface EmployerUser extends UserBase {
-  role: "employer";
+export interface CompanyUser extends UserBase {
+  role: "company";
 }
 
-export interface EmployerProfile {
+export interface CompanyProfile {
   companyId: string;
   company_name: string;
   establishment?: string;
