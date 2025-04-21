@@ -9,8 +9,8 @@ export interface JobSeekerLoginResponse {
     id: string;
     email: string;
     name: string;
-    role: "jobseeker";
-    createdAt: string;
-    updatedAt: string;
+    role: "user";
+    created_at: string;
+    updated_at: string;
   };
 }

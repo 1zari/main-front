@@ -4,6 +4,6 @@ export interface UserBase {
   id: string;
   email: string;
   role: UserRole;
-  createdAt: string;
-  updatedAt: string;
+  created_at: string;
+  updated_at: string;
 }

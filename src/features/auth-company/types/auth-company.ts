@@ -8,8 +8,8 @@ export interface EmployerLoginResponse {
   user: {
     id: string;
     email: string;
-    role: "employer";
-    createdAt: string;
-    updatedAt: string;
+    role: "company";
+    created_at: string;
+    updated_at: string;
   };
 }
