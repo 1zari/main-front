@@ -1,12 +1,14 @@
 "use client"
 
 import { useFormContext, FieldValues, Path } from "react-hook-form"
+import { cn } from "@/utils/cn"
 
 type Props<T extends FieldValues> = {
   label: string
   name: Path<T>
   type?: string
   placeholder?: string
+  disabled?: boolean
 }
 
 export default function FormInput<T extends FieldValues>({
@@ -14,6 +16,7 @@ export default function FormInput<T extends FieldValues>({
   name,
   type = "text",
   placeholder,
+  disabled = false,
 }: Props<T>) {
   const {
     register,
@@ -28,7 +31,13 @@ export default function FormInput<T extends FieldValues>({
       <input
         type={type}
         placeholder={placeholder}
-        className="w-full h-[60px] border border-gray-300 rounded px-4 bg-white placeholder:text-gray-400 focus:outline-none focus:border-2 focus:border-primary"
+        disabled={disabled}
+        className={cn(
+          "w-full h-[60px] border border-gray-300 rounded px-4 placeholder:text-gray-400",
+          disabled
+            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+            : "bg-white focus:outline-none focus:border-2 focus:border-primary"
+        )}
         {...register(name)}
       />
       {errors[name] && (

@@ -5,17 +5,20 @@ import { CalendarIcon } from "lucide-react"
 import DatePicker from "react-datepicker"
 import { ko } from "date-fns/locale"
 import "react-datepicker/dist/react-datepicker.css"
+import { cn } from "@/utils/cn" 
 
 type Props<T extends FieldValues> = {
   label: string
   name: Path<T>
-  placeholder?: string 
+  placeholder?: string
+  disabled?: boolean
 }
 
 export default function FormDatePicker<T extends FieldValues>({
   label,
   name,
   placeholder,
+  disabled = false,
 }: Props<T>) {
   const {
     control,
@@ -47,7 +50,14 @@ export default function FormDatePicker<T extends FieldValues>({
               scrollableYearDropdown
               yearDropdownItemNumber={100}
               dropdownMode="select"
-              className="w-full h-[60px] pr-12 pl-4 rounded bg-white placeholder:text-gray-400 border border-gray-300 focus:outline-none focus:border-2 focus:border-primary block"
+              disabled={disabled}
+              className={cn(
+                "w-full h-[60px] pr-12 pl-4 rounded border block",
+                "placeholder:text-gray-400",
+                disabled
+                  ? "bg-gray-100 text-gray-400 border-gray-300 cursor-not-allowed"
+                  : "bg-white border-gray-300 focus:outline-none focus:border-2 focus:border-primary"
+              )}
               wrapperClassName="w-full"
             />
             <CalendarIcon

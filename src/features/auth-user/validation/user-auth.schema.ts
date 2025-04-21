@@ -112,3 +112,16 @@ export const userSignupSchema = z.object({
 });
 
 export type UserFormValues = z.infer<typeof userSignupSchema>
+
+// 사용자 정보 수정
+export const userPasswordEditSchema = z
+  .object({
+    currentPassword: z.string().min(1, "현재 비밀번호를 입력해주세요."),
+    newPassword: z
+      .string()
+      .min(USER_VALIDATION.password.min, USER_VALIDATION.password.messages.min)
+      .max(USER_VALIDATION.password.max, USER_VALIDATION.password.messages.max)
+      .regex(USER_VALIDATION.password.pattern, USER_VALIDATION.password.messages.format),
+  })
+
+export type UserPasswordEditFormValues = z.infer<typeof userPasswordEditSchema>
