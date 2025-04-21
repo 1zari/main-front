@@ -2,7 +2,7 @@
 
 import ApplyButton from "@/features/jobs/components/job-detail-bottom-btns/ApplyButton";
 import KakaoShareButton from "@/features/jobs/components/job-detail-bottom-btns/KakaoShareButton";
-import StikyApplyKakaoShareButton from "@/features/jobs/components/job-detail-bottom-btns/StikyApplyKakaoShareButton";
+import StickyApplyKakaoShareButton from "@/features/jobs/components/job-detail-bottom-btns/StickyApplyKakaoShareButton";
 import JobDetailSection from "@/features/jobs/components/JobDetailSection";
 import { JOB_DETAIL_TEXT } from "@/features/jobs/model/constants/jobDetailText";
 import { useEffect, useRef, useState } from "react";
@@ -106,7 +106,7 @@ export default function JobDetailContent() {
               />
             </div>
 
-            <StikyApplyKakaoShareButton isBottomVisible={isBottomVisible} />
+            <StickyApplyKakaoShareButton isBottomVisible={isBottomVisible} />
             <div ref={bottomButtonRef}>
               <ApplyButton />
               <KakaoShareButton />
