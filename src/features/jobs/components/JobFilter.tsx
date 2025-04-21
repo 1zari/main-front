@@ -4,10 +4,10 @@ import { Heading } from "@/components/ui/Heading";
 import { FaCaretDown } from "react-icons/fa";
 
 import { useFilterTabStore } from "@/features/jobs/stores/job-filters/useJobFilterTabsStore";
+import { useSelectedFilterStore } from "@/features/jobs/stores/job-filters/useSelectedFiltersStore";
 import FilterJobs from "./filter/JobCategoryFilter";
 import FilterOtherConditions from "./filter/JobConditionsFilter";
 import FilterLocation from "./filter/JobLocationFilter";
-
 export default function JobFilter() {
   const {
     showLocation,
@@ -22,6 +22,11 @@ export default function JobFilter() {
     "w-full border border-gray-300 px-2 py-3 rounded-md flex justify-center items-center gap-2 text-gray-500";
 
   const navBtnSelectedClassName = "border-primary font-bold text-primary";
+  const locationChecked = useSelectedFilterStore((state) => state.locationChecked);
+  const checkedJobs = useSelectedFilterStore((state) => state.checkedJobs);
+  const selectedFilters = useSelectedFilterStore((state) => state.selectedFilters);
+  const selectedDays = useSelectedFilterStore((state) => state.selectedDays);
+  const dayNegotiable = useSelectedFilterStore((state) => state.dayNegotiable);
 
   return (
     <>
@@ -38,6 +43,9 @@ export default function JobFilter() {
               onClick={() => setShowLocation(!showLocation)}
             >
               지역
+              {locationChecked.length > 0 && (
+                <span className="text-primary">{locationChecked.length}</span>
+              )}
               <span
                 className={`transition-transform duration-300 ${showLocation ? "rotate-180" : ""}`}
               >
@@ -49,6 +57,7 @@ export default function JobFilter() {
               onClick={() => setShowJobs(!showJobs)}
             >
               직종
+              {checkedJobs.length > 0 && <span className="text-primary">{checkedJobs.length}</span>}
               <span className={`transition-transform duration-300 ${showJobs ? "rotate-180" : ""}`}>
                 <FaCaretDown />
               </span>
@@ -58,6 +67,11 @@ export default function JobFilter() {
               onClick={() => setShowOtherConditions(!showOtherConditions)}
             >
               상세
+              {selectedDays.length + (dayNegotiable ? 1 : 0) > 0 && (
+                <span className="text-primary">
+                  {selectedDays.length + (dayNegotiable ? 1 : 0)}
+                </span>
+              )}
               <span
                 className={`transition-transform duration-300 ${showOtherConditions ? "rotate-180" : ""}`}
               >
