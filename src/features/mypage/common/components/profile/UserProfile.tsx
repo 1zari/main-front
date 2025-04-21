@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import ProfileCard, { ProfileItem } from "./ProfileCard";
-import UserProfileTabs from "../tabs/UserProfileTabs";
+import UserProfileTabs from "./UserProfileTabs";
 import { Heading } from "@/components/ui/Heading";
 import { UserProfile as UserProfileType } from "@/types/user";
 

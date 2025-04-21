@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { notFound } from "next/navigation";
 import UserProfile from "@/features/mypage/common/components/profile/UserProfile";
-import EmployerProfile from "@/features/mypage/common/components/profile/EmployerProfile";
+import CompanyProfile from "@/features/mypage/common/components/profile/CompanyProfile";
 import { UserRole } from "@/types/commonUser";
 
 export default function MyPage() {
@@ -43,7 +43,7 @@ export default function MyPage() {
   return (
     <div className="min-h-screen">
       <div className="flex justify-center items-start mt-12">
-        <div className="w-full">{type === "company" ? <EmployerProfile /> : <UserProfile />}</div>
+        <div className="w-full">{type === "company" ? <CompanyProfile /> : <UserProfile />}</div>
       </div>
     </div>
   );

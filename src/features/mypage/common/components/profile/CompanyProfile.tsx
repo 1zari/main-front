@@ -1,13 +1,13 @@
 import React, { useMemo } from "react";
 import ProfileCard, { ProfileItem } from "./ProfileCard";
 import { Heading } from "@/components/ui/Heading";
-import { CompanyProfile } from "@/types/company";
+import type { CompanyProfile as CompanyProfileType } from "@/types/company";
 
-interface EmployerProfileProps {}
+interface CompanyProfileProps {}
 
-const EmployerProfile = (props: EmployerProfileProps) => {
+const CompanyProfile = (props: CompanyProfileProps) => {
   // 기업회원 더미 데이터
-  const companyProfileData: CompanyProfile = {
+  const companyProfileData: CompanyProfileType = {
     companyId: "123",
     company_name: "예시 기업",
     manager_name: "김담당",
@@ -39,4 +39,4 @@ const EmployerProfile = (props: EmployerProfileProps) => {
   );
 };
 
-export default React.memo(EmployerProfile);
+export default React.memo(CompanyProfile);
