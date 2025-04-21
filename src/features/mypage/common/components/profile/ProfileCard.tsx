@@ -2,14 +2,42 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { PenSquare } from "lucide-react";
 import { Heading } from "@/components/ui/Heading";
+import { UserRole } from "@/types/commonUser";
 
-interface ProfileCardProps {
-  role: "user" | "company";
-  title: string;
-  children: React.ReactNode;
+export interface ProfileItem {
+  labels: string[];
+  value: React.ReactNode;
+  isCustom?: boolean;
+  isDescription?: boolean;
 }
 
-export default function ProfileCard({ role, title, children }: ProfileCardProps) {
+interface ProfileCardProps {
+  role: UserRole;
+  title: string;
+  items: ProfileItem[];
+}
+
+const ProfileLabel = ({
+  labels,
+  isEmployer = false,
+}: {
+  labels: string[];
+  isEmployer?: boolean;
+}) => {
+  return (
+    <span
+      className={`${isEmployer ? "min-w-32 mr-8" : "w-32"} text-gray-500 font-medium flex flex-wrap items-center gap-1`}
+    >
+      {labels.map((label, index) => (
+        <Heading key={index} sizeOffset={2} className="inline-block">
+          {label}
+        </Heading>
+      ))}
+    </span>
+  );
+};
+
+export default function ProfileCard({ role, title, items }: ProfileCardProps) {
   const router = useRouter();
 
   const handleEditClick = () => {
@@ -38,7 +66,26 @@ export default function ProfileCard({ role, title, children }: ProfileCardProps)
         </button>
       </div>
       <div className="bg-gray-50/50 rounded-xl m-3 sm:m-4 md:m-5 p-3 sm:p-4 md:p-5 break-words">
-        {children}
+        <div className="space-y-5">
+          {items.map((item, index) => (
+            <div
+              key={index}
+              className="flex items-center py-3 hover:bg-white/80 transition-colors rounded-lg px-4 group"
+            >
+              <ProfileLabel labels={item.labels} isEmployer={role === "company"} />
+              {item.isCustom ? (
+                <div className="flex-1">{item.value}</div>
+              ) : (
+                <Heading
+                  sizeOffset={2}
+                  className={`flex-1 text-gray-900 font-normal ${item.isDescription ? "whitespace-pre-wrap leading-relaxed" : ""}`}
+                >
+                  {item.value}
+                </Heading>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

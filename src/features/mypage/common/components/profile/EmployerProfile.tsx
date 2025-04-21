@@ -1,83 +1,42 @@
-import React from "react";
-import ProfileCard from "./ProfileCard";
+import React, { useMemo } from "react";
+import ProfileCard, { ProfileItem } from "./ProfileCard";
 import { Heading } from "@/components/ui/Heading";
+import { CompanyProfile } from "@/types/company";
 
 interface EmployerProfileProps {}
 
-export default function EmployerProfile(props: EmployerProfileProps) {
+const EmployerProfile = (props: EmployerProfileProps) => {
   // 기업회원 더미 데이터
-  const companyProfileData = {
-    companyName: "예시 기업",
-    managerName: "김담당",
-    managerPhone: "010-9876-5432",
-    managerEmail: "kim@example.com",
-    companyDescription: "우리 회사는 혁신적인 기술 솔루션을 제공하는 기업입니다.",
+  const companyProfileData: CompanyProfile = {
+    companyId: "123",
+    company_name: "예시 기업",
+    manager_name: "김담당",
+    manager_phone_number: "010-9876-5432",
+    manager_email: "kim@example.com",
+    company_introduction: "우리 회사는 혁신적인 기술 솔루션을 제공하는 기업입니다.",
+    is_active: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
   };
 
-  const { companyName, managerName, managerPhone, managerEmail, companyDescription } =
+  const { company_name, manager_name, manager_phone_number, manager_email, company_introduction } =
     companyProfileData;
+
+  const profileItems: ProfileItem[] = useMemo(
+    () => [
+      { labels: ["담당자", "성함"], value: manager_name },
+      { labels: ["담당자", "전화번호"], value: manager_phone_number },
+      { labels: ["담당자", "이메일"], value: manager_email },
+      { labels: ["기업", "소개"], value: company_introduction, isDescription: true },
+    ],
+    [manager_name, manager_phone_number, manager_email, company_introduction],
+  );
 
   return (
     <div>
-      <ProfileCard role="company" title={companyName}>
-        <div className="space-y-5">
-          <div className="flex items-center py-3 hover:bg-white/80 transition-colors rounded-lg px-4 group">
-            <span className="min-w-32 text-gray-500 font-medium flex flex-wrap items-center gap-1 mr-8">
-              <Heading sizeOffset={2} className="inline-block">
-                담당자
-              </Heading>
-              <Heading sizeOffset={2} className="inline-block">
-                성함
-              </Heading>
-            </span>
-            <Heading sizeOffset={2} className="flex-1 text-gray-900 font-normal">
-              {managerName}
-            </Heading>
-          </div>
-          <div className="flex items-center py-3 hover:bg-white/80 transition-colors rounded-lg px-4 group">
-            <span className="min-w-32 text-gray-500 font-medium flex flex-wrap items-center gap-1 mr-8">
-              <Heading sizeOffset={2} className="inline-block">
-                담당자
-              </Heading>
-              <Heading sizeOffset={2} className="inline-block">
-                전화번호
-              </Heading>
-            </span>
-            <Heading sizeOffset={2} className="flex-1 text-gray-900 font-normal">
-              {managerPhone}
-            </Heading>
-          </div>
-          <div className="flex items-center py-3 hover:bg-white/80 transition-colors rounded-lg px-4 group">
-            <span className="min-w-32 text-gray-500 font-medium flex flex-wrap items-center gap-1 mr-8">
-              <Heading sizeOffset={2} className="inline-block">
-                담당자
-              </Heading>
-              <Heading sizeOffset={2} className="inline-block">
-                이메일
-              </Heading>
-            </span>
-            <Heading sizeOffset={2} className="flex-1 text-gray-900 font-normal">
-              {managerEmail}
-            </Heading>
-          </div>
-          <div className="flex items-center py-3 hover:bg-white/80 transition-colors rounded-lg px-4 group">
-            <span className="min-w-32 text-gray-500 font-medium flex flex-wrap items-center gap-1 mr-8">
-              <Heading sizeOffset={2} className="inline-block">
-                기업
-              </Heading>
-              <Heading sizeOffset={2} className="inline-block">
-                소개
-              </Heading>
-            </span>
-            <Heading
-              sizeOffset={2}
-              className="flex-1 text-gray-900 font-normal whitespace-pre-wrap leading-relaxed"
-            >
-              {companyDescription}
-            </Heading>
-          </div>
-        </div>
-      </ProfileCard>
+      <ProfileCard role="company" title={company_name} items={profileItems} />
     </div>
   );
-}
+};
+
+export default React.memo(EmployerProfile);

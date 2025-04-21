@@ -5,19 +5,18 @@ import { useParams, useRouter } from "next/navigation";
 import { notFound } from "next/navigation";
 import UserProfile from "@/features/mypage/common/components/profile/UserProfile";
 import EmployerProfile from "@/features/mypage/common/components/profile/EmployerProfile";
-
-type UserType = "user" | "company";
+import { UserRole } from "@/types/commonUser";
 
 export default function MyPage() {
   const params = useParams();
   const router = useRouter();
   const userId = params.userId as string;
-  const type = params.type as string;
+  const type = params.type as UserRole;
 
-  // 실제로는 여기서 API를 통해 현재 로그인한 사용자의 정보를 가져와야 합니다
+  // 실제로는 여기서 API를 통해 현재 로그인한 사용자의 정보를 가져와야 함
   const currentUser = {
-    id: "123", // 실제로는 로그인한 사용자의 ID
-    type: type as UserType, // 테스트를 위해 URL의 type을 사용
+    id: "123",
+    type,
   };
 
   useEffect(() => {
@@ -28,7 +27,7 @@ export default function MyPage() {
     }
 
     // URL의 type이 user나 company가 아닌 경우 404
-    if (!["user", "company"].includes(type)) {
+    if (!["user", "company", "admin"].includes(type)) {
       notFound();
       return;
     }
