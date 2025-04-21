@@ -2,7 +2,7 @@
 import { Heading } from "@/components/ui/Heading";
 import ResumeContainer from "@/features/resume/components/ResumeContainer";
 import { useState } from "react";
-import { FaChevronLeft } from "react-icons/fa";
+import { FaAngleDown, FaChevronLeft } from "react-icons/fa";
 
 export default function ApplyPage() {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,18 +33,12 @@ export default function ApplyPage() {
           onClick={() => setIsOpen(!isOpen)}
         >
           <span className="font-bold">{selectedResume}</span>
-          <span className="absolute right-3 top-1/2 transform -translate-y-1/2">
-            <svg
-              className={`w-4 h-4 text-green-700 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                fillRule="evenodd"
-                d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 011.08 1.04l-4.25 4.25a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z"
-                clipRule="evenodd"
-              />
-            </svg>
+          <span
+            className={`absolute right-3 top-1/2 transform -translate-y-1/2 text-primary transition-transform duration-200 ${
+              isOpen ? "rotate-180" : ""
+            }`}
+          >
+            <FaAngleDown />
           </span>
           {isOpen && (
             <ul className="absolute top-full left-0 mt-1 w-full bg-white border rounded-lg shadow-lg z-10">
