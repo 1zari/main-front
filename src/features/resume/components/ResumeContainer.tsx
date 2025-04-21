@@ -3,8 +3,8 @@ import { Heading } from "@/components/ui/Heading";
 export default function ResumeContainer() {
   return (
     <>
-      <div className="max-w-7xl m-auto">
-        <div className="bg-gray-100 py-9 px-5 h-full flex flex-col gap-8">
+      <div className="max-w-7xl m-auto ">
+        <div className="bg-gray-100 py-9 px-5 h-full flex flex-col gap-8 rounded-md">
           <div className="flex flex-wrap pb-2 border-b border-gray-300 items-center">
             <Heading sizeOffset={2} className="font-bold min-w-25">
               직종
