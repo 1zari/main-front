@@ -29,3 +29,38 @@
     cursor: pointer;
   }
 }
+
+
+/* 음성인식 아이콘 애니메이션*/
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}
+
+.animate-heartbeat {
+  animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+
+
+@keyframes slide-up {
+  0% { transform: translateY(100%); }
+  100% { transform: translateY(0); }
+}
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out;
+}
+
+
+@keyframes slide-down {
+  0% { transform: translateY(0%); }
+  100% { transform: translateY(100); }
+}
+.animate-slide-down {
+  animation: slide-up 0.3s ease-out;
+}
+
