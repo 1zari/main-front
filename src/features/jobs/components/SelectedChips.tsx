@@ -19,7 +19,7 @@ export default function SelectedChips() {
         {selectedFilters.map((filter, index) => (
           <div
             key={`${filter}-${index}`}
-            className="flex items-center bg-gray-200 px-3 py-1 mb-3 rounded-full text-gray-700"
+            className="flex items-center bg-gray-100 px-3 py-1 mb-3 rounded-full text-gray-700"
           >
             {" "}
             <Heading sizeOffset={-1}> {filter}</Heading>
