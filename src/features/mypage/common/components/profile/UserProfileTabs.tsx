@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Heading } from "@/components/ui/Heading";
+import ResumeList from "../resume/ResumeList";
+import type { Resume } from "@/types/resume";
 
 interface EmptyContentProps {
   title: string;
@@ -18,7 +20,7 @@ const EmptyContent = ({ title, message }: EmptyContentProps) => (
 );
 
 interface UserProfileTabsProps {
-  resumes: React.ReactNode;
+  resumes: Resume[] | null;
   appliedJobs: React.ReactNode;
   savedJobs: React.ReactNode;
 }
@@ -41,7 +43,7 @@ export default function UserProfileTabs({ resumes, appliedJobs, savedJobs }: Use
   const getTabContent = (tab: TabType) => {
     switch (tab) {
       case "resumes":
-        return <EmptyContent title="내 이력서 목록" message="아직 작성된 이력서가 없습니다." />;
+        return <ResumeList resumes={resumes} />;
       case "applied":
         return <EmptyContent title="지원한 공고 목록" message="아직 지원한 공고가 없습니다." />;
       case "saved":
@@ -66,7 +68,7 @@ export default function UserProfileTabs({ resumes, appliedJobs, savedJobs }: Use
           ))}
         </div>
       </div>
-      <div className="py-6 break-words">{getTabContent(activeTab)}</div>
+      <div className="py-6">{getTabContent(activeTab)}</div>
     </div>
   );
 }
