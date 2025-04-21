@@ -59,7 +59,7 @@ export default function UserProfileTabs({ resumes, appliedJobs, savedJobs }: Use
               className={activeTab === tab.id ? activeTabStyle : inactiveTabStyle}
               onClick={() => setActiveTab(tab.id as TabType)}
             >
-              <Heading sizeOffset={2} className="break-keep">
+              <Heading sizeOffset={2} className="break-keep font-semibold">
                 {tab.label}
               </Heading>
             </button>
