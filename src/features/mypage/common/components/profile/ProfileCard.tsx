@@ -49,7 +49,7 @@ export default function ProfileCard({ role, title, items }: ProfileCardProps) {
   return (
     <div className="w-[calc(100%-2rem)] sm:w-[36rem] md:w-[48rem] lg:w-[64rem] mx-auto bg-white rounded-2xl shadow-sm overflow-hidden">
       <div className="flex items-center justify-between p-4 sm:p-6 border-b">
-        <Heading sizeOffset={2} className="font-bold text-gray-900 break-all">
+        <Heading sizeOffset={4} className="font-bold text-gray-900 break-all">
           {displayTitle}
         </Heading>
         <button
