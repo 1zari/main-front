@@ -3,13 +3,10 @@ import { useRouter } from "next/navigation";
 import { PenSquare } from "lucide-react";
 import { Heading } from "@/components/ui/Heading";
 import { UserRole } from "@/types/commonUser";
+import type { UserProfileItem } from "@/types/user";
+import type { CompanyProfileItem } from "@/types/company";
 
-export interface ProfileItem {
-  labels: string[];
-  value: React.ReactNode;
-  isCustom?: boolean;
-  isDescription?: boolean;
-}
+type ProfileItem = UserProfileItem | CompanyProfileItem;
 
 interface ProfileCardProps {
   role: UserRole;
@@ -49,18 +46,18 @@ export default function ProfileCard({ role, title, items }: ProfileCardProps) {
   return (
     <div className="w-[calc(100%-2rem)] sm:w-[36rem] md:w-[48rem] lg:w-[64rem] mx-auto bg-white rounded-2xl shadow-sm overflow-hidden">
       <div className="flex items-center justify-between p-4 border-b sm:p-6">
-        <Heading sizeOffset={4} className="font-bold text-gray-900 break-all">
+        <Heading sizeOffset={3} className="font-bold text-gray-900 break-all">
           {displayTitle}
         </Heading>
         <button
           onClick={handleEditClick}
-          className="bg-primary hover:bg-primary/90 text-white px-3 sm:px-4 md:px-5 py-1.5 md:py-2 rounded-lg transition-colors duration-200 font-medium flex items-center gap-2 shadow-sm shrink-0 ml-3 sm:ml-4"
+          className="bg-primary hover:bg-primary/90 text-white px-2.5 sm:px-3 py-1 rounded-lg transition-colors duration-200 font-medium flex items-center gap-1.5 shadow-sm shrink-0 ml-3"
         >
-          <PenSquare className="w-5 h-5" />
-          <Heading sizeOffset={2} className="hidden text-white sm:inline">
+          <PenSquare className="w-3.5 h-3.5" />
+          <Heading sizeOffset={1} className="hidden text-white sm:inline">
             정보 수정
           </Heading>
-          <Heading sizeOffset={2} className="text-white sm:hidden">
+          <Heading sizeOffset={1} className="text-white sm:hidden">
             수정
           </Heading>
         </button>

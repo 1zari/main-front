@@ -1,7 +1,8 @@
 import React, { useMemo } from "react";
-import ProfileCard, { ProfileItem } from "./ProfileCard";
+import ProfileCard from "./ProfileCard";
 import { Heading } from "@/components/ui/Heading";
 import type { CompanyProfile as CompanyProfileType } from "@/types/company";
+import type { CompanyProfileItem } from "@/types/company";
 
 interface CompanyProfileProps {}
 
@@ -22,7 +23,7 @@ const CompanyProfile = (props: CompanyProfileProps) => {
   const { company_name, manager_name, manager_phone_number, manager_email, company_introduction } =
     companyProfileData;
 
-  const profileItems: ProfileItem[] = useMemo(
+  const profileItems: CompanyProfileItem[] = useMemo(
     () => [
       { labels: ["담당자", "성함"], value: manager_name },
       { labels: ["담당자", "전화번호"], value: manager_phone_number },

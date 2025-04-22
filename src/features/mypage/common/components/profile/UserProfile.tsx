@@ -1,10 +1,11 @@
 import React, { useMemo } from "react";
-import ProfileCard, { ProfileItem } from "./ProfileCard";
+import ProfileCard from "./ProfileCard";
 import UserProfileTabs from "./UserProfileTabs";
 import { Heading } from "@/components/ui/Heading";
 import { formatBirthDate } from "@/utils/format";
 import { UserProfile as UserProfileType } from "@/types/user";
 import type { Resume } from "@/types/resume";
+import type { UserProfileItem } from "@/types/user";
 
 interface UserProfileProps {}
 
@@ -77,7 +78,7 @@ export default function UserProfile(props: UserProfileProps) {
 
   const { name, phone_number, birthday, interest } = userProfileData;
 
-  const profileItems: ProfileItem[] = useMemo(
+  const profileItems: UserProfileItem[] = useMemo(
     () => [
       { labels: ["전화번호"], value: phone_number },
       { labels: ["생년월일"], value: formatBirthDate(birthday) },
