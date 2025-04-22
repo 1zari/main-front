@@ -31,18 +31,6 @@ export default function ResumeList({ resumes }: ResumeListProps) {
         <Heading sizeOffset={3} className="pl-3 font-bold text-gray-900">
           이력서 목록
         </Heading>
-        <button
-          onClick={handleAddResume}
-          className="flex items-center gap-2 px-4 py-2 font-medium text-white transition-all duration-200 rounded-lg bg-primary hover:bg-primary/90 hover:shadow-md"
-        >
-          <Plus className="w-5 h-5" />
-          <Heading sizeOffset={2} className="hidden sm:inline">
-            이력서 추가
-          </Heading>
-          <Heading sizeOffset={2} className="sm:hidden">
-            추가
-          </Heading>
-        </button>
       </div>
 
       <div className="grid gap-4">
@@ -57,13 +45,11 @@ export default function ResumeList({ resumes }: ResumeListProps) {
                 <Heading sizeOffset={2} className="font-semibold text-left text-gray-900">
                   {resume.resume_title}
                 </Heading>
-                <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
+                <div className="flex items-center gap-2">
                   <div className="inline-block px-3 py-1 font-medium rounded-full bg-primary/5 text-primary whitespace-nowrap">
                     {resume.job_category}
                   </div>
-                  <div className="mt-1.5 sm:mt-0 text-gray-500">
-                    최종 수정 : {formatDate(resume.updated_at)}
-                  </div>
+                  <div className="text-gray-500">최종 수정 : {formatDate(resume.updated_at)}</div>
                 </div>
               </div>
               <div className="flex items-center gap-2 text-gray-400 transition-colors group-hover:text-primary">
