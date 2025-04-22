@@ -40,7 +40,7 @@ interface AddResumeCardProps {
 }
 
 const AddResumeCard = ({ onClick }: AddResumeCardProps) => (
-  <div className="p-8 border-2 border-gray-200 border-dashed rounded-xl">
+  <div className="p-4 border-2 border-gray-200 border-dashed rounded-xl">
     <button
       onClick={onClick}
       className="flex flex-col items-center w-full gap-2 text-gray-500 transition-colors hover:text-primary"
