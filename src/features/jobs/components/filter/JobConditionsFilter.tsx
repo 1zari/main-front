@@ -2,8 +2,9 @@
 
 import { useSelectedFilterStore } from "@/features/jobs/stores/job-filters/useSelectedFiltersStore";
 import { formatFilterValue, formatWorkDays } from "@/utils/filters";
+import { FaCaretUp } from "react-icons/fa";
 
-export default function JobConditionsFilter() {
+export default function JobConditionsFilter({ setShowOtherConditions, showOtherConditions }) {
   const {
     selectedDays,
     setSelectedDays,
@@ -59,47 +60,60 @@ export default function JobConditionsFilter() {
   );
 
   return (
-    <div className="border rounded-md rounded-t-none bg-white p-4 grid gap-x-4 gap-y-7">
-      {checkboxGroup("고용형태", ["정규직", "계약직"], "고용형태")}
-      {checkboxGroup("경력여부", ["경력무관", "경력"], "경력여부")}
-      {checkboxGroup("학력", ["학력무관", "고졸", "대졸이상"], "학력")}
+    <div>
+      <div className="border border-b-0 bg-white p-4 grid gap-x-4 gap-y-7">
+        {checkboxGroup("고용형태", ["정규직", "계약직"], "고용형태")}
+        {checkboxGroup("경력여부", ["경력무관", "경력"], "경력여부")}
+        {checkboxGroup("학력", ["학력무관", "고졸", "대졸이상"], "학력")}
 
-      {/* 근무요일 */}
+        {/* 근무요일 */}
 
-      <div className="grid grid-cols-[4rem_1fr] items-start gap-x-3">
-        <span className="w-16 font-bold">근무요일</span>
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-wrap gap-x-2 gap-y-2">
-            {["월", "화", "수", "목", "금", "토", "일"].map((day) => (
-              <button
-                key={day}
-                onClick={() => toggleDay(day)}
-                className={`px-4 py-2 border rounded ${
-                  Array.isArray(selectedDays) && selectedDays.includes(day)
-                    ? "bg-primary text-white"
-                    : "bg-white text-black"
-                }`}
-              >
-                {day}
-              </button>
-            ))}
+        <div className="grid grid-cols-[4rem_1fr] items-start gap-x-3">
+          <span className="w-16 font-bold">근무요일</span>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-wrap gap-x-2 gap-y-2">
+              {["월", "화", "수", "목", "금", "토", "일"].map((day) => (
+                <button
+                  key={day}
+                  onClick={() => toggleDay(day)}
+                  className={`px-4 py-2 border rounded ${
+                    Array.isArray(selectedDays) && selectedDays.includes(day)
+                      ? "bg-primary text-white"
+                      : "bg-white text-black"
+                  }`}
+                >
+                  {day}
+                </button>
+              ))}
+            </div>
+            <label className="flex items-center gap-1">
+              <input
+                type="checkbox"
+                checked={dayNegotiable}
+                onChange={() => {
+                  setDayNegotiable(!dayNegotiable);
+                  if (!dayNegotiable) {
+                    addSelectedFilter("요일 협의");
+                  } else {
+                    removeSelectedFilter("요일 협의");
+                  }
+                }}
+              />
+              요일 협의
+            </label>
           </div>
-          <label className="flex items-center gap-1">
-            <input
-              type="checkbox"
-              checked={dayNegotiable}
-              onChange={() => {
-                setDayNegotiable(!dayNegotiable);
-                if (!dayNegotiable) {
-                  addSelectedFilter("요일 협의");
-                } else {
-                  removeSelectedFilter("요일 협의");
-                }
-              }}
-            />
-            요일 협의
-          </label>
         </div>
+      </div>
+      <div className="border flex justify-center rounded-md rounded-t-none py-2">
+        <button
+          className="flex items-center "
+          onClick={() => setShowOtherConditions(!showOtherConditions)}
+        >
+          닫기
+          <span className="px-2">
+            <FaCaretUp />
+          </span>
+        </button>
       </div>
     </div>
   );

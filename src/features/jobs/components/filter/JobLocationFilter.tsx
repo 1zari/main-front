@@ -4,8 +4,9 @@ import { REGIONS } from "@/constants/regions";
 import { useSelectedFilterStore } from "@/features/jobs/stores/job-filters/useSelectedFiltersStore";
 
 import { useEffect, useState } from "react";
+import { FaCaretUp } from "react-icons/fa";
 
-export default function JobLocationFilter() {
+export default function JobLocationFilter({ setShowLocation, showLocation }) {
   const [selectedRegion, setSelectedRegion] = useState("서울");
   const [checkedDistricts, setCheckedDistricts] = useState<string[]>([]);
 
@@ -88,34 +89,44 @@ export default function JobLocationFilter() {
   };
 
   return (
-    <div className="flex border rounded-md rounded-t-none bg-white overflow-hidden">
-      {/* 지역 목록 */}
-      <div className="w-32 max-h-80 border-r overflow-y-auto p-2 scroll-auto">
-        {Object.keys(REGIONS).map((region) => (
-          <div
-            key={region}
-            className={`p-2 cursor-pointer ${
-              selectedRegion === region ? "text-green-700 font-bold" : ""
-            }`}
-            onClick={() => setSelectedRegion(region)}
-          >
-            {region} &rsaquo;
-          </div>
-        ))}
-      </div>
+    <div>
+      <div className="flex border border-b-0  bg-white overflow-hidden">
+        {/* 지역 목록 */}
+        <div className="w-32 max-h-80 border-r overflow-y-auto p-2 scroll-auto">
+          {Object.keys(REGIONS).map((region) => (
+            <div
+              key={region}
+              className={`p-2 cursor-pointer ${
+                selectedRegion === region ? "text-green-700 font-bold" : ""
+              }`}
+              onClick={() => setSelectedRegion(region)}
+            >
+              {region} &rsaquo;
+            </div>
+          ))}
+        </div>
 
-      {/* 구/군 체크박스 목록 */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-x-2 gap-y-3 p-4 w-full max-h-80 h-full overflow-y-auto">
-        {(REGIONS[selectedRegion] || []).map((district) => (
-          <label key={district} className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={checkedDistricts.includes(district)}
-              onChange={() => toggleDistrict(district)}
-            />
-            {district}
-          </label>
-        ))}
+        {/* 구/군 체크박스 목록 */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-x-2 gap-y-3 p-4 w-full max-h-80 h-full overflow-y-auto">
+          {(REGIONS[selectedRegion] || []).map((district) => (
+            <label key={district} className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={checkedDistricts.includes(district)}
+                onChange={() => toggleDistrict(district)}
+              />
+              {district}
+            </label>
+          ))}
+        </div>
+      </div>
+      <div className="border flex justify-center rounded-md rounded-t-none py-2">
+        <button className="flex items-center " onClick={() => setShowLocation(!showLocation)}>
+          닫기
+          <span className="px-2">
+            <FaCaretUp />
+          </span>
+        </button>
       </div>
     </div>
   );

@@ -24,6 +24,4 @@ export const JOB_DETAIL_TEXT = {
   전화: 02-1234-1234
   E-Mail: recruiting@terminal.int`,
 
-  };
-
-
+};
