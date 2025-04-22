@@ -1,4 +1,5 @@
 "use client"
+import { useState } from "react"
 import { useForm, FormProvider } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import {
@@ -12,24 +13,22 @@ import FormActionInput from "@/features/auth-common/components/baseFields/FormAc
 import FormDatePicker from "@/features/auth-common/components/baseFields/FormDatePicker"
 import ControlledCheckboxGroup from "@/features/auth-common/components/baseFields/ControlledCheckboxGroup"
 import PasswordChangeForm from "./PasswordChangeForm"
-import { useState } from "react"
+import { MOCK_USER1 } from "@/features/auth-common/mock/auth.mock"
 
-type Props = {
-  onSubmit: (data: UserEditFormValues) => void
-  defaultValues: UserEditFormValues & {
-    name: string
-    birth: string
-    email: string
-    gender?: "male" | "female"
-  }
-}
-
-export default function UserInformationEdit({ onSubmit, defaultValues }: Props) {
+export default function UserInformationEdit({
+  onSubmit = (data) => console.log("수정 요청", data),
+  defaultValues = MOCK_USER1,
+}: {
+  onSubmit?: (data: UserEditFormValues) => void
+  defaultValues?: typeof MOCK_USER1
+}) {
   const [showPasswordChange, setShowPasswordChange] = useState(false)
 
   const methods = useForm<UserEditFormValues>({
     resolver: zodResolver(userEditSchema),
     defaultValues,
+    mode: "onBlur",
+    reValidateMode: "onBlur",
   })
 
   const passwordForm = useForm<UserPasswordEditFormValues>({
@@ -64,17 +63,6 @@ export default function UserInformationEdit({ onSubmit, defaultValues }: Props) 
               <FormInput label="이름" name="name" disabled />
               <FormDatePicker label="생년월일" name="birth" disabled />
               <FormInput label="이메일" name="email" disabled />
-
-              {defaultValues.gender && (
-                <div className="w-full">
-                  <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg">
-                    성별
-                  </label>
-                  <div className="w-full h-[60px] px-4 flex items-center border border-gray-300 bg-gray-100 text-gray-500 rounded cursor-not-allowed">
-                    {defaultValues.gender === "male" ? "남성" : "여성"}
-                  </div>
-                </div>
-              )}
 
               {showPasswordChange ? (
                 <FormProvider {...passwordForm}>
@@ -140,7 +128,14 @@ export default function UserInformationEdit({ onSubmit, defaultValues }: Props) 
               <ControlledCheckboxGroup
                 label="관심 분야 (중복 선택 가능)"
                 name="interests"
-                options={["사무", "서비스", "기술직", "교육/강사", "서울시 공공 일자리", "운전/배송"]}
+                options={[
+                  "사무",
+                  "서비스",
+                  "기술직",
+                  "교육/강사",
+                  "서울시 공공 일자리",
+                  "운전/배송",
+                ]}
                 control={control}
                 error={errors.interests?.message}
               />

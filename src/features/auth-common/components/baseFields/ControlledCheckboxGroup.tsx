@@ -28,6 +28,7 @@ export default function ControlledCheckboxGroup<T extends FieldValues>({
             ? selected.filter((v) => v !== value)
             : [...selected, value]
           field.onChange(updated)
+          field.onBlur()
         }
 
         return (

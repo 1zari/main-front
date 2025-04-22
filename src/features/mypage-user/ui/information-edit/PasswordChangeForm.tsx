@@ -1,5 +1,6 @@
 "use client"
-import { UserPasswordEditFormValues } from "@/features/auth-user/validation/user-auth.schema"
+import Link from "next/link"
+import { UserPasswordEditFormValues } from "@/features/mypage-user/validation/user-edit.schema"
 import FormInput from "@/features/auth-common/components/baseFields/FormInput"
 
 type Props = {
@@ -15,6 +16,12 @@ export default function PasswordChangeForm({ onCancel }: Props) {
         type="password"
         placeholder="현재 비밀번호 입력"
       />
+      <Link
+        href="/auth/user/find-password"
+        className="block text-blue-600 mt-2 ml-2 hover:underline"
+      >
+        비밀번호가 기억나지 않으세요?
+      </Link>
       <FormInput<UserPasswordEditFormValues>
         label="새 비밀번호"
         name="newPassword"
