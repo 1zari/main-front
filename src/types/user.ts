@@ -1,4 +1,5 @@
 import { UserBase } from "./commonUser";
+
 export interface UserUser extends UserBase {
   role: "user";
   name: string;
@@ -17,4 +18,11 @@ export interface UserProfile {
   is_active: boolean;
   created_at: string;
   updated_at: string;
+}
+
+export interface UserProfileItem {
+  labels: string[];
+  value: React.ReactNode;
+  isCustom?: boolean;
+  isDescription?: boolean;
 }
