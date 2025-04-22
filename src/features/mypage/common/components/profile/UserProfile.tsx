@@ -53,6 +53,26 @@ export default function UserProfile(props: UserProfileProps) {
       created_at: "2024-03-01T09:00:00.000Z",
       updated_at: "2024-03-01T09:00:00.000Z",
     },
+    {
+      resume_id: "4",
+      user_id: "123",
+      resume_title: "성실한 직원이 되겠습니다",
+      job_category: "패스트푸드점",
+      education: "대학교 재학",
+      introduce: "책임감 있게 일하겠습니다.",
+      created_at: "2024-03-01T09:00:00.000Z",
+      updated_at: "2024-03-01T09:00:00.000Z",
+    },
+    // {
+    //   resume_id: "5",
+    //   user_id: "123",
+    //   resume_title: "제과제빵 경력 2년",
+    //   job_category: "제과제빵",
+    //   education: "제과제빵 전문학교",
+    //   introduce: "맛있는 빵을 만들고 싶습니다.",
+    //   created_at: "2024-03-01T09:00:00.000Z",
+    //   updated_at: "2024-03-01T09:00:00.000Z",
+    // },
   ];
 
   const { name, phone_number, birthday, interest } = userProfileData;

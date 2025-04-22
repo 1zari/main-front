@@ -27,16 +27,21 @@ export default function ResumeList({ resumes }: ResumeListProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between p-4 sm:p-6">
-        <Heading sizeOffset={3} className="font-bold text-gray-900">
+      <div className="flex items-center justify-between pt-4 sm:pt-6">
+        <Heading sizeOffset={3} className="pl-3 font-bold text-gray-900">
           이력서 목록
         </Heading>
         <button
           onClick={handleAddResume}
-          className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg transition-all duration-200 font-medium flex items-center gap-2 hover:shadow-md"
+          className="flex items-center gap-2 px-4 py-2 font-medium text-white transition-all duration-200 rounded-lg bg-primary hover:bg-primary/90 hover:shadow-md"
         >
-          <Plus className="h-5 w-5" />
-          <span>이력서 추가</span>
+          <Plus className="w-5 h-5" />
+          <Heading sizeOffset={2} className="hidden sm:inline">
+            이력서 추가
+          </Heading>
+          <Heading sizeOffset={2} className="sm:hidden">
+            추가
+          </Heading>
         </button>
       </div>
 
@@ -45,32 +50,32 @@ export default function ResumeList({ resumes }: ResumeListProps) {
           <button
             key={resume.resume_id}
             onClick={() => handleResumeClick(resume.resume_id)}
-            className="w-full bg-white hover:bg-gray-50/80 border border-gray-100 rounded-xl p-4 transition-all duration-200 group hover:shadow-md"
+            className="w-full p-4 transition-all duration-200 bg-white border border-gray-100 hover:bg-gray-50/80 rounded-xl group hover:shadow-md"
           >
             <div className="flex items-center justify-between">
               <div className="flex flex-col gap-2">
-                <Heading sizeOffset={2} className="font-semibold text-gray-900 text-left">
+                <Heading sizeOffset={2} className="font-semibold text-left text-gray-900">
                   {resume.resume_title}
                 </Heading>
-                <div className="flex items-center gap-2">
-                  <span className="bg-primary/5 text-primary px-3 py-1 rounded-full font-medium">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
+                  <div className="inline-block px-3 py-1 font-medium rounded-full bg-primary/5 text-primary whitespace-nowrap">
                     {resume.job_category}
-                  </span>
-                  <span className="text-gray-500 text-sm">
+                  </div>
+                  <div className="mt-1.5 sm:mt-0 text-gray-500">
                     최종 수정 : {formatDate(resume.updated_at)}
-                  </span>
+                  </div>
                 </div>
               </div>
-              <div className="flex items-center gap-2 text-gray-400 group-hover:text-primary transition-colors">
-                <span className="font-medium">상세보기</span>
-                <ChevronRight className="h-5 w-5" />
+              <div className="flex items-center gap-2 text-gray-400 transition-colors group-hover:text-primary">
+                <span className="hidden font-medium sm:inline">상세보기</span>
+                <ChevronRight className="w-5 h-5" />
               </div>
             </div>
           </button>
         ))}
 
         {resumes.length === 0 && (
-          <div className="bg-gray-50/50 rounded-xl p-8 text-center">
+          <div className="p-8 text-center bg-gray-50/50 rounded-xl">
             <Heading sizeOffset={2} className="text-gray-500">
               작성된 이력서가 없습니다.
               <br />
@@ -81,12 +86,12 @@ export default function ResumeList({ resumes }: ResumeListProps) {
       </div>
 
       {resumes.length > 0 && resumes.length < MAX_RESUMES && (
-        <div className="border-2 border-dashed border-gray-200 rounded-xl p-8">
+        <div className="p-8 border-2 border-gray-200 border-dashed rounded-xl">
           <button
             onClick={handleAddResume}
-            className="w-full flex flex-col items-center gap-2 text-gray-500 hover:text-primary transition-colors"
+            className="flex flex-col items-center w-full gap-2 text-gray-500 transition-colors hover:text-primary"
           >
-            <Plus className="h-8 w-8" />
+            <Plus className="w-8 h-8" />
             <Heading sizeOffset={2}>새 이력서 작성하기</Heading>
           </button>
         </div>

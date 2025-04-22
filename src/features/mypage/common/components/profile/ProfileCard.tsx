@@ -48,7 +48,7 @@ export default function ProfileCard({ role, title, items }: ProfileCardProps) {
 
   return (
     <div className="w-[calc(100%-2rem)] sm:w-[36rem] md:w-[48rem] lg:w-[64rem] mx-auto bg-white rounded-2xl shadow-sm overflow-hidden">
-      <div className="flex items-center justify-between p-4 sm:p-6 border-b">
+      <div className="flex items-center justify-between p-4 border-b sm:p-6">
         <Heading sizeOffset={4} className="font-bold text-gray-900 break-all">
           {displayTitle}
         </Heading>
@@ -56,21 +56,21 @@ export default function ProfileCard({ role, title, items }: ProfileCardProps) {
           onClick={handleEditClick}
           className="bg-primary hover:bg-primary/90 text-white px-3 sm:px-4 md:px-5 py-1.5 md:py-2 rounded-lg transition-colors duration-200 font-medium flex items-center gap-2 shadow-sm shrink-0 ml-3 sm:ml-4"
         >
-          <PenSquare className="h-4 w-4" />
-          <Heading sizeOffset={2} className="hidden sm:inline text-white">
+          <PenSquare className="w-5 h-5" />
+          <Heading sizeOffset={2} className="hidden text-white sm:inline">
             정보 수정
           </Heading>
-          <Heading sizeOffset={2} className="sm:hidden text-white">
+          <Heading sizeOffset={2} className="text-white sm:hidden">
             수정
           </Heading>
         </button>
       </div>
-      <div className="bg-gray-50/50 rounded-xl m-3 sm:m-4 md:m-5 p-3 sm:p-4 md:p-5 break-words">
+      <div className="p-3 m-3 break-words bg-gray-50/50 rounded-xl sm:m-4 md:m-5 sm:p-4 md:p-5">
         <div className="space-y-5">
           {items.map((item, index) => (
             <div
               key={index}
-              className="flex items-center py-3 hover:bg-white/80 transition-colors rounded-lg px-4 group"
+              className="flex items-center px-4 py-3 transition-colors rounded-lg hover:bg-white/80 group"
             >
               <ProfileLabel labels={item.labels} isEmployer={role === "company"} />
               {item.isCustom ? (
