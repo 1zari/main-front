@@ -8,6 +8,7 @@ type Props<T extends FieldValues> = {
   control: Control<T>
   error?: string
 }
+
 export default function ControlledCheckboxGroup<T extends FieldValues>({
   label,
   name,
@@ -37,11 +38,11 @@ export default function ControlledCheckboxGroup<T extends FieldValues>({
             <div className="grid grid-cols-1 min-[500px]:grid-cols-2 sm:grid-cols-3 gap-3">
               {options.map((option, idx) => {
                 const isChecked = selected.includes(option)
+
                 return (
-                  <div
+                  <label
                     key={idx}
-                    onClick={() => toggleOption(option)}
-                    className={`flex items-center justify-between gap-2 px-4 py-[14px] min-w-[160px] h-auto rounded cursor-pointer font-medium border transition break-words text-center
+                    className={`relative flex items-center justify-between gap-2 px-4 py-[14px] min-w-[160px] h-auto rounded cursor-pointer font-medium border transition break-words text-center
                       ${
                         isChecked
                           ? "bg-primary text-white border-primary"
@@ -56,7 +57,7 @@ export default function ControlledCheckboxGroup<T extends FieldValues>({
                       value={option}
                       checked={isChecked}
                       onChange={() => toggleOption(option)}
-                      className="hidden"
+                      className="sr-only"
                     />
                     {isChecked && (
                       <svg
@@ -69,7 +70,7 @@ export default function ControlledCheckboxGroup<T extends FieldValues>({
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
                     )}
-                  </div>
+                  </label>
                 )
               })}
             </div>
