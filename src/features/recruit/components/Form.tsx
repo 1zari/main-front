@@ -74,7 +74,7 @@ const RecruitForm = ({ mode, jobPostingId }: RecruitFormProps) => {
               />
             </div>
 
-            <div className="mt-2 flex items-center justify-between">
+            <div className="flex items-center justify-between mt-2">
               <div className="flex">
                 <FormSelect
                   label="급여"
@@ -110,7 +110,7 @@ const RecruitForm = ({ mode, jobPostingId }: RecruitFormProps) => {
               />
             </div>
 
-            <div className="mt-2 flex items-center justify-between">
+            <div className="flex items-center justify-between mt-2">
               <FormSelect
                 label="경력 여부"
                 name="careerType"
@@ -140,12 +140,12 @@ const RecruitForm = ({ mode, jobPostingId }: RecruitFormProps) => {
               <SelectJobs />
             </div>
 
-            <div className="mt-2 flex items-center justify-between">
+            <div className="flex items-center justify-between mt-2">
               <WorkTime />
               <CheckDays />
             </div>
 
-            <div className="mt-2 flex items-center justify-between">
+            <div className="flex items-center justify-between mt-2">
               <FormNumberInput
                 label="모집인원"
                 name="volume"
@@ -176,7 +176,7 @@ const RecruitForm = ({ mode, jobPostingId }: RecruitFormProps) => {
 
               <Agreement />
 
-              <div className="mt-5 flex justify-between items-center">
+              <div className="flex items-center justify-between mt-5">
                 {mode === "edit" && (
                   <button
                     type="button"
