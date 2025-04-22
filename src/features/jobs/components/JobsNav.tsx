@@ -1,49 +1,56 @@
 "use client";
+import { JOBS_LABELS, JOBS_ROUTES } from "@/features/jobs/model/constants/routes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { FiSearch } from "react-icons/fi";
 
 export default function JobsNav() {
   const pathname = usePathname();
   const selectedNavBtnClassName = "text-primary font-semibold";
   return (
     <>
-      <nav className="bg-gray-z text-black p-4 sticky top-0 z-10">
+      <nav className="bg-gray-z text-black p-4 sticky top-0 z-10 ">
         <ul className="flex flex-wrap justify-center gap-5">
-          <li>
+          <li className="flex items-center">
             <Link
-              href="/jobs/recommended-jobs"
+              href={JOBS_ROUTES.recommended}
               className={
-                pathname === "/jobs/recommended-jobs" || pathname === "/jobs"
+                pathname === JOBS_ROUTES.recommended || pathname === JOBS_ROUTES.root
                   ? selectedNavBtnClassName
                   : ""
               }
             >
-              추천 공고
+              {JOBS_LABELS.recommended}
             </Link>
           </li>
-          <li>
+          <li className="flex items-center">
             <Link
-              href="/jobs/public-jobs"
-              className={pathname === "/jobs/public-jobs" ? selectedNavBtnClassName : ""}
+              href={JOBS_ROUTES.public}
+              className={pathname === JOBS_ROUTES.public ? selectedNavBtnClassName : ""}
             >
-              공공일자리
+              {JOBS_LABELS.public}
             </Link>
           </li>
-          <li>
+          <li className="flex items-center">
             <Link
-              href="/jobs/by-location"
-              className={pathname === "/jobs/by-location" ? selectedNavBtnClassName : ""}
+              href={JOBS_ROUTES.byLocation}
+              className={pathname === JOBS_ROUTES.byLocation ? selectedNavBtnClassName : ""}
             >
-              지역별
+              {JOBS_LABELS.byLocation}
             </Link>
           </li>
-          <li>
+          <li className="flex items-center">
             <Link
-              href="/jobs/by-field"
-              className={pathname === "/jobs/by-field" ? selectedNavBtnClassName : ""}
+              href={JOBS_ROUTES.byField}
+              className={pathname === JOBS_ROUTES.byField ? selectedNavBtnClassName : ""}
             >
-              직종별
+              {JOBS_LABELS.byField}
             </Link>
+          </li>
+          <li className="flex items-center">
+            <button className="bg-white p-2 rounded-full shadow-sm flex items-center justify-center w-8 h-8">
+              <FiSearch size={18} />
+            </button>
           </li>
         </ul>
       </nav>

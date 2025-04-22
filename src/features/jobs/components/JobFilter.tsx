@@ -1,10 +1,13 @@
 "use client";
-import { FaCaretDown } from "react-icons/fa";
-import FilterJobs from "./filter/FilterJobs";
-import FilterLocation from "./filter/FilterLocation";
-import FilterOtherConditions from "./filter/FilterOtherConditions";
-import { useFilterTabStore } from "../../../stores/useJobFilterStore";
 
+import { Heading } from "@/components/ui/Heading";
+import { FaCaretDown } from "react-icons/fa";
+
+import { useFilterTabStore } from "@/features/jobs/stores/job-filters/useJobFilterTabsStore";
+import { useSelectedFilterStore } from "@/features/jobs/stores/job-filters/useSelectedFiltersStore";
+import FilterJobs from "./filter/JobCategoryFilter";
+import FilterOtherConditions from "./filter/JobConditionsFilter";
+import FilterLocation from "./filter/JobLocationFilter";
 export default function JobFilter() {
   const {
     showLocation,
@@ -19,22 +22,30 @@ export default function JobFilter() {
     "w-full border border-gray-300 px-2 py-3 rounded-md flex justify-center items-center gap-2 text-gray-500";
 
   const navBtnSelectedClassName = "border-primary font-bold text-primary";
+  const locationChecked = useSelectedFilterStore((state) => state.locationChecked);
+  const checkedJobs = useSelectedFilterStore((state) => state.checkedJobs);
+  const selectedFilters = useSelectedFilterStore((state) => state.selectedFilters);
+  const selectedDays = useSelectedFilterStore((state) => state.selectedDays);
+  const dayNegotiable = useSelectedFilterStore((state) => state.dayNegotiable);
 
   return (
     <>
       <section className="w-full max-w-7xl mx-auto my-8">
         <div className="flex flex-col mb-4">
-          <h2 className="text-2xl font-bold py-6 break-keep">
+          <Heading sizeOffset={3} className="font-bold py-6 break-keep">
             <span className="text-primary">전체 지역, 모든 직종</span>에 대한 채용공고에요!
             <br />
             검색 조건을 변경하고 싶으신가요?
-          </h2>
-          <div className="max-w-2xl flex gap-2 mt-4 justify-between items-center mb-3">
+          </Heading>
+          <div className="flex gap-2 mt-4 justify-between items-center mb-3">
             <button
               className={`${navBtnClassName} ${showLocation ? navBtnSelectedClassName : ""}`}
               onClick={() => setShowLocation(!showLocation)}
             >
               지역
+              {locationChecked.length > 0 && (
+                <span className="text-primary">{locationChecked.length}</span>
+              )}
               <span
                 className={`transition-transform duration-300 ${showLocation ? "rotate-180" : ""}`}
               >
@@ -46,6 +57,7 @@ export default function JobFilter() {
               onClick={() => setShowJobs(!showJobs)}
             >
               직종
+              {checkedJobs.length > 0 && <span className="text-primary">{checkedJobs.length}</span>}
               <span className={`transition-transform duration-300 ${showJobs ? "rotate-180" : ""}`}>
                 <FaCaretDown />
               </span>
@@ -55,20 +67,32 @@ export default function JobFilter() {
               onClick={() => setShowOtherConditions(!showOtherConditions)}
             >
               상세
+              {selectedDays.length + (dayNegotiable ? 1 : 0) > 0 && (
+                <span className="text-primary">
+                  {selectedDays.length + (dayNegotiable ? 1 : 0)}
+                </span>
+              )}
               <span
                 className={`transition-transform duration-300 ${showOtherConditions ? "rotate-180" : ""}`}
               >
                 <FaCaretDown />
               </span>
             </button>
-            <button className="w-full bg-primary text-white px-2 py-3 rounded-md flex justify-center items-center gap-2">
-              검색하기
-            </button>
-          </div>
-          {showLocation && <FilterLocation />}
-          {showJobs && <FilterJobs />}
-          {showOtherConditions && <FilterOtherConditions />}
 
+            {/* <button className="w-full bg-primary text-white px-2 py-3 rounded-md flex justify-center items-center gap-2">
+              검색하기
+            </button> */}
+          </div>
+          {showLocation && (
+            <FilterLocation setShowLocation={setShowLocation} showLocation={showLocation} />
+          )}
+          {showJobs && <FilterJobs setShowJobs={setShowJobs} showJobs={showJobs} />}
+          {showOtherConditions && (
+            <FilterOtherConditions
+              setShowOtherConditions={setShowOtherConditions}
+              showOtherConditions={showOtherConditions}
+            />
+          )}
         </div>
       </section>
     </>

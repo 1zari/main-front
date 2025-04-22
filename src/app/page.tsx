@@ -1,3 +1,4 @@
+import VoiceInput from "@/components/VoiceInput";
 import JobsArea from "../features/home/components/JobsArea";
 import JobSearch from "../features/home/components/JobSearch";
 import LandingPartnerCompany from "../features/home/components/LandingPartnerCompany";
@@ -9,19 +10,21 @@ export default function Home() {
   return (
     <main className="flex flex-col items-center min-h-screen">
       <WelcomeBanner />
-
       <JobSearch />
+      <div className="w-full bg-gray-z">
+        <JobsArea />
+      </div>
+      <div className="w-full bg-white">
+        <SavedJobsArea />
+      </div>
       <div className="w-full bg-gray-z">
         <LandingReview />
       </div>
       <div className="w-full bg-white ">
         <LandingPartnerCompany />
       </div>
-      <div className="w-full bg-gray-z">
-        <JobsArea />
-      </div>
-      <div className="w-full bg-white">
-        <SavedJobsArea />
+      <div className="fixed bottom-4 z-999 right-4 ">
+        <VoiceInput />
       </div>
     </main>
   );

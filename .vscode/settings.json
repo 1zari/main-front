@@ -1,0 +1,16 @@
+{
+  "favorites.resources": [
+    {
+      "filePath": "src/app/jobs",
+      "group": "Default"
+    },
+    {
+      "filePath": "src/features/jobs",
+      "group": "Default"
+    },
+    {
+      "filePath": "src/features/home/components",
+      "group": "Default"
+    }
+  ]
+}

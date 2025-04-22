@@ -1,22 +1,25 @@
-import { UserRole } from "@/features/auth-user/model/types";
+import NextAuth from "next-auth";
+import { UserRole } from "./user";
 
 declare module "next-auth" {
-  interface User {
-    id: string;
-    name: string;
-    email: string;
-    role: UserRole;
+  interface Session {
+    user: {
+      id: string;
+      email: string;
+      role: UserRole;
+    };
   }
 
-  interface Session {
-    user: User;
+  interface User {
+    id: string;
+    email: string;
+    role: UserRole;
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
     id: string;
-    name: string;
     email: string;
     role: UserRole;
   }
