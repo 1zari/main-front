@@ -11,7 +11,9 @@ export default function Home() {
   return (
     <main className="flex flex-col items-center min-h-screen">
       <WelcomeBanner />
-      <CompanyDashboard />
+      <div className="w-full text-center bg-gray-z">
+        <CompanyDashboard />
+      </div>
       <JobSearch />
       <div className="w-full bg-gray-z">
         <JobsArea />
