@@ -2,7 +2,7 @@ import { Heading } from "@/components/ui/Heading";
 import Link from "next/link";
 
 import { FaChevronLeft } from "react-icons/fa";
-export default function BackNavOnApplicatns() {
+export default function BackNavOnApplicants() {
   return (
     <>
       <nav className="bg-white text-black sticky top-0 z-10">

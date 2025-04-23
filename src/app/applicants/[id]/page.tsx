@@ -1,11 +1,11 @@
 import ApplicantsResume from "@/features/applicants/components/ApplicantsResume";
-import BackNavOnApplicatns from "@/features/applicants/components/BackNavOnApplicatns";
+import BackNavOnApplicants from "@/features/applicants/components/BackNavOnApplicants";
 
 export default function ApplicantDetailPage() {
   return (
     <>
       <div className="px-4">
-        <BackNavOnApplicatns />
+        <BackNavOnApplicants />
         <ApplicantsResume />
       </div>
     </>
