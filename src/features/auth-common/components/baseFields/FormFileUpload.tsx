@@ -1,55 +1,55 @@
-"use client"
+"use client";
 
-import { useFormContext, FieldValues, Path } from "react-hook-form"
-import { useState } from "react"
+import { useFormContext, FieldValues, Path } from "react-hook-form";
+import { useState } from "react";
 
 type Props<T extends FieldValues> = {
-  name: Path<T>
-  label: string
-}
+  name: Path<T>;
+  label: string;
+};
 
 export default function FormFileUpload<T extends FieldValues>({ name, label }: Props<T>) {
-  const { register, setError, clearErrors, formState } = useFormContext<T>()
-  const [fileName, setFileName] = useState("")
+  const { register, setError, clearErrors, formState } = useFormContext<T>();
+  const [fileName, setFileName] = useState("");
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
+    const file = e.target.files?.[0];
 
     if (!file) {
-      setFileName("")
+      setFileName("");
       setError(name, {
         type: "manual",
         message: "파일을 첨부해주세요.",
-      })
-      return
+      });
+      return;
     }
 
-    setFileName(file.name)
+    setFileName(file.name);
 
-    const hasValidExtension = /\.[^/.]+$/.test(file.name)
-    const validTypes = ["image/png", "image/jpeg", "image/svg+xml"]
+    const hasValidExtension = /\.[^/.]+$/.test(file.name);
+    const validTypes = ["image/png", "image/jpeg", "image/svg+xml"];
 
     if (!hasValidExtension) {
       setError(name, {
         type: "manual",
         message: "파일 이름에 확장자가 포함되어야 합니다.",
-      })
+      });
     } else if (!validTypes.includes(file.type)) {
       setError(name, {
         type: "manual",
         message: "PNG, JPG, SVG 형식만 가능합니다.",
-      })
+      });
     } else if (file.size > 1 * 1024 * 1024) {
       setError(name, {
         type: "manual",
         message: "파일 크기는 1MB 이하여야 합니다.",
-      })
+      });
     } else {
-      clearErrors(name)
+      clearErrors(name);
     }
-  }
+  };
 
-  const error = formState.errors[name]?.message
+  const error = formState.errors[name]?.message;
 
   return (
     <div>
@@ -81,5 +81,5 @@ export default function FormFileUpload<T extends FieldValues>({ name, label }: P
       </div>
       {error && <p className="text-red-500 mt-1 ml-2">{String(error)}</p>}
     </div>
-  )
+  );
 }

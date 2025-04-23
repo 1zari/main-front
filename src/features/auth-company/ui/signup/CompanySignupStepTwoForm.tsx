@@ -1,12 +1,15 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, FormProvider } from "react-hook-form";
-import { companySignupSchema, CompanyFormValues } from "@/features/auth-company/validation/company-auth.schema";
-import FormInput from "@/features/auth-common/components/baseFields/FormInput"
-import FormActionInput from "@/features/auth-common/components/baseFields/FormActionInput"
+import {
+  companySignupSchema,
+  CompanyFormValues,
+} from "@/features/auth-company/validation/company-auth.schema";
+import FormInput from "@/features/auth-common/components/baseFields/FormInput";
+import FormActionInput from "@/features/auth-common/components/baseFields/FormActionInput";
 import FormTextArea from "@/features/auth-common/components/baseFields/FormTextArea";
-import FormDatePicker from "@/features/auth-common/components/baseFields/FormDatePicker"
-import FormFileUpload from "@/features/auth-common/components/baseFields/FormFileUpload"
+import FormDatePicker from "@/features/auth-common/components/baseFields/FormDatePicker";
+import FormFileUpload from "@/features/auth-common/components/baseFields/FormFileUpload";
 import "react-datepicker/dist/react-datepicker.css";
 
 export type CompanyStepTwoValues = CompanyFormValues;
@@ -90,14 +93,8 @@ export default function SignupStepTwoCompany({ onSubmit }: Props) {
             buttonText="인증 확인"
             onButtonClick={handleBusinessCheck}
           />
-          <FormFileUpload<CompanyFormValues>
-            name="businessFile"
-            label="사업자등록증 첨부"
-          />
-          <FormFileUpload<CompanyFormValues>
-            name="companyLogo"
-            label="기업 로고 (권장)"
-          />
+          <FormFileUpload<CompanyFormValues> name="businessFile" label="사업자등록증 첨부" />
+          <FormFileUpload<CompanyFormValues> name="companyLogo" label="기업 로고 (권장)" />
           <FormTextArea<CompanyFormValues>
             label="기업 소개"
             name="companyIntro"
@@ -137,4 +134,3 @@ export default function SignupStepTwoCompany({ onSubmit }: Props) {
     </FormProvider>
   );
 }
-

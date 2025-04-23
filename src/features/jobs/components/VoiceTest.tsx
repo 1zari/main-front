@@ -3,9 +3,10 @@
 import { useEffect } from "react";
 
 export default function VoiceTest() {
-  const keywordList = typeof window !== "undefined"
-    ? new URLSearchParams(window.location.search).get("keywords")?.split(",") ?? []
-    : [];
+  const keywordList =
+    typeof window !== "undefined"
+      ? (new URLSearchParams(window.location.search).get("keywords")?.split(",") ?? [])
+      : [];
 
   useEffect(() => {
     if (keywordList.length > 0) {

@@ -1,7 +1,7 @@
-"use client"
-import Image from "next/image"
-import Link from "next/link"
-import { User2, Building2 } from "lucide-react"
+"use client";
+import Image from "next/image";
+import Link from "next/link";
+import { User2, Building2 } from "lucide-react";
 
 export default function SignupEntryPage() {
   return (
@@ -36,5 +36,5 @@ export default function SignupEntryPage() {
         </Link>
       </div>
     </section>
-  )
+  );
 }

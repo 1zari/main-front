@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import { useFormContext, FieldValues, Path } from "react-hook-form"
+import { useFormContext, FieldValues, Path } from "react-hook-form";
 
 type Props<T extends FieldValues> = {
-  label: string
-  name: Path<T>
-  placeholder?: string
-  buttonText: string
-  onButtonClick: () => void
-}
+  label: string;
+  name: Path<T>;
+  placeholder?: string;
+  buttonText: string;
+  onButtonClick: () => void;
+};
 
 export default function FormActionInput<T extends FieldValues>({
   label,
@@ -20,7 +20,7 @@ export default function FormActionInput<T extends FieldValues>({
   const {
     register,
     formState: { errors },
-  } = useFormContext<T>()
+  } = useFormContext<T>();
 
   return (
     <div>
@@ -42,9 +42,7 @@ export default function FormActionInput<T extends FieldValues>({
           {buttonText}
         </button>
       </div>
-      {errors[name] && (
-        <p className="text-red-500 mt-1 ml-2">{String(errors[name]?.message)}</p>
-      )}
+      {errors[name] && <p className="text-red-500 mt-1 ml-2">{String(errors[name]?.message)}</p>}
     </div>
-  )
+  );
 }

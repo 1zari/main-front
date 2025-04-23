@@ -19,7 +19,6 @@ const SubmitButton = ({ disabled, mode }: SubmitProps) => {
       {mode === "new" ? "채용공고 등록" : "채용공고 수정"}
     </button>
   );
-}
+};
 
 export default SubmitButton;
-

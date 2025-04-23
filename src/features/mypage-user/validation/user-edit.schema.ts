@@ -1,5 +1,5 @@
-import { z } from "zod"
-import { USER_VALIDATION } from "@/features/auth-user/validation/user-auth.schema"
+import { z } from "zod";
+import { USER_VALIDATION } from "@/features/auth-user/validation/user-auth.schema";
 
 export const userEditSchema = z.object({
   phone: z
@@ -25,16 +25,12 @@ export const userEditSchema = z.object({
 
   interests: z.array(z.string()).optional(),
 
-  purposes: z
-    .array(z.string())
-    .min(1, USER_VALIDATION.purposes.required),
+  purposes: z.array(z.string()).min(1, USER_VALIDATION.purposes.required),
 
-  channels: z
-    .array(z.string())
-    .min(1, USER_VALIDATION.channels.required),
-})
+  channels: z.array(z.string()).min(1, USER_VALIDATION.channels.required),
+});
 
-export type UserEditFormValues = z.infer<typeof userEditSchema>
+export type UserEditFormValues = z.infer<typeof userEditSchema>;
 
 // 회원정보수정 - 비밀번호 수정
 export const userPasswordEditSchema = z.object({
@@ -44,6 +40,6 @@ export const userPasswordEditSchema = z.object({
     .min(USER_VALIDATION.password.min, USER_VALIDATION.password.messages.min)
     .max(USER_VALIDATION.password.max, USER_VALIDATION.password.messages.max)
     .regex(USER_VALIDATION.password.pattern, USER_VALIDATION.password.messages.format),
-})
+});
 
-export type UserPasswordEditFormValues = z.infer<typeof userPasswordEditSchema>
+export type UserPasswordEditFormValues = z.infer<typeof userPasswordEditSchema>;

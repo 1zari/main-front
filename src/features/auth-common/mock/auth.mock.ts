@@ -24,5 +24,4 @@ export const MOCK_USER1 = {
   interests: ["기술직"],
   purposes: ["일자리 관련 정보", "교육 및 재취업 준비"],
   channels: ["네이버 검색", "지인추천"],
-}
-
+};

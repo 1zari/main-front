@@ -1,40 +1,40 @@
-"use client"
-import { useState } from "react"
-import { useForm, FormProvider } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
+"use client";
+import { useState } from "react";
+import { useForm, FormProvider } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   userEditSchema,
   userPasswordEditSchema,
   UserEditFormValues,
   UserPasswordEditFormValues,
-} from "@/features/mypage-user/validation/user-edit.schema"
-import FormInput from "@/features/auth-common/components/baseFields/FormInput"
-import FormActionInput from "@/features/auth-common/components/baseFields/FormActionInput"
-import FormDatePicker from "@/features/auth-common/components/baseFields/FormDatePicker"
-import ControlledCheckboxGroup from "@/features/auth-common/components/baseFields/ControlledCheckboxGroup"
-import PasswordChangeForm from "./PasswordChangeForm"
-import { MOCK_USER1 } from "@/features/auth-common/mock/auth.mock"
+} from "@/features/mypage-user/validation/user-edit.schema";
+import FormInput from "@/features/auth-common/components/baseFields/FormInput";
+import FormActionInput from "@/features/auth-common/components/baseFields/FormActionInput";
+import FormDatePicker from "@/features/auth-common/components/baseFields/FormDatePicker";
+import ControlledCheckboxGroup from "@/features/auth-common/components/baseFields/ControlledCheckboxGroup";
+import PasswordChangeForm from "./PasswordChangeForm";
+import { MOCK_USER1 } from "@/features/auth-common/mock/auth.mock";
 
 export default function UserInformationEdit({
   onSubmit = (data) => console.log("수정 요청", data),
   defaultValues = MOCK_USER1,
 }: {
-  onSubmit?: (data: UserEditFormValues) => void
-  defaultValues?: typeof MOCK_USER1
+  onSubmit?: (data: UserEditFormValues) => void;
+  defaultValues?: typeof MOCK_USER1;
 }) {
-  const [showPasswordChange, setShowPasswordChange] = useState(false)
+  const [showPasswordChange, setShowPasswordChange] = useState(false);
 
   const methods = useForm<UserEditFormValues>({
     resolver: zodResolver(userEditSchema),
     defaultValues,
     mode: "onBlur",
     reValidateMode: "onBlur",
-  })
+  });
 
   const passwordForm = useForm<UserPasswordEditFormValues>({
     resolver: zodResolver(userPasswordEditSchema),
     mode: "onBlur",
-  })
+  });
 
   const {
     handleSubmit,
@@ -42,21 +42,18 @@ export default function UserInformationEdit({
     getValues,
     setError,
     formState: { errors },
-  } = methods
+  } = methods;
 
   const handlePasswordSubmit = (data: UserPasswordEditFormValues) => {
-    console.log("비밀번호 변경 요청", data)
-    setShowPasswordChange(false)
-  }
+    console.log("비밀번호 변경 요청", data);
+    setShowPasswordChange(false);
+  };
 
   return (
     <div className="flex justify-center items-center flex-1">
       <div className="bg-white rounded-lg shadow-md px-10 py-[100px] w-full max-w-[1000px]">
         <FormProvider {...methods}>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col items-center space-y-8"
-          >
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center space-y-8">
             <h2 className="text-3xl font-semibold">개인회원 정보수정</h2>
 
             <div className="w-full max-w-[700px] space-y-6">
@@ -93,12 +90,12 @@ export default function UserInformationEdit({
                 placeholder="010-1234-5678"
                 buttonText="번호 인증"
                 onButtonClick={() => {
-                  const phone = getValues("phone")
+                  const phone = getValues("phone");
                   if (!phone) {
                     setError("phone", {
                       type: "manual",
                       message: "전화번호를 입력 후 인증을 진행해주세요.",
-                    })
+                    });
                   }
                 }}
               />
@@ -109,12 +106,12 @@ export default function UserInformationEdit({
                 placeholder="숫자 6자리"
                 buttonText="인증 확인"
                 onButtonClick={() => {
-                  const code = getValues("verifyCode")
+                  const code = getValues("verifyCode");
                   if (!code) {
                     setError("verifyCode", {
                       type: "manual",
                       message: "인증번호 6자리를 입력해주세요",
-                    })
+                    });
                   }
                 }}
               />
@@ -172,7 +169,7 @@ export default function UserInformationEdit({
                 <button
                   type="button"
                   onClick={() => {
-                    console.log("수정 취소")
+                    console.log("수정 취소");
                   }}
                   className="w-full h-[60px] bg-gray-200 text-gray-700 font-semibold rounded hover:bg-gray-300 transition"
                 >
@@ -190,5 +187,5 @@ export default function UserInformationEdit({
         </FormProvider>
       </div>
     </div>
-  )
+  );
 }
