@@ -21,8 +21,6 @@ const EmptyContent = ({ title, message }: EmptyContentProps) => (
 
 interface UserProfileTabsProps {
   resumes: Resume[] | null;
-  appliedJobs: React.ReactNode;
-  savedJobs: React.ReactNode;
 }
 
 type TabType = "resumes" | "applied" | "saved";
@@ -33,7 +31,7 @@ const TABS = [
   { id: "saved", label: "저장한 공고" },
 ] as const;
 
-export default function UserProfileTabs({ resumes, appliedJobs, savedJobs }: UserProfileTabsProps) {
+export default function UserProfileTabs({ resumes }: UserProfileTabsProps) {
   const [activeTab, setActiveTab] = useState<TabType>("resumes");
 
   const tabStyle = "flex-1 px-4 py-2 cursor-pointer transition-colors text-center";

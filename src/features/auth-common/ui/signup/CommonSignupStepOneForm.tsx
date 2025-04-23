@@ -69,7 +69,7 @@ function EmailInputWithCheck({
 }) {
   return (
     <div className="w-full">
-      <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg">이메일</label>
+      <label className="block mb-3 ml-2 text-base font-semibold sm:text-lg">이메일</label>
       <div className="w-full space-y-3 sm:space-y-0 sm:flex sm:items-start sm:gap-3">
         <input
           type="text"
@@ -84,7 +84,7 @@ function EmailInputWithCheck({
           중복확인
         </button>
       </div>
-      {error && <p className="text-red-500 mt-1 ml-2">{error}</p>}
+      {error && <p className="mt-1 ml-2 text-red-500">{error}</p>}
     </div>
   );
 }
@@ -97,14 +97,14 @@ function PasswordInput({
   error,
 }: {
   label: string;
-  register: ReturnType<UseFormRegister<any>>;
+  register: ReturnType<UseFormRegister<SignupFormValues>>;
   show: boolean;
   onToggle: () => void;
   error?: string;
 }) {
   return (
     <div>
-      <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg">{label}</label>
+      <label className="block mb-3 ml-2 text-base font-semibold sm:text-lg">{label}</label>
       <div className="relative">
         <input
           type={show ? "text" : "password"}
@@ -115,12 +115,12 @@ function PasswordInput({
         <button
           type="button"
           onClick={onToggle}
-          className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 cursor-pointer"
+          className="absolute text-gray-500 -translate-y-1/2 cursor-pointer right-4 top-1/2"
         >
           {show ? <Eye size={22} /> : <EyeOff size={22} />}
         </button>
       </div>
-      {error && <p className="text-red-500 mt-1 ml-2">{error}</p>}
+      {error && <p className="mt-1 ml-2 text-red-500">{error}</p>}
     </div>
   );
 }

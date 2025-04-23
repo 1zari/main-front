@@ -14,7 +14,6 @@ interface LoginBaseFormProps {
   role: "user" | "employer";
   onEmailFind: () => void;
   onPasswordFind: () => void;
-  onSignup: () => void;
   showSocialLogin?: boolean;
   showEmailDomainSelect?: boolean;
 }
@@ -23,7 +22,6 @@ export default function LoginBaseForm({
   role,
   onEmailFind,
   onPasswordFind,
-  onSignup,
   showSocialLogin = true,
   showEmailDomainSelect = true,
 }: LoginBaseFormProps) {
@@ -72,12 +70,12 @@ export default function LoginBaseForm({
       <Image src="/images/logo.png" alt="로고" width={200} height={200} className="mx-auto mb-6" />
 
       <div className="mb-6 text-left">
-        <label htmlFor="email" className="block mb-3 ml-2 font-semibold text-base sm:text-lg">
+        <label htmlFor="email" className="block mb-3 ml-2 text-base font-semibold sm:text-lg">
           이메일
         </label>
         {role === "user" && showEmailDomainSelect ? (
-          <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-end">
-            <div className="w-full sm:flex-1 border-b border-gray-300 pb-1">
+          <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-end">
+            <div className="w-full pb-1 border-b border-gray-300 sm:flex-1">
               <input
                 {...register("email")}
                 id="email"
@@ -89,7 +87,7 @@ export default function LoginBaseForm({
             </div>
             <div className="relative w-full sm:w-[140px] border border-gray-300 rounded px-3 py-2">
               <select
-                className="w-full bg-white text-gray-700 focus:outline-none appearance-none cursor-pointer text-base"
+                className="w-full text-base text-gray-700 bg-white appearance-none cursor-pointer focus:outline-none"
                 value={domainOption}
                 onChange={handleDomainChange}
               >
@@ -99,13 +97,13 @@ export default function LoginBaseForm({
                   </option>
                 ))}
               </select>
-              <div className="pointer-events-none absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">
+              <div className="absolute text-sm text-gray-500 transform -translate-y-1/2 pointer-events-none right-2 top-1/2">
                 ▼
               </div>
             </div>
           </div>
         ) : (
-          <div className="relative border-b border-gray-300 pb-1">
+          <div className="relative pb-1 border-b border-gray-300">
             <input
               {...register("email")}
               id="email"
@@ -117,15 +115,15 @@ export default function LoginBaseForm({
           </div>
         )}
         {errors.email && (
-          <p className="text-red-500 mt-1 text-sm sm:text-base">{errors.email.message}</p>
+          <p className="mt-1 text-sm text-red-500 sm:text-base">{errors.email.message}</p>
         )}
       </div>
 
       <div className="mb-6 text-left">
-        <label htmlFor="password" className="block mb-3 ml-2 font-semibold text-base sm:text-lg">
+        <label htmlFor="password" className="block mb-3 ml-2 text-base font-semibold sm:text-lg">
           비밀번호
         </label>
-        <div className="relative border-b border-gray-300 pb-1">
+        <div className="relative pb-1 border-b border-gray-300">
           <input
             {...register("password")}
             id="password"
@@ -137,20 +135,20 @@ export default function LoginBaseForm({
           <button
             type="button"
             onClick={() => setShowPassword((prev) => !prev)}
-            className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-500 cursor-pointer"
+            className="absolute right-0 text-gray-500 -translate-y-1/2 cursor-pointer top-1/2"
           >
             {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
           </button>
         </div>
         {errors.password && (
-          <p className="text-red-500 mt-1 text-sm sm:text-base">
+          <p className="mt-1 text-sm text-red-500 sm:text-base">
             비밀번호는 8자 이상 16자 이하이며, 영어 소문자, 숫자, 특수문자를 각각 1개 이상 포함해야
             합니다.
           </p>
         )}
       </div>
 
-      <div className="text-gray-400 mb-6 text-right">
+      <div className="mb-6 text-right text-gray-400">
         <span onClick={onEmailFind} className="cursor-pointer hover:text-gray-600">
           이메일 찾기
         </span>
@@ -162,12 +160,12 @@ export default function LoginBaseForm({
 
       <button
         type="submit"
-        className="w-full bg-primary text-white py-3 rounded hover:bg-green-700 cursor-pointer mb-2"
+        className="w-full py-3 mb-2 text-white rounded cursor-pointer bg-primary hover:bg-green-700"
       >
         로그인
       </button>
 
-      <div className="w-full border-t border-gray-300 my-6" />
+      <div className="w-full my-6 border-t border-gray-300" />
 
       {showSocialLogin && (
         <div className="mb-6">
@@ -192,7 +190,7 @@ export default function LoginBaseForm({
         <button
           type="button"
           onClick={() => router.push(`/auth/signup`)}
-          className="text-gray-500 hover:underline cursor-pointer"
+          className="text-gray-500 cursor-pointer hover:underline"
         >
           회원가입
         </button>
