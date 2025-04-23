@@ -1,8 +1,9 @@
+import { defineConfig } from 'eslint/config';
 import eslintPluginPrettier from 'eslint-plugin-prettier';
 import typescriptPlugin from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 
-export default [
+export default defineConfig([
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
@@ -19,4 +20,4 @@ export default [
       'prettier/prettier': 'error',
     },
   },
-];
+]);
