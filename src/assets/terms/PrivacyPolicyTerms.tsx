@@ -2,12 +2,13 @@
 
 const PrivacyPolicyTerms = () => {
   return (
-    <div className="m-1 text-gray-700 text-sm">
-      <h2 className="font-bold mb-4 p-1 border-b-1">시니어내일 개인정보 처리방침</h2>
+    <div className="m-1 text-sm text-gray-700">
+      <h2 className="p-1 mb-4 font-bold border-b-1">시니어내일 개인정보 처리방침</h2>
       <p>
-        시니어내일(이하 ‘회사’)은 「개인정보 보호법」 및 「정보통신망 이용촉진 및 정보보호 등에 관한
-        법률」 등 개인정보 보호 관련 법령을 준수하며, 이용자의 개인정보를 보호하고 이에 관한 권익을
-        보호하기 위하여 다음과 같은 개인정보 처리방침(이하 ‘본 방침’)을 수립·공개합니다.{" "}
+        시니어내일(이하 &quot;회사&quot;)은 「개인정보 보호법」 및 「정보통신망 이용촉진 및 정보보호
+        등에 관한 법률」 등 개인정보 보호 관련 법령을 준수하며, 이용자의 개인정보를 보호하고 이에
+        관한 권익을 보호하기 위하여 다음과 같은 개인정보 처리방침(이하 &quot;본 방침&quot;)을
+        수립·공개합니다.{" "}
         <span className="font-bold">
           본 개인정보 처리방침은 회사가 제공하는 시니어내일 서비스(웹사이트 및 모바일 웹/앱 등
           포함)를 이용하는 모든 회원 및 비회원에게 적용되며, 다음과 같은 내용을 담고 있습니다.
@@ -22,7 +23,7 @@ const PrivacyPolicyTerms = () => {
           다음과 같습니다.
         </p>
         <br />
-        <ul className="list-disc pl-5">
+        <ul className="pl-5 list-disc">
           <li>
             <span className="font-bold">회원가입 시 수집항목 </span>
             (개인회원): 이름, 생년월일, 성별, 로그인 ID(이메일 주소), 비밀번호, 휴대전화 번호
@@ -62,7 +63,7 @@ const PrivacyPolicyTerms = () => {
         <br />
         <p>회사는 다음과 같은 방법으로 개인정보를 수집합니다.</p>
         <br />
-        <ul className="list-disc pl-5">
+        <ul className="pl-5 list-disc">
           <li>
             회원가입 및 서비스 이용 과정에서 이용자가 웹/앱 화면에 직접 입력하거나 파일 형태로
             제출하는 방식
@@ -90,34 +91,34 @@ const PrivacyPolicyTerms = () => {
             받겠습니다.
           </p>
           <br />
-          <ul className="list-decimal pl-5">
+          <ul className="pl-5 list-decimal">
             <li>
-              <span className="font-bold ml-2">회원관리: : </span>
+              <span className="ml-2 font-bold">회원관리: : </span>
               회원제 서비스 이용에 따른 본인 확인, 개인 식별, 가입 의사 확인, 연령 확인 및
               법정대리인 동의 여부 확인, 회원자격 유지·관리, 부정 이용 방지, 비인가 사용 방지, 가입
               및 횟수 제한
             </li>
             <br />
             <li>
-              <span className="font-bold ml-2">취업 지원 서비스 제공: </span>
+              <span className="ml-2 font-bold">취업 지원 서비스 제공: </span>
               이력서 작성 및 보관, 구직자 프로필 관리, 채용공고 열람 및 입사지원, 구인기업과 구직자
               간 매칭, 합격 여부 통보 등 시니어내일의 핵심 취업 지원 서비스를 제공하기 위한 목적
             </li>
             <br />
             <li>
-              <span className="font-bold ml-2">고객문의 응대 및 분쟁 해결 : </span>
+              <span className="ml-2 font-bold">고객문의 응대 및 분쟁 해결 : </span>
               고객문의, 불만처리, 공지사항 전달 등 원활한 의사소통을 위한 연락, 분쟁 조정을 위한
               기록 보존
             </li>
             <br />
             <li>
-              <span className="font-bold ml-2">서비스 개선 및 개발 : </span>
+              <span className="ml-2 font-bold">서비스 개선 및 개발 : </span>
               접속 빈도 파악, 회원의 서비스 이용에 대한 통계 분석 등을 통한 서비스 품질 향상, 신규
               서비스 개발 및 맞춤 서비스 제공
             </li>
             <br />
             <li>
-              <span className="font-bold ml-2">마케팅 및 광고 (선택 동의 시) : </span>
+              <span className="ml-2 font-bold">마케팅 및 광고 (선택 동의 시) : </span>
               새로운 서비스 안내, 이벤트 소식 등 광고성 정보 전달 및 마케팅 활용.
               <span className="italic">
                 (<span className="font-bold">※ 중요: </span>회원은 이러한 마케팅 정보 수신에
@@ -127,12 +128,12 @@ const PrivacyPolicyTerms = () => {
             </li>
             <br />
             <li>
-              <span className="font-bold ml-2">보안 및 부정이용 방지 : </span>
+              <span className="ml-2 font-bold">보안 및 부정이용 방지 : </span>
               비정상적 서비스 이용 행태의 탐지 및 차단, 계정 도용 및 부정거래 방지, 서비스 안정성
               확보
             </li>
             <li>
-              <span className="font-bold ml-2">개인위치정보 활용 서비스 : </span>
+              <span className="ml-2 font-bold">개인위치정보 활용 서비스 : </span>
               (위치정보 동의 회원에 한함) 회원의 위치를 기반으로 한 채용정보 제공 등 위치기반 서비스
               제공 목적. 이 경우 위치정보는 해당 서비스 제공 목적 범위 내에서만 이용됩니다.
             </li>
@@ -148,7 +149,7 @@ const PrivacyPolicyTerms = () => {
             <span className="font-bold">개인정보의 수집 및 이용 목적이 달성될 때까지</span> 보유 및
             이용합니다. 다만, 아래의 경우에 한해 일정 기간 개인정보를 보존합니다.
           </p>
-          <ul className="list-decimal pl-5">
+          <ul className="pl-5 list-decimal">
             <li>
               <span className="font-bold">이용자 회원정보 : </span>
               회원 탈퇴 시 즉시 파기합니다. 다만, 탈퇴 후에도 서비스 이용기록이 없거나 분쟁 예방을
@@ -161,7 +162,7 @@ const PrivacyPolicyTerms = () => {
               전자상거래 등에서의 소비자 보호에 관한 법률 등 관계 법령의 규정에 의하여 보존할 필요가
               있는 경우 법령이 정한 기간 동안 개인정보를 보관합니다. 예를 들면:
               <br />
-              <ul className="list-disc pl-5 marker:text-sm marker:text-gray-400 mt-1">
+              <ul className="pl-5 mt-1 list-disc marker:text-sm marker:text-gray-400">
                 <li>
                   계약 또는 청약철회 등에 관한 기록: <span className="font-bold">5년</span> 보관
                   (전자상거래법)
@@ -232,7 +233,7 @@ const PrivacyPolicyTerms = () => {
             지체 없이 해당 개인정보를 파기합니다. 파기의 절차 및 방법은 다음과 같습니다.
           </p>
           <br />
-          <ul className="list-disc pl-5">
+          <ul className="pl-5 list-disc">
             <li>
               <span className="font-bold">파기절차 : </span> 이용자가 회원 탈퇴 등을 통해 개인정보
               파기를 요청하거나 개인정보의 수집 및 이용 목적이 달성된 경우, 내부 방침 및 관련 법령에
@@ -258,7 +259,7 @@ const PrivacyPolicyTerms = () => {
           다만, 아래와 같은 경우에는 예외로 합니다.
         </p>
         <br />
-        <ul className="list-decimal pl-5">
+        <ul className="pl-5 list-decimal">
           <li>
             <span className="font-bold">이용자가 사전에 공개 또는 제3자 제공에 동의한 경우 : </span>
             특정 서비스 이용을 위해 외부 제휴사와 개인정보를 공유하거나 제공할 필요가 있는 경우,
@@ -331,7 +332,7 @@ const PrivacyPolicyTerms = () => {
             </span>
           </p>
           <br />
-          <ul className="list-disc pl-5">
+          <ul className="pl-5 list-disc">
             <li>
               <span className="font-bold">웹 호스팅 및 데이터 보관</span>- 위탁받는 자: [클라우드
               서비스 업체 명], 위탁 업무 내용: 서비스 서버 운영 및 DB 관리 (회원 데이터 보관), 보유
@@ -373,7 +374,7 @@ const PrivacyPolicyTerms = () => {
             있습니다.
           </p>
           <br />
-          <ul className="list-decimal pl-5">
+          <ul className="pl-5 list-decimal">
             <li>
               <span className="font-bold">개인정보 열람 요구 : </span>
               이용자는 회사가 처리하는 자신의 개인정보에 대한 열람을 요구할 수 있습니다. 단,
@@ -400,7 +401,7 @@ const PrivacyPolicyTerms = () => {
               <span className="font-bold">동의 철회 및 마케팅 수신 거부 : </span>
               회원은 개인정보의 수집·이용에 대한 동의를 언제든지 철회할 수 있습니다. 특히 선택적으로
               동의한 마케팅 목적 개인정보 이용의 경우, 이후 언제든지 수신 거부 또는 동의 철회를 할
-              수 있습니다. 수신 거부는 수신된 이메일 하단의 ‘수신거부’ 링크 클릭이나, 문자 메시지
+              수 있습니다. 수신 거부는 수신된 이메일 하단의 '수신거부' 링크 클릭이나, 문자 메시지
               수신 시 안내된 방법에 따르거나, 고객센터를 통해 요청할 수 있습니다.
             </li>
             <br />
@@ -420,7 +421,7 @@ const PrivacyPolicyTerms = () => {
             조치를 취하겠습니다.
           </p>
           <br />
-          <ul className="list-disc pl-5">
+          <ul className="pl-5 list-disc">
             <li>개인정보 열람 요구에 대한 조치 기간: 최대 10일 이내</li>
             <li>개인정보 정정·삭제 요구에 대한 조치 기간: 최대 10일 이내</li>
             <li>개인정보 처리정지 요구에 대한 조치 기간: 최대 10일 이내</li>
@@ -475,7 +476,7 @@ const PrivacyPolicyTerms = () => {
             제공하는 데 사용됩니다.
           </p>
           <br />
-          <ul className="list-disc pl-5">
+          <ul className="pl-5 list-disc">
             <li>
               <span className="font-bold">쿠키 사용 목적 : </span>
               회원의 로그인 유지, 이용자의 서비스 선호도 저장, 관심 분야에 따른 맞춤형 채용정보
@@ -513,7 +514,7 @@ const PrivacyPolicyTerms = () => {
             이용약관과 다음의 방침에 따릅니다.
           </p>
           <br />
-          <ul className="list-disc pl-5">
+          <ul className="pl-5 list-disc">
             <li>
               개인위치정보는 이용자에게 위치기반 서비스를 제공하는 목적 외에는 이용되지 않으며,
               법령이 정한 경우를 제외하고 당사자의 동의 없이 제3자에게 제공하지 않습니다.
@@ -542,71 +543,16 @@ const PrivacyPolicyTerms = () => {
       </section>
       <br />
       <section className="m-1">
-        <h2 className="font-bold">제11조 (개인정보의 안전성 확보 조치)</h2>
-        <p>
-          회사는 이용자의 개인정보를 안전하게 관리하기 위해 다음과 같은 기술적·관리적 대책을
-          시행하고 있습니다.
-        </p>
-        <br />
-        <ul className="list-disc pl-5">
-          <li>
-            <span className="font-bold">개인정보의 암호화 : </span>
-            이용자의 비밀번호는 일방향 암호화하여 저장 및 관리되고 있어, 해당 이용자 본인만이 알 수
-            있으며 개인정보의 저장 및 전송 시에도 중요한 데이터는 별도의 보안 기능을 통해 암호화하고
-            있습니다.
-          </li>
-          <br />
-          <li>
-            <span className="font-bold">해킹 등에 대비한 대책 : </span>
-            회사는 해킹이나 컴퓨터 바이러스 등에 의해 개인정보가 유출되거나 훼손되는 것을 막기 위해
-            <span className="font-bold">최신 보안 프로그램을 설치하고</span>
-            주기적인 업데이트 및 점검을 실시하고 있습니다. 또한 중요 데이터는 별도의 서버를 통해
-            안전하게 전송되고 있으며, 침입차단시스템 및 침입탐지시스템을 이용하여 네트워크 상의
-            외부로부터의 무단 접근을 통제하고 있습니다.
-          </li>
-          <br />
-          <li>
-            <span className="font-bold">접근 권한의 제한 : </span>
-            개인정보를 처리하는 직원을 최소한으로 제한하며, 관련 직원에 대해서는 새로운 보안 기술
-            습득 및 개인정보 보호 의무 등에 관해
-            <span className="font-bold">정기적인 교육</span>을 실시하고 있습니다. 또한
-            개인정보처리시스템에 대한 접근 권한 부여, 변경, 말소 등을 통하여 개인정보에 대한 접근
-            통제를 위해 필요한 조치를 하고, 외부로부터의 무단 접근을 통제하기 위해
-            <span className="font-bold">접근 통제 시스템을 운영</span>
-            하고 있습니다.
-          </li>
-          <br />
-          <li>
-            <span className="font-bold">접속기록의 보관 및 위·변조 방지 : </span>
-            개인정보처리시스템에 접속한 기록을 최소 6개월 이상 보관 및 관리하고 있으며, 접속 기록이
-            위조·변조되지 않도록 보안기능을 사용하고 있습니다.
-          </li>
-          <br />
-          <li>
-            <span className="font-bold">문서 보안을 위한 잠금장치 사용 : </span>
-            개인정보가 포함된 서류, 보조 저장매체 등은 잠금장치가 있는 안전한 장소에 보관하고,
-            인가된 직원만 접근할 수 있도록 관리합니다.
-          </li>
-          <br />
-          <li>
-            <span className="font-bold">개인정보보호 전담기구 운영 : </span>
-            회사는 내부적으로 개인정보 보호 전담 조직을 운영하여, 개인정보 보호 조치의 이행 상태 및
-            담당자의 준수 여부를 주기적으로 점검하고 개선하고 있습니다.
-          </li>
-        </ul>
-      </section>
-      <br />
-      <section className="m-1">
-        <h2 className="font-bold">제12조 (개인정보 보호책임자 및 담당자 연락처) </h2>
+        <h2 className="font-bold">제11조 (개인정보 보호책임자 및 담당자 연락처) </h2>
         <p>
           회사는 이용자의 개인정보를 보호하고 개인정보와 관련한 의견수렴 및 불만처리를 위하여 아래와
           같이 개인정보 보호책임자를 지정하고 있습니다.
         </p>
         <br />
-        <ul className="list-disc pl-5">
+        <ul className="pl-5 list-disc">
           <li>
             <span className="font-bold">개인정보 보호책임자 : </span> [회사에서 지정]
-            <ul className="list-disc pl-5 marker:text-sm marker:text-gray-400 mt-1">
+            <ul className="pl-5 mt-1 list-disc marker:text-sm marker:text-gray-400">
               <br />
               <li>직위: [ ]</li>
               <br />
@@ -616,7 +562,7 @@ const PrivacyPolicyTerms = () => {
           <br />
           <li>
             <span className="font-bold">개인정보 보호 담당부서 : </span> [ ] (예: 고객지원팀 등)
-            <ul className="list-disc pl-5 marker:text-sm marker:text-gray-400 mt-1">
+            <ul className="pl-5 mt-1 list-disc marker:text-sm marker:text-gray-400">
               <br />
               <li>연락처: 전화 [ ], 이메일 [ ]</li>
             </ul>
@@ -637,16 +583,16 @@ const PrivacyPolicyTerms = () => {
             이용자는 회사의 개인정보처리방침에 관한 문의 이외에도, 자신의 개인정보에 대한 열람청구
             권리를 개인정보 보호위원회가 운영하는
             <span className="font-bold">개인정보보호 종합지원 포털 </span>
-            웹사이트(www.privacy.go.kr)를 통해 행사할 수 있습니다. 또한 개인정보 침해에 대한
+            웹사이트 (www.privacy.go.kr)를 통해 행사할 수 있습니다. 또한 개인정보 침해에 대한
             상담이나 피해 구제를 위해 아래 기관에 문의할 수 있습니다. (이 기관들은 회사와는 별개의
             정부 기관으로서, 회사의 자체적인 개인정보 불만처리 시스템을 먼저 이용하신 후 추가 도움이
             필요할 경우 연락하시기 바랍니다.)
           </p>
           <br />
-          <ul className="list-disc pl-5">
+          <ul className="pl-5 list-disc">
             <li>
               <span className="font-bold">개인정보침해신고센터 </span>(한국인터넷진흥원 운영)
-              <ul className="list-disc pl-5 marker:text-sm marker:text-gray-400 mt-1">
+              <ul className="pl-5 mt-1 list-disc marker:text-sm marker:text-gray-400">
                 <br />
                 <li>홈페이지: privacy.kisa.or.kr / 연락처: (국번없이) 118</li>
                 <br />
@@ -658,7 +604,7 @@ const PrivacyPolicyTerms = () => {
             <br />
             <li>
               <span className="font-bold">개인정보분쟁조정위원회</span>
-              <ul className="list-disc pl-5 marker:text-sm marker:text-gray-400 mt-1">
+              <ul className="pl-5 mt-1 list-disc marker:text-sm marker:text-gray-400">
                 <br />
                 <li>홈페이지: www.kopico.go.kr / 연락처: 1833-6972</li>
                 <br />
@@ -699,7 +645,7 @@ const PrivacyPolicyTerms = () => {
       </section>
       <br />
       <section className="m-1">
-        <ul className="list-disc pl-5">
+        <ul className="pl-5 list-disc">
           <li>공고일자: 2025년 5월 3일</li>
           <br />
           <li>시행일자: 2025년 5월 10일</li>
