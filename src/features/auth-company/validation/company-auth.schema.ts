@@ -56,7 +56,7 @@ export const COMPANY_VALIDATION = {
       invalidType: "PNG, JPG, SVG 형식의 이미지 파일만 업로드 가능합니다.",
       tooBig: "파일 크기는 1MB 이하여야 합니다.",
     },
-  }
+  },
 };
 
 // 기업 이메일 찾기 스키마
@@ -107,7 +107,6 @@ export const findCompanyPasswordSchema = z.object({
 
 export type FindCompanyPasswordFormValues = z.infer<typeof findCompanyPasswordSchema>;
 
-
 // 기업 회원가입
 export const companySignupSchema = z.object({
   companyName: z
@@ -122,38 +121,56 @@ export const companySignupSchema = z.object({
     }),
   representativeName: z
     .string()
-    .regex(COMPANY_VALIDATION.signup.representativeName.pattern, COMPANY_VALIDATION.signup.representativeName.message),
+    .regex(
+      COMPANY_VALIDATION.signup.representativeName.pattern,
+      COMPANY_VALIDATION.signup.representativeName.message,
+    ),
   businessNumber: z
     .string()
     .min(10, "사업자등록번호 인증은 필수입니다. 인증을 먼저 진행해주세요.")
-    .regex(COMPANY_VALIDATION.businessRegistrationNumber.pattern, COMPANY_VALIDATION.businessRegistrationNumber.message),
+    .regex(
+      COMPANY_VALIDATION.businessRegistrationNumber.pattern,
+      COMPANY_VALIDATION.businessRegistrationNumber.message,
+    ),
   companyIntro: z
     .string()
-    .min(COMPANY_VALIDATION.signup.companyIntro.min, COMPANY_VALIDATION.signup.companyIntro.required)
-    .max(COMPANY_VALIDATION.signup.companyIntro.max, COMPANY_VALIDATION.signup.companyIntro.tooLong),
+    .min(
+      COMPANY_VALIDATION.signup.companyIntro.min,
+      COMPANY_VALIDATION.signup.companyIntro.required,
+    )
+    .max(
+      COMPANY_VALIDATION.signup.companyIntro.max,
+      COMPANY_VALIDATION.signup.companyIntro.tooLong,
+    ),
   companyAddress: z
     .string()
     .min(1, COMPANY_VALIDATION.signup.address.required)
     .max(100, COMPANY_VALIDATION.signup.address.tooLong),
   managerName: z
     .string()
-    .regex(COMPANY_VALIDATION.signup.managerName.pattern, COMPANY_VALIDATION.signup.managerName.message),
+    .regex(
+      COMPANY_VALIDATION.signup.managerName.pattern,
+      COMPANY_VALIDATION.signup.managerName.message,
+    ),
   managerPhone: z
     .string()
     .min(11, "전화번호는 필수입니다.")
-    .regex(COMPANY_VALIDATION.signup.managerPhone.pattern, COMPANY_VALIDATION.signup.managerPhone.message),
-  managerEmail: z
-    .string()
-    .email(COMPANY_VALIDATION.signup.managerEmail.message),
+    .regex(
+      COMPANY_VALIDATION.signup.managerPhone.pattern,
+      COMPANY_VALIDATION.signup.managerPhone.message,
+    ),
+  managerEmail: z.string().email(COMPANY_VALIDATION.signup.managerEmail.message),
   companyLogo: z
     .any()
     .optional()
     .refine(
-      (file) => !file || file.length === 0 || COMPANY_VALIDATION.signup.file.types.includes(file[0]?.type),
+      (file) =>
+        !file || file.length === 0 || COMPANY_VALIDATION.signup.file.types.includes(file[0]?.type),
       COMPANY_VALIDATION.signup.file.invalidType,
     )
     .refine(
-      (file) => !file || file.length === 0 || file[0]?.size <= COMPANY_VALIDATION.signup.file.maxSize,
+      (file) =>
+        !file || file.length === 0 || file[0]?.size <= COMPANY_VALIDATION.signup.file.maxSize,
       COMPANY_VALIDATION.signup.file.tooBig,
     ),
   businessFile: z
@@ -167,5 +184,5 @@ export const companySignupSchema = z.object({
       (file) => file && file[0] && file[0].size <= COMPANY_VALIDATION.signup.file.maxSize,
       COMPANY_VALIDATION.signup.file.tooBig,
     ),
-})
-export type CompanyFormValues = z.infer<typeof companySignupSchema>
+});
+export type CompanyFormValues = z.infer<typeof companySignupSchema>;

@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "zod";
 
 export const AUTH_VALIDATION = {
   email: {
@@ -15,18 +15,15 @@ export const AUTH_VALIDATION = {
       max: "비밀번호는 16자 이하여야 합니다.",
     },
   },
-}
+};
 
 export const signupSchema = z.object({
-  email: z
-    .string()
-    .min(1, AUTH_VALIDATION.email.required)
-    .email(AUTH_VALIDATION.email.format),
+  email: z.string().min(1, AUTH_VALIDATION.email.required).email(AUTH_VALIDATION.email.format),
   password: z
     .string()
     .min(AUTH_VALIDATION.password.min, AUTH_VALIDATION.password.messages.min)
     .max(AUTH_VALIDATION.password.max, AUTH_VALIDATION.password.messages.max)
     .regex(AUTH_VALIDATION.password.pattern, AUTH_VALIDATION.password.messages.format),
-})
+});
 
-export type SignupFormValues = z.infer<typeof signupSchema>
+export type SignupFormValues = z.infer<typeof signupSchema>;

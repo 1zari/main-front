@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import "react-datepicker/dist/react-datepicker.css";
 import { userSignupSchema, UserFormValues } from "@/features/auth-user/validation/user-auth.schema";
 import FormActionInput from "@/features/auth-common/components/baseFields/FormActionInput";
-import FormInput from "@/features/auth-common/components/baseFields/FormInput"
+import FormInput from "@/features/auth-common/components/baseFields/FormInput";
 import FormDatePicker from "@/features/auth-common/components/baseFields/FormDatePicker";
 
 export type UserStepTwoValues = UserFormValues;
@@ -43,11 +43,7 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center space-y-8">
         <h2 className="text-3xl font-semibold">개인 회원정보</h2>
         <div className="w-full max-w-[700px] space-y-6">
-          <FormInput<UserFormValues>
-            label="이름"
-            name="name"
-            placeholder="김오즈"
-          />
+          <FormInput<UserFormValues> label="이름" name="name" placeholder="김오즈" />
           <FormDatePicker<UserFormValues>
             label="생년월일"
             name="birth"
@@ -105,7 +101,9 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
                       />
                     </div>
                   </div>
-                  {errors.gender && <p className="text-red-500 mt-1 ml-2">{errors.gender.message}</p>}
+                  {errors.gender && (
+                    <p className="text-red-500 mt-1 ml-2">{errors.gender.message}</p>
+                  )}
                 </>
               )}
             />
@@ -128,7 +126,12 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
           <ControlledCheckboxGroup
             label="어떤 정보를 얻고 싶어서 가입하셨나요? (중복 선택 가능)"
             name="purposes"
-            options={["일자리 관련 정보", "교육 및 재취업 준비", "창업 및 부업 정보", "네트워킹 및 커뮤니티"]}
+            options={[
+              "일자리 관련 정보",
+              "교육 및 재취업 준비",
+              "창업 및 부업 정보",
+              "네트워킹 및 커뮤니티",
+            ]}
             control={control}
             error={errors.purposes?.message}
           />
@@ -136,7 +139,14 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
           <ControlledCheckboxGroup
             label="유입 경로 (중복 선택 가능)"
             name="channels"
-            options={["네이버 검색", "구글 검색", "네이버 카페", "인스타그램/유튜브", "복지관/고용센터/박람회", "지인추천"]}
+            options={[
+              "네이버 검색",
+              "구글 검색",
+              "네이버 카페",
+              "인스타그램/유튜브",
+              "복지관/고용센터/박람회",
+              "지인추천",
+            ]}
             control={control}
             error={errors.channels?.message}
           />
@@ -154,10 +164,10 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
 }
 
 type GenderButtonProps = {
-  selected: boolean
-  onClick: () => void
-  label: string
-}
+  selected: boolean;
+  onClick: () => void;
+  label: string;
+};
 const GenderButton = ({ selected, onClick, label }: GenderButtonProps) => {
   return (
     <button
@@ -169,16 +179,16 @@ const GenderButton = ({ selected, onClick, label }: GenderButtonProps) => {
     >
       {label}
     </button>
-  )
-}
+  );
+};
 
 type ControlledCheckboxGroupProps<T extends FieldValues> = {
-  label: string
-  name: Path<T>
-  options: string[]
-  control: Control<T>
-  error?: string
-}
+  label: string;
+  name: Path<T>;
+  options: string[];
+  control: Control<T>;
+  error?: string;
+};
 
 function ControlledCheckboxGroup<T extends FieldValues>({
   label,
@@ -192,15 +202,13 @@ function ControlledCheckboxGroup<T extends FieldValues>({
       control={control}
       name={name}
       render={({ field }) => {
-        const selected = Array.isArray(field.value) ? field.value : []
+        const selected = Array.isArray(field.value) ? field.value : [];
 
         const toggleOption = (value: string) => {
-          const exists = selected.includes(value)
-          const updated = exists
-            ? selected.filter((v) => v !== value)
-            : [...selected, value]
-          field.onChange(updated)
-        }
+          const exists = selected.includes(value);
+          const updated = exists ? selected.filter((v) => v !== value) : [...selected, value];
+          field.onChange(updated);
+        };
 
         return (
           <div className="mb-12">
@@ -209,7 +217,7 @@ function ControlledCheckboxGroup<T extends FieldValues>({
             </label>
             <div className="grid grid-cols-1 min-[500px]:grid-cols-2 sm:grid-cols-3 gap-3">
               {options.map((option, idx) => {
-                const isChecked = selected.includes(option)
+                const isChecked = selected.includes(option);
                 return (
                   <div
                     key={idx}
@@ -239,21 +247,17 @@ function ControlledCheckboxGroup<T extends FieldValues>({
                         strokeWidth="3"
                         viewBox="0 0 24 24"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M5 13l4 4L19 7"
-                        />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
                     )}
                   </div>
-                )
+                );
               })}
             </div>
             {error && <p className="text-red-500 mt-1 ml-2">{error}</p>}
           </div>
-        )
+        );
       }}
     />
-  )
+  );
 }
