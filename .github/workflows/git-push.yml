@@ -20,7 +20,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.SASHA_GITHUB_KEY }}
         with:
-          source-directory: 'output'
+          source-directory: "output"
           destination-github-username: sasha-designer
           destination-repository-name: 1zari
           user-email: ${{ secrets.SASHA_ACCOUNT_EMAIL }}

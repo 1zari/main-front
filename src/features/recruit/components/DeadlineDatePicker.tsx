@@ -23,7 +23,6 @@ const Deadline = () => {
             className="ml-4 w-50 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#0F8C3B]"
             placeholderText="YYYY-MM-DD"
             minDate={new Date()}
-      
           />
         )}
       />
@@ -32,4 +31,3 @@ const Deadline = () => {
 };
 
 export default Deadline;
-

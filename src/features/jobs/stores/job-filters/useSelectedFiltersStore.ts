@@ -93,7 +93,9 @@ export const useSelectedFilterStore = create<FilterSelectedStore>()(
 
         if (district.endsWith("전체") && checkedDistricts.includes(district)) {
           updated = checkedDistricts.filter((d) => d !== district);
-          const filters = get().selectedFilters.filter((f) => !f.startsWith(formatFilterValue(selectedRegion, "")));
+          const filters = get().selectedFilters.filter(
+            (f) => !f.startsWith(formatFilterValue(selectedRegion, "")),
+          );
           setCheckedDistricts(updated);
           get().setLocationChecked(updated);
           useSelectedFilterStore.setState({
@@ -113,8 +115,8 @@ export const useSelectedFilterStore = create<FilterSelectedStore>()(
     }),
     {
       name: "job-filter-storage",
-    }
-  )
+    },
+  ),
 );
 
 export const resetFilters = () => {

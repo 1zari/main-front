@@ -34,7 +34,6 @@ const RecruitForm = ({ mode, jobPostingId }: RecruitFormProps) => {
     formState: { errors, isValid },
   } = methods;
 
-
   const onSubmit = (data: RecruitFormSchema) => {
     console.log("제출 데이터", data);
   };
