@@ -21,3 +21,10 @@ export interface CompanyProfile {
   created_at: string;
   updated_at: string;
 }
+
+export interface CompanyProfileItem {
+  labels: string[];
+  value: React.ReactNode;
+  isCustom?: boolean;
+  isDescription?: boolean;
+}

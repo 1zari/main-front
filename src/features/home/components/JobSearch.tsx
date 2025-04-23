@@ -1,6 +1,7 @@
 "use client";
 
 import SearchPage from "@/components/SearchPage";
+import { Heading } from "@/components/ui/Heading";
 import { useState } from "react";
 import { IoSearchSharp } from "react-icons/io5";
 export default function JobSearch() {
@@ -10,7 +11,9 @@ export default function JobSearch() {
     <>
       <section className="w-full max-w-7xl  mx-auto my-8 px-4">
         <div className="flex flex-col mb-6 items-center">
-          <h2 className="text-2xl font-semibold py-6">일자리, 손쉽게 찾아볼까요?⚡️</h2>
+          <Heading sizeOffset={3} className="text-2xl font-semibold py-6">
+            일자리, 손쉽게 찾아볼까요?⚡️
+          </Heading>
           <div className="w-full max-w-2xl flex gap-2 mt-4 justify-between items-center">
             <button
               onClick={() => setIsOpen(true)}

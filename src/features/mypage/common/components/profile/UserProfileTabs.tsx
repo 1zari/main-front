@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Heading } from "@/components/ui/Heading";
+import ResumeList from "../resume/ResumeList";
+import type { Resume } from "@/types/resume";
 
 interface EmptyContentProps {
   title: string;
@@ -7,8 +9,8 @@ interface EmptyContentProps {
 }
 
 const EmptyContent = ({ title, message }: EmptyContentProps) => (
-  <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-    <Heading sizeOffset={2} className="font-semibold mb-4 text-gray-800">
+  <div className="p-6 bg-white border border-gray-100 shadow-lg rounded-xl">
+    <Heading sizeOffset={2} className="mb-4 font-semibold text-gray-800">
       {title}
     </Heading>
     <Heading sizeOffset={2} className="text-gray-500">
@@ -18,7 +20,7 @@ const EmptyContent = ({ title, message }: EmptyContentProps) => (
 );
 
 interface UserProfileTabsProps {
-  resumes: React.ReactNode;
+  resumes: Resume[] | null;
   appliedJobs: React.ReactNode;
   savedJobs: React.ReactNode;
 }
@@ -41,7 +43,7 @@ export default function UserProfileTabs({ resumes, appliedJobs, savedJobs }: Use
   const getTabContent = (tab: TabType) => {
     switch (tab) {
       case "resumes":
-        return <EmptyContent title="내 이력서 목록" message="아직 작성된 이력서가 없습니다." />;
+        return <ResumeList resumes={resumes || []} />;
       case "applied":
         return <EmptyContent title="지원한 공고 목록" message="아직 지원한 공고가 없습니다." />;
       case "saved":
@@ -59,14 +61,14 @@ export default function UserProfileTabs({ resumes, appliedJobs, savedJobs }: Use
               className={activeTab === tab.id ? activeTabStyle : inactiveTabStyle}
               onClick={() => setActiveTab(tab.id as TabType)}
             >
-              <Heading sizeOffset={2} className="break-keep font-semibold">
+              <Heading sizeOffset={2} className="font-semibold break-keep">
                 {tab.label}
               </Heading>
             </button>
           ))}
         </div>
       </div>
-      <div className="py-6 break-words">{getTabContent(activeTab)}</div>
+      <div className="py-6">{getTabContent(activeTab)}</div>
     </div>
   );
 }
