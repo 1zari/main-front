@@ -7,7 +7,7 @@ import {
   userPasswordEditSchema,
   UserEditFormValues,
   UserPasswordEditFormValues,
-} from "@/features/mypage-user/validation/user-edit.schema"
+} from "@/features/mypage/user/validation/user-edit.schema"
 import FormInput from "@/features/auth-common/components/baseFields/FormInput"
 import FormActionInput from "@/features/auth-common/components/baseFields/FormActionInput"
 import FormDatePicker from "@/features/auth-common/components/baseFields/FormDatePicker"
