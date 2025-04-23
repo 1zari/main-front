@@ -1,6 +1,10 @@
 import RecruitForm from "../../../features/recruit/components/Form";
 
-const RecruitEditPage = async ({ params }: { params: { id: string } }) => {
+interface RecruitEditPageProps {
+  params: { id: string };
+}
+
+const RecruitEditPage = async ({ params }: RecruitEditPageProps) => {
   const jobPostingId = params.id;
 
   if (!jobPostingId) return <p>잘못된 접근입니다.</p>;
