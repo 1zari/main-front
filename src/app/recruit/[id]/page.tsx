@@ -1,14 +1,6 @@
-"use client";
-
-import { useSearchParams } from "next/navigation";
 import RecruitForm from "../../../features/recruit/components/Form";
 
-interface RecruitEditPageProps {
-  params: { id: string };
-}
-
-const RecruitEditPage = ({ params }: RecruitEditPageProps) => {
-
+const RecruitEditPage = async ({ params }: { params: { id: string } }) => {
   const jobPostingId = params.id;
 
   if (!jobPostingId) return <p>잘못된 접근입니다.</p>;
