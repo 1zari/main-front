@@ -1,13 +1,13 @@
-"use client"
-import { Controller, Control, FieldValues, Path } from "react-hook-form"
+"use client";
+import { Controller, Control, FieldValues, Path } from "react-hook-form";
 
 type Props<T extends FieldValues> = {
-  label: string
-  name: Path<T>
-  options: string[]
-  control: Control<T>
-  error?: string
-}
+  label: string;
+  name: Path<T>;
+  options: string[];
+  control: Control<T>;
+  error?: string;
+};
 
 export default function ControlledCheckboxGroup<T extends FieldValues>({
   label,
@@ -21,15 +21,15 @@ export default function ControlledCheckboxGroup<T extends FieldValues>({
       control={control}
       name={name}
       render={({ field }) => {
-        const selected = Array.isArray(field.value) ? field.value : []
+        const selected = Array.isArray(field.value) ? field.value : [];
 
         const toggleOption = (value: string) => {
           const updated = selected.includes(value)
             ? selected.filter((v) => v !== value)
-            : [...selected, value]
-          field.onChange(updated)
-          field.onBlur()
-        }
+            : [...selected, value];
+          field.onChange(updated);
+          field.onBlur();
+        };
 
         return (
           <div className="mb-12">
@@ -38,7 +38,7 @@ export default function ControlledCheckboxGroup<T extends FieldValues>({
             </label>
             <div className="grid grid-cols-1 min-[500px]:grid-cols-2 sm:grid-cols-3 gap-3">
               {options.map((option, idx) => {
-                const isChecked = selected.includes(option)
+                const isChecked = selected.includes(option);
 
                 return (
                   <label
@@ -72,13 +72,13 @@ export default function ControlledCheckboxGroup<T extends FieldValues>({
                       </svg>
                     )}
                   </label>
-                )
+                );
               })}
             </div>
             {error && <p className="text-red-500 mt-1 ml-2">{error}</p>}
           </div>
-        )
+        );
       }}
     />
-  )
+  );
 }

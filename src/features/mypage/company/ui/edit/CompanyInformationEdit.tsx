@@ -1,47 +1,47 @@
-"use client"
-import { useState } from "react"
-import { useForm, FormProvider } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
+"use client";
+import { useState } from "react";
+import { useForm, FormProvider } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   companyEditSchema,
   companyPasswordEditSchema,
   CompanyEditFormValues,
   CompanyPasswordEditFormValues,
-} from "@/features/mypage/company/validation/company-edit.schema"
-import { MOCK_COMPANY1 } from "@/features/auth-common/mock/auth.mock"
-import FormInput from "@/features/auth-common/components/baseFields/FormInput"
-import FormTextArea from "@/features/auth-common/components/baseFields/FormTextArea"
-import FormDatePicker from "@/features/auth-common/components/baseFields/FormDatePicker"
-import FormFileUpload from "@/features/auth-common/components/baseFields/FormFileUpload"
-import PasswordChangeForm from "./PasswordChangeForm"
+} from "@/features/mypage/company/validation/company-edit.schema";
+import { MOCK_COMPANY1 } from "@/features/auth-common/mock/auth.mock";
+import FormInput from "@/features/auth-common/components/baseFields/FormInput";
+import FormTextArea from "@/features/auth-common/components/baseFields/FormTextArea";
+import FormDatePicker from "@/features/auth-common/components/baseFields/FormDatePicker";
+import FormFileUpload from "@/features/auth-common/components/baseFields/FormFileUpload";
+import PasswordChangeForm from "./PasswordChangeForm";
 
 export default function CompanyInformationEdit({
   onSubmit = (data) => console.log("기업 정보 수정 요청", data),
   defaultValues = MOCK_COMPANY1,
 }: {
-  onSubmit?: (data: CompanyEditFormValues) => void
-  defaultValues?: typeof MOCK_COMPANY1
+  onSubmit?: (data: CompanyEditFormValues) => void;
+  defaultValues?: typeof MOCK_COMPANY1;
 }) {
-  const [showPasswordChange, setShowPasswordChange] = useState(false)
+  const [showPasswordChange, setShowPasswordChange] = useState(false);
 
   const methods = useForm<CompanyEditFormValues>({
     resolver: zodResolver(companyEditSchema),
     defaultValues,
     mode: "onBlur",
     reValidateMode: "onBlur",
-  })
+  });
 
   const passwordForm = useForm<CompanyPasswordEditFormValues>({
     resolver: zodResolver(companyPasswordEditSchema),
     mode: "onBlur",
-  })
+  });
 
-  const { handleSubmit } = methods
+  const { handleSubmit } = methods;
 
   const handlePasswordSubmit = (data: CompanyPasswordEditFormValues) => {
-    console.log("비밀번호 변경 요청", data)
-    setShowPasswordChange(false)
-  }
+    console.log("비밀번호 변경 요청", data);
+    setShowPasswordChange(false);
+  };
 
   return (
     <div className="flex justify-center items-center flex-1">
@@ -77,12 +77,12 @@ export default function CompanyInformationEdit({
               <FormInput label="대표자 성함" name="representativeName" disabled />
               <FormInput label="사업자등록번호" name="businessNumber" disabled />
 
-                <FormInput
-                  label="사업자등록증"
-                  name="businessFile"
-                  value="사업자등록증_샘플.pdf"
-                  disabled
-                />
+              <FormInput
+                label="사업자등록증"
+                name="businessFile"
+                value="사업자등록증_샘플.pdf"
+                disabled
+              />
 
               <FormFileUpload name="companyLogo" label="기업 로고 (수정 가능)" />
 
@@ -94,13 +94,17 @@ export default function CompanyInformationEdit({
               <FormInput label="사업장 주소" name="companyAddress" placeholder="도로명 주소 입력" />
               <FormInput label="담당자 성함" name="managerName" placeholder="김오즈" />
               <FormInput label="담당자 전화번호" name="managerPhone" placeholder="010-1234-5678" />
-              <FormInput label="담당자 이메일" name="managerEmail" placeholder="manager@company.com" />
+              <FormInput
+                label="담당자 이메일"
+                name="managerEmail"
+                placeholder="manager@company.com"
+              />
 
               <div className="flex gap-4 mt-7">
                 <button
                   type="button"
                   onClick={() => {
-                    console.log("수정 취소")
+                    console.log("수정 취소");
                   }}
                   className="w-full h-[60px] bg-gray-200 text-gray-700 font-semibold rounded hover:bg-gray-300 transition"
                 >
@@ -118,5 +122,5 @@ export default function CompanyInformationEdit({
         </FormProvider>
       </div>
     </div>
-  )
+  );
 }

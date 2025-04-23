@@ -1,4 +1,4 @@
-import JobListItem from "./JobListItem"
+import JobListItem from "./JobListItem";
 
 export default function JobsList() {
   return (
@@ -17,5 +17,5 @@ export default function JobsList() {
         <JobListItem />
       </div>
     </>
-  )
+  );
 }

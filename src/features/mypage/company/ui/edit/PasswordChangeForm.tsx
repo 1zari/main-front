@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { CompanyPasswordEditFormValues } from "@/features/mypage/company/validation/company-edit.schema"
-import FormInput from "@/features/auth-common/components/baseFields/FormInput"
+import Link from "next/link";
+import { CompanyPasswordEditFormValues } from "@/features/mypage/company/validation/company-edit.schema";
+import FormInput from "@/features/auth-common/components/baseFields/FormInput";
 
 type Props = {
-  onCancel: () => void
-}
+  onCancel: () => void;
+};
 
 export default function PasswordChangeForm({ onCancel }: Props) {
   return (
@@ -40,5 +40,5 @@ export default function PasswordChangeForm({ onCancel }: Props) {
         비밀번호 변경 취소
       </button>
     </div>
-  )
+  );
 }

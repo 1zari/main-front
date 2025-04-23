@@ -1,17 +1,17 @@
-"use client"
-import Link from "next/link"
-import { useState } from "react"
-import { Eye, EyeOff } from "lucide-react"
-import { UserPasswordEditFormValues } from "@/features/mypage/user/validation/user-edit.schema"
-import FormInput from "@/features/auth-common/components/baseFields/FormInput"
+"use client";
+import Link from "next/link";
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
+import { UserPasswordEditFormValues } from "@/features/mypage/user/validation/user-edit.schema";
+import FormInput from "@/features/auth-common/components/baseFields/FormInput";
 
 type Props = {
-  onCancel: () => void
-}
+  onCancel: () => void;
+};
 
 export default function PasswordChangeForm({ onCancel }: Props) {
-  const [showCurrentPassword, setShowCurrentPassword] = useState(false)
-  const [showNewPassword, setShowNewPassword] = useState(false)
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
 
   return (
     <div className="space-y-6">
@@ -60,5 +60,5 @@ export default function PasswordChangeForm({ onCancel }: Props) {
         비밀번호 변경 취소
       </button>
     </div>
-  )
+  );
 }

@@ -9,13 +9,12 @@ const careerTypes = ["경력무관", "경력"];
 const educationLevels = ["학력무관", "고졸", "대졸이상"];
 const workingDays = ["월", "화", "수", "목", "금", "토", "일", "요일 협의"];
 const allKeywords = [
-    ...employmentTypes,
-    ...careerTypes,
-    ...educationLevels,
-    ...workingDays,
+  ...employmentTypes,
+  ...careerTypes,
+  ...educationLevels,
+  ...workingDays,
   ...jobKeywords,
   ...regionKeywords,
-
 ];
 
 export async function POST(req: Request) {
@@ -82,7 +81,10 @@ export async function POST(req: Request) {
   try {
     keywords = JSON.parse(text);
   } catch {
-    keywords = text.split(",").map((kw) => kw.trim()).filter(Boolean);
+    keywords = text
+      .split(",")
+      .map((kw) => kw.trim())
+      .filter(Boolean);
   }
 
   return NextResponse.json({ keywords });

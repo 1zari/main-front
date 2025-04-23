@@ -26,7 +26,7 @@ export const MOCK_USER1 = {
   interests: ["기술직"],
   purposes: ["일자리 관련 정보", "교육 및 재취업 준비"],
   channels: ["네이버 검색", "지인추천"],
-}
+};
 
 export const MOCK_COMPANY1 = {
   id: "1",
@@ -42,19 +42,18 @@ export const MOCK_COMPANY1 = {
   managerEmail: "manager@senior.com",
   businessFileName: "사업자등록증_샘플.pdf",
   companyLogo: undefined,
-}
+};
 
 export const MOCK_USER_SESSION = {
   user: {
     role: "user" as const,
     ...MOCK_USER1,
   },
-}
+};
 
 export const MOCK_COMPANY_SESSION = {
   user: {
     role: "company" as const,
     ...MOCK_COMPANY1,
   },
-}
-
+};
