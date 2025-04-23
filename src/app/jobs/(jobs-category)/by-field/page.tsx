@@ -11,7 +11,7 @@ export default function JobsByFieldPage() {
 
   useEffect(() => {
     setShowJobs(true);
-  }, []);
+  }, [setShowJobs]);
 
   return (
     <>

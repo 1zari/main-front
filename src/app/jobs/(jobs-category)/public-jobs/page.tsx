@@ -14,7 +14,7 @@ export default function PublicJobsPage() {
     setShowLocation(false);
     setShowJobs(false);
     setShowOtherConditions(false);
-  }, []);
+  }, [setShowLocation, setShowJobs, setShowOtherConditions]);
 
   return (
     <>
