@@ -1,19 +1,20 @@
 "use client";
-
 import { useFormContext, FieldValues, Path } from "react-hook-form";
 import { useState } from "react";
 
 type Props<T extends FieldValues> = {
   name: Path<T>;
   label: string;
+  disabled?: boolean;
+  value?: string;
 };
 
-export default function FormFileUpload<T extends FieldValues>({ name, label }: Props<T>) {
+export default function FormFileUpload<T extends FieldValues>({ name, label, disabled }: Props<T>) {
   const { register, setError, clearErrors, formState } = useFormContext<T>();
   const [fileName, setFileName] = useState("");
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    const [file] = e.target.files ?? [];
 
     if (!file) {
       setFileName("");
@@ -49,7 +50,7 @@ export default function FormFileUpload<T extends FieldValues>({ name, label }: P
     }
   };
 
-  const error = formState.errors[name]?.message;
+  const error = formState.errors?.[name] as { message?: string } | undefined;
 
   return (
     <div>
@@ -63,22 +64,27 @@ export default function FormFileUpload<T extends FieldValues>({ name, label }: P
         >
           파일 선택
         </label>
+
         <input
           id={name}
           type="file"
-          accept="image/png,image/jpeg,image/svg+xml"
           className="hidden"
-          {...register(name)}
-          onChange={handleFileChange}
+          ref={register(name).ref}
+          onChange={(e) => {
+            register(name).onChange(e);
+            handleFileChange(e);
+          }}
+          disabled={disabled}
         />
+
         <input
           type="text"
           readOnly
-          value={fileName}
-          placeholder="파일을 첨부해주세요"
-          className="w-full h-[60px] border border-gray-300 rounded px-4 bg-gray-50 text-gray-400 placeholder:text-gray-400 focus:outline-none focus:border-2 focus:border-primary"
+          value={fileName || "파일을 첨부해주세요"}
+          className="flex-1 h-[60px] border border-gray-300 rounded px-4 bg-gray-50 text-gray-400 placeholder:text-gray-400 focus:outline-none focus:border-2 focus:border-primary"
         />
       </div>
+
       {error && <p className="text-red-500 mt-1 ml-2">{String(error)}</p>}
     </div>
   );
