@@ -1,5 +1,7 @@
-"use client";
+// CertificationCard.tsx
 
+import ResumeInput from "./common/ResumeInput";
+import ResumeDateInput from "./common/ResumeDateInput";
 import { UseFormRegister } from "react-hook-form";
 
 interface CertificationCardProps {
@@ -10,13 +12,34 @@ interface CertificationCardProps {
 
 const CertificationCard = ({ index, register, onDelete }: CertificationCardProps) => {
   return (
-    <div className="p-4 mb-2 border rounded-md bg-gray-50">
-      <input {...register(`certifications.${index}.name`)} placeholder="자격증명" />
-      <input {...register(`certifications.${index}.issuer`)} placeholder="발급기관" />
-      <input {...register(`certifications.${index}.date`)} type="date" />
-      <button type="button" onClick={onDelete} className="mt-2 text-red-500">
+    <div className="relative p-4 border rounded-lg bg-gray-50">
+      <button
+        type="button"
+        className="absolute font-bold text-red-500 top-2 right-2"
+        onClick={onDelete}
+      >
         삭제
       </button>
+      <div className="flex gap-2 mb-2">
+        <ResumeInput
+          label="자격증명"
+          name={`certifications.${index}.name`}
+          register={register}
+          width="w-1/2"
+        />
+        <ResumeInput
+          label="발급기관"
+          name={`certifications.${index}.issuer`}
+          register={register}
+          width="w-1/2"
+        />
+      </div>
+      <ResumeDateInput
+        label="취득일"
+        name={`certifications.${index}.date`}
+        register={register}
+        width="w-full"
+      />
     </div>
   );
 };

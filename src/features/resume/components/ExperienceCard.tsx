@@ -1,25 +1,57 @@
-"use client";
-
-import { UseFormRegister, UseFormGetValues } from "react-hook-form";
+import ResumeInput from "./common/ResumeInput";
+import ResumeDateInput from "./common/ResumeDateInput";
+import ResumeCheckbox from "./common/ResumeCheckbox";
+import { UseFormRegister, Control, useWatch } from "react-hook-form";
 
 interface ExperienceCardProps {
   index: number;
   register: UseFormRegister<any>;
+  control: Control<any>;
   onDelete: () => void;
 }
 
-const ExperienceCard = ({ index, register, onDelete }: ExperienceCardProps) => {
+const ExperienceCard = ({ index, register, control, onDelete }: ExperienceCardProps) => {
+  const isCurrent = useWatch({ control, name: `experiences.${index}.isCurrent` });
+
   return (
-    <div className="p-4 mb-2 border rounded-md bg-gray-50">
-      <input {...register(`experiences.${index}.company`)} placeholder="회사명" />
-      <input {...register(`experiences.${index}.position`)} placeholder="직무" />
-      <input {...register(`experiences.${index}.startDate`)} type="date" />
-      <input {...register(`experiences.${index}.endDate`)} type="date" />
-      <label>
-        <input type="checkbox" {...register(`experiences.${index}.isCurrent`)} />
-        현재 재직중
-      </label>
-      <button type="button" onClick={onDelete} className="mt-2 text-red-500">삭제</button>
+    <div className="relative p-4 border rounded-lg bg-gray-50">
+      <button
+        type="button"
+        className="absolute font-bold text-red-500 top-2 right-2"
+        onClick={onDelete}
+      >
+        삭제
+      </button>
+      <div className="flex gap-2 mb-2">
+        <ResumeInput
+          label="회사명"
+          name={`experiences.${index}.company`}
+          register={register}
+          width="w-1/2"
+        />
+        <ResumeInput
+          label="직책"
+          name={`experiences.${index}.position`}
+          register={register}
+          width="w-1/2"
+        />
+      </div>
+      <div className="flex gap-2 mb-2">
+        <ResumeDateInput
+          label="입사일"
+          name={`experiences.${index}.startDate`}
+          register={register}
+          width="w-1/2"
+        />
+        <ResumeDateInput
+          label="퇴사일"
+          name={`experiences.${index}.endDate`}
+          register={register}
+          width="w-1/2"
+          disabled={isCurrent}
+        />
+      </div>
+      <ResumeCheckbox label="재직중" name={`experiences.${index}.isCurrent`} register={register} />
     </div>
   );
 };

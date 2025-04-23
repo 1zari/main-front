@@ -1,16 +1,15 @@
-"use client";
+// common/ResumeSelect.tsx
 
 import { UseFormRegister } from "react-hook-form";
 
 interface ResumeSelectProps {
-  label: string;
+  label?: string;
   name: string;
   options: { value: string; label: string }[];
   register: UseFormRegister<any>;
   required?: boolean;
   width?: string;
-  selectWidth?: string;
-  [key: string]: any;
+  [x: string]: any;
 }
 
 const ResumeSelect = ({
@@ -19,29 +18,28 @@ const ResumeSelect = ({
   options,
   register,
   required,
-  width = "",
-  selectWidth = "",
-
+  width = "w-full",
   ...rest
 }: ResumeSelectProps) => (
-  <div className={`flex items-center ${width}`}>
-    <label htmlFor={name} className="text-sm font-semibold text-gray-700">
-      {label}
-    </label>
-    <div className={`flex flex-col flex-1 ${selectWidth}`}>
-      <select
-        id={name}
-        {...register(name, { required })}
-        {...rest}
-        className="border border-gray-300 rounded-md px-3 py-2 text-sm w-full focus:outline-none focus:ring-2 focus:ring-[#0F8C3B]"
-      >
-        {options.map((opt) => (
-          <option key={opt.value} value={opt.value}>
-            {opt.label}
-          </option>
-        ))}
-      </select>
-    </div>
+  <div className={`flex flex-col ${width}`}>
+    {label && (
+      <label className="mb-1 font-medium">
+        {label}
+        {required && <span className="text-red-500">*</span>}
+      </label>
+    )}
+    <select
+      {...register(name, { required })}
+      className="mt-2 w-full border border-gray-300 rounded-md px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0F8C3B] bg-white"
+      {...rest}
+    >
+      <option value="">선택</option>
+      {options.map((opt) => (
+        <option key={opt.value} value={opt.value}>
+          {opt.label}
+        </option>
+      ))}
+    </select>
   </div>
 );
 
