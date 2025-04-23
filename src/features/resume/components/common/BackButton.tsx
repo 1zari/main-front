@@ -15,7 +15,7 @@ export default function BackButton() {
   }, [router]);
 
   return (
-    <button type="button" onClick={handleBack} className="px-4 py-2 rounded hover:bg-gray-300">
+    <button type="button" onClick={handleBack} className="px-4 py-2 ml-5 rounded hover:bg-gray-300">
       ← 뒤로 가기
     </button>
   );
