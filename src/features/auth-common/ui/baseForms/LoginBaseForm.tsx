@@ -11,7 +11,7 @@ import KakaoLogo from "@/assets/images/social/KakaoLogo.png";
 import NaverLogo from "@/assets/images/social/NaverLogo.png";
 
 interface LoginBaseFormProps {
-  role: "user" | "employer";
+  role: "user" | "company";
   onEmailFind: () => void;
   onPasswordFind: () => void;
   showSocialLogin?: boolean;
@@ -55,7 +55,7 @@ export default function LoginBaseForm({
       redirect: false,
       email: data.email,
       password: data.password,
-      role: role === "user" ? "user" : "employer",
+      role: role === "user" ? "user" : "company",
     });
 
     if (result?.ok) {
