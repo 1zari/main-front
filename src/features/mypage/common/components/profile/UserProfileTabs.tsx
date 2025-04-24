@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Heading } from "@/components/ui/Heading";
-import ResumeList from "@/features/mypage/common/components/resume/ResumeList";
-import SavedJobList from "@/features/mypage/common/components/recruit/SavedJobList";
+import ResumeList from "@/features/mypage/common/components/myResume/ResumeList";
+import SavedJobList from "@/features/mypage/common/components/savedRecruit/SavedRecruitList";
 import type { Resume } from "@/types/resume";
 import { DUMMY_JOBS } from "@/features/mypage/common/data/dummy-jobs";
 import { TABS, TAB_STYLES, type TabType } from "@/features/mypage/common/constants/myPageTab";
@@ -29,10 +29,10 @@ interface UserProfileTabsProps {
 export default function UserProfileTabs({ resumes }: UserProfileTabsProps) {
   const [activeTab, setActiveTab] = useState<TabType>("resumes");
   const [currentPage, setCurrentPage] = useState(1);
-  const [savedJobs, setSavedJobs] = useState(DUMMY_JOBS);
+  const [SavedRecruit, setSavedRecruit] = useState(DUMMY_JOBS);
 
   const handleToggleSave = (jobId: string) => {
-    setSavedJobs((prev) =>
+    setSavedRecruit((prev) =>
       prev.map((job) => (job.job_posting_id === jobId ? { ...job, isSaved: !job.isSaved } : job)),
     );
   };
@@ -44,15 +44,13 @@ export default function UserProfileTabs({ resumes }: UserProfileTabsProps) {
       case "applied":
         return <EmptyContent title="지원한 공고 목록" message="아직 지원한 공고가 없습니다." />;
       case "saved":
-        return savedJobs.length > 0 ? (
+        return (
           <SavedJobList
-            jobs={savedJobs}
+            jobs={SavedRecruit}
             currentPage={currentPage}
             onPageChange={setCurrentPage}
             onToggleSave={handleToggleSave}
           />
-        ) : (
-          <EmptyContent title="저장한 공고 목록" message="아직 저장한 공고가 없습니다." />
         );
     }
   };

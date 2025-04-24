@@ -1,6 +1,6 @@
 export type SalaryType = "시급" | "일급" | "월급";
 
-export interface SavedJob {
+export interface SavedRecruit {
   job_posting_id: string;
   companyName: string;
   job_posting_title: string;
@@ -11,8 +11,8 @@ export interface SavedJob {
   isSaved: boolean;
 }
 
-export interface SavedJobListProps {
-  jobs: SavedJob[];
+export interface SavedRecruitListProps {
+  jobs: SavedRecruit[];
   currentPage: number;
   onPageChange: (page: number) => void;
   onToggleSave: (jobId: string) => void;

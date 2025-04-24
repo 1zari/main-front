@@ -1,4 +1,4 @@
-import { type SalaryType } from "@/features/mypage/common/types/savedJob.types";
+import { type SalaryType } from "@/features/mypage/common/types/savedRecruit.types";
 
 export const SALARY_TYPE_STYLES: Record<SalaryType, string> = {
   시급: "text-orange-500 border-orange-500",

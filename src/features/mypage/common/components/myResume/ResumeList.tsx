@@ -35,11 +35,11 @@ const ResumeCard = ({ resume, onClick }: ResumeCardProps) => (
   </button>
 );
 
-interface AddResumeCardProps {
+interface AddResumeButtonProps {
   onClick: () => void;
 }
 
-const AddResumeCard = ({ onClick }: AddResumeCardProps) => (
+const AddResumeButton = ({ onClick }: AddResumeButtonProps) => (
   <div className="p-4 border-2 border-gray-200 border-dashed rounded-xl">
     <button
       onClick={onClick}
@@ -81,7 +81,7 @@ export default function ResumeList({ resumes }: ResumeListProps) {
         ))}
       </div>
 
-      {resumes.length < MAX_RESUMES && <AddResumeCard onClick={handleAddResume} />}
+      {resumes.length < MAX_RESUMES && <AddResumeButton onClick={handleAddResume} />}
     </div>
   );
 }
