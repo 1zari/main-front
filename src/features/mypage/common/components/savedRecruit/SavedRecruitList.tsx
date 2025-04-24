@@ -1,6 +1,7 @@
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { formatDate, formatSalary, isDeadlinePassed } from "@/utils/format";
-import { BookmarkPlus, ArrowRight } from "lucide-react";
+import { BookmarkPlus, ArrowRight, Trash2 } from "lucide-react";
 import ScrapBtn from "@/components/ScrapBtn";
 import { Heading } from "@/components/ui/Heading";
 import type { SavedRecruitListProps } from "@/features/mypage/common/types/savedRecruit.types";
@@ -38,8 +39,33 @@ export default function SavedJobList({
   onToggleSave,
 }: Partial<SavedRecruitListProps>) {
   const router = useRouter();
+  const [selectedJobs, setSelectedJobs] = useState<Set<string>>(new Set());
   const totalPages = Math.ceil(jobs.length / ITEMS_PER_PAGE);
   const currentJobs = jobs.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
+  const handleSelectAll = () => {
+    if (selectedJobs.size === currentJobs.length) {
+      setSelectedJobs(new Set());
+    } else {
+      setSelectedJobs(new Set(currentJobs.map((job) => job.job_posting_id)));
+    }
+  };
+
+  const handleSelect = (jobId: string) => {
+    const newSelected = new Set(selectedJobs);
+    if (newSelected.has(jobId)) {
+      newSelected.delete(jobId);
+    } else {
+      newSelected.add(jobId);
+    }
+    setSelectedJobs(newSelected);
+  };
+
+  const handleDelete = () => {
+    // TODO: 선택된 공고 삭제 로직 구현
+    console.log("Delete jobs:", Array.from(selectedJobs));
+    setSelectedJobs(new Set());
+  };
 
   if (jobs.length === 0) {
     return <EmptyState />;
@@ -51,12 +77,34 @@ export default function SavedJobList({
         <Heading sizeOffset={3} className={JOB_LIST_STYLES.header.title}>
           저장한 공고 목록
         </Heading>
+        <button
+          onClick={handleDelete}
+          disabled={selectedJobs.size === 0}
+          className={`flex items-center gap-1 px-3 py-1.5 text-sm text-white rounded-lg transition-colors ${
+            selectedJobs.size === 0
+              ? "bg-gray-300 cursor-not-allowed"
+              : "bg-red-500 hover:bg-red-600"
+          }`}
+        >
+          <Trash2 className="w-3.5 h-3.5" />
+          선택 삭제 {selectedJobs.size > 0 && `(${selectedJobs.size}개)`}
+        </button>
       </div>
 
       {/* 웹, 태블릿 뷰 */}
       <div className={JOB_LIST_STYLES.table.wrapper}>
         <div className={JOB_LIST_STYLES.table.container}>
           <div className={JOB_LIST_STYLES.table.header.wrapper}>
+            <div
+              className={`${JOB_LIST_STYLES.table.header.column.base} ${JOB_LIST_STYLES.table.header.column.checkbox}`}
+            >
+              <input
+                type="checkbox"
+                checked={selectedJobs.size === currentJobs.length && currentJobs.length > 0}
+                onChange={handleSelectAll}
+                className="w-4 h-4 border-gray-300 rounded text-primary focus:ring-primary"
+              />
+            </div>
             <div
               className={`${JOB_LIST_STYLES.table.header.column.base} ${JOB_LIST_STYLES.table.header.column.scrap}`}
             >
@@ -96,6 +144,17 @@ export default function SavedJobList({
                 onClick={() => router.push(`/jobs/${job.job_posting_id}`)}
                 className={JOB_LIST_STYLES.table.row.wrapper}
               >
+                <div
+                  className={`${JOB_LIST_STYLES.table.row.column.base} ${JOB_LIST_STYLES.table.row.column.checkbox}`}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedJobs.has(job.job_posting_id)}
+                    onChange={() => handleSelect(job.job_posting_id)}
+                    className="w-4 h-4 border-gray-300 rounded text-primary focus:ring-primary"
+                  />
+                </div>
                 <div
                   className={`${JOB_LIST_STYLES.table.row.column.base} ${JOB_LIST_STYLES.table.row.column.scrap}`}
                   onClick={(e) => {
@@ -154,46 +213,56 @@ export default function SavedJobList({
       <div className={JOB_LIST_STYLES.card.wrapper}>
         <div className="space-y-4">
           {currentJobs.map((job) => (
-            <div
-              key={job.job_posting_id}
-              onClick={() => router.push(`/jobs/${job.job_posting_id}`)}
-              className={JOB_LIST_STYLES.card.container}
-            >
-              <div className={JOB_LIST_STYLES.card.header.wrapper}>
-                <div className={JOB_LIST_STYLES.card.header.content}>
-                  <span className={JOB_LIST_STYLES.card.header.company}>{job.companyName}</span>
-                  <Heading sizeOffset={1} className={JOB_LIST_STYLES.card.header.title}>
-                    {job.job_posting_title}
-                  </Heading>
+            <div key={job.job_posting_id} className={JOB_LIST_STYLES.card.container}>
+              <div className="flex items-center gap-3">
+                <div onClick={(e) => e.stopPropagation()}>
+                  <input
+                    type="checkbox"
+                    checked={selectedJobs.has(job.job_posting_id)}
+                    onChange={() => handleSelect(job.job_posting_id)}
+                    className="w-4 h-4 border-gray-300 rounded text-primary focus:ring-primary"
+                  />
                 </div>
-                <div
-                  className={JOB_LIST_STYLES.card.header.scrap}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onToggleSave?.(job.job_posting_id);
-                  }}
-                >
-                  <ScrapBtn />
-                </div>
-              </div>
+                <div className="flex-1" onClick={() => router.push(`/jobs/${job.job_posting_id}`)}>
+                  <div className={JOB_LIST_STYLES.card.header.wrapper}>
+                    <div className={JOB_LIST_STYLES.card.header.content}>
+                      <span className={JOB_LIST_STYLES.card.header.company}>{job.companyName}</span>
+                      <Heading sizeOffset={1} className={JOB_LIST_STYLES.card.header.title}>
+                        {job.job_posting_title}
+                      </Heading>
+                    </div>
+                    <div
+                      className={JOB_LIST_STYLES.card.header.scrap}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onToggleSave?.(job.job_posting_id);
+                      }}
+                    >
+                      <ScrapBtn />
+                    </div>
+                  </div>
 
-              <div className={JOB_LIST_STYLES.card.tags.wrapper}>
-                <span className={JOB_LIST_STYLES.card.tags.tag}>{job.location}</span>
-                <span className={JOB_LIST_STYLES.card.tags.tag}>{formatSalary(job.salary)}</span>
-                <span
-                  className={`${SALARY_TYPE_STYLES[job.salary_type]} border rounded-full px-1.5 py-0.5`}
-                >
-                  {job.salary_type}
-                </span>
-              </div>
+                  <div className={JOB_LIST_STYLES.card.tags.wrapper}>
+                    <span className={JOB_LIST_STYLES.card.tags.tag}>{job.location}</span>
+                    <span className={JOB_LIST_STYLES.card.tags.tag}>
+                      {formatSalary(job.salary)}
+                    </span>
+                    <span
+                      className={`${SALARY_TYPE_STYLES[job.salary_type]} border rounded-full px-1.5 py-0.5`}
+                    >
+                      {job.salary_type}
+                    </span>
+                  </div>
 
-              <div className={JOB_LIST_STYLES.card.deadline.wrapper}>
-                <div
-                  className={`${JOB_LIST_STYLES.card.deadline.text} ${
-                    isDeadlinePassed(job.deadline) ? "text-red-500" : "text-gray-600"
-                  }`}
-                >
-                  {isDeadlinePassed(job.deadline) ? "마감" : formatDate(job.deadline)}
+                  <div className={JOB_LIST_STYLES.card.deadline.wrapper}>
+                    <div
+                      className={`${JOB_LIST_STYLES.card.deadline.text} ${
+                        isDeadlinePassed(job.deadline) ? "text-red-500" : "text-gray-600"
+                      }`}
+                    >
+                      {isDeadlinePassed(job.deadline) ? "마감" : formatDate(job.deadline)}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
