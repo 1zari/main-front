@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Heading } from "@/components/ui/Heading";
-import ResumeList from "../resume/ResumeList";
+import ResumeList from "@/features/mypage/common/components/resume/ResumeList";
 import SavedJobList from "@/features/mypage/common/components/recruit/SavedJobList";
 import type { Resume } from "@/types/resume";
+import { DUMMY_JOBS } from "@/features/mypage/common/data/dummy-jobs";
+import { TABS, TAB_STYLES, type TabType } from "@/features/mypage/common/constants/myPageTab";
 
 interface EmptyContentProps {
   title: string;
@@ -24,57 +26,14 @@ interface UserProfileTabsProps {
   resumes: Resume[] | null;
 }
 
-type TabType = "resumes" | "applied" | "saved";
-
-const TABS = [
-  { id: "resumes", label: "내 이력서" },
-  { id: "applied", label: "지원한 공고" },
-  { id: "saved", label: "저장한 공고" },
-] as const;
-
-// 저장한 공고 더미 데이터
-const DUMMY_SAVED_JOBS = [
-  {
-    id: "1",
-    companyName: "스타벅스",
-    title: "스타벅스 바리스타 모집",
-    location: "서울 강남구",
-    salary: 2800000,
-    deadline: "2024-04-30",
-    isSaved: true,
-  },
-  {
-    id: "2",
-    companyName: "파리바게뜨",
-    title: "제과제빵 경력직 채용",
-    location: "서울 서초구",
-    salary: 3000000,
-    deadline: "2024-03-15",
-    isSaved: true,
-  },
-  {
-    id: "3",
-    companyName: "맥도날드",
-    title: "맥도날드 매니저 채용",
-    location: "서울 송파구",
-    salary: 2900000,
-    deadline: "2024-05-01",
-    isSaved: true,
-  },
-];
-
 export default function UserProfileTabs({ resumes }: UserProfileTabsProps) {
   const [activeTab, setActiveTab] = useState<TabType>("resumes");
   const [currentPage, setCurrentPage] = useState(1);
-  const [savedJobs, setSavedJobs] = useState(DUMMY_SAVED_JOBS);
-
-  const tabStyle = "flex-1 px-4 py-2 cursor-pointer transition-colors text-center";
-  const activeTabStyle = `${tabStyle} text-primary font-semibold border-b-2 border-primary`;
-  const inactiveTabStyle = `${tabStyle} text-gray-600 hover:text-gray-800`;
+  const [savedJobs, setSavedJobs] = useState(DUMMY_JOBS);
 
   const handleToggleSave = (jobId: string) => {
     setSavedJobs((prev) =>
-      prev.map((job) => (job.id === jobId ? { ...job, isSaved: !job.isSaved } : job)),
+      prev.map((job) => (job.job_posting_id === jobId ? { ...job, isSaved: !job.isSaved } : job)),
     );
   };
 
@@ -89,7 +48,6 @@ export default function UserProfileTabs({ resumes }: UserProfileTabsProps) {
           <SavedJobList
             jobs={savedJobs}
             currentPage={currentPage}
-            totalPages={Math.ceil(savedJobs.length / 5)}
             onPageChange={setCurrentPage}
             onToggleSave={handleToggleSave}
           />
@@ -106,7 +64,9 @@ export default function UserProfileTabs({ resumes }: UserProfileTabsProps) {
           {TABS.map((tab) => (
             <button
               key={tab.id}
-              className={activeTab === tab.id ? activeTabStyle : inactiveTabStyle}
+              className={`${TAB_STYLES.base} ${
+                activeTab === tab.id ? TAB_STYLES.active : TAB_STYLES.inactive
+              }`}
               onClick={() => setActiveTab(tab.id as TabType)}
             >
               <Heading sizeOffset={2} className="font-semibold break-keep">

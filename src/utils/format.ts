@@ -18,6 +18,15 @@ export const formatBirthDate = (dateString: string) => {
   return `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(2, "0")}월 ${String(date.getDate()).padStart(2, "0")}일`;
 };
 
+/**
+ * 주어진 날짜가 현재 시점을 기준으로 지났는지 확인합니다.
+ * @param deadline - 마감일자 (YYYY-MM-DD 형식)
+ * @returns boolean
+ */
+export const isDeadlinePassed = (deadline: string): boolean => {
+  return new Date(deadline) < new Date();
+};
+
 export const formatSalary = (salary: number) => {
   return `${salary.toLocaleString()}원`;
 };
