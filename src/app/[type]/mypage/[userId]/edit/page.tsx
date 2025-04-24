@@ -11,7 +11,7 @@ export default function InformationEditPage() {
   const type = params?.type as string;
   const userId = params?.userId as string;
 
-  if (!VALID_TYPES.includes(type as any)) {
+  if (!VALID_TYPES.includes(type as "user" | "company")) {
     return <p className="text-red-500 text-center">잘못된 접근입니다. (type 오류)</p>;
   }
 
