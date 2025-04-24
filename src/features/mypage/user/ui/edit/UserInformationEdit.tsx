@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -23,6 +23,13 @@ export default function UserInformationEdit({
   defaultValues?: typeof MOCK_USER1;
 }) {
   const [showPasswordChange, setShowPasswordChange] = useState(false);
+  const [passwordChanged, setPasswordChanged] = useState(false);
+  const [isEditingPhone, setIsEditingPhone] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
+  const [isRequesting, setIsRequesting] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(0);
+  const [isVerifyInputVisible, setIsVerifyInputVisible] = useState(true);
+  const [isFadingOut, setIsFadingOut] = useState(false);
 
   const methods = useForm<UserEditFormValues>({
     resolver: zodResolver(userEditSchema),
@@ -40,14 +47,22 @@ export default function UserInformationEdit({
     handleSubmit,
     control,
     getValues,
+    setValue,
     setError,
     formState: { errors },
   } = methods;
 
-  const handlePasswordSubmit = (data: UserPasswordEditFormValues) => {
-    console.log("비밀번호 변경 요청", data);
-    setShowPasswordChange(false);
-  };
+  useEffect(() => {
+    if (!isRequesting) return;
+    if (timeLeft <= 0) {
+      setIsRequesting(false);
+      return;
+    }
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [isRequesting, timeLeft]);
 
   return (
     <div className="flex justify-center items-center flex-1">
@@ -63,64 +78,112 @@ export default function UserInformationEdit({
 
               {showPasswordChange ? (
                 <FormProvider {...passwordForm}>
-                  <div className="space-y-6">
-                    <PasswordChangeForm onCancel={() => setShowPasswordChange(false)} />
-                    <button
-                      type="button"
-                      onClick={() => passwordForm.handleSubmit(handlePasswordSubmit)()}
-                      className="w-full h-[60px] bg-primary text-white font-semibold rounded hover:opacity-90 transition"
-                    >
-                      비밀번호 변경하기
-                    </button>
+                  <div className="space-y-6 animate-fadeIn">
+                    <PasswordChangeForm
+                      onCancel={() => setShowPasswordChange(false)}
+                      onSuccess={() => {
+                        setPasswordChanged(true);
+                        setShowPasswordChange(false);
+                      }}
+                    />
                   </div>
                 </FormProvider>
               ) : (
                 <button
                   type="button"
                   onClick={() => setShowPasswordChange(true)}
-                  className="w-full h-[60px] border border-primary text-primary font-medium rounded hover:bg-primary hover:text-white transition"
+                  disabled={passwordChanged}
+                  className={`w-full h-[60px] font-medium rounded transition ${
+                    passwordChanged
+                      ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                      : "border border-primary text-primary hover:bg-primary hover:text-white"
+                  }`}
                 >
-                  비밀번호 변경하기
+                  {passwordChanged ? "비밀번호 변경완료" : "비밀번호 변경하기"}
                 </button>
               )}
 
-              <FormActionInput
-                label="전화번호 (번호 변경 시 인증 필요)"
-                name="phone"
-                placeholder="010-1234-5678"
-                buttonText="번호 인증"
-                onButtonClick={() => {
-                  const phone = getValues("phone");
-                  if (!phone) {
-                    setError("phone", {
-                      type: "manual",
-                      message: "전화번호를 입력 후 인증을 진행해주세요.",
-                    });
-                  }
-                }}
-              />
+              {!isEditingPhone ? (
+                <FormActionInput
+                  label="전화번호"
+                  name="phone"
+                  placeholder="010-1234-5678"
+                  buttonText="번호 변경"
+                  inputDisabled={true}
+                  buttonDisabled={false}
+                  preserveStyleOnDisabled={true}
+                  onButtonClick={() => {
+                    setIsEditingPhone(true);
+                    setIsVerified(false);
+                    setIsVerifyInputVisible(true);
+                    setIsFadingOut(false);
+                    setValue("verifyCode", "");
+                  }}
+                />
+              ) : (
+                <div className="animate-fadeIn space-y-4">
+                  <FormActionInput
+                    label="변경할 전화번호"
+                    name="phone"
+                    placeholder="010-0000-0000"
+                    buttonText="인증 요청"
+                    buttonDisabled={isRequesting}
+                    inputDisabled={isRequesting}
+                    timerText={
+                      isRequesting
+                        ? `${Math.floor(timeLeft / 60)}:${String(timeLeft % 60).padStart(2, "0")}`
+                        : undefined
+                    }
+                    onButtonClick={() => {
+                      const phone = getValues("phone");
+                      if (!phone) {
+                        setError("phone", {
+                          type: "manual",
+                          message: "전화번호를 입력해주세요",
+                        });
+                        return;
+                      }
+                      setIsRequesting(true);
+                      setTimeLeft(120);
+                    }}
+                  />
 
-              <FormActionInput
-                label="인증번호"
-                name="verifyCode"
-                placeholder="숫자 6자리"
-                buttonText="인증 확인"
-                onButtonClick={() => {
-                  const code = getValues("verifyCode");
-                  if (!code) {
-                    setError("verifyCode", {
-                      type: "manual",
-                      message: "인증번호 6자리를 입력해주세요",
-                    });
-                  }
-                }}
-              />
+                  {isVerifyInputVisible && !isVerified && (
+                    <div
+                      className={`transition-opacity duration-100 ease-in ${
+                        isFadingOut ? "opacity-0" : "opacity-100"
+                      }`}
+                    >
+                      <FormActionInput
+                        label="인증번호"
+                        name="verifyCode"
+                        placeholder="숫자 6자리"
+                        buttonText="인증 확인"
+                        onButtonClick={() => {
+                          const code = getValues("verifyCode");
+                          if (!code) {
+                            setError("verifyCode", {
+                              type: "manual",
+                              message: "인증번호를 입력해주세요",
+                            });
+                            return;
+                          }
+                          setIsFadingOut(true);
+                          setTimeout(() => {
+                            setIsVerifyInputVisible(false);
+                            setIsVerified(true);
+                            setIsEditingPhone(false);
+                            setIsRequesting(false);
+                            setValue("verifyCode", "");
+                          }, 100);
+                        }}
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
 
-              <FormInput
-                label="희망 근무지 (복수 가능)"
-                name="preferredLocation"
-                placeholder="서울, 인천"
-              />
+              <FormInput label="희망 근무지" name="preferredLocation" placeholder="서울, 인천" />
 
               <ControlledCheckboxGroup
                 label="관심 분야 (중복 선택 가능)"
@@ -165,19 +228,19 @@ export default function UserInformationEdit({
                 error={errors.channels?.message}
               />
 
-              <div className="flex gap-4 mt-7">
+              <div className="flex flex-col sm:flex-row gap-4 mt-7 w-full">
                 <button
                   type="button"
                   onClick={() => {
                     console.log("수정 취소");
                   }}
-                  className="w-full h-[60px] bg-gray-200 text-gray-700 font-semibold rounded hover:bg-gray-300 transition"
+                  className="h-[60px] w-full bg-gray-200 text-gray-700 font-semibold rounded hover:bg-gray-300 transition"
                 >
                   취소
                 </button>
                 <button
                   type="submit"
-                  className="w-full h-[60px] bg-primary text-white font-semibold rounded hover:opacity-90 transition"
+                  className="h-[60px] w-full bg-primary text-white font-semibold rounded hover:opacity-90 transition"
                 >
                   정보 수정하기
                 </button>
