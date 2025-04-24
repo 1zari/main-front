@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { FaRegStar, FaStar } from "react-icons/fa";
+import { Star } from "lucide-react";
 
-export default function SaveBtn({ showLabel = false }: { showLabel?: boolean }) {
+export default function ScrapBtn({ showLabel = false }: { showLabel?: boolean }) {
   const [isSaved, setIsSaved] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -35,16 +35,16 @@ export default function SaveBtn({ showLabel = false }: { showLabel?: boolean }) 
           className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-50"
           onClick={handleClick}
         >
-          {isSaved ? <FaStar className="text-primary" /> : <FaRegStar />}
+          <Star className={`w-5 h-5 ${isSaved ? "fill-current text-primary" : "text-gray-400"}`} />
           <span>{label}</span>
         </button>
       ) : (
         <button
-          className="p-2 text-xl cursor-pointer transition-transform duration-200 hover:scale-110 hover:text-primary/70"
+          className="p-2 text-xl transition-transform duration-200 cursor-pointer hover:scale-110 hover:text-primary/70"
           onClick={handleClick}
           aria-label={label}
         >
-          {isSaved ? <FaStar className="text-primary" /> : <FaRegStar />}
+          <Star className={`w-6 h-6 ${isSaved ? "fill-current text-primary" : "text-gray-400"}`} />
         </button>
       )}
     </>
