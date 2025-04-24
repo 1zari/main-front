@@ -1,5 +1,3 @@
-"use client";
-
 import { Suspense } from "react";
 import LoginTabs from "@/features/auth-common/components/LoginTabs";
 
