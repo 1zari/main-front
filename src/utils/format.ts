@@ -19,5 +19,5 @@ export const formatBirthDate = (dateString: string) => {
 };
 
 export const formatSalary = (salary: number) => {
-  return `${Math.floor(salary / 10000)}만원`;
+  return `${salary.toLocaleString()}원`;
 };
