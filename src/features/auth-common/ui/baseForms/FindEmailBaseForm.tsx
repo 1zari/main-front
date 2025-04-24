@@ -2,33 +2,9 @@
 
 import { Copy, Check } from "lucide-react";
 import { useState } from "react";
-import { UseFormRegister, FieldErrors } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import AuthTypeTabs from "@/features/auth-common/components/AuthTypeTabs";
-
-type FindEmailFormValues = {
-  name?: string;
-  companyName?: string;
-  businessNumber?: string;
-  phone?: string;
-  code?: string;
-};
-
-interface FindEmailBaseFormProps {
-  type: "user" | "company";
-  email: string;
-  name: string;
-  step: "input" | "verified";
-  isVerified: boolean;
-  verificationMessage: {
-    type: "success" | "error";
-    text: string;
-  } | null;
-  register: UseFormRegister<FindEmailFormValues>;
-  errors: FieldErrors<FindEmailFormValues>;
-  onVerifyCode: () => void;
-  onSubmit: (e: React.FormEvent) => void;
-}
+import { FindEmailBaseFormProps } from "@/features/auth-common/types/find-auth.types";
 
 export default function FindEmailBaseForm({
   type,
