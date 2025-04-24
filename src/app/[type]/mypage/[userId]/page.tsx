@@ -29,7 +29,6 @@ export default function MyPage() {
     // URL의 type이 user나 company가 아닌 경우 404
     if (!["user", "company", "admin"].includes(type)) {
       notFound();
-      return;
     }
 
     // URL의 userId가 현재 로그인한 사용자의 ID와 다른 경우
@@ -42,7 +41,7 @@ export default function MyPage() {
 
   return (
     <div className="min-h-screen">
-      <div className="flex justify-center items-start mt-12">
+      <div className="flex items-start justify-center mt-12">
         <div className="w-full">{type === "company" ? <CompanyProfile /> : <UserProfile />}</div>
       </div>
     </div>
