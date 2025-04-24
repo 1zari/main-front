@@ -7,9 +7,7 @@ import { UserProfile as UserProfileType } from "@/types/user";
 import type { Resume } from "@/types/resume";
 import type { UserProfileItem } from "@/types/user";
 
-interface UserProfileProps {}
-
-export default function UserProfile(props: UserProfileProps) {
+export default function UserProfile() {
   // 개인회원 더미 데이터
   const userProfileData: UserProfileType = {
     userId: "123",
@@ -108,7 +106,7 @@ export default function UserProfile(props: UserProfileProps) {
   return (
     <div>
       <ProfileCard role="user" title={name} items={profileItems} />
-      <UserProfileTabs resumes={dummyResumes} appliedJobs={null} savedJobs={null} />
+      <UserProfileTabs resumes={dummyResumes} />
     </div>
   );
 }

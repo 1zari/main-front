@@ -1,12 +1,9 @@
 import React, { useMemo } from "react";
 import ProfileCard from "./ProfileCard";
-import { Heading } from "@/components/ui/Heading";
 import type { CompanyProfile as CompanyProfileType } from "@/types/company";
 import type { CompanyProfileItem } from "@/types/company";
 
-interface CompanyProfileProps {}
-
-const CompanyProfile = (props: CompanyProfileProps) => {
+const CompanyProfile = () => {
   // 기업회원 더미 데이터
   const companyProfileData: CompanyProfileType = {
     companyId: "123",
