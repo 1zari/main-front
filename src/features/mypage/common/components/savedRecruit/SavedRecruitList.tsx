@@ -80,7 +80,7 @@ export default function SavedJobList({
         <button
           onClick={handleDelete}
           disabled={selectedJobs.size === 0}
-          className={`flex items-center gap-1 px-3 py-1.5 text-sm text-white rounded-lg transition-colors ${
+          className={`flex items-center gap-1 px-3 py-1.5 text-white rounded-lg transition-colors ${
             selectedJobs.size === 0
               ? "bg-gray-300 cursor-not-allowed"
               : "bg-red-500 hover:bg-red-600"
@@ -108,32 +108,44 @@ export default function SavedJobList({
             <div
               className={`${JOB_LIST_STYLES.table.header.column.base} ${JOB_LIST_STYLES.table.header.column.scrap}`}
             >
-              스크랩
+              <Heading sizeOffset={2} className="font-semibold text-gray-600">
+                스크랩
+              </Heading>
             </div>
             <div
               className={`${JOB_LIST_STYLES.table.header.column.base} ${JOB_LIST_STYLES.table.header.column.info}`}
             >
-              회사명/공고제목
+              <Heading sizeOffset={2} className="font-semibold text-gray-600">
+                회사명/공고제목
+              </Heading>
             </div>
             <div
               className={`${JOB_LIST_STYLES.table.header.column.base} ${JOB_LIST_STYLES.table.header.column.location}`}
             >
-              근무지
+              <Heading sizeOffset={2} className="font-semibold text-gray-600">
+                근무지
+              </Heading>
             </div>
             <div
               className={`${JOB_LIST_STYLES.table.header.column.base} ${JOB_LIST_STYLES.table.header.column.salary}`}
             >
-              급여
+              <Heading sizeOffset={2} className="font-semibold text-gray-600">
+                급여
+              </Heading>
             </div>
             <div
               className={`${JOB_LIST_STYLES.table.header.column.base} ${JOB_LIST_STYLES.table.header.column.type}`}
             >
-              급여형태
+              <Heading sizeOffset={2} className="font-semibold text-gray-600">
+                급여형태
+              </Heading>
             </div>
             <div
               className={`${JOB_LIST_STYLES.table.header.column.base} ${JOB_LIST_STYLES.table.header.column.deadline}`}
             >
-              마감일
+              <Heading sizeOffset={2} className="font-semibold text-gray-600">
+                마감일
+              </Heading>
             </div>
           </div>
 
