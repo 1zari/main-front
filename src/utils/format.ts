@@ -17,3 +17,7 @@ export const formatBirthDate = (dateString: string) => {
   const date = new Date(dateString);
   return `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(2, "0")}월 ${String(date.getDate()).padStart(2, "0")}일`;
 };
+
+export const formatSalary = (salary: number) => {
+  return `${Math.floor(salary / 10000)}만원`;
+};
