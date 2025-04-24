@@ -95,6 +95,9 @@ export const userSignupSchema = z.object({
   gender: z.enum(["male", "female"], {
     required_error: "성별을 선택해주세요.",
   }),
+  agreeTerms: z.boolean().refine((val) => val === true, {
+    message: "약관에 동의해야 회원가입이 가능합니다.",
+  }),
   preferredLocation: z
     .string()
     .min(1, USER_VALIDATION.preferredLocation.required)

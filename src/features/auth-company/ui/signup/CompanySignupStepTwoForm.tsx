@@ -1,6 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider, Controller } from "react-hook-form";
 import {
   companySignupSchema,
   CompanyFormValues,
@@ -10,6 +10,7 @@ import FormActionInput from "@/features/auth-common/components/baseFields/FormAc
 import FormTextArea from "@/features/auth-common/components/baseFields/FormTextArea";
 import FormDatePicker from "@/features/auth-common/components/baseFields/FormDatePicker";
 import FormFileUpload from "@/features/auth-common/components/baseFields/FormFileUpload";
+import CompanyTermsAgreement from "@/features/auth-common/components/terms/CompanyTermsAgreement";
 import "react-datepicker/dist/react-datepicker.css";
 
 export type CompanyStepTwoValues = CompanyFormValues;
@@ -34,41 +35,46 @@ export default function SignupStepTwoCompany({ onSubmit }: Props) {
       managerEmail: "",
       businessFile: undefined,
       companyLogo: undefined,
+      agreeTerms: false,
     },
   });
 
-  const repName = methods.watch("representativeName");
-  const businessNumber = methods.watch("businessNumber");
+  const {
+    handleSubmit,
+    watch,
+    setError,
+    formState: { errors },
+    control,
+  } = methods;
+
+  const repName = watch("representativeName");
+  const businessNumber = watch("businessNumber");
 
   const handleBusinessCheck = () => {
     if (!repName) {
-      methods.setError("representativeName", {
+      setError("representativeName", {
         type: "manual",
         message: "대표자 성함을 입력해주세요.",
       });
     }
     if (!businessNumber) {
-      methods.setError("businessNumber", {
+      setError("businessNumber", {
         type: "manual",
         message: "사업자등록번호를 입력해주세요.",
       });
     }
-
     if (repName && businessNumber) {
       console.log("중복확인 요청", { repName, businessNumber });
     }
   };
 
-  function handleAddressSearch() {
+  const handleAddressSearch = () => {
     console.log("주소 검색");
-  }
+  };
 
   return (
     <FormProvider {...methods}>
-      <form
-        onSubmit={methods.handleSubmit(onSubmit)}
-        className="flex flex-col items-center space-y-8"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center space-y-8">
         <h2 className="text-3xl font-semibold">기업 회원정보</h2>
         <div className="w-full max-w-[700px] space-y-6">
           <FormInput<CompanyFormValues>
@@ -122,7 +128,19 @@ export default function SignupStepTwoCompany({ onSubmit }: Props) {
             name="managerEmail"
             placeholder="manager@company.com"
           />
-
+          <div className="mb-10">
+            <label className="block ml-2 mt-17 font-semibold text-base sm:text-lg">
+              사이트 이용을 위한 필수 약관에 동의해주세요
+            </label>
+            <Controller
+              name="agreeTerms"
+              control={control}
+              render={({ field }) => <CompanyTermsAgreement onAllAgreedChange={field.onChange} />}
+            />
+            {errors.agreeTerms && (
+              <p className="text-red-500 mt-1 ml-2">{errors.agreeTerms.message}</p>
+            )}
+          </div>
           <button
             type="submit"
             className="w-full h-[60px] bg-primary text-white font-semibold rounded hover:opacity-90 transition mt-7 cursor-pointer"

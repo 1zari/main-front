@@ -42,8 +42,8 @@ export default function UserTermsAgreement({ onAllAgreedChange }: Props) {
   };
 
   return (
-    <div className="w-full mt-6 space-y-4">
-      <div className="border-b pb-4">
+    <div className="w-full mt-6 space-y-4 p-2">
+      <div className="border-b pb-6">
         <label className="flex items-center space-x-2 font-semibold text-base sm:text-lg">
           <input
             type="checkbox"
@@ -51,7 +51,7 @@ export default function UserTermsAgreement({ onAllAgreedChange }: Props) {
             onChange={(e) => toggleAll(e.target.checked)}
             className="w-6 h-6 accent-primary"
           />
-          <span>전체동의</span>
+          <span>아래 약관에 모두 동의합니다</span>
         </label>
       </div>
 
@@ -59,7 +59,7 @@ export default function UserTermsAgreement({ onAllAgreedChange }: Props) {
         {termsList.map(({ id, label, Component }) => {
           const isOpen = openId === id;
           return (
-            <div key={id} className="pb-3 last:border-none transition-all duration-300">
+            <div key={id} className="last:border-none transition-all duration-300">
               <div className="flex items-start justify-between py-2">
                 <label className="flex items-center space-x-2">
                   <input
