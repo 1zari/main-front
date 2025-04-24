@@ -7,7 +7,6 @@ import ApplicantsListControlArea from "./ApplicantsListControlArea";
 
 export default function ApplicantsListContainer() {
   const router = useRouter();
-  const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [showUnreadOnly, setShowUnreadOnly] = useState(false);
   const [selectedJobTitle, setSelectedJobTitle] = useState("채용공고 전체");
   const applicants = Applicants;
