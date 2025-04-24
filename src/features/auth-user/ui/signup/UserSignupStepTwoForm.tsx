@@ -18,7 +18,8 @@ type Props = {
 export default function SignupStepTwoUser({ onSubmit }: Props) {
   const methods = useForm<UserFormValues>({
     resolver: zodResolver(userSignupSchema),
-    mode: "onChange",
+    mode: "onBlur",
+    reValidateMode: "onChange",
     defaultValues: {
       name: "",
       phone: "",
@@ -29,6 +30,7 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
       interests: [],
       purposes: [],
       channels: [],
+      agreeTerms: false,
     },
   });
 
@@ -39,7 +41,7 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
     setValue,
     setError,
     clearErrors,
-    formState: { errors, isValid },
+    formState: { errors },
   } = methods;
 
   const [isRequesting, setIsRequesting] = useState(false);
@@ -47,14 +49,6 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
   const [isVerified, setIsVerified] = useState(false);
-  const [isAllTermsAgreed, setIsAllTermsAgreed] = useState(false);
-
-  console.log("🧩 isValid", isValid);
-  console.log("🧩 gender", getValues("gender"));
-  console.log("🧩 preferredLocation", getValues("preferredLocation"));
-  console.log("🧩 interests", getValues("interests"));
-  console.log("🧩 purposes", getValues("purposes"));
-  console.log("🧩 channels", getValues("channels"));
 
   useEffect(() => {
     if (!isRequesting) return;
@@ -142,11 +136,11 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
                     return;
                   }
                   setIsVerified(true);
+                  setValue("verifyCode", code, { shouldValidate: true });
                   setIsFadingOut(true);
                   setTimeout(() => {
                     setIsVerifyInputVisible(false);
                     setIsRequesting(false);
-                    setValue("verifyCode", "");
                   }, 100);
                 }}
               />
@@ -223,17 +217,24 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
             control={control}
             error={errors.channels?.message}
           />
-
-          <UserTermsAgreement onAllAgreedChange={setIsAllTermsAgreed} />
-
+          <div className="mb-10">
+            <label className="block ml-2 mt-17 font-semibold text-base sm:text-lg">
+              사이트 이용을 위한 필수 약관에 동의해주세요
+            </label>
+            <Controller
+              name="agreeTerms"
+              control={control}
+              render={({ field }) => (
+                <UserTermsAgreement onAllAgreedChange={(agreed) => field.onChange(agreed)} />
+              )}
+            />
+            {errors.agreeTerms && (
+              <p className="text-red-500 mt-1 ml-2">{errors.agreeTerms.message}</p>
+            )}
+          </div>
           <button
             type="submit"
-            disabled={!(isVerified && isAllTermsAgreed && isValid)}
-            className={`w-full h-[60px] font-semibold rounded mt-7 transition ${
-              isVerified && isAllTermsAgreed && isValid
-                ? "bg-primary text-white hover:opacity-90 cursor-pointer"
-                : "bg-gray-300 text-white cursor-not-allowed"
-            }`}
+            className="w-full h-[60px] font-semibold rounded mt-7 transition bg-primary text-white hover:opacity-90 cursor-pointer"
           >
             회원가입 완료
           </button>
