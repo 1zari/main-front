@@ -97,7 +97,7 @@ function PasswordInput({
   error,
 }: {
   label: string;
-  register: ReturnType<UseFormRegister<any>>;
+  register: ReturnType<UseFormRegister<SignupFormValues>>;
   show: boolean;
   onToggle: () => void;
   error?: string;
