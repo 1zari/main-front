@@ -8,7 +8,6 @@ import JobFilter from "../../../../features/jobs/components/JobFilter";
 
 export default function JobsByLocationPage() {
   const setShowLocation = useFilterTabStore((state) => state.setShowLocation);
-  const showLocation = useFilterTabStore((state) => state.showLocation);
 
   useEffect(() => {
     setShowLocation(true);

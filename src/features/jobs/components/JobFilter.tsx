@@ -24,7 +24,6 @@ export default function JobFilter() {
   const navBtnSelectedClassName = "border-primary font-bold text-primary";
   const locationChecked = useSelectedFilterStore((state) => state.locationChecked);
   const checkedJobs = useSelectedFilterStore((state) => state.checkedJobs);
-  const selectedFilters = useSelectedFilterStore((state) => state.selectedFilters);
   const selectedDays = useSelectedFilterStore((state) => state.selectedDays);
   const dayNegotiable = useSelectedFilterStore((state) => state.dayNegotiable);
 
