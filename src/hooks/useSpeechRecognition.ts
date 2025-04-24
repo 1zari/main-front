@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 
 declare global {
   interface Window {
-    webkitSpeechRecognition: any;
+    webkitSpeechRecognition: new () => SpeechRecognition;
   }
 
   interface SpeechRecognition extends EventTarget {
@@ -12,8 +12,8 @@ declare global {
     interimResults: boolean;
     start(): void;
     stop(): void;
-    onresult: (event: any) => void;
-    onerror: (event: any) => void;
+    onresult: (event: SpeechRecognitionEvent) => void;
+    onerror: (event: SpeechRecognitionErrorEvent) => void;
   }
 }
 
@@ -29,12 +29,12 @@ export function useSpeechRecognition() {
     recognition.continuous = false;
     recognition.interimResults = false;
 
-    recognition.onresult = (event: any) => {
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
       const result = event.results[0][0].transcript;
       setTranscript(result);
     };
 
-    recognition.onerror = (event: any) => {
+    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
       console.error("음성 인식 에러", event);
     };
 
