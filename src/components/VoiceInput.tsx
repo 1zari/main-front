@@ -1,8 +1,5 @@
 "use client";
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import VoiceOverlay from "@/components/VoiceOverlay";
 import { useState } from "react";
 import { IoMicOutline } from "react-icons/io5";
