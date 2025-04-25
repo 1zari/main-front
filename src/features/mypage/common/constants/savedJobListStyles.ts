@@ -49,11 +49,11 @@ export const JOB_LIST_STYLES = {
     container:
       "relative p-4 transition-colors bg-white border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 group",
     header: {
-      wrapper: "flex flex-col gap-3",
-      content: "flex-1 overflow-hidden",
+      wrapper: "flex items-start justify-between mb-2",
+      content: "flex-1 pr-3 overflow-hidden",
       company: "block font-medium text-gray-900 break-words",
       title: "mt-0.5 font-medium text-gray-900 break-words group-hover:text-primary",
-      scrap: "mb-2",
+      scrap: "absolute right-4 top-4 z-10",
     },
     tags: {
       wrapper: "flex flex-wrap gap-1.5 mt-2",
