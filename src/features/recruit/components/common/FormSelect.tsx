@@ -1,12 +1,12 @@
 "use client";
 
-import { UseFormRegister } from "react-hook-form";
+import { FieldValues, UseFormRegister } from "react-hook-form";
 
 interface FormSelectProps {
   label: string;
   name: string;
   options: { value: string; label: string }[];
-  register: UseFormRegister<any>;
+  register: UseFormRegister<FieldValues>;
   required?: boolean;
   width?: string;
   selectWidth?: string;
@@ -21,7 +21,6 @@ const FormSelect = ({
   options,
   register,
   required,
-  error,
   width = "",
   selectWidth = "",
   labelWidth = "w-16",

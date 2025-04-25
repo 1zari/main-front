@@ -1,9 +1,9 @@
-import { UseFormRegister } from "react-hook-form";
+import { UseFormRegister, FieldValues } from "react-hook-form";
 
 interface ResumeDateInputProps {
   label?: string;
   name: string;
-  register: UseFormRegister<any>;
+  register: UseFormRegister<FieldValues>;
   required?: boolean;
   disabled?: boolean;
   width?: string;

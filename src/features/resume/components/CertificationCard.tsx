@@ -1,12 +1,12 @@
 // CertificationCard.tsx
 
-import { UseFormRegister } from "react-hook-form";
+import { UseFormRegister, FieldValues } from "react-hook-form";
 import ResumeDateInput from "./common/ResumeDateInput";
 import ResumeInput from "./common/ResumeInput";
 
 interface CertificationCardProps {
   index: number;
-  register: UseFormRegister<any>;
+  register: UseFormRegister<FieldValues>;
   onDelete: () => void;
 }
 

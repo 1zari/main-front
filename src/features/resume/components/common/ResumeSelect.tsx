@@ -1,12 +1,12 @@
 // common/ResumeSelect.tsx
 
-import { UseFormRegister } from "react-hook-form";
+import { UseFormRegister, FieldValues } from "react-hook-form";
 
 interface ResumeSelectProps {
   label?: string;
   name: string;
   options: { value: string; label: string }[];
-  register: UseFormRegister<any>;
+  register: UseFormRegister<FieldValues>;
   required?: boolean;
   width?: string;
   [x: string]: any;

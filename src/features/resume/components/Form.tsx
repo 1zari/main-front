@@ -9,14 +9,42 @@ import ResumeSelect from "./common/ResumeSelect";
 import ExperienceCard from "./ExperienceCard";
 import ResumeTitle from "./ResumeTitle";
 
+export type Experience = {
+  company: string;
+  position: string;
+  startDate: string;
+  endDate: string;
+  isCurrent: boolean;
+};
+
+export type Certification = {
+  name: string;
+  issuer: string;
+  date: string;
+};
+
+export type ResumeFormValues = {
+  resumeTitle: string;
+  name: string;
+  phone: string;
+  email: string;
+  emailDomain: string;
+  schoolType: string;
+  schoolName: string;
+  graduationStatus: string;
+  experiences: Experience[];
+  certifications: Certification[];
+  introduction: string;
+};
+
 type ResumeFormProps = {
   mode: "new" | "edit";
   resumeId: string;
-  defaultValues?: any;
+  defaultValues?: Partial<ResumeFormValues>;
 };
 
 const ResumeForm = ({ mode }: ResumeFormProps) => {
-  const methods = useForm({
+  const methods = useForm<ResumeFormValues>({
     defaultValues: {
       resumeTitle: "",
       name: "",

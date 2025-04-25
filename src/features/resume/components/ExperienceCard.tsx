@@ -1,12 +1,12 @@
-import { Control, UseFormRegister, useWatch } from "react-hook-form";
+import { Control, FieldValues, UseFormRegister, useWatch } from "react-hook-form";
 import ResumeCheckbox from "./common/ResumeCheckbox";
 import ResumeDateInput from "./common/ResumeDateInput";
 import ResumeInput from "./common/ResumeInput";
 
 interface ExperienceCardProps {
   index: number;
-  register: UseFormRegister<any>;
-  control: Control<any>;
+  register: UseFormRegister<FieldValues>;
+  control: Control<FieldValues>;
   onDelete: () => void;
 }
 
