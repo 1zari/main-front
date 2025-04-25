@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Heading } from "@/components/ui/Heading";
 import ResumeList from "../resume/ResumeList";
 import type { Resume } from "@/types/resume";
+import AppliedJobList from "../applied/AppliedJobList";
+import { dummyAppliedJobs } from "../../mock/appliedJobs";
 
 interface EmptyContentProps {
   title: string;
@@ -43,7 +45,7 @@ export default function UserProfileTabs({ resumes }: UserProfileTabsProps) {
       case "resumes":
         return <ResumeList resumes={resumes || []} />;
       case "applied":
-        return <EmptyContent title="지원한 공고 목록" message="아직 지원한 공고가 없습니다." />;
+        return <AppliedJobList jobs={dummyAppliedJobs} />;
       case "saved":
         return <EmptyContent title="저장한 공고 목록" message="아직 저장한 공고가 없습니다." />;
     }
