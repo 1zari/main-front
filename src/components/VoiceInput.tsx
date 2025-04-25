@@ -66,6 +66,3 @@ export default function VoiceInput() {
     </div>
   );
 }
-
-/* eslint-enable @typescript-eslint/no-unused-vars */
-/* eslint-enable @typescript-eslint/no-explicit-any */
