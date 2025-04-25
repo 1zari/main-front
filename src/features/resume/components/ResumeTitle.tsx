@@ -1,7 +1,5 @@
 "use client";
-
 import { useFontSize } from "@/hooks/useFontSize";
-
 interface ResumeFormTitleProps {
   value: string;
   onChange: (value: string) => void;
@@ -19,7 +17,7 @@ const ResumeTitle = ({ value, onChange }: ResumeFormTitleProps) => {
         onChange={(e) => onChange(e.target.value)}
         placeholder="이력서 제목을 입력해주세요."
         style={{ fontSize: `${fontSize}px` }}
-        className="mt-2 w-full border border-gray-300 rounded-md px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0F8C3B] focus:border-transparent"
+        className="mt-2 w-full border border-gray-300 rounded-md px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0F8C3B] bg-white"
       />
     </div>
   );

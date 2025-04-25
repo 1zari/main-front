@@ -55,7 +55,7 @@ export default function JobDetailContent() {
   return (
     <>
       <div className="min-h-screen flex flex-col items-center py-10">
-        <div className="w-full max-w-7xl mx-auto px-6">
+        <div className="w-full max-w-3xl mx-auto px-6">
           <section className="bg-white  space-y-8">
             {/* 회사정보 */}
             <div className="flex flex-col gap-2">
