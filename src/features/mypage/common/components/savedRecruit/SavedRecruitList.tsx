@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { formatDate, formatSalary, isDeadlinePassed } from "@/utils/format";
-import { BookmarkPlus, ArrowRight, Trash2 } from "lucide-react";
+import { BookmarkPlus, ArrowRight, Trash2, Pencil, X } from "lucide-react";
 import ScrapBtn from "@/components/ScrapBtn";
 import { Heading } from "@/components/ui/Heading";
 import type { SavedRecruitListProps } from "@/features/mypage/common/types/savedRecruit.types";
@@ -39,6 +39,7 @@ export default function SavedJobList({
   onToggleSave,
 }: Partial<SavedRecruitListProps>) {
   const router = useRouter();
+  const [isEditMode, setIsEditMode] = useState(false);
   const [selectedJobs, setSelectedJobs] = useState<Set<string>>(new Set());
   const totalPages = Math.ceil(jobs.length / ITEMS_PER_PAGE);
   const currentJobs = jobs.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
@@ -65,6 +66,12 @@ export default function SavedJobList({
     // TODO: 선택된 공고 삭제 로직 구현
     console.log("Delete jobs:", Array.from(selectedJobs));
     setSelectedJobs(new Set());
+    setIsEditMode(false);
+  };
+
+  const toggleEditMode = () => {
+    setIsEditMode(!isEditMode);
+    setSelectedJobs(new Set());
   };
 
   if (jobs.length === 0) {
@@ -74,21 +81,43 @@ export default function SavedJobList({
   return (
     <div className={JOB_LIST_STYLES.container}>
       <div className={JOB_LIST_STYLES.header.wrapper}>
-        <Heading sizeOffset={3} className={JOB_LIST_STYLES.header.title}>
-          저장한 공고 목록
-        </Heading>
-        <button
-          onClick={handleDelete}
-          disabled={selectedJobs.size === 0}
-          className={`flex items-center gap-1 px-3 py-1.5 text-white rounded-lg transition-colors ${
-            selectedJobs.size === 0
-              ? "bg-gray-300 cursor-not-allowed"
-              : "bg-red-500 hover:bg-red-600"
-          }`}
-        >
-          <Trash2 className="w-3.5 h-3.5" />
-          선택 삭제 {selectedJobs.size > 0 && `(${selectedJobs.size}개)`}
-        </button>
+        <div className={JOB_LIST_STYLES.header.titleWrapper}>
+          <Heading sizeOffset={3} className={JOB_LIST_STYLES.header.title}>
+            저장한 공고 목록
+          </Heading>
+        </div>
+        <div className={JOB_LIST_STYLES.header.buttonWrapper}>
+          <button
+            onClick={toggleEditMode}
+            className="flex items-center gap-1 px-3 py-1.5 text-gray-600 hover:text-gray-900 rounded-lg transition-colors border border-gray-200 hover:border-gray-400 bg-white"
+          >
+            {isEditMode ? (
+              <>
+                <X className="w-4 h-4" />
+                편집 취소
+              </>
+            ) : (
+              <>
+                <Pencil className="w-4 h-4" />
+                편집
+              </>
+            )}
+          </button>
+          {isEditMode && (
+            <button
+              onClick={handleDelete}
+              disabled={selectedJobs.size === 0}
+              className={`flex items-center gap-1 px-3 py-1.5 text-white rounded-lg transition-colors ${
+                selectedJobs.size === 0
+                  ? "bg-gray-300 cursor-not-allowed"
+                  : "bg-red-500 hover:bg-red-600"
+              }`}
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              선택 삭제 {selectedJobs.size > 0 && `(${selectedJobs.size}개)`}
+            </button>
+          )}
+        </div>
       </div>
 
       {/* 웹, 태블릿 뷰 */}
@@ -96,27 +125,28 @@ export default function SavedJobList({
         <div className={JOB_LIST_STYLES.table.container}>
           <div className={JOB_LIST_STYLES.table.header.wrapper}>
             <div
-              className={`${JOB_LIST_STYLES.table.header.column.base} ${JOB_LIST_STYLES.table.header.column.checkbox}`}
+              className={`${JOB_LIST_STYLES.table.header.column.base} ${JOB_LIST_STYLES.table.header.column.action}`}
             >
-              <input
-                type="checkbox"
-                checked={selectedJobs.size === currentJobs.length && currentJobs.length > 0}
-                onChange={handleSelectAll}
-                className="w-4 h-4 border-gray-300 rounded text-primary focus:ring-primary"
-              />
-            </div>
-            <div
-              className={`${JOB_LIST_STYLES.table.header.column.base} ${JOB_LIST_STYLES.table.header.column.scrap}`}
-            >
-              <Heading sizeOffset={2} className="font-semibold text-gray-600">
-                스크랩
-              </Heading>
+              {isEditMode ? (
+                <input
+                  type="checkbox"
+                  checked={selectedJobs.size === currentJobs.length && currentJobs.length > 0}
+                  onChange={handleSelectAll}
+                  className="w-4 h-4 border-gray-300 rounded text-primary focus:ring-primary"
+                />
+              ) : (
+                <Heading sizeOffset={2} className="font-semibold text-gray-600 whitespace-nowrap">
+                  <span className="hidden md:inline">스크랩</span>
+                  <span className="md:hidden">★</span>
+                </Heading>
+              )}
             </div>
             <div
               className={`${JOB_LIST_STYLES.table.header.column.base} ${JOB_LIST_STYLES.table.header.column.info}`}
             >
-              <Heading sizeOffset={2} className="font-semibold text-gray-600">
-                회사명/공고제목
+              <Heading sizeOffset={2} className="font-semibold text-gray-600 whitespace-nowrap">
+                <span className="hidden md:inline">회사명/공고제목</span>
+                <span className="md:hidden">공고</span>
               </Heading>
             </div>
             <div
@@ -136,8 +166,9 @@ export default function SavedJobList({
             <div
               className={`${JOB_LIST_STYLES.table.header.column.base} ${JOB_LIST_STYLES.table.header.column.type}`}
             >
-              <Heading sizeOffset={2} className="font-semibold text-gray-600">
-                급여형태
+              <Heading sizeOffset={2} className="font-semibold text-gray-600 whitespace-nowrap">
+                <span className="hidden md:inline">급여형태</span>
+                <span className="md:hidden">형태</span>
               </Heading>
             </div>
             <div
@@ -153,28 +184,30 @@ export default function SavedJobList({
             {currentJobs.map((job) => (
               <div
                 key={job.job_posting_id}
-                onClick={() => router.push(`/jobs/${job.job_posting_id}`)}
+                onClick={() => !isEditMode && router.push(`/jobs/${job.job_posting_id}`)}
                 className={JOB_LIST_STYLES.table.row.wrapper}
               >
                 <div
-                  className={`${JOB_LIST_STYLES.table.row.column.base} ${JOB_LIST_STYLES.table.row.column.checkbox}`}
+                  className={`${JOB_LIST_STYLES.table.row.column.base} ${JOB_LIST_STYLES.table.row.column.action}`}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <input
-                    type="checkbox"
-                    checked={selectedJobs.has(job.job_posting_id)}
-                    onChange={() => handleSelect(job.job_posting_id)}
-                    className="w-4 h-4 border-gray-300 rounded text-primary focus:ring-primary"
-                  />
-                </div>
-                <div
-                  className={`${JOB_LIST_STYLES.table.row.column.base} ${JOB_LIST_STYLES.table.row.column.scrap}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onToggleSave?.(job.job_posting_id);
-                  }}
-                >
-                  <ScrapBtn />
+                  {isEditMode ? (
+                    <input
+                      type="checkbox"
+                      checked={selectedJobs.has(job.job_posting_id)}
+                      onChange={() => handleSelect(job.job_posting_id)}
+                      className="w-4 h-4 border-gray-300 rounded text-primary focus:ring-primary"
+                    />
+                  ) : (
+                    <div
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onToggleSave?.(job.job_posting_id);
+                      }}
+                    >
+                      <ScrapBtn />
+                    </div>
+                  )}
                 </div>
                 <div
                   className={`${JOB_LIST_STYLES.table.row.column.base} ${JOB_LIST_STYLES.table.row.column.info}`}
@@ -226,8 +259,8 @@ export default function SavedJobList({
         <div className="space-y-4">
           {currentJobs.map((job) => (
             <div key={job.job_posting_id} className={JOB_LIST_STYLES.card.container}>
-              <div className="flex items-center gap-3">
-                <div onClick={(e) => e.stopPropagation()}>
+              {isEditMode ? (
+                <div className="flex items-center mb-3">
                   <input
                     type="checkbox"
                     checked={selectedJobs.has(job.job_posting_id)}
@@ -235,22 +268,29 @@ export default function SavedJobList({
                     className="w-4 h-4 border-gray-300 rounded text-primary focus:ring-primary"
                   />
                 </div>
-                <div className="flex-1" onClick={() => router.push(`/jobs/${job.job_posting_id}`)}>
+              ) : null}
+              <div
+                className="flex items-center gap-3"
+                onClick={() => !isEditMode && router.push(`/jobs/${job.job_posting_id}`)}
+              >
+                {!isEditMode && (
+                  <div
+                    className={JOB_LIST_STYLES.card.header.scrap}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onToggleSave?.(job.job_posting_id);
+                    }}
+                  >
+                    <ScrapBtn />
+                  </div>
+                )}
+                <div className="flex-1">
                   <div className={JOB_LIST_STYLES.card.header.wrapper}>
                     <div className={JOB_LIST_STYLES.card.header.content}>
                       <span className={JOB_LIST_STYLES.card.header.company}>{job.companyName}</span>
                       <Heading sizeOffset={1} className={JOB_LIST_STYLES.card.header.title}>
                         {job.job_posting_title}
                       </Heading>
-                    </div>
-                    <div
-                      className={JOB_LIST_STYLES.card.header.scrap}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onToggleSave?.(job.job_posting_id);
-                      }}
-                    >
-                      <ScrapBtn />
                     </div>
                   </div>
 
@@ -268,7 +308,7 @@ export default function SavedJobList({
 
                   <div className={JOB_LIST_STYLES.card.deadline.wrapper}>
                     <div
-                      className={`${JOB_LIST_STYLES.card.deadline.text} ${
+                      className={`${JOB_LIST_STYLES.card.deadline} ${
                         isDeadlinePassed(job.deadline) ? "text-red-500" : "text-gray-600"
                       }`}
                     >

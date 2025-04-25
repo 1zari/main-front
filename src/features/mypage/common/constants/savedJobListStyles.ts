@@ -7,46 +7,46 @@ export const SALARY_TYPE_STYLES: Record<SalaryType, string> = {
 } as const;
 
 export const JOB_LIST_STYLES = {
-  container: "space-y-6 px-2",
+  container: "space-y-0",
   header: {
-    wrapper: "flex items-center justify-between pt-4 sm:pt-6",
-    title: "pl-3 font-bold text-gray-900",
+    wrapper: "space-y-2",
+    titleWrapper: "flex items-center justify-between pt-4 sm:pt-6",
+    title: "font-bold text-gray-900",
+    buttonWrapper: "flex justify-end items-center gap-2 sm:mb-0 mb-2",
   },
   table: {
-    wrapper: "hidden sm:block",
+    wrapper: "hidden sm:block mt-2",
     container: "overflow-hidden bg-white border border-gray-200 rounded-lg",
     header: {
-      wrapper: "flex items-center border-b border-gray-200 h-14 bg-gray-50",
+      wrapper: "flex items-center border-b border-gray-200 h-14 bg-gray-50 px-2",
       column: {
-        base: "font-semibold text-gray-600 flex items-center overflow-hidden",
-        checkbox: "w-[5%] justify-center",
-        scrap: "w-[8%] justify-center",
-        info: "w-[33%] justify-center",
+        base: "font-semibold text-gray-600 flex items-center justify-center overflow-hidden text-center",
+        action: "w-[10%] justify-center",
+        info: "w-[32%] px-4",
         location: "w-[15%] justify-center",
         salary: "w-[15%] justify-center",
-        type: "w-[12%] justify-center",
-        deadline: "w-[12%] justify-center",
+        type: "w-[13%] justify-center",
+        deadline: "w-[15%] justify-center",
       },
     },
     row: {
       wrapper:
-        "flex items-stretch min-h-[5rem] hover:bg-gray-50 cursor-pointer group transition-colors",
+        "flex items-stretch min-h-[5rem] hover:bg-gray-50 cursor-pointer group transition-colors px-2",
       column: {
         base: "flex items-center overflow-hidden",
-        checkbox: "w-[5%] justify-center",
-        scrap: "w-[8%] justify-center",
-        info: "w-[33%] py-3 flex-col items-start justify-center",
+        action: "w-[10%] justify-center",
+        info: "w-[32%] py-3 flex-col items-start justify-center px-4",
         location: "w-[15%] justify-center text-gray-600",
         salary: "w-[15%] justify-center text-gray-600",
-        type: "w-[12%] justify-center",
-        deadline: "w-[12%] justify-center whitespace-nowrap",
+        type: "w-[13%] justify-center",
+        deadline: "w-[15%] justify-center whitespace-nowrap",
       },
     },
   },
   card: {
     wrapper: "sm:hidden space-y-4",
     container:
-      "p-3 transition-colors bg-white border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 group",
+      "p-4 transition-colors bg-white border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 group",
     header: {
       wrapper: "flex items-start justify-between mb-2",
       content: "flex-1 pr-3 overflow-hidden",
@@ -60,7 +60,6 @@ export const JOB_LIST_STYLES = {
     },
     deadline: {
       wrapper: "flex justify-end mt-2",
-      text: "pr-3",
     },
   },
 } as const;
