@@ -134,7 +134,7 @@ export default function SavedJobList({
                   className="w-4 h-4 border-gray-300 rounded text-primary focus:ring-primary"
                 />
               ) : (
-                <Heading sizeOffset={2} className="font-semibold text-gray-600 whitespace-nowrap">
+                <Heading sizeOffset={1} className="font-semibold text-gray-600 whitespace-nowrap">
                   <span className="hidden md:inline">스크랩</span>
                   <span className="md:hidden">★</span>
                 </Heading>
@@ -143,7 +143,7 @@ export default function SavedJobList({
             <div
               className={`${JOB_LIST_STYLES.table.header.column.base} ${JOB_LIST_STYLES.table.header.column.info}`}
             >
-              <Heading sizeOffset={2} className="font-semibold text-gray-600 whitespace-nowrap">
+              <Heading sizeOffset={1} className="font-semibold text-gray-600 whitespace-nowrap">
                 <span className="hidden md:inline">회사명/공고제목</span>
                 <span className="md:hidden">공고</span>
               </Heading>
@@ -151,21 +151,21 @@ export default function SavedJobList({
             <div
               className={`${JOB_LIST_STYLES.table.header.column.base} ${JOB_LIST_STYLES.table.header.column.location}`}
             >
-              <Heading sizeOffset={2} className="font-semibold text-gray-600">
+              <Heading sizeOffset={1} className="font-semibold text-gray-600">
                 근무지
               </Heading>
             </div>
             <div
               className={`${JOB_LIST_STYLES.table.header.column.base} ${JOB_LIST_STYLES.table.header.column.salary}`}
             >
-              <Heading sizeOffset={2} className="font-semibold text-gray-600">
+              <Heading sizeOffset={1} className="font-semibold text-gray-600">
                 급여
               </Heading>
             </div>
             <div
               className={`${JOB_LIST_STYLES.table.header.column.base} ${JOB_LIST_STYLES.table.header.column.type}`}
             >
-              <Heading sizeOffset={2} className="font-semibold text-gray-600 whitespace-nowrap">
+              <Heading sizeOffset={1} className="font-semibold text-gray-600 whitespace-nowrap">
                 <span className="hidden md:inline">급여형태</span>
                 <span className="md:hidden">형태</span>
               </Heading>
@@ -173,7 +173,7 @@ export default function SavedJobList({
             <div
               className={`${JOB_LIST_STYLES.table.header.column.base} ${JOB_LIST_STYLES.table.header.column.deadline}`}
             >
-              <Heading sizeOffset={2} className="font-semibold text-gray-600">
+              <Heading sizeOffset={1} className="font-semibold text-gray-600">
                 마감일
               </Heading>
             </div>
