@@ -18,6 +18,7 @@ import WorkTime from "./WorkTime";
 
 interface RecruitFormProps {
   mode: "new" | "edit";
+  jobPostingId: string;
 }
 
 const RecruitForm = ({ mode }: RecruitFormProps) => {
