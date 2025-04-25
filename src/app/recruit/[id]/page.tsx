@@ -2,7 +2,7 @@
 
 import BackButton from "@/features/resume/components/common/BackButton";
 import RecruitForm from "../../../features/recruit/components/Form";
-const RecruitEditPage = ({ params }: { params: { id: string } }) => {
+const RecruitEditPage = async ({ params }: { params: { id: string } }) => {
   const jobPostingId = params.id;
 
   if (!jobPostingId) return <p>잘못된 접근입니다.</p>;
