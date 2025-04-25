@@ -15,7 +15,7 @@ export const JOB_LIST_STYLES = {
     buttonWrapper: "flex justify-end items-center gap-2 sm:mb-0 mb-2",
   },
   table: {
-    wrapper: "hidden sm:block mt-2",
+    wrapper: "mt-2",
     container: "overflow-hidden bg-white border border-gray-200 rounded-lg",
     header: {
       wrapper:

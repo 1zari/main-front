@@ -120,10 +120,9 @@ export default function SavedJobList({
         </div>
       </div>
 
-      {/* 웹, 태블릿 뷰 */}
       <div className={JOB_LIST_STYLES.table.wrapper}>
         <div className={JOB_LIST_STYLES.table.container}>
-          <div className={JOB_LIST_STYLES.table.header.wrapper}>
+          <div className="hidden sm:grid sm:grid-cols-[10%_32%_15%_15%_13%_15%] sm:items-center p-4 bg-gray-50">
             <div
               className={`${JOB_LIST_STYLES.table.header.column.base} ${JOB_LIST_STYLES.table.header.column.action}`}
             >
@@ -185,140 +184,79 @@ export default function SavedJobList({
               <div
                 key={job.job_posting_id}
                 onClick={() => !isEditMode && router.push(`/jobs/${job.job_posting_id}`)}
-                className={JOB_LIST_STYLES.table.row.wrapper}
+                className="relative p-4 transition-colors cursor-pointer group hover:bg-gray-50"
               >
-                <div
-                  className={`${JOB_LIST_STYLES.table.row.column.base} ${JOB_LIST_STYLES.table.row.column.action}`}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  {isEditMode ? (
-                    <input
-                      type="checkbox"
-                      checked={selectedJobs.has(job.job_posting_id)}
-                      onChange={() => handleSelect(job.job_posting_id)}
-                      className="w-4 h-4 border-gray-300 rounded text-primary focus:ring-primary"
-                    />
-                  ) : (
-                    <div
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onToggleSave?.(job.job_posting_id);
-                      }}
-                    >
-                      <ScrapBtn />
-                    </div>
-                  )}
-                </div>
-                <div
-                  className={`${JOB_LIST_STYLES.table.row.column.base} ${JOB_LIST_STYLES.table.row.column.info}`}
-                >
-                  <span className="font-medium text-gray-900 break-words">{job.companyName}</span>
-                  <Heading
-                    sizeOffset={1}
-                    className="mt-0.5 font-medium text-gray-900 break-words group-hover:text-primary"
-                  >
-                    {job.job_posting_title}
-                  </Heading>
-                </div>
-                <div
-                  className={`${JOB_LIST_STYLES.table.row.column.base} ${JOB_LIST_STYLES.table.row.column.location}`}
-                >
-                  <span className="text-center break-words">{job.location}</span>
-                </div>
-                <div
-                  className={`${JOB_LIST_STYLES.table.row.column.base} ${JOB_LIST_STYLES.table.row.column.salary}`}
-                >
-                  <div className="text-center break-words">{formatSalary(job.salary)}</div>
-                </div>
-                <div
-                  className={`${JOB_LIST_STYLES.table.row.column.base} ${JOB_LIST_STYLES.table.row.column.type}`}
-                >
-                  <span
-                    className={`${SALARY_TYPE_STYLES[job.salary_type]} border rounded-full px-1.5 py-0.5`}
-                  >
-                    {job.salary_type}
-                  </span>
-                </div>
-                <div
-                  className={`${JOB_LIST_STYLES.table.row.column.base} ${JOB_LIST_STYLES.table.row.column.deadline}`}
-                >
+                <div className="relative grid grid-cols-1 sm:grid-cols-[10%_32%_15%_15%_13%_15%] sm:items-center">
                   <div
-                    className={isDeadlinePassed(job.deadline) ? "text-red-500" : "text-gray-600"}
+                    className={`${JOB_LIST_STYLES.table.row.column.base} ${JOB_LIST_STYLES.table.row.column.action} absolute sm:static right-0 top-0`}
+                    onClick={(e) => e.stopPropagation()}
                   >
-                    {isDeadlinePassed(job.deadline) ? "마감" : formatDate(job.deadline)}
+                    {isEditMode ? (
+                      <input
+                        type="checkbox"
+                        checked={selectedJobs.has(job.job_posting_id)}
+                        onChange={() => handleSelect(job.job_posting_id)}
+                        className="w-4 h-4 border-gray-300 rounded text-primary focus:ring-primary"
+                      />
+                    ) : (
+                      <div
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onToggleSave?.(job.job_posting_id);
+                        }}
+                      >
+                        <ScrapBtn />
+                      </div>
+                    )}
+                  </div>
+                  <div
+                    className={`${JOB_LIST_STYLES.table.row.column.base} ${JOB_LIST_STYLES.table.row.column.info} col-span-full sm:col-span-1`}
+                  >
+                    <span className="block font-medium text-gray-900 break-words">
+                      {job.companyName}
+                    </span>
+                    <Heading
+                      sizeOffset={1}
+                      className="mt-0.5 font-medium text-gray-900 break-words group-hover:text-primary"
+                    >
+                      {job.job_posting_title}
+                    </Heading>
+                  </div>
+                  <div
+                    className={`${JOB_LIST_STYLES.table.row.column.base} ${JOB_LIST_STYLES.table.row.column.location} mt-3 sm:mt-0`}
+                  >
+                    <span className="mr-2 text-sm text-gray-500 sm:hidden">근무지</span>
+                    <span className="text-gray-900 break-words">{job.location}</span>
+                  </div>
+                  <div
+                    className={`${JOB_LIST_STYLES.table.row.column.base} ${JOB_LIST_STYLES.table.row.column.salary}`}
+                  >
+                    <span className="mr-2 text-sm text-gray-500 sm:hidden">급여</span>
+                    <span className="text-gray-900">{formatSalary(job.salary)}</span>
+                  </div>
+                  <div
+                    className={`${JOB_LIST_STYLES.table.row.column.base} ${JOB_LIST_STYLES.table.row.column.type}`}
+                  >
+                    <span
+                      className={`${SALARY_TYPE_STYLES[job.salary_type]} border rounded-full px-1.5 py-0.5 text-sm`}
+                    >
+                      {job.salary_type}
+                    </span>
+                  </div>
+                  <div
+                    className={`${JOB_LIST_STYLES.table.row.column.base} ${JOB_LIST_STYLES.table.row.column.deadline}`}
+                  >
+                    <span className="mr-2 text-sm text-gray-500 sm:hidden">마감일</span>
+                    <span
+                      className={isDeadlinePassed(job.deadline) ? "text-red-500" : "text-gray-900"}
+                    >
+                      {isDeadlinePassed(job.deadline) ? "마감" : formatDate(job.deadline)}
+                    </span>
                   </div>
                 </div>
               </div>
             ))}
           </div>
-        </div>
-      </div>
-
-      {/* 모바일 뷰 */}
-      <div className={JOB_LIST_STYLES.card.wrapper}>
-        <div className="space-y-4">
-          {currentJobs.map((job) => (
-            <div key={job.job_posting_id} className={JOB_LIST_STYLES.card.container}>
-              {isEditMode ? (
-                <div className="flex items-center mb-3">
-                  <input
-                    type="checkbox"
-                    checked={selectedJobs.has(job.job_posting_id)}
-                    onChange={() => handleSelect(job.job_posting_id)}
-                    className="w-4 h-4 border-gray-300 rounded text-primary focus:ring-primary"
-                  />
-                </div>
-              ) : null}
-              <div
-                className="flex items-center gap-3"
-                onClick={() => !isEditMode && router.push(`/jobs/${job.job_posting_id}`)}
-              >
-                {!isEditMode && (
-                  <div
-                    className={JOB_LIST_STYLES.card.header.scrap}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onToggleSave?.(job.job_posting_id);
-                    }}
-                  >
-                    <ScrapBtn />
-                  </div>
-                )}
-                <div className="flex-1">
-                  <div className={JOB_LIST_STYLES.card.header.wrapper}>
-                    <div className={JOB_LIST_STYLES.card.header.content}>
-                      <span className={JOB_LIST_STYLES.card.header.company}>{job.companyName}</span>
-                      <Heading sizeOffset={1} className={JOB_LIST_STYLES.card.header.title}>
-                        {job.job_posting_title}
-                      </Heading>
-                    </div>
-                  </div>
-
-                  <div className={JOB_LIST_STYLES.card.tags.wrapper}>
-                    <span className={JOB_LIST_STYLES.card.tags.tag}>{job.location}</span>
-                    <span className={JOB_LIST_STYLES.card.tags.tag}>
-                      {formatSalary(job.salary)}
-                    </span>
-                    <span
-                      className={`${SALARY_TYPE_STYLES[job.salary_type]} border rounded-full px-1.5 py-0.5`}
-                    >
-                      {job.salary_type}
-                    </span>
-                  </div>
-
-                  <div className={JOB_LIST_STYLES.card.deadline.wrapper}>
-                    <div
-                      className={`${JOB_LIST_STYLES.card.deadline} ${
-                        isDeadlinePassed(job.deadline) ? "text-red-500" : "text-gray-600"
-                      }`}
-                    >
-                      {isDeadlinePassed(job.deadline) ? "마감" : formatDate(job.deadline)}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
         </div>
       </div>
 
