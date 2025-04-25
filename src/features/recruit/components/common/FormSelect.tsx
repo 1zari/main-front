@@ -12,7 +12,7 @@ interface FormSelectProps {
   selectWidth?: string;
   ml?: string;
   labelWidth?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 const FormSelect = ({

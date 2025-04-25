@@ -11,7 +11,7 @@ interface FormInputProps {
   inputWidth?: string;
   ml?: string;
   labelWidth?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 const FormInput = ({
