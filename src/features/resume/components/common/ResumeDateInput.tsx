@@ -7,7 +7,7 @@ interface ResumeDateInputProps {
   required?: boolean;
   disabled?: boolean;
   width?: string;
-  [x: string]: any;
+  [x: string]: unknown;
 }
 
 const ResumeDateInput = ({

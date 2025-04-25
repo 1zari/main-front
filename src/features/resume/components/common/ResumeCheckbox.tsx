@@ -6,7 +6,7 @@ interface ResumeCheckboxProps {
   label: string;
   name: string;
   register: UseFormRegister<FieldValues>;
-  [x: string]: any;
+  [x: string]: unknown;
 }
 
 const ResumeCheckbox = ({ label, name, register, ...rest }: ResumeCheckboxProps) => (

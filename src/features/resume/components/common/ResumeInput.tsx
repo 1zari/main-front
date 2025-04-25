@@ -8,7 +8,7 @@ interface ResumeInputProps {
   placeholder?: string;
   width?: string;
   type?: string;
-  [x: string]: any;
+  [x: string]: unknown;
 }
 
 const ResumeInput = ({
