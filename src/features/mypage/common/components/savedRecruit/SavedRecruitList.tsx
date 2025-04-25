@@ -237,6 +237,7 @@ export default function SavedJobList({
                   <div
                     className={`${JOB_LIST_STYLES.table.row.column.base} ${JOB_LIST_STYLES.table.row.column.type}`}
                   >
+                    <span className="mr-2 text-sm text-gray-500 sm:hidden">급여 형태</span>
                     <span
                       className={`${SALARY_TYPE_STYLES[job.salary_type]} border rounded-full px-1.5 py-0.5 text-sm`}
                     >
