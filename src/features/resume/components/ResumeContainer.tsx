@@ -6,7 +6,7 @@ export default function ResumeContainer() {
     <>
       <div className="max-w-3xl m-auto">
         <div className="text-right my-4">예술·디자인·방송직 &gt; 웹디자인 </div>
-        <div className="border b-gray-300 py-9 px-6 h-full flex flex-col gap-8 rounded-md">
+        <div className="border border-gray-300 py-9 px-6 h-full flex flex-col gap-8 rounded-md">
           <ResumeContactSection name="김오즈" phone="010-1234-1245" email="user1234@naver.com" />
           <ResumeTableSection
             sectionTitle="학력 사항"
