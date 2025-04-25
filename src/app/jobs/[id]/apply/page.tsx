@@ -23,7 +23,7 @@ export default function ApplyPage() {
           </li>
         </ul>
       </nav>
-      <div className="p-4  flex flex-col gap-y-4 w-full max-w-7xl mx-auto">
+      <div className="p-4  flex flex-col gap-y-4 w-full max-w-3xl mx-auto">
         <Heading sizeOffset={1} className="font-bold">
           제출 할 이력서를 골라주세요
         </Heading>
@@ -61,7 +61,7 @@ export default function ApplyPage() {
 
         <ResumeContainer />
         <div className="flex w-full gap-5">
-          <button className="w-full bg-gray-100 p-4 rounded-md">수정하기</button>
+          <button className="w-full border border-gray-300  p-4 rounded-md">수정하기</button>
           <button className="w-full bg-primary text-white p-4 rounded-md">지원 완료하기</button>
         </div>
       </div>
