@@ -1,5 +1,3 @@
-"use client";
-
 const PersonalTerms = () => {
   return (
     <div className="m-1 text-sm text-gray-700">

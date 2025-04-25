@@ -1,5 +1,3 @@
-"use client";
-
 const LocationServiceTerms = () => {
   return (
     <div className="m-1 text-sm text-gray-700">
@@ -49,24 +47,24 @@ const LocationServiceTerms = () => {
         <div>
           <p>
             &quot;회사&quot;는 위치정보 기술을 활용하여 아래와 같은 위치기반 서비스를 제공합니다.
-            <br />
-            <br />
-            <ul className="pl-5 list-disc">
-              <li>
-                <span className="ml-2 font-bold">현 위치 기반 채용정보 검색:</span>회원의 현재
-                위치를 활용하여 주변 지역의 채용공고 정보를 검색하고 지도에 표시하는 서비스
-              </li>
-              <br />
-              <li>
-                <span className="ml-2 font-bold">맞춤 위치 채용정보 제공:</span>회원이 특정 위치를
-                등록(저장)하면 해당 위치를 기반으로 한 채용공고 정보를 추천·제공하는 서비스
-                <span className="ml-2 italic">
-                  (이 외에 위치정보를 활용하여 "회사"가 자체 개발하거나 다른 회사와 제휴를 통해
-                  제공하는 추가 위치기반 서비스가 있을 경우 별도 안내 후 제공할 수 있습니다.)
-                </span>
-              </li>
-            </ul>
           </p>
+          <br />
+          <br />
+          <ul className="pl-5 list-disc">
+            <li>
+              <span className="ml-2 font-bold">현 위치 기반 채용정보 검색:</span>회원의 현재 위치를
+              위치를 활용하여 주변 지역의 채용공고 정보를 검색하고 지도에 표시하는 서비스
+            </li>
+            <br />
+            <li>
+              <span className="ml-2 font-bold">맞춤 위치 채용정보 제공:</span>회원이 특정 위치를
+              등록(저장)하면 해당 위치를 기반으로 한 채용공고 정보를 추천·제공하는 서비스
+              <span className="ml-2 italic">
+                (이 외에 위치정보를 활용하여 "회사"가 자체 개발하거나 다른 회사와 제휴를 통해
+                제공하는 추가 위치기반 서비스가 있을 경우 별도 안내 후 제공할 수 있습니다.)
+              </span>
+            </li>
+          </ul>
         </div>
       </section>
       <br />
