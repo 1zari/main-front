@@ -2,18 +2,18 @@
 
 import { useState } from "react";
 import { FormProvider } from "react-hook-form";
-import { useRecruitForm } from "../hooks/useRecruitForm";
-import { RecruitFormSchema } from "../schemas/jobPostSchema";
-import CheckDays from "./CheckWorkDay";
-import FormInput from "./common/FormInput";
-import FormNumberInput from "./common/FormInputNumber";
-import FormSelect from "./common/FormSelect";
-import TextArea from "./common/TextArea";
-import Deadline from "./DeadlineDatePicker";
-import DeleteModal from "./DelModal";
+import { useRecruitForm } from "../../hooks/useRecruitForm";
+import { RecruitFormSchema } from "../../schemas/jobPostSchema";
 import SelectJobs from "./JobCategories";
 import SubmitButton from "./SubmitButton";
 import Agreement from "./TermsAgreementField";
+import CheckDays from "./CheckWorkDay";
+import Deadline from "./DeadlineDatePicker";
+import DeleteModal from "./DelModal";
+import FormInput from "./FormInput";
+import FormNumberInput from "./FormInputNumber";
+import FormSelect from "./FormSelect";
+import TextArea from "./TextArea";
 import WorkTime from "./WorkTime";
 
 interface RecruitFormProps {

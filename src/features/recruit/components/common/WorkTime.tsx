@@ -1,6 +1,6 @@
 "use client";
-import { useFormContext, Controller } from "react-hook-form";
-import CheckNegotiable from "./common/CheckNegotiable";
+import { Controller, useFormContext } from "react-hook-form";
+import CheckNegotiable from "./CheckNegotiable";
 
 const timeOptions = Array.from({ length: 48 }, (_, index) => {
   const hour = String(Math.floor(index / 2)).padStart(2, "0");

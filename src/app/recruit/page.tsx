@@ -2,7 +2,7 @@
 
 import JobPostForm from "@/features/recruit/components/JobPostForm";
 import BackButton from "@/features/resume/components/common/BackButton";
-import RecruitForm from "../../features/recruit/components/Form";
+import RecruitForm from "../../features/recruit/components/common/Form";
 
 const NewRecruitPage = () => {
   return (
