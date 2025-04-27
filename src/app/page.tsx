@@ -11,25 +11,13 @@ export default function Home() {
   return (
     <main className="flex flex-col items-center min-h-screen">
       <WelcomeBanner />
-      <div className="w-full text-center bg-gray-z">
-        <CompanyDashboard />
-      </div>
-      <JobSearch />
-      <div className="w-full bg-gray-z">
-        <JobsArea />
-      </div>
-      <div className="w-full bg-white">
-        <SavedJobsArea />
-      </div>
-      <div className="w-full bg-gray-z">
-        <LandingReview />
-      </div>
-      <div className="w-full bg-white ">
-        <LandingPartnerCompany />
-      </div>
-      <div className="fixed bottom-4 z-999 right-4 ">
-        <VoiceInput />
-      </div>
+      <CompanyDashboard className="w-full text-center bg-gray-z" />
+      <JobSearch className="w-full text-center bg-white" />
+      <JobsArea className="w-full bg-gray-z" />
+      <SavedJobsArea className="w-full bg-white" />
+      <LandingReview className="w-full bg-gray-z" />
+      <LandingPartnerCompany className="w-full bg-white" />
+      <VoiceInput className="fixed bottom-4 z-999 right-4" />
     </main>
   );
 }

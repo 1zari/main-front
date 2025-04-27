@@ -4,7 +4,7 @@ import VoiceOverlay from "@/components/VoiceOverlay";
 import { useState } from "react";
 import { IoMicOutline } from "react-icons/io5";
 
-export default function VoiceInput() {
+export default function VoiceInput({ className }: { className?: string }) {
   const [isOpen, setIsOpen] = useState(false);
 
   // --- 음성 인식 관련 코드 보관용 ---
@@ -51,18 +51,20 @@ export default function VoiceInput() {
   // --- 끝 ---
 
   return (
-    <div className="p-4 flex flex-col  items-end space-y-2">
-      <button
-        // onClick={startListening}
-        onClick={() => setIsOpen(true)}
-        className="flex items-center gap-2  px-4 py-2 shadow-2xl rounded-3xl bg-blue-600 text-white"
-      >
-        <span className="text-2xl">
-          <IoMicOutline />
-        </span>
-        말해서 검색하기
-      </button>
-      <VoiceOverlay isOpen={isOpen} onClose={() => setIsOpen(false)} />
+    <div className={className}>
+      <div className="p-4 flex flex-col  items-end space-y-2">
+        <button
+          // onClick={startListening}
+          onClick={() => setIsOpen(true)}
+          className="flex items-center gap-2  px-4 py-2 shadow-2xl rounded-3xl bg-blue-600 text-white"
+        >
+          <span className="text-2xl">
+            <IoMicOutline />
+          </span>
+          말해서 검색하기
+        </button>
+        <VoiceOverlay isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      </div>
     </div>
   );
 }

@@ -4,11 +4,11 @@ import SearchPage from "@/components/SearchPage";
 import { Heading } from "@/components/ui/Heading";
 import { useState } from "react";
 import { IoSearchSharp } from "react-icons/io5";
-export default function JobSearch() {
+export default function JobSearch({ className }: { className?: string }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <>
+    <div className={className}>
       <section className="w-full max-w-7xl  mx-auto my-8 px-4">
         <div className="flex flex-col mb-6 items-center">
           <Heading sizeOffset={3} className="text-2xl font-semibold py-6">
@@ -63,6 +63,6 @@ export default function JobSearch() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
