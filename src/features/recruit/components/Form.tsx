@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { FormProvider } from "react-hook-form";
 import { useRecruitForm } from "../hooks/useRecruitForm";
-import { RecruitFormSchema } from "../schemas/recruitSchema";
+import { RecruitFormSchema } from "../schemas/jobPostSchema";
 import CheckDays from "./CheckWorkDay";
 import FormInput from "./common/FormInput";
 import FormNumberInput from "./common/FormInputNumber";
