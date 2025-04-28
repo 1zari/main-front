@@ -5,25 +5,11 @@ import SavedJobList from "@/features/mypage/common/components/savedRecruit/Saved
 import type { Resume } from "@/types/resume";
 import { DUMMY_JOBS } from "@/features/mypage/common/data/dummy-jobs";
 import { TABS, TAB_STYLES, type TabType } from "@/features/mypage/common/constants/myPageTab";
-
-interface EmptyContentProps {
-  title: string;
-  message: string;
-}
-
-const EmptyContent = ({ title, message }: EmptyContentProps) => (
-  <div className="p-6 bg-white border border-gray-100 shadow-lg rounded-xl">
-    <Heading sizeOffset={2} className="mb-4 font-semibold text-gray-800">
-      {title}
-    </Heading>
-    <Heading sizeOffset={2} className="text-gray-500">
-      {message}
-    </Heading>
-  </div>
-);
+import AppliedJobList from "../applied/AppliedJobList";
+import { dummyAppliedJobs } from "../../mock/appliedJobs";
 
 interface UserProfileTabsProps {
-  resumes: Resume[] | null;
+  resumes?: Resume[];
 }
 
 export default function UserProfileTabs({ resumes }: UserProfileTabsProps) {
