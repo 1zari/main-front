@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Heading } from "@/components/ui/Heading";
-import ResumeList from "../resume/ResumeList";
+import ResumeList from "@/features/mypage/common/components/myResume/ResumeList";
+import SavedJobList from "@/features/mypage/common/components/savedRecruit/SavedRecruitList";
 import type { Resume } from "@/types/resume";
-import AppliedJobList from "../applied/AppliedJobList";
-import { dummyAppliedJobs } from "../../mock/appliedJobs";
+import { DUMMY_JOBS } from "@/features/mypage/common/data/dummy-jobs";
+import { TABS, TAB_STYLES, type TabType } from "@/features/mypage/common/constants/myPageTab";
 
 interface EmptyContentProps {
   title: string;
@@ -25,20 +26,16 @@ interface UserProfileTabsProps {
   resumes: Resume[] | null;
 }
 
-type TabType = "resumes" | "applied" | "saved";
-
-const TABS = [
-  { id: "resumes", label: "내 이력서" },
-  { id: "applied", label: "지원한 공고" },
-  { id: "saved", label: "저장한 공고" },
-] as const;
-
 export default function UserProfileTabs({ resumes }: UserProfileTabsProps) {
   const [activeTab, setActiveTab] = useState<TabType>("resumes");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [SavedRecruit, setSavedRecruit] = useState(DUMMY_JOBS);
 
-  const tabStyle = "flex-1 px-4 py-2 cursor-pointer transition-colors text-center";
-  const activeTabStyle = `${tabStyle} text-primary font-semibold border-b-2 border-primary`;
-  const inactiveTabStyle = `${tabStyle} text-gray-600 hover:text-gray-800`;
+  const handleToggleSave = (jobId: string) => {
+    setSavedRecruit((prev) =>
+      prev.map((job) => (job.job_posting_id === jobId ? { ...job, isSaved: !job.isSaved } : job)),
+    );
+  };
 
   const getTabContent = (tab: TabType) => {
     switch (tab) {
@@ -47,7 +44,14 @@ export default function UserProfileTabs({ resumes }: UserProfileTabsProps) {
       case "applied":
         return <AppliedJobList jobs={dummyAppliedJobs} />;
       case "saved":
-        return <EmptyContent title="저장한 공고 목록" message="아직 저장한 공고가 없습니다." />;
+        return (
+          <SavedJobList
+            jobs={SavedRecruit}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+            onToggleSave={handleToggleSave}
+          />
+        );
     }
   };
 
@@ -58,7 +62,9 @@ export default function UserProfileTabs({ resumes }: UserProfileTabsProps) {
           {TABS.map((tab) => (
             <button
               key={tab.id}
-              className={activeTab === tab.id ? activeTabStyle : inactiveTabStyle}
+              className={`${TAB_STYLES.base} ${
+                activeTab === tab.id ? TAB_STYLES.active : TAB_STYLES.inactive
+              }`}
               onClick={() => setActiveTab(tab.id as TabType)}
             >
               <Heading sizeOffset={2} className="font-semibold break-keep">

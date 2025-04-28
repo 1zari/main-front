@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import SaveBtn from "../../../components/SaveBtn";
+import ScrapBtn from "@/components/ScrapBtn";
 
 const JOBSINFOS = [
   {
@@ -102,7 +102,7 @@ function JobCard({ job }: { job: (typeof JOBSINFOS)[number] }) {
             <p className="text-black/70">{job.companyName}</p>
           </div>
           <div onClick={(e) => e.stopPropagation()}>
-            <SaveBtn />
+            <ScrapBtn />
           </div>
         </div>
         <h3 className="text-2 font-semibold py-2">{job.title}</h3>

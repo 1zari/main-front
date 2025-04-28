@@ -1,21 +1,21 @@
 "use client";
 
 import { FaChevronLeft } from "react-icons/fa6";
-import SaveBtn from "../../../components/SaveBtn";
+import ScrapBtn from "@/components/ScrapBtn";
 
 export default function JobDetailNav() {
   return (
     <>
-      <nav className="bg-white text-black p-4 sticky top-0 z-10 border-b border-gray-200">
-        <ul className="w-full max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-5">
+      <nav className="sticky top-0 z-10 p-4 text-black bg-white border-b border-gray-200">
+        <ul className="flex flex-wrap items-center justify-between w-full gap-5 mx-auto max-w-7xl">
           <li onClick={() => window.history.back()} className="font-bold cursor-pointer">
             <FaChevronLeft className="inline-block mr-2" />
             뒤로가기
           </li>
 
           <li>
-            <div className="flex items-center  gap-2">
-              <SaveBtn showLabel />
+            <div className="flex items-center gap-2">
+              <ScrapBtn showLabel />
             </div>
           </li>
         </ul>
