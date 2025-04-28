@@ -1,117 +1,51 @@
-import { Heading } from "@/components/ui/Heading";
-
+import ResumeContactSection from "@/features/resume/components/ResumeContactSection";
+import ResumeSelfIntroductionSection from "@/features/resume/components/ResumeSelfIntroductionSection";
+import ResumeTableSection from "@/features/resume/components/ResumeTableSection";
 export default function ResumeContainer() {
   return (
     <>
-      <div className="max-w-7xl m-auto ">
-        <div className="bg-gray-100 py-9 px-5 h-full flex flex-col gap-8 rounded-md">
-          <div className="flex flex-wrap pb-2 border-b border-gray-300 items-center">
-            <Heading sizeOffset={2} className="font-bold min-w-25">
-              직종
-            </Heading>
-            <div>예술·디자인·방송직 {">"} 웹디자인 </div>
-          </div>
+      <div className="max-w-3xl m-auto">
+        <div className="text-right my-4">예술·디자인·방송직 &gt; 웹디자인 </div>
+        <div className="border border-gray-300 py-9 px-6 h-full flex flex-col gap-8 rounded-md">
+          <ResumeContactSection name="김오즈" phone="010-1234-1245" email="user1234@naver.com" />
+          <ResumeTableSection
+            sectionTitle="학력 사항"
+            items={[
+              { label: "학교 구분", value: "대학교(4년)" },
+              { label: "학교명", value: "연세대학교" },
+              { label: "졸업 상태", value: "졸업" },
+            ]}
+          />
+          <ResumeTableSection
+            sectionTitle="경력 사항"
+            items={[
+              { label: "회사명", value: "넥스트러너스" },
+              { label: "직무", value: "웹디자인" },
+              { label: "근무 기간", value: "14.04.09 ~ 24.04.09" },
+            ]}
+          />
+          <ResumeTableSection
+            sectionTitle="자격증"
+            items={[
+              { label: "자격증명", value: "웹디자인 기능사" },
+              { label: "발급 기관", value: "한국산업인력공단" },
+              { label: "취득 일자", value: "24.04.09" },
+            ]}
+          />
 
-          <div className="flex flex-col justify-start pb-2  items-start">
-            <div className="border-b border-gray-300  pb-2  w-full mb-2">
-              <Heading sizeOffset={2} className="font-bold min-w-30">
-                기본 정보
-              </Heading>
-            </div>
-            <div className="flex flex-col gap-y-3">
-              <div className="flex flex-wrap">
-                <div className="font-bold min-w-25">이름</div>
-                <div>김오즈 플렉스</div>
-              </div>
-              <div className="flex flex-wrap">
-                <div className="font-bold min-w-25">전화번호</div>
-                <div>010-1234-5678</div>
-              </div>
-              <div className="flex flex-wrap">
-                <div className="font-bold min-w-25">이메일</div>
-                <div>user1234@naver.com</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col justify-start pb-2  items-start">
-            <div className="border-b border-gray-300  pb-2  w-full mb-2">
-              <Heading sizeOffset={2} className="font-bold min-w-30">
-                학력 사항
-              </Heading>
-            </div>
-            <div className="flex flex-col gap-y-3">
-              <div className="flex flex-wrap">
-                <div className="font-bold min-w-25">학교 구분</div>
-                <div>김오즈 플렉스</div>
-              </div>
-              <div className="flex flex-wrap">
-                <div className="font-bold min-w-25">학교명</div>
-                <div>연세대학교 </div>
-              </div>
-              <div className="flex flex-wrap">
-                <div className="font-bold min-w-25">졸업 상태</div>
-                <div>졸업</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col justify-start pb-2  items-start">
-            <div className="border-b border-gray-300  pb-2  w-full mb-2">
-              <Heading sizeOffset={2} className="font-bold min-w-30">
-                경력 사항
-              </Heading>
-            </div>
-            <div className="flex flex-col gap-y-3">
-              <div className="flex flex-wrap">
-                <div className="font-bold min-w-25">회사명</div>
-                <div>넥스트러너스</div>
-              </div>
-              <div className="flex flex-wrap">
-                <div className="font-bold min-w-25">직무</div>
-                <div>웹디자인 </div>
-              </div>
-              <div className="flex flex-wrap">
-                <div className="font-bold min-w-25">근무 기간</div>
-                <div>14.04.09 ~ 24.04.09</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col justify-start pb-2  items-start">
-            <div className="border-b border-gray-300  pb-2  w-full mb-2">
-              <Heading sizeOffset={2} className="font-bold min-w-30">
-                자격증
-              </Heading>
-            </div>
-            <div className="flex flex-col gap-y-3">
-              <div className="flex flex-wrap">
-                <div className="font-bold min-w-25">자격증명</div>
-                <div>웹디자인 기능사</div>
-              </div>
-              <div className="flex flex-wrap">
-                <div className="font-bold min-w-25">발급 기관</div>
-                <div>한국산업인력공단 </div>
-              </div>
-              <div className="flex flex-wrap">
-                <div className="font-bold min-w-25">취득 일자</div>
-                <div>24.04.09</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col justify-start pb-2  items-start">
-            <div className="border-b border-gray-300  pb-2  w-full mb-2">
-              <Heading sizeOffset={2} className="font-bold min-w-30">
-                자기 소개
-              </Heading>
-            </div>
-            <div className="">
-              사용자의 감정을 움직이는 디자인을 만드는 디자이너 김오즈입니다. UI/UX 디자인을
-              중심으로, 브랜드의 메시지를 시각적으로 풀어내는 데 집중해왔으며, 문제 해결 중심의
-              디자인 사고를 바탕으로 프로젝트에 기여합니다.
-            </div>
-          </div>
+          <ResumeSelfIntroductionSection
+            title="자기 소개"
+            content="나이는 숫자일 뿐, 디자인에 대한 열정은 여전히 뜨겁습니다.
+                    저는 시니어 디자이너로서, 경험에서 오는 통찰력과 꾸준한 학습으로 성장하고 있는 김오즈입니다.
+                    UI/UX 디자인을 통해 사용자의 삶에 긍정적인 변화를 만드는 데 집중하고 있습니다.
+                    새로운 기술과 트렌드를 두려워하지 않고, 오히려 즐기며 흡수해 나갑니다.
+                    디자인은 문제를 해결하는 도구이며, 저는 그 중심에서 사용자와 진심으로 소통하는 것을 중요하게 생각합니다.
+                    프로젝트에서는 늘 협업을 우선하며, 서로의 다름을 존중하는 태도로 임하고 있습니다.
+                    Figma, Notion, GitHub 등 협업 툴에도 익숙하며, 개발자와의 원활한 커뮤니케이션을 위해 노력합니다.
+                    끊임없이 배우고, 변화를 받아들이며, 나 자신을 새롭게 리디자인하고자 합니다.
+                    나이는 장점이 될 수 있다는 걸 디자인으로 증명하고 싶습니다.
+                    앞으로도 세대를 넘어 공감할 수 있는 디자인을 만들어가고자 합니다."
+          />
         </div>
       </div>
     </>

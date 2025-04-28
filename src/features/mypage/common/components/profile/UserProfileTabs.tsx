@@ -42,7 +42,7 @@ export default function UserProfileTabs({ resumes }: UserProfileTabsProps) {
       case "resumes":
         return <ResumeList resumes={resumes || []} />;
       case "applied":
-        return <EmptyContent title="지원한 공고 목록" message="아직 지원한 공고가 없습니다." />;
+        return <AppliedJobList jobs={dummyAppliedJobs} />;
       case "saved":
         return (
           <SavedJobList
