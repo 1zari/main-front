@@ -5,7 +5,7 @@ import { Heading } from "@/components/ui/Heading";
 import { Button } from "@/features/mypage/common/components/ui/Button";
 import { Textarea } from "@/features/mypage/common/components/ui/Textarea";
 import { cn } from "@/utils/cn";
-import { Star } from "lucide-react";
+import { Star, BookmarkPlus } from "lucide-react";
 
 export interface AppliedJob {
   id: string;
@@ -47,7 +47,20 @@ export default function AppliedJobList({ jobs }: AppliedJobListProps) {
   };
 
   if (jobs.length === 0) {
-    return <div className="text-center text-gray-500 py-8">아직 지원한 공고가 없습니다.</div>;
+    return (
+      <div className="flex flex-col items-center justify-center py-20">
+        <div className="w-16 h-16 mb-6 text-gray-300">
+          <BookmarkPlus className="w-16 h-16" />
+        </div>
+
+        <p className="text-lg font-semibold text-gray-900 mb-2">지원한 공고가 없습니다</p>
+        <p className="text-gray-500 mb-6">간편 이력서로 지원해 보세요!</p>
+
+        <Button className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90">
+          채용공고 보러가기 →
+        </Button>
+      </div>
+    );
   }
 
   return (
@@ -82,7 +95,7 @@ export default function AppliedJobList({ jobs }: AppliedJobListProps) {
                     <Star
                       className={cn(
                         "w-5 h-5",
-                        isFavorite ? "text-lime-400 fill-lime-400" : "text-gray-300",
+                        isFavorite ? "text-primary fill-primary" : "text-gray-300",
                       )}
                     />
                   </button>
@@ -111,7 +124,7 @@ export default function AppliedJobList({ jobs }: AppliedJobListProps) {
             </div>
 
             {editingId === job.id ? (
-              <div className="bg-white border border-primary rounded-xl px-5 py-4 mt-2">
+              <div className="bg-white rounded-xl px-5 py-4 mt-2">
                 <Textarea
                   className="resize-none min-h-[100px]"
                   value={tempMemo}
