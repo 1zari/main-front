@@ -3,7 +3,7 @@ import { Heading } from "@/components/ui/Heading";
 import ResumeList from "@/features/mypage/common/components/myResume/ResumeList";
 import SavedJobList from "@/features/mypage/common/components/savedRecruit/SavedRecruitList";
 import type { Resume } from "@/types/resume";
-import { DUMMY_JOBS } from "@/features/mypage/common/data/dummy-jobs";
+import { dummySavedJobs } from "@/features/mypage/common/mock/savedJobs";
 import { TABS, TAB_STYLES, type TabType } from "@/features/mypage/common/constants/myPageTab";
 import AppliedJobList from "../applied/AppliedJobList";
 import { dummyAppliedJobs } from "../../mock/appliedJobs";
@@ -15,7 +15,7 @@ interface UserProfileTabsProps {
 export default function UserProfileTabs({ resumes }: UserProfileTabsProps) {
   const [activeTab, setActiveTab] = useState<TabType>("resumes");
   const [currentPage, setCurrentPage] = useState(1);
-  const [SavedRecruit, setSavedRecruit] = useState(DUMMY_JOBS);
+  const [SavedRecruit, setSavedRecruit] = useState(dummySavedJobs);
 
   const handleToggleSave = (jobId: string) => {
     setSavedRecruit((prev) =>
