@@ -23,7 +23,7 @@ export const formatBirthDate = (dateString: string) => {
  * @param deadline - 마감일자 (YYYY-MM-DD 형식)
  * @returns boolean
  */
-export const isDeadlinePassed = (deadline: string): boolean => {
+export const isPrevious = (deadline: string): boolean => {
   return new Date(deadline) < new Date();
 };
 

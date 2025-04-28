@@ -6,7 +6,7 @@ import { JOB_LIST_STYLES } from "@/features/mypage/common/constants/savedJobList
 import JobListHeader from "./JobListHeader";
 import JobListItem from "./JobListItem";
 import Pagination from "./Pagination";
-import EmptyState from "./EmptyState";
+import EmptySavedJobContent from "./EmptySavedJobContent";
 import TableHeader from "./TableHeader";
 
 export default function SavedJobList({
@@ -52,7 +52,7 @@ export default function SavedJobList({
   };
 
   if (jobs.length === 0) {
-    return <EmptyState />;
+    return <EmptySavedJobContent />;
   }
 
   return (

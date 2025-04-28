@@ -2,7 +2,7 @@ import { useRouter } from "next/navigation";
 import { BookmarkPlus, ArrowRight } from "lucide-react";
 import { Heading } from "@/components/ui/Heading";
 
-export default function EmptyState() {
+export default function EmptySavedJobContent() {
   const router = useRouter();
 
   return (

@@ -1,4 +1,4 @@
-import { formatDate, formatSalary, isDeadlinePassed } from "@/utils/format";
+import { formatDate, formatSalary, isPrevious } from "@/utils/format";
 import { Heading } from "@/components/ui/Heading";
 import ScrapBtn from "@/components/ScrapBtn";
 import {
@@ -94,8 +94,8 @@ export default function JobListItem({
           className={`${JOB_LIST_STYLES.table.row.column.base} ${JOB_LIST_STYLES.table.row.column.deadline}`}
         >
           <span className="mr-2 text-gray-500 sm:hidden">마감일</span>
-          <span className={isDeadlinePassed(job.deadline) ? "text-red-500" : "text-gray-900"}>
-            {isDeadlinePassed(job.deadline) ? "마감" : formatDate(job.deadline)}
+          <span className={isPrevious(job.deadline) ? "text-red-500" : "text-gray-900"}>
+            {isPrevious(job.deadline) ? "마감" : formatDate(job.deadline)}
           </span>
         </div>
       </div>
