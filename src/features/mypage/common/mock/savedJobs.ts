@@ -1,6 +1,6 @@
 import type { SavedRecruit } from "@/features/mypage/common/types/savedRecruit.types";
 
-export const DUMMY_JOBS: SavedRecruit[] = [
+export const dummySavedJobs: SavedRecruit[] = [
   {
     job_posting_id: "1",
     companyName: "스타벅스코리아",

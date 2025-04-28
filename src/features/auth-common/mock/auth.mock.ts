@@ -15,7 +15,7 @@ export const MOCK_COMPANY = {
 
 // 마이페이지 > 정보수정용 임시
 export const MOCK_USER1 = {
-  id: "1",
+  id: "123",
   name: "김오즈",
   birth: "1960-03-10",
   email: "kimoz@kakao.com",
@@ -29,7 +29,7 @@ export const MOCK_USER1 = {
 };
 
 export const MOCK_COMPANY1 = {
-  id: "1",
+  id: "123",
   companyName: "시니어내일",
   companyEmail: "company@senior.com",
   startDate: "2010-05-15",
