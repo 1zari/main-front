@@ -11,14 +11,15 @@ const ProfileCardContext = createContext<ProfileCardContextType | undefined>(und
 
 interface ProfileCardProps {
   role: UserRole;
+  userId: string;
   title: string;
   children: React.ReactNode;
 }
 
-function ProfileCard({ role, title, children }: ProfileCardProps) {
+function ProfileCard({ role, userId, title, children }: ProfileCardProps) {
   const router = useRouter();
   const handleEditClick = () => {
-    router.push(`/${role}/mypage/edit`);
+    router.push(`/${role}/mypage/${userId}/edit`);
   };
   const displayTitle = role === "user" ? `${title} 님` : title;
   return (
