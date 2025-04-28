@@ -105,7 +105,14 @@ export default function UserProfile() {
 
   return (
     <div>
-      <ProfileCard role="user" title={name} items={profileItems} />
+      <ProfileCard role="user" title={name}>
+        {profileItems.map((item, idx) => (
+          <ProfileCard.Item key={idx}>
+            <ProfileCard.Label>{item.labels[0]}</ProfileCard.Label>
+            <ProfileCard.Value isDescription={item.isCustom}>{item.value}</ProfileCard.Value>
+          </ProfileCard.Item>
+        ))}
+      </ProfileCard>
       <UserProfileTabs resumes={dummyResumes} />
     </div>
   );

@@ -32,7 +32,14 @@ const CompanyProfile = () => {
 
   return (
     <div>
-      <ProfileCard role="company" title={company_name} items={profileItems} />
+      <ProfileCard role="company" title={company_name}>
+        {profileItems.map((item, idx) => (
+          <ProfileCard.Item key={idx}>
+            <ProfileCard.Label>{item.labels.join(" ")}</ProfileCard.Label>
+            <ProfileCard.Value isDescription={item.isDescription}>{item.value}</ProfileCard.Value>
+          </ProfileCard.Item>
+        ))}
+      </ProfileCard>
     </div>
   );
 };
