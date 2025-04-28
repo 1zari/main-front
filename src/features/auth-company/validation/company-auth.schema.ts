@@ -38,6 +38,10 @@ export const COMPANY_VALIDATION = {
       required: "사업장 주소 입력은 필수입니다.",
       tooLong: "주소는 100자 이하여야 합니다.",
     },
+    detailAddress: {
+      required: "상세주소를 입력해주세요.",
+      tooLong: "상세주소는 100자 이하여야 합니다.",
+    },
     managerName: {
       pattern: /^[가-힣]{2,15}$/,
       message: "한글만 입력해주세요. 2자 이상 15자 이하로 입력 가능합니다.",
@@ -58,24 +62,26 @@ export const COMPANY_VALIDATION = {
   },
 };
 
-// 기업 회원가입
 export const companySignupSchema = z.object({
   companyName: z
     .string()
     .min(COMPANY_VALIDATION.signup.companyName.min, COMPANY_VALIDATION.signup.companyName.required)
     .max(COMPANY_VALIDATION.signup.companyName.max, COMPANY_VALIDATION.signup.companyName.tooLong),
+
   startDate: z
     .string()
     .nonempty(COMPANY_VALIDATION.signup.startDate.required)
     .refine((val) => COMPANY_VALIDATION.signup.startDate.pattern.test(val), {
       message: COMPANY_VALIDATION.signup.startDate.format,
     }),
+
   representativeName: z
     .string()
     .regex(
       COMPANY_VALIDATION.signup.representativeName.pattern,
       COMPANY_VALIDATION.signup.representativeName.message,
     ),
+
   businessNumber: z
     .string()
     .min(10, "사업자등록번호 인증은 필수입니다. 인증을 먼저 진행해주세요.")
@@ -83,6 +89,7 @@ export const companySignupSchema = z.object({
       COMPANY_VALIDATION.businessRegistrationNumber.pattern,
       COMPANY_VALIDATION.businessRegistrationNumber.message,
     ),
+
   companyIntro: z
     .string()
     .min(
@@ -93,16 +100,24 @@ export const companySignupSchema = z.object({
       COMPANY_VALIDATION.signup.companyIntro.max,
       COMPANY_VALIDATION.signup.companyIntro.tooLong,
     ),
+
   companyAddress: z
     .string()
     .min(1, COMPANY_VALIDATION.signup.address.required)
     .max(100, COMPANY_VALIDATION.signup.address.tooLong),
+
+  detailAddress: z
+    .string()
+    .min(1, COMPANY_VALIDATION.signup.detailAddress.required)
+    .max(100, COMPANY_VALIDATION.signup.detailAddress.tooLong),
+
   managerName: z
     .string()
     .regex(
       COMPANY_VALIDATION.signup.managerName.pattern,
       COMPANY_VALIDATION.signup.managerName.message,
     ),
+
   managerPhone: z
     .string()
     .min(11, "전화번호는 필수입니다.")
@@ -110,10 +125,13 @@ export const companySignupSchema = z.object({
       COMPANY_VALIDATION.signup.managerPhone.pattern,
       COMPANY_VALIDATION.signup.managerPhone.message,
     ),
+
   managerEmail: z.string().email(COMPANY_VALIDATION.signup.managerEmail.message),
+
   agreeTerms: z.boolean().refine((val) => val === true, {
     message: "약관에 동의해야 회원가입이 가능합니다.",
   }),
+
   companyLogo: z
     .any()
     .optional()
@@ -127,6 +145,7 @@ export const companySignupSchema = z.object({
         !file || file.length === 0 || file[0]?.size <= COMPANY_VALIDATION.signup.file.maxSize,
       COMPANY_VALIDATION.signup.file.tooBig,
     ),
+
   businessFile: z
     .any()
     .refine((file) => !!file && file.length > 0, "사업자등록증 파일은 필수입니다.")

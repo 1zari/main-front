@@ -11,6 +11,7 @@ import FormTextArea from "@/features/auth-common/components/baseFields/FormTextA
 import FormDatePicker from "@/features/auth-common/components/baseFields/FormDatePicker";
 import FormFileUpload from "@/features/auth-common/components/baseFields/FormFileUpload";
 import CompanyTermsAgreement from "@/features/auth-common/components/terms/CompanyTermsAgreement";
+import FormAddressSearch from "@/features/auth-common/components/baseFields/FormAddressSearch";
 import "react-datepicker/dist/react-datepicker.css";
 
 export type CompanyStepTwoValues = CompanyFormValues;
@@ -30,6 +31,7 @@ export default function SignupStepTwoCompany({ onSubmit }: Props) {
       businessNumber: "",
       companyIntro: "",
       companyAddress: "",
+      detailAddress: "",
       managerName: "",
       managerPhone: "",
       managerEmail: "",
@@ -68,10 +70,6 @@ export default function SignupStepTwoCompany({ onSubmit }: Props) {
     }
   };
 
-  const handleAddressSearch = () => {
-    console.log("주소 검색");
-  };
-
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center space-y-8">
@@ -106,13 +104,12 @@ export default function SignupStepTwoCompany({ onSubmit }: Props) {
             name="companyIntro"
             placeholder="기업의 주요 사업 내용과 특징을 입력해주세요"
           />
-          <FormActionInput<CompanyFormValues>
+          <FormAddressSearch<CompanyFormValues>
             label="사업장 주소"
             name="companyAddress"
-            placeholder="도로명 주소 검색"
-            buttonText="주소 찾기"
-            onButtonClick={handleAddressSearch}
+            detailName="detailAddress"
           />
+
           <FormInput<CompanyFormValues>
             label="담당자 성함"
             name="managerName"
