@@ -3,33 +3,19 @@ import { Heading } from "@/components/ui/Heading";
 import ResumeList from "@/features/mypage/common/components/myResume/ResumeList";
 import SavedJobList from "@/features/mypage/common/components/savedRecruit/SavedRecruitList";
 import type { Resume } from "@/types/resume";
-import { DUMMY_JOBS } from "@/features/mypage/common/data/dummy-jobs";
+import { dummySavedJobs } from "@/features/mypage/common/mock/savedJobs";
 import { TABS, TAB_STYLES, type TabType } from "@/features/mypage/common/constants/myPageTab";
-
-interface EmptyContentProps {
-  title: string;
-  message: string;
-}
-
-const EmptyContent = ({ title, message }: EmptyContentProps) => (
-  <div className="p-6 bg-white border border-gray-100 shadow-lg rounded-xl">
-    <Heading sizeOffset={2} className="mb-4 font-semibold text-gray-800">
-      {title}
-    </Heading>
-    <Heading sizeOffset={2} className="text-gray-500">
-      {message}
-    </Heading>
-  </div>
-);
+import AppliedJobList from "../applied/AppliedJobList";
+import { dummyAppliedJobs } from "../../mock/appliedJobs";
 
 interface UserProfileTabsProps {
-  resumes: Resume[] | null;
+  resumes?: Resume[];
 }
 
 export default function UserProfileTabs({ resumes }: UserProfileTabsProps) {
   const [activeTab, setActiveTab] = useState<TabType>("resumes");
   const [currentPage, setCurrentPage] = useState(1);
-  const [SavedRecruit, setSavedRecruit] = useState(DUMMY_JOBS);
+  const [SavedRecruit, setSavedRecruit] = useState(dummySavedJobs);
 
   const handleToggleSave = (jobId: string) => {
     setSavedRecruit((prev) =>
