@@ -40,7 +40,7 @@ export default function FormAddressSearch<T extends Record<string, unknown>>({
   label = "주소",
   placeholder = "도로명 주소 검색",
 }: Props<T>) {
-  const { control, setValue, formState } = useFormContext<T>();
+  const { control, setValue, clearErrors, formState } = useFormContext<T>();
   const wrapRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [ready, setReady] = useState(false);
@@ -79,7 +79,11 @@ export default function FormAddressSearch<T extends Record<string, unknown>>({
         }
 
         setValue(name, fullAddress as PathValue<T, FieldPath<T>>);
-        if (detailName) setValue(detailName, "" as PathValue<T, FieldPath<T>>);
+        clearErrors(name);
+        if (detailName) {
+          setValue(detailName, "" as PathValue<T, FieldPath<T>>);
+          clearErrors(detailName);
+        }
         setIsOpen(false);
         document.body.scrollTop = currentScroll;
       },
@@ -91,7 +95,7 @@ export default function FormAddressSearch<T extends Record<string, unknown>>({
       width: "100%",
       height: "100%",
     }).embed(wrapRef.current);
-  }, [isOpen, ready, name, detailName, setValue]);
+  }, [isOpen, ready, name, detailName, setValue, clearErrors]);
 
   const handleSearch = () => {
     if (!ready) {
@@ -103,7 +107,8 @@ export default function FormAddressSearch<T extends Record<string, unknown>>({
 
   const handleClose = () => setIsOpen(false);
 
-  const errorMessage = formState.errors[name]?.message;
+  const addressError = formState.errors[name];
+  const detailError = detailName ? formState.errors[detailName] : undefined;
 
   return (
     <div>
@@ -148,13 +153,21 @@ export default function FormAddressSearch<T extends Record<string, unknown>>({
                 value={field.value as string}
                 placeholder="상세주소 입력"
                 className="w-full h-[60px] border border-gray-300 px-4 rounded bg-white placeholder:text-gray-400 focus:outline-none focus:border-2 focus:border-primary"
+                onChange={(e) => {
+                  field.onChange(e);
+                  clearErrors(detailName);
+                }}
               />
             )}
           />
         </div>
       )}
 
-      {errorMessage && <p className="text-red-500 mt-1 ml-2">{String(errorMessage)}</p>}
+      {(addressError || detailError) && (
+        <p className="text-red-500 mt-1 ml-2">
+          {String(addressError?.message || detailError?.message)}
+        </p>
+      )}
 
       {isOpen && (
         <div
