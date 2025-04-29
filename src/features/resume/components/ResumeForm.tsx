@@ -1,5 +1,4 @@
 "use client";
-
 import { useForm, FormProvider, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { resumeSchema, ResumeFormData } from "@/features/resume/validation/resumeSchema";
@@ -9,6 +8,7 @@ import Input from "@/features/resume/components/common/ui/Input";
 import TextArea from "@/features/resume/components/common/ui/TextArea";
 import DatePickerField from "@/features/resume/components/common/ui/DatePicker";
 import CustomSelect from "@/features/resume/components/common/ui/Select";
+import { resumeMockData } from "@/features/resume/mock/resumeMock";
 
 interface ResumeFormProps {
   mode: "create" | "edit";
@@ -26,7 +26,6 @@ const ResumeForm = ({ mode, resumeId }: ResumeFormProps) => {
       name: "",
       phone: "",
       email: "",
-      emailDomain: "@gmail.com",
       schoolType: "",
       schoolName: "",
       graduationStatus: "",
@@ -52,39 +51,17 @@ const ResumeForm = ({ mode, resumeId }: ResumeFormProps) => {
     fields: expFields,
     append: addExperience,
     remove: removeExperience,
-  } = useFieldArray({
-    control,
-    name: "experiences",
-  });
+  } = useFieldArray({ control, name: "experiences" });
 
   const {
     fields: certFields,
     append: addCertification,
     remove: removeCertification,
-  } = useFieldArray({
-    control,
-    name: "certifications",
-  });
+  } = useFieldArray({ control, name: "certifications" });
 
   useEffect(() => {
     if (mode === "edit" && resumeId) {
-      const fetchResume = async () => {
-        const mockData: ResumeFormData = {
-          title: "기존 이력서 제목",
-          name: "홍길동",
-          phone: "010-1234-5678",
-          email: "gildong",
-          emailDomain: "@gmail.com",
-          schoolType: "대학교(4년)",
-          schoolName: "서울대학교",
-          graduationStatus: "졸업",
-          experiences: [],
-          certifications: [],
-          introduction: "자기소개 내용입니다.",
-        };
-        reset(mockData);
-      };
-      fetchResume();
+      reset(resumeMockData);
     }
   }, [mode, resumeId, reset]);
 
@@ -92,9 +69,9 @@ const ResumeForm = ({ mode, resumeId }: ResumeFormProps) => {
     try {
       console.log("폼 제출 데이터:", data);
       if (mode === "create") {
-        // 작성 API 호출
+        // 작성 API 호출 예정
       } else {
-        // 수정 API 호출
+        // 수정 API 호출 예정
       }
       router.push("/resume");
     } catch (error) {
@@ -136,7 +113,7 @@ const ResumeForm = ({ mode, resumeId }: ResumeFormProps) => {
                   { label: "대학교(4년)", value: "대학교(4년)" },
                   { label: "대학원", value: "대학원" },
                 ]}
-                error={errors.schoolType?.message as string}
+                error={errors.schoolType?.message}
               />
               <Input label="학교명" name="schoolName" placeholder="학교명을 입력하세요" />
               <CustomSelect
@@ -152,7 +129,7 @@ const ResumeForm = ({ mode, resumeId }: ResumeFormProps) => {
                   { label: "중퇴", value: "중퇴" },
                   { label: "휴학", value: "휴학" },
                 ]}
-                error={errors.graduationStatus?.message as string}
+                error={errors.graduationStatus?.message}
               />
             </div>
           </section>
@@ -166,35 +143,35 @@ const ResumeForm = ({ mode, resumeId }: ResumeFormProps) => {
                 <button
                   type="button"
                   onClick={() => removeExperience(index)}
-                  className="absolute top-4 right-4 font-semibold text-sm rounded-2xl border border-red-500 pl-2 pr-2 text-red-500"
+                  className="absolute top-4 right-4 font-semibold text-sm rounded-2xl border border-red-500 px-2 text-red-500"
                 >
                   삭제 하기
                 </button>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Input
-                    label="회사명"
                     name={`experiences.${index}.company`}
-                    placeholder="회사명을 입력하세요"
+                    label="회사명"
+                    placeholder="회사명 입력"
                   />
                   <Input
-                    label="직무"
                     name={`experiences.${index}.position`}
-                    placeholder="직무를 입력하세요"
+                    label="직무"
+                    placeholder="직무 입력"
                   />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <DatePickerField
-                    label="근무 시작일"
                     name={`experiences.${index}.startDate`}
+                    label="근무 시작일"
                     placeholder="YYYY-MM-DD"
                   />
                   <DatePickerField
-                    label="근무 종료일"
                     name={`experiences.${index}.endDate`}
+                    label="근무 종료일"
                     placeholder="YYYY-MM-DD"
-                    disabled={methods.watch(`experiences.${index}.isCurrent`)}
+                    disabled={watch(`experiences.${index}.isCurrent`)}
                     className={
-                      methods.watch(`experiences.${index}.isCurrent`)
+                      watch(`experiences.${index}.isCurrent`)
                         ? "bg-gray-100 cursor-not-allowed"
                         : ""
                     }
@@ -210,7 +187,6 @@ const ResumeForm = ({ mode, resumeId }: ResumeFormProps) => {
                 </div>
               </div>
             ))}
-
             <button
               type="button"
               onClick={() =>
@@ -237,30 +213,29 @@ const ResumeForm = ({ mode, resumeId }: ResumeFormProps) => {
                 <button
                   type="button"
                   onClick={() => removeCertification(index)}
-                  className="absolute top-4 right-4 font-semibold rounded-2xl text-sm border border-red-500 pl-2 pr-2 text-red-500 hover:text-red-600"
+                  className="absolute top-4 right-4 font-semibold text-sm border border-red-500 px-2 text-red-500"
                 >
                   삭제 하기
                 </button>
                 <Input
-                  label="자격증명"
                   name={`certifications.${index}.name`}
+                  label="자격증명"
                   placeholder="자격증명을 입력하세요"
                 />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Input
-                    label="발급기관"
                     name={`certifications.${index}.issuer`}
+                    label="발급기관"
                     placeholder="발급기관을 입력하세요"
                   />
                   <DatePickerField
-                    label="취득일자"
                     name={`certifications.${index}.date`}
+                    label="취득일자"
                     placeholder="YYYY-MM-DD"
                   />
                 </div>
               </div>
             ))}
-
             <button
               type="button"
               onClick={() => addCertification({ name: "", issuer: "", date: "" })}
