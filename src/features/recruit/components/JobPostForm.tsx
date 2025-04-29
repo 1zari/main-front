@@ -54,13 +54,7 @@ export default function JobPostForm() {
       <TitleInput register={register} error={errors.title} />
       <SectionTitle title="채용조건" />
 
-      <OccupationInput
-        register={register}
-        // error={Array.isArray(errors.occupation) ? errors.occupation[0] : errors.occupation}
-        error={errors.occupation}
-        setValue={setValue}
-        touched={touchedFields.occupation}
-      />
+      <OccupationInput register={register} error={errors.occupation} setValue={setValue} />
       <EmploymentTypeSelect register={register} error={errors.employmentType} />
       <NumberOfRecruitsInput register={register} error={errors.numberOfRecruits} />
       <CareerRadio register={register} error={errors.career} />
