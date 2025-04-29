@@ -1,6 +1,6 @@
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { recruitFormSchema, RecruitFormSchema } from "../schemas/recruitSchema";
+import { useForm } from "react-hook-form";
+import { recruitFormSchema, RecruitFormSchema } from "../schemas/jobPostSchema";
 
 export function useRecruitForm() {
   return useForm<RecruitFormSchema>({

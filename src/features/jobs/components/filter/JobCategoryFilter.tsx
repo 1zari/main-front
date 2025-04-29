@@ -88,7 +88,7 @@ export default function JobCategoryFilter({ setShowJobs, showJobs }) {
         </div>
       </div>
       <div className="border flex justify-center rounded-md rounded-t-none py-2">
-        <button className="flex items-center " onClick={() => setShowJobs(!showJobs)}>
+        <button type="button" className="flex items-center " onClick={() => setShowJobs(!showJobs)}>
           닫기
           <span className="px-2">
             <FaCaretUp />

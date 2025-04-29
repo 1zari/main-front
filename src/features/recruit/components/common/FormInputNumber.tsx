@@ -1,6 +1,6 @@
 "use client";
 
-import { Controller, Control, UseFormRegister } from "react-hook-form";
+import { Controller, Control, UseFormRegister, FieldValues } from "react-hook-form";
 import { useId } from "react";
 
 // 천 단위 콤마 처리 함수
@@ -13,8 +13,8 @@ const formatWithComma = (value: string | number | undefined) => {
 interface FormNumberInputProps {
   label: string;
   name: string;
-  register: UseFormRegister<any>;
-  control: Control<any>;
+  register: UseFormRegister<FieldValues>;
+  control: Control<FieldValues>;
   unit?: string;
   labelWidth?: string;
   inputWidth?: string;

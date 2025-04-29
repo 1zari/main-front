@@ -12,7 +12,7 @@ export default function ApplyPage() {
   return (
     <>
       <nav className="bg-white text-black sticky top-0 z-10">
-        <ul className="w-full max-w-7xl mx-auto flex flex-wrap justify-between items-center p-4  gap-5">
+        <ul className="w-full max-w-3xl mx-auto flex flex-wrap justify-between items-center p-4  gap-5">
           <li onClick={() => window.history.back()} className="font-bold cursor-pointer">
             <FaChevronLeft className="inline-block mr-2" />
           </li>
