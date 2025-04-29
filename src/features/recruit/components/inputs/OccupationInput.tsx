@@ -7,7 +7,7 @@ import { FieldError, Merge, UseFormRegister, UseFormSetValue } from "react-hook-
 import { FaCaretDown } from "react-icons/fa";
 
 export function OccupationInput({
-  register,
+  // register,
   error,
   setValue,
 }: {
@@ -69,7 +69,6 @@ export function OccupationInput({
           </div>
         ))}
       </div>
-      {/* <input type="hidden" {...register("occupation", { value: checkedJobs })} /> */}
     </FormField>
   );
 }
