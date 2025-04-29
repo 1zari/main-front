@@ -2,12 +2,12 @@ import { FormField } from "@/features/recruit/components/inputs";
 import { JobCategoryCheckboxGroup } from "@/features/recruit/components/inputs/JobCategoryCheckboxGroup";
 import { INPUT_CLASS } from "@/features/recruit/constants/classNames";
 import { JobPostFormValues } from "@/features/recruit/schemas/jobPostSchema";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FieldError, Merge, UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { FaCaretDown } from "react-icons/fa";
 
 export function OccupationInput({
-
+  register,
   error,
   setValue,
 }: {
@@ -19,19 +19,17 @@ export function OccupationInput({
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [checkedJobs, setCheckedJobs] = useState<string[]>([]);
 
-  useEffect(() => {
-    setValue("occupation", selectedFilters);
-  }, [selectedFilters, setValue]);
-
   return (
     <FormField label="직종" error={error as FieldError}>
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        // {...register("occupation")}
         className={`${INPUT_CLASS} text-left flex space-between items-center gap-3 `}
+        onBlur={(e) => {
+          setValue("occupation", checkedJobs, { shouldValidate: true });
+        }}
       >
-        직종 선택하기 {touched ? "접" : "미접"}
+        직종 선택하기
         <span className={`transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}>
           <FaCaretDown />
         </span>
@@ -44,7 +42,10 @@ export function OccupationInput({
           selectedFilters={selectedFilters}
           setSelectedFilters={setSelectedFilters}
           checkedJobs={checkedJobs}
-          setCheckedJobs={setCheckedJobs}
+          setCheckedJobs={(jobs) => {
+            setValue("occupation", jobs, { shouldValidate: true });
+            setCheckedJobs(jobs);
+          }}
         />
       )}
 
@@ -68,6 +69,7 @@ export function OccupationInput({
           </div>
         ))}
       </div>
+      {/* <input type="hidden" {...register("occupation", { value: checkedJobs })} /> */}
     </FormField>
   );
 }
