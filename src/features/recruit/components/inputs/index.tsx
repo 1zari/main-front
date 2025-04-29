@@ -1,12 +1,34 @@
+import { Heading } from "@/components/ui/Heading";
 import { FieldError, FieldErrors, UseFormRegister } from "react-hook-form";
+import {
+  ERROR_TEXT_CLASS,
+  FIELD_WRAPPER_CLASS,
+  INPUT_CLASS,
+  LABEL_CLASS,
+  RADIO_CHECKBOX_CLASS,
+} from "../../constants/classNames";
 import { JobPostFormValues } from "../../schemas/jobPostSchema";
 
-function FormField({ children }: { children: React.ReactNode }) {
-  return <div className="flex flex-col gap-1">{children}</div>;
+type FormFieldProps = {
+  label: string;
+  children: React.ReactNode;
+  error?: FieldError;
+};
+
+export function FormField({ label, children, error }: FormFieldProps) {
+  return (
+    <div className={FIELD_WRAPPER_CLASS}>
+      <label className={LABEL_CLASS}>{label}</label>
+      <div className="relative flex flex-col w-full">
+        {children}
+        {error && <ErrorMessage error={error} />}
+      </div>
+    </div>
+  );
 }
 
 function ErrorMessage({ error }: { error?: FieldError }) {
-  return error ? <p className="text-red-500 text-sm">{error.message}</p> : null;
+  return error ? <p className={ERROR_TEXT_CLASS}>{error.message}</p> : null;
 }
 
 export function TitleInput({
@@ -17,26 +39,12 @@ export function TitleInput({
   error?: FieldError;
 }) {
   return (
-    <FormField>
-      <label>공고 제목</label>
-      <input {...register("title")} placeholder="공고 제목" className="input border rounded p-2" />
-      <ErrorMessage error={error} />
-    </FormField>
-  );
-}
-
-export function OccupationInput({
-  register,
-  error,
-}: {
-  register: UseFormRegister<JobPostFormValues>;
-  error?: FieldError;
-}) {
-  return (
-    <FormField>
-      <label>직종</label>
-      <input {...register("occupation")} placeholder="직종" className="input border rounded p-2" />
-      <ErrorMessage error={error} />
+    <FormField label="공고 제목" error={error}>
+      <input
+        {...register("title")}
+        placeholder="50자 이내로 입력해주세요."
+        className={INPUT_CLASS}
+      />
     </FormField>
   );
 }
@@ -49,13 +57,20 @@ export function EmploymentTypeSelect({
   error?: FieldError;
 }) {
   return (
-    <FormField>
-      <label>고용형태</label>
-      <select {...register("employmentType")} className="input border rounded p-2">
-        <option value="정규직">정규직</option>
-        <option value="계약직">계약직</option>
-      </select>
-      <ErrorMessage error={error} />
+    <FormField label="고용형태" error={error}>
+      <div className="flex gap-2">
+        {["정규직", "계약직"].map((option) => (
+          <label key={option} className="cursor-pointer">
+            <input
+              type="radio"
+              value={option}
+              {...register("employmentType")}
+              className="hidden peer"
+            />
+            <div className={RADIO_CHECKBOX_CLASS}>{option}</div>
+          </label>
+        ))}
+      </div>
     </FormField>
   );
 }
@@ -68,17 +83,14 @@ export function NumberOfRecruitsInput({
   error?: FieldError;
 }) {
   return (
-    <FormField>
-      <div className="flex gap-3 flex-col items-start md:flex-row md:items-center flex-wrap">
-        <label className="w-min-4 font-bold">모집인원</label>
-        <input
-          type="number"
-          {...register("numberOfRecruits", { valueAsNumber: true })}
-          placeholder="모집 인원"
-          className="input border rounded p-2"
-        />
-        <ErrorMessage error={error} />
-      </div>
+    <FormField label="모집인원" error={error}>
+      <input
+        type="number"
+        {...register("numberOfRecruits", { valueAsNumber: true })}
+        placeholder="예시) 00"
+        className={`relative ${INPUT_CLASS} [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none`}
+      />
+      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">명</span>
     </FormField>
   );
 }
@@ -91,17 +103,15 @@ export function CareerRadio({
   error?: FieldError;
 }) {
   return (
-    <FormField>
-      <label>경력여부</label>
-      <div className="flex gap-4">
-        <label>
-          <input type="radio" value="경력무관" {...register("career")} /> 경력무관
-        </label>
-        <label>
-          <input type="radio" value="경력" {...register("career")} /> 경력
-        </label>
+    <FormField label="경력여부" error={error}>
+      <div className="flex gap-2">
+        {["경력", "경력무관"].map((option) => (
+          <label key={option} className="cursor-pointer">
+            <input type="radio" value={option} {...register("career")} className="hidden peer" />
+            <div className={RADIO_CHECKBOX_CLASS}>{option}</div>
+          </label>
+        ))}
       </div>
-      <ErrorMessage error={error} />
     </FormField>
   );
 }
@@ -114,20 +124,15 @@ export function EducationRadio({
   error?: FieldError;
 }) {
   return (
-    <FormField>
-      <label>학력</label>
-      <div className="flex gap-4">
-        <label>
-          <input type="radio" value="고졸" {...register("education")} /> 고졸
-        </label>
-        <label>
-          <input type="radio" value="대졸" {...register("education")} /> 대졸
-        </label>
-        <label>
-          <input type="radio" value="학력무관" {...register("education")} /> 학력무관
-        </label>
+    <FormField label="학력" error={error}>
+      <div className="flex gap-2">
+        {["고졸", "대졸", "학력무관"].map((option) => (
+          <label key={option} className="cursor-pointer">
+            <input type="radio" value={option} {...register("education")} className="hidden peer" />
+            <div className={RADIO_CHECKBOX_CLASS}>{option}</div>
+          </label>
+        ))}
       </div>
-      <ErrorMessage error={error} />
     </FormField>
   );
 }
@@ -140,10 +145,8 @@ export function LocationInput({
   error?: FieldError;
 }) {
   return (
-    <FormField>
-      <label>근무지</label>
-      <input {...register("location")} placeholder="근무지" className="input border rounded p-2" />
-      <ErrorMessage error={error} />
+    <FormField label="근무지" error={error}>
+      <input {...register("location")} placeholder="근무지" className={INPUT_CLASS} />
     </FormField>
   );
 }
@@ -156,10 +159,8 @@ export function DeadlineInput({
   error?: FieldError;
 }) {
   return (
-    <FormField>
-      <label>공고 마감일</label>
-      <input type="date" {...register("deadline")} className="input border rounded p-2" />
-      <ErrorMessage error={error} />
+    <FormField label="공고 마감일" error={error}>
+      <input type="date" {...register("deadline")} className={`w-full ${INPUT_CLASS}`} />
     </FormField>
   );
 }
@@ -172,15 +173,32 @@ export function SalaryInput({
   error?: FieldError;
 }) {
   return (
-    <FormField>
-      <label>급여</label>
-      <input
-        type="number"
-        {...register("salary", { valueAsNumber: true })}
-        placeholder="급여"
-        className="input border rounded p-2"
-      />
-      <ErrorMessage error={error} />
+    <FormField label="급여" error={error}>
+      <div className="flex gap-2 w-full">
+        <select {...register("salaryType")} className="border rounded p-2">
+          <option value="일급">일급</option>
+          <option value="월급">월급</option>
+          <option value="연봉">연봉</option>
+        </select>
+        <div className="relative w-full">
+          <input
+            type="text"
+            {...register("salary", {
+              valueAsNumber: true,
+              setValueAs: (v) => (v === "" ? undefined : Number(String(v).replace(/,/g, ""))),
+            })}
+            placeholder="급여"
+            className={`w-full ${INPUT_CLASS} [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none`}
+            onBlur={(e) => {
+              const value = e.target.value.replace(/,/g, "");
+              if (!isNaN(Number(value))) {
+                e.target.value = Number(value).toLocaleString();
+              }
+            }}
+          />
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">원</span>
+        </div>
+      </div>
     </FormField>
   );
 }
@@ -193,15 +211,27 @@ export function WorkingDaysCheckbox({
   error?: FieldError | FieldError[] | undefined;
 }) {
   return (
-    <FormField>
-      <label>근무요일</label>
+    <FormField label="근무요일" error={error}>
       <div className="flex gap-2 flex-wrap">
-        {["월", "화", "수", "목", "금", "토", "일"].map((day) => (
+        {["월", "화", "수", "목", "금", "토", "일", "요일협의"].map((day) => (
           <label key={day}>
-            <input type="checkbox" value={day} {...register("workingDays")} /> {day}
+            <input
+              type="checkbox"
+              value={day}
+              {...register("workingDays")}
+              className="hidden peer"
+            />
+            <div
+              className={`flex items-center justify-center border-2 rounded peer-checked:bg-white peer-checked:border-primary text-gray-700 peer-checked:text-primary ${
+                day === "요일협의" ? "h-10 px-4" : "w-10 h-10"
+              }`}
+            >
+              {day}
+            </div>
           </label>
         ))}
       </div>
+
       {error && (
         <p className="text-red-500 text-sm">
           {Array.isArray(error) ? error[0]?.message : error.message}
@@ -219,17 +249,33 @@ export function WorkingHoursInput({
   error?: FieldErrors<JobPostFormValues["workingHours"]>;
 }) {
   return (
-    <FormField>
-      <label>근무시간</label>
-      <div className="flex items-center gap-2">
-        <label>시작 시간</label>
-        <input type="time" {...register("workingHours.start")} />
-        {error?.start && <p className="text-red-500 text-sm">{error.start.message}</p>}
-
-        <label>종료 시간</label>
-        <input type="time" {...register("workingHours.end")} />
-        {error?.end && <p className="text-red-500 text-sm">{error.end.message}</p>}
+    <FormField label="근무시간" error={error}>
+      <div className="flex flex-wrap items-center gap-3">
+        {/* <label>시작 시간</label> */}
+        <div className="flex gap-1 items-center">
+          <input
+            type="time"
+            {...register("workingHours.start")}
+            className={`${INPUT_CLASS} min-w-[150px]`}
+          />
+          {error?.start && <p className="text-red-500 text-sm">{error.start.message}</p>}
+          <span>~</span>
+          {/* <label>종료 시간</label> */}
+          <input
+            type="time"
+            {...register("workingHours.end")}
+            className={`${INPUT_CLASS} min-w-[150px]`}
+          />
+        </div>
+        <label>
+          <input type="checkbox" value="시간협의" className="hidden peer" />
+          <div className="h-10 px-4 flex items-center justify-center border-2 rounded peer-checked:bg-white peer-checked:border-primary text-gray-700 peer-checked:text-primary">
+            시간 협의
+          </div>
+        </label>
       </div>
+
+      {error?.end && <p className="text-red-500 text-sm">{error.end.message}</p>}
     </FormField>
   );
 }
@@ -242,14 +288,8 @@ export function JobSummaryInput({
   error?: FieldError;
 }) {
   return (
-    <FormField>
-      <label>근무요약</label>
-      <input
-        {...register("jobSummary")}
-        placeholder="50자 이내 입력"
-        className="input border rounded p-2"
-      />
-      <ErrorMessage error={error} />
+    <FormField label="근무요약" error={error}>
+      <input {...register("jobSummary")} placeholder="50자 이내 입력" className={INPUT_CLASS} />
     </FormField>
   );
 }
@@ -262,31 +302,21 @@ export function JobDescriptionInput({
   error?: FieldError;
 }) {
   return (
-    <FormField>
-      <label>상세요강</label>
+    <FormField label="상세요강" error={error}>
       <textarea
         {...register("jobDescription")}
         placeholder="상세요강 입력"
-        className="input border rounded p-2 min-h-[150px]"
+        rows={5}
+        className={INPUT_CLASS}
       />
-      <ErrorMessage error={error} />
     </FormField>
   );
 }
 
-export function AgreeTermsCheckbox({
-  register,
-  error,
-}: {
-  register: UseFormRegister<JobPostFormValues>;
-  error?: FieldError;
-}) {
+export function SectionTitle({ title }: { title: string }) {
   return (
-    <FormField>
-      <label>
-        <input type="checkbox" {...register("agreeTerms")} /> 이용약관에 동의합니다.
-      </label>
-      <ErrorMessage error={error} />
-    </FormField>
+    <div className="text-primary font-bold mt-3">
+      <Heading sizeOffset={3}>{title}</Heading>
+    </div>
   );
 }

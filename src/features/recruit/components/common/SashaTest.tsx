@@ -1,7 +1,7 @@
 export default function SashaTest() {
   return (
     <div className="max-w-2xl mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">채용공고 등록</h2>
+      <h2 className="text-2xl font-bold mb-4 ">채용공고 등록</h2>
       <div className="space-y-4">
         <input className="w-full border p-2 rounded" placeholder="공고 제목 (50자 이내)" />
         <input className="w-full border p-2 rounded" placeholder="직종 (예: 서비스, 고객상담)" />
