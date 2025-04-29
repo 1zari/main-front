@@ -5,7 +5,6 @@ export const resumeSchema = z.object({
   name: z.string().min(1, "이름을 입력해주세요."),
   phone: z.string().regex(/^010-\d{4}-\d{4}$/, "010-1234-5678 형식으로 입력해주세요."),
   email: z.string().min(1, "이메일을 입력해주세요."),
-  emailDomain: z.string().min(1, "이메일 도메인을 선택해주세요."),
   schoolType: z.string().min(1, "학교 구분을 선택해주세요."),
   schoolName: z.string().min(1, "학교명을 입력해주세요."),
   graduationStatus: z.string().min(1, "졸업 상태를 선택해주세요."),
