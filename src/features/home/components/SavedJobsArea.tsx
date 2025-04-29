@@ -1,7 +1,7 @@
 import { FaChevronRight } from "react-icons/fa";
 import JobCard from "./JobCard";
 
-export default function SavedJobsArea() {
+export default function SavedJobsArea({ className }: { className?: string }) {
   function MoreButton() {
     return (
       <button className="flex items-center gap-2 text-lg text-primary">
@@ -11,7 +11,7 @@ export default function SavedJobsArea() {
     );
   }
   return (
-    <>
+    <div className={className}>
       <div className="sticky top-0  z-999  bg-white">
         <div className="w-full max-w-7xl px-4 flex justify-between items-center py-6 mb-4 mx-auto">
           <h2 className="text-2xl font-semibold">인기 있는 공고</h2>
@@ -23,6 +23,6 @@ export default function SavedJobsArea() {
           <JobCard />
         </div>
       </section>
-    </>
+    </div>
   );
 }

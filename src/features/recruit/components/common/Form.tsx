@@ -1,30 +1,27 @@
 "use client";
 
-import { useEffect } from "react";
-
-import { useForm, FormProvider } from "react-hook-form";
 import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { recruitFormSchema, RecruitFormSchema } from "../schemas/recruitSchema";
-import FormInput from "./common/FormInput";
-import FormSelect from "./common/FormSelect";
-import DeleteModal from "./DelModal";
-import SubmitButton from "./SubmitButton";
-import FormNumberInput from "./common/FormInputNumber";
-import Agreement from "./TermsAgreementField";
-import WorkTime from "./WorkTime";
-import CheckDays from "./CheckWorkDay";
-import TextArea from "./common/TextArea";
-import Deadline from "./DeadlineDatePicker";
+import { FormProvider } from "react-hook-form";
+import { useRecruitForm } from "../../hooks/useRecruitForm";
+import { RecruitFormSchema } from "../../schemas/jobPostSchema";
 import SelectJobs from "./JobCategories";
-import { useRecruitForm } from "../hooks/useRecruitForm";
+import SubmitButton from "./SubmitButton";
+import Agreement from "./TermsAgreementField";
+import CheckDays from "./CheckWorkDay";
+import Deadline from "./DeadlineDatePicker";
+import DeleteModal from "./DelModal";
+import FormInput from "./FormInput";
+import FormNumberInput from "./FormInputNumber";
+import FormSelect from "./FormSelect";
+import TextArea from "./TextArea";
+import WorkTime from "./WorkTime";
 
 interface RecruitFormProps {
   mode: "new" | "edit";
-  jobPostingId?: string;
+  jobPostingId: string;
 }
 
-const RecruitForm = ({ mode, jobPostingId }: RecruitFormProps) => {
+const RecruitForm = ({ mode }: RecruitFormProps) => {
   const [showDelModal, setShowDelModal] = useState(false);
 
   const methods = useRecruitForm();

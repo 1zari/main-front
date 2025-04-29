@@ -1,17 +1,17 @@
 "use client";
 
-import { UseFormRegister } from "react-hook-form";
+import { FieldValues, UseFormRegister } from "react-hook-form";
 
 interface FormInputProps {
   label: string;
   name: string;
-  register: UseFormRegister<any>;
+  register: UseFormRegister<FieldValues>;
   required?: boolean;
   width?: string;
   inputWidth?: string;
   ml?: string;
   labelWidth?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 const FormInput = ({
@@ -19,7 +19,6 @@ const FormInput = ({
   name,
   register,
   required,
-  error,
   width = "",
   inputWidth = "",
   labelWidth = "w-16",

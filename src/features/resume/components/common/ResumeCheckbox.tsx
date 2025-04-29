@@ -1,12 +1,12 @@
 // common/ResumeCheckbox.tsx
 
-import { UseFormRegister } from "react-hook-form";
+import { FieldValues, UseFormRegister } from "react-hook-form";
 
 interface ResumeCheckboxProps {
   label: string;
   name: string;
-  register: UseFormRegister<any>;
-  [x: string]: any;
+  register: UseFormRegister<FieldValues>;
+  [x: string]: unknown;
 }
 
 const ResumeCheckbox = ({ label, name, register, ...rest }: ResumeCheckboxProps) => (

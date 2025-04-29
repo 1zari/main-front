@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-export default function LandingReview() {
+export default function LandingReview({ className }: { className?: string }) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scrollLeft = () => {
@@ -67,7 +67,7 @@ export default function LandingReview() {
   ];
 
   return (
-    <>
+    <div className={className}>
       <section className="w-full max-w-7xl  mx-auto my-8 px-4">
         <div className="flex flex-col mb-6 items-center">
           <h2 className="text-2xl font-semibold py-6">생생한 후기가 있어요 🙂</h2>
@@ -108,6 +108,6 @@ export default function LandingReview() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }
