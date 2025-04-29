@@ -102,7 +102,11 @@ export function JobCategoryCheckboxGroup({
           </div>
         </div>
         <div className="border flex justify-center rounded-md rounded-t-none py-2">
-          <button type="button" className="flex items-center" onClick={() => setIsOpen(!isOpen)}>
+          <button
+            type="button"
+            className="flex items-center text-center"
+            onClick={() => setIsOpen(!isOpen)}
+          >
             닫기
             <span className="px-2">
               <FaCaretUp />

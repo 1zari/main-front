@@ -1,43 +1,41 @@
 import { AgreeTermsCheckbox } from "@/features/recruit/components/inputs/AgreeTermsCheckbox";
+import { CareerRadio } from "@/features/recruit/components/inputs/CareerRadio";
+import { DeadlineInput } from "@/features/recruit/components/inputs/DeadlineInput";
+import { EducationRadio } from "@/features/recruit/components/inputs/EducationRadio";
+import { EmploymentTypeSelect } from "@/features/recruit/components/inputs/EmploymentTypeSelect";
+import { JobDescriptionInput } from "@/features/recruit/components/inputs/JobDescriptionInput";
+import { JobLocationInput } from "@/features/recruit/components/inputs/JobLocationInput";
+import { JobSummaryInput } from "@/features/recruit/components/inputs/JobSummaryInput";
+import { NumberOfRecruitsInput } from "@/features/recruit/components/inputs/NumberOfRecruitsInput";
 import { OccupationInput } from "@/features/recruit/components/inputs/OccupationInput";
+import { SalaryInput } from "@/features/recruit/components/inputs/SalaryInput";
+import { TitleInput } from "@/features/recruit/components/inputs/TitleInput";
+import { WorkingDaysCheckbox } from "@/features/recruit/components/inputs/WorkingDaysCheckbox";
+import { WorkingHoursInput } from "@/features/recruit/components/inputs/WorkingHoursInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { undefined } from "zod";
 import { JobPostFormValues, jobPostSchema } from "../schemas/jobPostSchema";
-import {
-  CareerRadio,
-  DeadlineInput,
-  EducationRadio,
-  EmploymentTypeSelect,
-  JobDescriptionInput,
-  JobSummaryInput,
-  LocationInput,
-  NumberOfRecruitsInput,
-  SalaryInput,
-  SectionTitle,
-  TitleInput,
-  WorkingDaysCheckbox,
-  WorkingHoursInput,
-} from "./inputs";
+import { SectionTitle } from "./inputs";
 
 export default function JobPostForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    setValue,
+    watch,
+    formState: { errors, touchedFields },
   } = useForm<JobPostFormValues>({
     resolver: zodResolver(jobPostSchema),
+    mode: "onTouched",
     defaultValues: {
       title: "",
-      occupation: "",
-      employmentType: "정규직",
-      numberOfRecruits: null,
-      career: "경력무관",
-      education: "학력무관",
+      occupation: [],
       location: "",
+      locationDetail: "",
       deadline: "",
-      salary: null,
       workingDays: [],
-      workingHours: { start: "09:00", end: "16:00" },
+      workingHours: { start: "", end: "" },
       jobSummary: "",
       jobDescription: "",
       agreeTerms: false,
@@ -56,12 +54,26 @@ export default function JobPostForm() {
       <TitleInput register={register} error={errors.title} />
       <SectionTitle title="채용조건" />
 
-      <OccupationInput register={register} error={errors.occupation} />
+      <OccupationInput
+        register={register}
+        // error={Array.isArray(errors.occupation) ? errors.occupation[0] : errors.occupation}
+        error={errors.occupation}
+        setValue={setValue}
+        touched={touchedFields.occupation}
+      />
       <EmploymentTypeSelect register={register} error={errors.employmentType} />
       <NumberOfRecruitsInput register={register} error={errors.numberOfRecruits} />
       <CareerRadio register={register} error={errors.career} />
       <EducationRadio register={register} error={errors.education} />
-      <LocationInput register={register} error={errors.location} />
+      <JobLocationInput
+        register={register}
+        error={{
+          location: errors.location,
+          locationDetail: errors.locationDetail,
+        }}
+        setValue={setValue}
+        watch={watch}
+      />
       <DeadlineInput register={register} error={errors.deadline} />
       <SectionTitle title="근무조건" />
 
