@@ -51,11 +51,11 @@ export default function LoginBaseForm({
   };
 
   const handleLogin = async (data: LoginFormValues) => {
-    const result = await signIn("credentials", {
+    const providerId = role === "user" ? "user-credentials" : "company-credentials";
+    const result = await signIn(providerId, {
       redirect: false,
       email: data.email,
       password: data.password,
-      role: role === "user" ? "user" : "company",
     });
 
     if (result?.ok) {
