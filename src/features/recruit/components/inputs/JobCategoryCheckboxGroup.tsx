@@ -22,11 +22,11 @@ export function JobCategoryCheckboxGroup({
   const [selectedCategory, setSelectedCategory] = useState("외식·음료");
 
   const addSelectedFilter = (item: string) => {
-    setSelectedFilters((prev) => [...prev, item]);
+    setSelectedFilters([...selectedFilters, item]);
   };
 
   const removeSelectedFilter = (item: string) => {
-    setSelectedFilters((prev) => prev.filter((filter) => filter !== item));
+    setSelectedFilters(selectedFilters.filter((filter) => filter !== item));
   };
 
   const toggleCheck = (item: string) => {

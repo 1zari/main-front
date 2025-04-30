@@ -86,7 +86,7 @@ export default function JobPostForm() {
         type="submit"
         className="mt-6 h-12 bg-primary hover:bg-green-700 text-white font-bold py-2 rounded"
       >
-        등록하기
+        등록하기 || 수정하기
       </button>
     </form>
   );
