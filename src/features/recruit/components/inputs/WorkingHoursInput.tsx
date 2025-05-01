@@ -8,16 +8,20 @@ export function WorkingHoursInput({
   error,
 }: {
   register: UseFormRegister<JobPostFormValues>;
-  error?: FieldErrors<JobPostFormValues["workingHours"]>;
+  error?: {
+    workingHourStart?: FieldErrors;
+    workingHourEnd?: FieldErrors;
+    workingHourNegotiable?: FieldErrors;
+  };
 }) {
   return (
-    <FormField label="근무시간" error={error}>
+    <FormField label="근무시간">
       <div className="flex flex-wrap items-center gap-3">
         {/* <label>시작 시간</label> */}
         <div className="flex gap-1 items-center">
           <input
             type="time"
-            {...register("workingHours.start")}
+            {...register("workingHourStart")}
             className={`${INPUT_CLASS} min-w-[150px]`}
           />
 
@@ -25,14 +29,14 @@ export function WorkingHoursInput({
           {/* <label>종료 시간</label> */}
           <input
             type="time"
-            {...register("workingHours.end")}
+            {...register("workingHourEnd")}
             className={`${INPUT_CLASS} min-w-[150px]`}
           />
         </div>
         <label>
           <input
             type="checkbox"
-            {...register("workingHours.negotiable")}
+            {...register("workingHourNegotiable")}
             value="시간협의"
             className="hidden peer"
           />
@@ -42,7 +46,17 @@ export function WorkingHoursInput({
         </label>
       </div>
 
-      {error?.start && <p className="text-red-500 text-sm">{error.start.message}</p>}
+      {error?.workingHourStart?.message && (
+        <p className="text-red-500 text-sm">{String(error.workingHourStart.message)}</p>
+      )}
+
+      {error?.workingHourEnd?.message && (
+        <p className="text-red-500 text-sm">{String(error.workingHourEnd.message)}</p>
+      )}
+
+      {error?.workingHourNegotiable?.message && (
+        <p className="text-red-500 text-sm">{String(error.workingHourNegotiable.message)}</p>
+      )}
     </FormField>
   );
 }

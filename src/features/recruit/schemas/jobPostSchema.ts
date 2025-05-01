@@ -15,9 +15,8 @@ export const jobPostSchema = z.object({
   education: z
     .union([z.enum(["고졸", "대졸", "학력무관"]), z.null()])
     .refine((val) => val !== null, { message: "학력을 선택해주세요." }),
-  location: z.string().min(1, "주소 검색을 눌러주세요."),
-  locationDetail: z.string().trim().min(1, "상세주소를 입력해주세요."),
-  // z.string().trim().min(1, "상세주소를 입력해주세요."),
+  location: z.string().min(1, "주소를 입력해주세요."),
+  locationDetail: z.string().min(1, "상세주소를 입력해주세요."),
   deadline: z.string(),
   salary: z.number({ invalid_type_error: "급여를 숫자로 입력해주세요." }),
   workingDays: z.array(z.enum(["월", "화", "수", "목", "금", "토", "일", "요일협의"])),
@@ -36,6 +35,10 @@ export const jobPostSchema = z.object({
         path: ["start"],
       },
     ),
+  workingHourStart: z.string().min(1, "시작 시간을 입력해주세요."),
+  workingHourEnd: z.string().min(1, "종료 시간을 입력해주세요."),
+  workingHourNegotiable: z.boolean().optional(),
+
   jobSummary: z.string().max(50),
   jobDescription: z.string(),
   agreeTerms: z.boolean().refine((v) => v === true, { message: "이용약관에 동의해야 합니다." }),

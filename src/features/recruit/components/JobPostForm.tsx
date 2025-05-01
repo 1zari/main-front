@@ -14,7 +14,6 @@ import { WorkingDaysCheckbox } from "@/features/recruit/components/inputs/Workin
 import { WorkingHoursInput } from "@/features/recruit/components/inputs/WorkingHoursInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { undefined } from "zod";
 import { JobPostFormValues, jobPostSchema } from "../schemas/jobPostSchema";
 import { SectionTitle } from "./inputs";
 
@@ -32,7 +31,7 @@ export default function JobPostForm() {
       title: "",
       occupation: [],
       location: "",
-      locationDetail: "",
+      locationDetail: "ㅁㅁㅁ",
       deadline: "",
       workingDays: [],
       workingHours: { start: "", end: "" },
@@ -74,7 +73,12 @@ export default function JobPostForm() {
       <SalaryInput register={register} error={errors.salary} />
       <WorkingDaysCheckbox
         register={register}
-        error={Array.isArray(errors.workingDays) ? errors.workingDays : undefined}
+        // error={Array.isArray(errors.workingDays) ? errors.workingDays : undefined}
+        error={{
+          workingHourStart: errors.workingHourStart,
+          workingHourEnd: errors.workingHourEnd,
+          workingHourNegotiable: errors.workingHourNegotiable,
+        }}
       />
 
       <WorkingHoursInput register={register} error={errors.workingHours} />

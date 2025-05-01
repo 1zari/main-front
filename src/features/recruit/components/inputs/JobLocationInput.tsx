@@ -3,7 +3,7 @@
 import { FormField } from "@/features/recruit/components/inputs";
 import { INPUT_CLASS } from "@/features/recruit/constants/classNames";
 import { JobPostFormValues } from "@/features/recruit/schemas/jobPostSchema";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { FieldError, UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
 
 declare global {
@@ -26,8 +26,6 @@ export function JobLocationInput({
     locationDetail?: FieldError;
   };
 }) {
-  const detailAddressRef = useRef<HTMLInputElement>(null); // 상세주소 인풋 ref 추가
-
   const location = watch("location");
 
   useEffect(() => {
@@ -60,7 +58,6 @@ export function JobLocationInput({
         oncomplete: function (data: any) {
           setValue("location", data.address);
           document.body.removeChild(elementLayer);
-          detailAddressRef.current?.focus();
         },
         width: "100%",
         height: "100%",
@@ -69,7 +66,6 @@ export function JobLocationInput({
       new window.daum.Postcode({
         oncomplete: function (data: any) {
           setValue("location", data.address);
-          detailAddressRef.current?.focus();
         },
         width: "100%",
         height: "100%",
@@ -86,6 +82,7 @@ export function JobLocationInput({
             placeholder="주소를 검색하세요"
             readOnly
             className={`${INPUT_CLASS} flex-1`}
+            onClick={handleSearchAddress}
           />
           <button
             type="button"
@@ -100,7 +97,6 @@ export function JobLocationInput({
         <FormField label="상세 주소" error={error?.locationDetail}>
           <input
             {...register("locationDetail")}
-            ref={detailAddressRef}
             placeholder="상세 주소를 입력하세요"
             className={INPUT_CLASS}
           />
