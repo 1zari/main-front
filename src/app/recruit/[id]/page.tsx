@@ -1,6 +1,5 @@
 "use client";
 
-import BackButton from "@/features/resume/components/common/BackButton";
 import RecruitForm from "../../../features/recruit/components/common/Form";
 const RecruitEditPage = async ({ params }: { params: { id: string } }) => {
   const jobPostingId = params.id;
@@ -9,8 +8,7 @@ const RecruitEditPage = async ({ params }: { params: { id: string } }) => {
 
   return (
     <div className="max-w-3xl px-4 py-8 mx-auto">
-      <BackButton />
-      <h1 className="text-2xl font-bold text-[#0F8C3B] mb-6">채용공고 수정</h1>
+      <h1 className="text-2xl font-bold text-[#0F8C3B] mb-6">채용공고 수정aa</h1>
       <RecruitForm mode="edit" jobPostingId={jobPostingId} />
     </div>
   );
