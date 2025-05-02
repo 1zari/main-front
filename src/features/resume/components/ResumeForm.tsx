@@ -3,25 +3,24 @@ import { useForm, FormProvider, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { resumeSchema, ResumeFormData } from "@/features/resume/validation/resumeSchema";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import Input from "@/features/resume/components/common/ui/Input";
 import TextArea from "@/features/resume/components/common/ui/TextArea";
 import DatePickerField from "@/features/resume/components/common/ui/DatePicker";
 import CustomSelect from "@/features/resume/components/common/ui/Select";
-import { resumeMockData } from "@/features/resume/mock/resumeMock";
 
 interface ResumeFormProps {
   mode: "create" | "edit";
   resumeId?: string;
+  defaultValues?: ResumeFormData;
 }
 
-const ResumeForm = ({ mode, resumeId }: ResumeFormProps) => {
+const ResumeForm = ({ mode, defaultValues }: ResumeFormProps) => {
   const router = useRouter();
 
   const methods = useForm<ResumeFormData>({
     resolver: zodResolver(resumeSchema),
     mode: "onBlur",
-    defaultValues: {
+    defaultValues: defaultValues ?? {
       title: "",
       name: "",
       phone: "",
@@ -38,7 +37,6 @@ const ResumeForm = ({ mode, resumeId }: ResumeFormProps) => {
   const {
     control,
     handleSubmit,
-    reset,
     watch,
     setValue,
     formState: { isSubmitting, errors },
@@ -58,12 +56,6 @@ const ResumeForm = ({ mode, resumeId }: ResumeFormProps) => {
     append: addCertification,
     remove: removeCertification,
   } = useFieldArray({ control, name: "certifications" });
-
-  useEffect(() => {
-    if (mode === "edit" && resumeId) {
-      reset(resumeMockData);
-    }
-  }, [mode, resumeId, reset]);
 
   const onSubmit = async (data: ResumeFormData) => {
     try {
@@ -143,7 +135,7 @@ const ResumeForm = ({ mode, resumeId }: ResumeFormProps) => {
                 <button
                   type="button"
                   onClick={() => removeExperience(index)}
-                  className="absolute top-4 right-4 font-semibold text-sm rounded-2xl border border-red-500 px-2 text-red-500"
+                  className="bg-white absolute top-4 right-4 font-semibold text-sm rounded-2xl border border-red-500 px-2 text-red-500"
                 >
                   삭제 하기
                 </button>
@@ -182,8 +174,11 @@ const ResumeForm = ({ mode, resumeId }: ResumeFormProps) => {
                     type="checkbox"
                     {...methods.register(`experiences.${index}.isCurrent`)}
                     id={`experiences.${index}.isCurrent`}
+                    className="w-5 h-5 accent-primary"
                   />
-                  <label htmlFor={`experiences.${index}.isCurrent`}>현재 근무 중</label>
+                  <label htmlFor={`experiences.${index}.isCurrent`} className="font-medium">
+                    현재 근무 중
+                  </label>
                 </div>
               </div>
             ))}
@@ -213,7 +208,7 @@ const ResumeForm = ({ mode, resumeId }: ResumeFormProps) => {
                 <button
                   type="button"
                   onClick={() => removeCertification(index)}
-                  className="absolute top-4 right-4 font-semibold text-sm border border-red-500 px-2 text-red-500"
+                  className="bg-white absolute top-4 right-4 font-semibold text-sm border rounded-2xl border-red-500 px-2 text-red-500"
                 >
                   삭제 하기
                 </button>
