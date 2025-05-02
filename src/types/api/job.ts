@@ -155,8 +155,6 @@ export interface UpdateJobPostResponseDto {
   };
 }
 
-
-
 // 채용 공고 삭제 응답 DTO
 export interface DeleteJobPostResponseDto {
   message: string;
