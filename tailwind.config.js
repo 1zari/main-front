@@ -9,6 +9,9 @@ module.exports = {
       colors: {
         primary: "#0f8c3b",
       },
+      fontFamily: {
+        sans: ["'Pretendard Variable'", "Pretendard", "sans-serif"],
+      },
       keyframes: {
         "slide-up": {
           "0%": { transform: "translateY(100%)" },
