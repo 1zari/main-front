@@ -44,7 +44,7 @@ function AddButton({ children }: { children?: React.ReactNode }) {
   return (
     <div className="p-4 border-2 border-gray-200 border-dashed rounded-xl">
       <button
-        onClick={() => context.onCardClick("create")}
+        onClick={() => context.onCardClick("new")}
         className="flex flex-col items-center w-full gap-2 text-gray-500 transition-colors hover:text-primary"
       >
         <Plus className="w-8 h-8" />
@@ -64,8 +64,8 @@ function ResumeList({ resumes, children }: ResumeListProps) {
   const MAX_RESUMES = 5;
 
   const handleCardClick = (resumeId: string) => {
-    if (resumeId === "create") {
-      router.push("/resume/create");
+    if (resumeId === "new") {
+      router.push("/resume/new");
     } else {
       router.push(`/resume/${resumeId}`);
     }
