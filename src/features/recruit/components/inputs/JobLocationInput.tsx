@@ -8,8 +8,25 @@ import { FieldError, UseFormRegister, UseFormSetValue, UseFormWatch } from "reac
 
 declare global {
   interface Window {
-    daum: any;
+    daum: {
+      Postcode: new (options: {
+        oncomplete: (data: DaumPostcodeData) => void;
+        width?: string;
+        height?: string;
+      }) => {
+        embed?: (element: HTMLElement) => void;
+        open?: () => void;
+      };
+    };
   }
+}
+
+interface DaumPostcodeData {
+  address: string;
+  addressType: string;
+  bname: string;
+  buildingName: string;
+  zonecode: string;
 }
 
 export function JobLocationInput({
@@ -55,7 +72,7 @@ export function JobLocationInput({
       document.body.appendChild(elementLayer);
 
       new window.daum.Postcode({
-        oncomplete: function (data: any) {
+        oncomplete: function (data: DaumPostcodeData) {
           setValue("location", data.address);
           document.body.removeChild(elementLayer);
         },
@@ -64,7 +81,7 @@ export function JobLocationInput({
       }).embed(elementLayer);
     } else {
       new window.daum.Postcode({
-        oncomplete: function (data: any) {
+        oncomplete: function (data: DaumPostcodeData) {
           setValue("location", data.address);
         },
         width: "100%",
