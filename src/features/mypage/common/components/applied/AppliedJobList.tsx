@@ -5,7 +5,7 @@ import { Heading } from "@/components/ui/Heading";
 import { Button } from "@/features/mypage/common/components/ui/Button";
 import { Textarea } from "@/features/mypage/common/components/ui/Textarea";
 import { cn } from "@/utils/cn";
-import { Star } from "lucide-react";
+import { Star, BookmarkPlus } from "lucide-react";
 
 export interface AppliedJob {
   id: string;
@@ -47,12 +47,23 @@ export default function AppliedJobList({ jobs }: AppliedJobListProps) {
   };
 
   if (jobs.length === 0) {
-    return <div className="text-center text-gray-500 py-8">아직 지원한 공고가 없습니다.</div>;
+    return (
+      <div className="flex flex-col items-center justify-center py-20">
+        <div className="w-16 h-16 mb-6 text-gray-300">
+          <BookmarkPlus className="w-16 h-16" />
+        </div>
+        <p className="text-lg font-semibold text-gray-900 mb-2">지원한 공고가 없습니다</p>
+        <p className="text-gray-500 mb-6">간편 이력서로 지원해보세요!</p>
+        <Button className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90">
+          채용공고 보러가기 →
+        </Button>
+      </div>
+    );
   }
 
   return (
-    <div className="space-y-6 pt-8 pb-12">
-      <Heading sizeOffset={2} className="font-semibold text-2xl">
+    <div className="space-y-6 pt-5.5 pb-12">
+      <Heading sizeOffset={3} className="font-bold">
         내가 지원한 공고 ({jobs.length}건)
       </Heading>
 
@@ -75,14 +86,14 @@ export default function AppliedJobList({ jobs }: AppliedJobListProps) {
 
               <div className="flex flex-col flex-1 gap-1 mb-6">
                 <div className="flex justify-between items-start">
-                  <div className="bg-lime-500 text-white px-3 py-1 mb-2 rounded-full">
+                  <div className="bg-primary/10 text-primary px-3 py-1 mb-2 rounded-full">
                     {formatDate(job.deadline)} 마감
                   </div>
                   <button onClick={() => toggleFavorite(job.id)} aria-label="즐겨찾기 토글">
                     <Star
                       className={cn(
-                        "w-5 h-5",
-                        isFavorite ? "text-lime-400 fill-lime-400" : "text-gray-300",
+                        "w-7 h-7",
+                        isFavorite ? "text-primary fill-primary" : "text-gray-300",
                       )}
                     />
                   </button>
@@ -92,26 +103,35 @@ export default function AppliedJobList({ jobs }: AppliedJobListProps) {
               </div>
             </div>
 
-            <div className="bg-primary text-white flex items-center justify-between px-6 py-3 rounded-xl">
+            <div className="bg-primary text-white flex items-center justify-between px-6 py-3 h-[50px] rounded-xl">
               <span className="font-semibold">
                 지원일자 <span className="ml-2">{formatDate(job.appliedAt)}</span>
               </span>
+
               {editingId !== job.id && (
-                <Button
-                  variant="outline"
-                  className={cn(
-                    "text-primary bg-white hover:bg-gray-100 border-white rounded-md px-4 py-1.5",
-                    memos[job.id] && "border-primary text-primary",
-                  )}
-                  onClick={() => handleStartEdit(job.id)}
-                >
-                  {memos[job.id] ? "메모수정" : "메모하기"}
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    className="text-red-400 bg-white hover:bg-gray-100 border-white rounded-md pt-1 pb-1 pr-4 pl-4"
+                  >
+                    지원취소
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "text-primary bg-white hover:bg-gray-100 border-white rounded-md pt-1 pb-1 pr-4 pl-4",
+                      memos[job.id] && "border-primary text-primary",
+                    )}
+                    onClick={() => handleStartEdit(job.id)}
+                  >
+                    {memos[job.id] ? "메모수정" : "메모하기"}
+                  </Button>
+                </div>
               )}
             </div>
 
             {editingId === job.id ? (
-              <div className="bg-white border border-primary rounded-xl px-5 py-4 mt-2">
+              <div className="bg-white rounded-xl mt-2">
                 <Textarea
                   className="resize-none min-h-[100px]"
                   value={tempMemo}

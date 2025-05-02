@@ -1,18 +1,17 @@
+import { DefaultSession, DefaultUser } from "next-auth";
+import { UserBase } from "./commonUser";
 import { UserRole } from "./user";
 
 declare module "next-auth" {
-  interface Session {
-    user: {
-      id: string;
-      email: string;
-      role: UserRole;
-    };
+  interface Session extends DefaultSession {
+    accessToken: string;
+    refreshToken: string;
+    user: UserBase;
   }
 
-  interface User {
-    id: string;
-    email: string;
-    role: UserRole;
+  interface User extends DefaultUser, UserBase {
+    accessToken: string;
+    refreshToken: string;
   }
 }
 

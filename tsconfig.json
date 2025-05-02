@@ -12,6 +12,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "typeRoots": ["./node_modules/@types", "./src/types"],
+    "types": ["node"],
     "jsx": "preserve",
     "plugins": [
       {
@@ -21,7 +22,8 @@
     "target": "ES2017",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@constants/*": ["constants/*"]
     }
   },
   "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx"],
