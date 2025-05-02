@@ -55,6 +55,8 @@ function AddButton({ children }: { children?: React.ReactNode }) {
 }
 
 interface ResumeListProps {
+  typs: string;
+  userId: string;
   resumes: Resume[];
   children?: React.ReactNode;
 }
@@ -65,7 +67,7 @@ function ResumeList({ resumes, children }: ResumeListProps) {
 
   const handleCardClick = (resumeId: string) => {
     if (resumeId === "new") {
-      router.push("/resume/new");
+      router.push(`/${type}/mypage/${userId}/resume/new`);
     } else {
       router.push(`/resume/${resumeId}`);
     }
