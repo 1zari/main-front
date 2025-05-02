@@ -1,17 +1,17 @@
 import { FormField } from "@/features/recruit/components/inputs";
 import { INPUT_CLASS } from "@/features/recruit/constants/classNames";
 import { JobPostFormValues } from "@/features/recruit/schemas/jobPostSchema";
-import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { FieldError, UseFormRegister } from "react-hook-form";
 
 export function WorkingHoursInput({
   register,
   error,
 }: {
   register: UseFormRegister<JobPostFormValues>;
-  error?: {
-    workingHourStart?: FieldErrors;
-    workingHourEnd?: FieldErrors;
-    workingHourNegotiable?: FieldErrors;
+  error: {
+    workingHourStart?: FieldError;
+    workingHourEnd?: FieldError;
+    workingHourNegotiable?: FieldError;
   };
 }) {
   return (

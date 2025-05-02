@@ -34,7 +34,7 @@ export default function JobPostForm() {
       locationDetail: "ㅁㅁㅁ",
       deadline: "",
       workingDays: [],
-      workingHours: { start: "", end: "" },
+
       jobSummary: "",
       jobDescription: "",
       agreeTerms: false,
