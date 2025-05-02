@@ -6,6 +6,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        primary: "#0f8c3b",
+      },
       keyframes: {
         "slide-up": {
           "0%": { transform: "translateY(100%)" },

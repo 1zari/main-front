@@ -22,11 +22,11 @@ export function JobCategoryCheckboxGroup({
   const [selectedCategory, setSelectedCategory] = useState("외식·음료");
 
   const addSelectedFilter = (item: string) => {
-    setSelectedFilters((prev) => [...prev, item]);
+    setSelectedFilters([...selectedFilters, item]);
   };
 
   const removeSelectedFilter = (item: string) => {
-    setSelectedFilters((prev) => prev.filter((filter) => filter !== item));
+    setSelectedFilters(selectedFilters.filter((filter) => filter !== item));
   };
 
   const toggleCheck = (item: string) => {
@@ -102,7 +102,11 @@ export function JobCategoryCheckboxGroup({
           </div>
         </div>
         <div className="border flex justify-center rounded-md rounded-t-none py-2">
-          <button type="button" className="flex items-center" onClick={() => setIsOpen(!isOpen)}>
+          <button
+            type="button"
+            className="flex items-center text-center"
+            onClick={() => setIsOpen(!isOpen)}
+          >
             닫기
             <span className="px-2">
               <FaCaretUp />

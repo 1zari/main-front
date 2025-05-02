@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { UserBase } from "@/types/commonUser";
-
 interface AuthState {
   accessToken: string | null;
   refreshToken: string | null;

@@ -3,29 +3,33 @@ import { JobCategoryCheckboxGroup } from "@/features/recruit/components/inputs/J
 import { INPUT_CLASS } from "@/features/recruit/constants/classNames";
 import { JobPostFormValues } from "@/features/recruit/schemas/jobPostSchema";
 import { useState } from "react";
-import { FieldError, UseFormRegister } from "react-hook-form";
+import { FieldError, Merge, UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { FaCaretDown } from "react-icons/fa";
 
 export function OccupationInput({
-  register,
+  // register,
   error,
+  setValue,
 }: {
   register: UseFormRegister<JobPostFormValues>;
-  error?: FieldError;
+  error?: Merge<FieldError, FieldError[]>;
+  setValue: UseFormSetValue<JobPostFormValues>;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [checkedJobs, setCheckedJobs] = useState<string[]>([]);
 
   return (
-    <FormField label="직종" error={error}>
+    <FormField label="직종" error={error as FieldError}>
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        {...register("occupation")}
         className={`${INPUT_CLASS} text-left flex space-between items-center gap-3 `}
+        onBlur={(e) => {
+          setValue("occupation", checkedJobs, { shouldValidate: true });
+        }}
       >
-        직종 선택하기{" "}
+        직종 선택하기
         <span className={`transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}>
           <FaCaretDown />
         </span>
@@ -38,7 +42,10 @@ export function OccupationInput({
           selectedFilters={selectedFilters}
           setSelectedFilters={setSelectedFilters}
           checkedJobs={checkedJobs}
-          setCheckedJobs={setCheckedJobs}
+          setCheckedJobs={(jobs) => {
+            setValue("occupation", jobs, { shouldValidate: true });
+            setCheckedJobs(jobs);
+          }}
         />
       )}
 
