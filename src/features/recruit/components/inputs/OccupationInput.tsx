@@ -25,7 +25,7 @@ export function OccupationInput({
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
         className={`${INPUT_CLASS} text-left flex space-between items-center gap-3 `}
-        onBlur={(e) => {
+        onBlur={() => {
           setValue("occupation", checkedJobs, { shouldValidate: true });
         }}
       >
