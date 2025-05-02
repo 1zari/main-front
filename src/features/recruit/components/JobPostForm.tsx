@@ -27,13 +27,18 @@ type JobPostFormProps = {
   onSubmitSuccess?: () => void;
 };
 
-export default function JobPostForm({ mode, id, defaultValues, onSubmitSuccess }: JobPostFormProps) {
+export default function JobPostForm({
+  mode,
+  id,
+  defaultValues,
+  onSubmitSuccess,
+}: JobPostFormProps) {
   const {
     register,
     handleSubmit,
     setValue,
     watch,
-    formState: { errors, touchedFields },
+    formState: { errors },
   } = useForm<JobPostFormValues>({
     resolver: zodResolver(jobPostSchema),
     mode: "onTouched",
