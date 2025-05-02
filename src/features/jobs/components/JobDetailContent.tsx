@@ -13,7 +13,9 @@ interface JobDetailContentProps {
 }
 
 export default function JobDetailContent({ jobPostingId }: JobDetailContentProps) {
-  const [jobPosting, setJobPosting] = useState<JobPostDetailResponseDto["job_posting"] | null>(null);
+  const [jobPosting, setJobPosting] = useState<JobPostDetailResponseDto["job_posting"] | null>(
+    null,
+  );
   const bottomButtonRef = useRef<HTMLDivElement>(null);
   const [isBottomVisible, setIsBottomVisible] = useState(false);
 
@@ -38,7 +40,7 @@ export default function JobDetailContent({ jobPostingId }: JobDetailContentProps
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => setIsBottomVisible(entry.isIntersecting),
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     if (bottomButtonRef.current) {
@@ -80,7 +82,11 @@ export default function JobDetailContent({ jobPostingId }: JobDetailContentProps
         <section className="bg-white space-y-8">
           {/* 회사정보 */}
           <div className="flex flex-col gap-2">
-            <img src={"/default-image.png"} className="rounded w-12 h-12 object-contain" alt="회사 로고" />
+            <img
+              src={"/default-image.png"}
+              className="rounded w-12 h-12 object-contain"
+              alt="회사 로고"
+            />
             <p>회사 ID: {company_id}</p>
             <h2 className="text-xl font-semibold mb-2">{job_posting_title}</h2>
           </div>
@@ -115,7 +121,13 @@ export default function JobDetailContent({ jobPostingId }: JobDetailContentProps
               { label: "회사 ID", value: company_id },
               {
                 label: "로고",
-                value: <img src={"/default-image.png"} alt="회사 로고" className="rounded object-contain w-24 h-24" />,
+                value: (
+                  <img
+                    src={"/default-image.png"}
+                    alt="회사 로고"
+                    className="rounded object-contain w-24 h-24"
+                  />
+                ),
               },
               { label: "전화", value: "등록된 전화 없음" },
             ]}
