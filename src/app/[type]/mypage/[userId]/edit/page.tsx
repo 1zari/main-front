@@ -12,18 +12,18 @@ export default function InformationEditPage() {
   const userId = params?.userId as string;
 
   if (!VALID_TYPES.includes(type as "user" | "company")) {
-    return <p className="text-red-500 text-center">잘못된 접근입니다. (type 오류)</p>;
+    return <p className="text-center text-red-500">잘못된 접근입니다. (type 오류)</p>;
   }
 
   const session = type === "company" ? MOCK_COMPANY_SESSION : MOCK_USER_SESSION;
   const role = session.user.role;
 
   if (type !== role) {
-    return <p className="text-red-500 text-center">접근 권한이 없습니다. (role mismatch)</p>;
+    return <p className="text-center text-red-500">접근 권한이 없습니다. (role mismatch)</p>;
   }
 
   if (userId !== session.user.id) {
-    return <p className="text-red-500 text-center">잘못된 접근입니다. (userId mismatch)</p>;
+    return <p className="text-center text-red-500">잘못된 접근입니다. (userId mismatch)</p>;
   }
 
   return (

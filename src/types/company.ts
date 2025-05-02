@@ -1,11 +1,6 @@
-import { UserBase, UserRole } from "./commonUser";
-
-export interface CompanyUser extends UserBase {
-  role: Extract<UserRole, "company">;
-}
-
+import { JoinType } from "./commonUser";
 export interface CompanyProfile {
-  companyId: string;
+  user_id: string;
   company_name: string;
   establishment?: string;
   company_address?: string;
@@ -27,4 +22,8 @@ export interface CompanyProfileItem {
   value: React.ReactNode;
   isCustom?: boolean;
   isDescription?: boolean;
+}
+
+export interface Company {
+  join_type: Extract<JoinType, "company">;
 }

@@ -3,9 +3,11 @@ export const API_ENDPOINTS = {
     LOGOUT: "/user/logout",
     REFRESH_TOKEN: "/user/token/refresh",
     DELETE_ACCOUNT: "/user/delete",
+    SEND_VERIFICATION: "/user/verification/send",
+    VERIFY_CODE: "/user/verification/verify",
     USER: {
       SIGNUP: "/user/common_user/signup",
-      LOGIN: "/user/login",
+      LOGIN: "/user/normal/login",
       COMPLETE_SIGNUP: "/user/signup/complete",
       SOCIAL: {
         KAKAO: {

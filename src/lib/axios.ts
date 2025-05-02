@@ -41,14 +41,14 @@ export function createHttpClient(authHelpers?: AuthHelpers): AxiosInstance {
           originalRequest._retry = true;
 
           try {
-            // 토큰 갱신 요청 - API 경로 일치시킴
+            // 토큰 갱신 요청
             const requestData: TokenRefreshRequestDto = { refresh_token: refreshToken };
             const res = await axios.post<TokenRefreshResponseDto>(
               `${API_URL}/user/token/refresh`,
               requestData,
             );
 
-            const newAccessToken = res.data.access;
+            const newAccessToken = res.data.access_token;
             authHelpers.setTokens(newAccessToken, refreshToken);
 
             // 헤더 업데이트 후 요청 재시도

@@ -28,18 +28,10 @@ export interface LoginRequestDto {
 
 // 일반 회원 로그인 응답 DTO
 export interface LoginResponseDto {
-  message: "로그인 성공";
+  message: "Login successful.";
   access_token: string;
   refresh_token: string;
   token_type: "bearer";
-  user: {
-    id: string;
-    email: string;
-    name: string;
-    role: "user";
-    created_at: string;
-    updated_at: string;
-  };
 }
 
 // 기업 회원 회원가입 요청 DTO
@@ -75,19 +67,10 @@ export interface CompanyLoginRequestDto {
 
 // 기업 회원 로그인 응답 DTO
 export interface CompanyLoginResponseDto {
-  message: "기업 로그인 성공";
+  message: "로그인 성공";
   access_token: string;
   refresh_token: string;
   token_type: "bearer";
-  company: {
-    id: string;
-    email: string;
-    company_name: string;
-    role: "company";
-    is_verified: boolean;
-    created_at: string;
-    updated_at: string;
-  };
 }
 
 // 토큰 갱신 요청 DTO
@@ -97,7 +80,9 @@ export interface TokenRefreshRequestDto {
 
 // 토큰 갱신 응답 DTO
 export interface TokenRefreshResponseDto {
-  access: string;
+  access_token: string;
+  message: "Access token refreshed successfully.";
+  token_type: "bearer";
 }
 
 // 로그아웃 요청 DTO
@@ -110,19 +95,53 @@ export interface LogoutResponseDto {
   message: string;
 }
 
-// 소셜 로그인 응답 DTO
-export interface SocialLoginResponseDto {
-  message: string;
+// 카카오 로그인 요청 DTO
+export interface KakaoLoginRequestDto {
+  code: string;
+}
+
+// 네이버 로그인 요청 DTO
+export interface NaverLoginRequestDto {
+  code: string;
+  state: string;
+}
+
+// 소셜 로그인 성공 응답 DTO
+export interface SocialLoginSuccessResponseDto {
+  message: "로그인 성공";
   access_token: string;
   refresh_token: string;
   token_type: "bearer";
-  user: {
-    id: string;
-    email: string;
-    name: string;
-    role: "user";
-    social_provider: "kakao" | "naver";
-    created_at: string;
-    updated_at: string;
-  };
+}
+
+// 소셜 로그인 추가 정보 필요 응답 DTO
+export interface SocialLoginAdditionalInfoResponseDto {
+  message: "추가 정보 입력 필요";
+  email: string;
+}
+
+// 소셜 로그인 응답 DTO (성공 또는 추가 정보 필요)
+export type SocialLoginResponseDto =
+  | SocialLoginSuccessResponseDto
+  | SocialLoginAdditionalInfoResponseDto;
+
+// 문자 인증 코드 발송 요청 DTO
+export interface SendVerificationRequestDto {
+  phone_number: string;
+}
+
+// 문자 인증 코드 발송 응답 DTO
+export interface SendVerificationResponseDto {
+  message: "Verification code sent successfully";
+}
+
+// 문자 인증 코드 검증 요청 DTO
+export interface VerifyCodeRequestDto {
+  phone_number: string;
+  code: string;
+}
+
+// 문자 인증 코드 검증 응답 DTO
+export interface VerifyCodeResponseDto {
+  message: "Verification successful.";
 }

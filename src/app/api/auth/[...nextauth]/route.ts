@@ -1,27 +1,11 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import type { UserBase } from "@/types/commonUser";
-import type { UserRole } from "@/types/commonUser";
-
-// 목업 데이터
-const MOCK_USERS = [
-  {
-    id: "user1",
-    email: "user@example.com",
-    password: "test1111@",
-    role: "user" as UserRole,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
-  {
-    id: "company1",
-    email: "company@example.com",
-    password: "test2222@",
-    role: "company" as UserRole,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
-];
+import KakaoProvider from "next-auth/providers/kakao";
+import NaverProvider from "next-auth/providers/naver";
+import type { JoinType } from "@/types/commonUser";
+import { authApi } from "@/api/auth";
+import type { UserProfileResponseDto } from "@/types/api/user";
+import type { CompanyProfileResponseDto } from "@/types/api/company";
 
 const handler = NextAuth({
   providers: [
@@ -32,42 +16,32 @@ const handler = NextAuth({
         email: { label: "이메일", type: "email" },
         password: { label: "비밀번호", type: "password" },
       },
-      async authorize(credentials, req) {
-        console.log("Attempting user login with:", {
-          email: credentials?.email,
-          providerId: req?.body?.providerId,
-          type: "user",
-        });
-
+      async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          console.log("Missing credentials");
           throw new Error("필수 정보가 누락되었습니다.");
         }
 
-        // 목업 데이터에서 사용자 찾기
-        const user = MOCK_USERS.find(
-          (u) =>
-            u.email === credentials.email &&
-            u.password === credentials.password &&
-            u.role === "user",
-        );
+        try {
+          // 1. 로그인하여 토큰 받기
+          const response = await authApi.user.login(credentials.email, credentials.password);
 
-        console.log("Found user:", user ? "yes" : "no");
-        console.log("Password match:", user?.password === credentials.password ? "yes" : "no");
+          // 2. 토큰을 저장
+          authApi.setTokens(response.access_token, response.refresh_token);
 
-        if (!user) {
+          // 3. 사용자 정보 가져오기
+          const userInfo = (await authApi.user.getProfile()) as UserProfileResponseDto;
+
+          return {
+            id: userInfo.id,
+            email: userInfo.email,
+            name: userInfo.name,
+            join_type: userInfo.join_type,
+            image: null,
+          };
+        } catch (error) {
+          console.error("Login error:", error);
           throw new Error("로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.");
         }
-
-        return {
-          id: user.id,
-          email: user.email,
-          role: user.role,
-          accessToken: "mock_access_token",
-          refreshToken: "mock_refresh_token",
-          created_at: user.created_at,
-          updated_at: user.updated_at,
-        };
       },
     }),
     CredentialsProvider({
@@ -77,58 +51,73 @@ const handler = NextAuth({
         email: { label: "이메일", type: "email" },
         password: { label: "비밀번호", type: "password" },
       },
-      async authorize(credentials, req) {
-        console.log("Attempting company login with:", {
-          email: credentials?.email,
-          providerId: req?.body?.providerId,
-          type: "company",
-        });
-
+      async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          console.log("Missing credentials");
           throw new Error("필수 정보가 누락되었습니다.");
         }
 
-        // 목업 데이터에서 기업 사용자 찾기
-        const user = MOCK_USERS.find(
-          (u) =>
-            u.email === credentials.email &&
-            u.password === credentials.password &&
-            u.role === "company",
-        );
+        try {
+          // 1. 로그인하여 토큰 받기
+          const response = await authApi.company.login(credentials.email, credentials.password);
 
-        console.log("Found company:", user ? "yes" : "no");
-        console.log("Password match:", user?.password === credentials.password ? "yes" : "no");
+          // 2. 토큰을 저장
+          authApi.setTokens(response.access_token, response.refresh_token);
 
-        if (!user) {
+          // 3. 기업 정보 가져오기
+          const companyInfo = (await authApi.company.getProfile()) as CompanyProfileResponseDto;
+
+          return {
+            id: companyInfo.id,
+            email: companyInfo.email,
+            name: companyInfo.company_name,
+            join_type: companyInfo.join_type,
+            image: null,
+          };
+        } catch (error) {
+          console.error("Login error:", error);
           throw new Error("로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.");
         }
-
-        return {
-          id: user.id,
-          email: user.email,
-          role: user.role,
-          accessToken: "mock_access_token",
-          refreshToken: "mock_refresh_token",
-          created_at: user.created_at,
-          updated_at: user.updated_at,
-        };
       },
+    }),
+    KakaoProvider({
+      clientId: process.env.KAKAO_CLIENT_ID ?? "",
+      clientSecret: process.env.KAKAO_CLIENT_SECRET ?? "",
+    }),
+    NaverProvider({
+      clientId: process.env.NAVER_CLIENT_ID ?? "",
+      clientSecret: process.env.NAVER_CLIENT_SECRET ?? "",
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async signIn({ user, account }) {
+      // 기업회원은 소셜 로그인 차단
+      if (account?.provider !== "company-credentials" && user.join_type === "company") {
+        return false;
+      }
+
+      // 소셜 로그인 시 추가 정보 입력이 필요한 경우
+      if (account?.provider && "message" in user && user.message === "추가 정보 입력 필요") {
+        // 추가 정보 입력 페이지로 리다이렉트
+        return `/auth/social/complete?email=${user.email}&provider=${account.provider}`;
+      }
+
+      return true;
+    },
+    async jwt({ token, user, account }) {
       if (user) {
-        token.user = user as UserBase;
-        token.accessToken = user.accessToken;
-        token.refreshToken = user.refreshToken;
+        token.join_type = user.join_type;
+        token.id = user.id;
+      }
+      if (account) {
+        token.provider = account.provider;
       }
       return token;
     },
     async session({ session, token }) {
-      session.user = token.user as UserBase;
-      session.accessToken = token.accessToken as string;
-      session.refreshToken = token.refreshToken as string;
+      if (session.user) {
+        session.user.join_type = token.join_type as JoinType;
+        session.user.id = token.id as string;
+      }
       return session;
     },
   },

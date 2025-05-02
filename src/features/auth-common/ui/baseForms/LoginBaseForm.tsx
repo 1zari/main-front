@@ -9,9 +9,10 @@ import { loginSchema, LoginFormValues } from "@/features/auth-common/validation/
 import { EMAIL_DOMAINS, type EmailDomain } from "@/features/auth-user/constants/email";
 import KakaoLogo from "@/assets/images/social/KakaoLogo.png";
 import NaverLogo from "@/assets/images/social/NaverLogo.png";
+import { JoinType } from "@/types/commonUser";
 
 interface LoginBaseFormProps {
-  role: "user" | "company";
+  join_type: JoinType;
   onEmailFind: () => void;
   onPasswordFind: () => void;
   showSocialLogin?: boolean;
@@ -19,10 +20,10 @@ interface LoginBaseFormProps {
 }
 
 export default function LoginBaseForm({
-  role,
+  join_type,
   onEmailFind,
   onPasswordFind,
-  showSocialLogin = true,
+  showSocialLogin = join_type === "user",
   showEmailDomainSelect = true,
 }: LoginBaseFormProps) {
   const [showPassword, setShowPassword] = useState(false);
@@ -51,7 +52,7 @@ export default function LoginBaseForm({
   };
 
   const handleLogin = async (data: LoginFormValues) => {
-    const providerId = role === "user" ? "user-credentials" : "company-credentials";
+    const providerId = join_type === "user" ? "user-credentials" : "company-credentials";
     const result = await signIn(providerId, {
       redirect: false,
       email: data.email,
@@ -73,7 +74,7 @@ export default function LoginBaseForm({
         <label htmlFor="email" className="block mb-3 ml-2 text-base font-semibold sm:text-lg">
           이메일
         </label>
-        {role === "user" && showEmailDomainSelect ? (
+        {join_type === "user" && showEmailDomainSelect ? (
           <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-end">
             <div className="w-full pb-1 border-b border-gray-300 sm:flex-1">
               <input
@@ -167,17 +168,19 @@ export default function LoginBaseForm({
 
       <div className="w-full my-6 border-t border-gray-300" />
 
-      {showSocialLogin && (
+      {join_type === "user" && showSocialLogin && (
         <div className="mb-6">
           <button
-            onClick={() => signIn("kakao")}
+            type="button"
+            onClick={() => signIn("kakao", { callbackUrl: "/" })}
             className="w-full bg-[#FEE500] text-black py-3 rounded hover:bg-[#FFDC00] mb-3 flex items-center justify-center space-x-2 cursor-pointer"
           >
             <Image src={KakaoLogo} alt="카카오 로고" width={22} height={22} className="mr-2" />
             <span>카카오로 로그인</span>
           </button>
           <button
-            onClick={() => signIn("naver")}
+            type="button"
+            onClick={() => signIn("naver", { callbackUrl: "/" })}
             className="w-full bg-[#03C75A] text-white py-3 rounded hover:bg-[#02B152] flex items-center justify-center space-x-2 cursor-pointer"
           >
             <Image src={NaverLogo} alt="네이버 로고" width={22} height={22} className="mr-2" />

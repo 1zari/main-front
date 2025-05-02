@@ -1,12 +1,12 @@
-import { UserBase } from "./commonUser";
+import { JoinType } from "./commonUser";
 
-export interface UserUser extends UserBase {
-  role: "user";
+export interface User {
+  join_type: Extract<JoinType, "user">;
   name: string;
 }
 
 export interface UserProfile {
-  userId: string;
+  user_id: string;
   name: string;
   gender?: string;
   birthday?: string;
