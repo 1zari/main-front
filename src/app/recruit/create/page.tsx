@@ -21,7 +21,7 @@ const CreateRecruitPage = () => {
             </li>
           </ul>
         </nav>
-        <JobPostForm />
+        <JobPostForm mode="create" />
         {/* <RecruitForm mode="Create" /> */}
       </main>
     </div>

@@ -18,6 +18,7 @@ export const jobPostSchema = z.object({
   location: z.string().min(1, "주소를 입력해주세요."),
   locationDetail: z.string().min(1, "상세주소를 입력해주세요."),
   deadline: z.string(),
+  salaryType: z.string(),
   salary: z.number({ invalid_type_error: "급여를 숫자로 입력해주세요." }),
   workingDays: z.array(z.enum(["월", "화", "수", "목", "금", "토", "일", "요일협의"])),
   workingHours: z
