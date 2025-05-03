@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import { useForm, UseFormRegister } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,6 +7,7 @@ import {
   signupSchema,
   SignupFormValues,
 } from "@/features/auth-common/validation/signup-auth.schema";
+import { FadeInUp } from "@/components/motion/FadeInUp";
 
 type Props = {
   onNext: (data: SignupFormValues) => void;
@@ -36,25 +36,33 @@ export default function SignupStepOneForm({ onNext, userType }: Props) {
       onSubmit={handleSubmit(handleSubmitStep)}
       className="flex flex-col items-center space-y-8"
     >
-      <h2 className="text-3xl font-semibold">
-        {userType === "company" ? "기업 회원가입" : "개인 회원가입"}
-      </h2>
+      <FadeInUp delay={0.1}>
+        <h2 className="text-3xl font-semibold">
+          {userType === "company" ? "기업 회원가입" : "개인 회원가입"}
+        </h2>
+      </FadeInUp>
 
       <div className="w-full max-w-[700px] space-y-6">
-        <EmailInputWithCheck register={register} error={errors.email?.message} />
-        <PasswordInput
-          label="비밀번호"
-          register={register("password")}
-          show={showPassword}
-          onToggle={() => setShowPassword((prev) => !prev)}
-          error={errors.password?.message}
-        />
-        <button
-          type="submit"
-          className="w-full h-[60px] bg-primary text-white font-semibold rounded hover:opacity-90 transition cursor-pointer"
-        >
-          다음 단계로
-        </button>
+        <FadeInUp delay={0.2}>
+          <EmailInputWithCheck register={register} error={errors.email?.message} />
+        </FadeInUp>
+        <FadeInUp delay={0.3}>
+          <PasswordInput
+            label="비밀번호"
+            register={register("password")}
+            show={showPassword}
+            onToggle={() => setShowPassword((prev) => !prev)}
+            error={errors.password?.message}
+          />
+        </FadeInUp>
+        <FadeInUp delay={0.4}>
+          <button
+            type="submit"
+            className="w-full h-[60px] bg-primary text-white font-semibold rounded hover:opacity-90 transition cursor-pointer"
+          >
+            다음 단계로
+          </button>
+        </FadeInUp>
       </div>
     </form>
   );
