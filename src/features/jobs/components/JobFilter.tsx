@@ -3,11 +3,13 @@
 import { Heading } from "@/components/ui/Heading";
 import { FaCaretDown } from "react-icons/fa";
 
+import { useSearchJobs } from "@/features/jobs/hooks/useSearchJobs";
 import { useFilterTabStore } from "@/features/jobs/stores/job-filters/useJobFilterTabsStore";
 import { useSelectedFilterStore } from "@/features/jobs/stores/job-filters/useSelectedFiltersStore";
 import FilterJobs from "./filter/JobCategoryFilter";
 import FilterOtherConditions from "./filter/JobConditionsFilter";
 import FilterLocation from "./filter/JobLocationFilter";
+
 export default function JobFilter() {
   const {
     showLocation,
@@ -26,6 +28,8 @@ export default function JobFilter() {
   const checkedJobs = useSelectedFilterStore((state) => state.checkedJobs);
   const selectedDays = useSelectedFilterStore((state) => state.selectedDays);
   const dayNegotiable = useSelectedFilterStore((state) => state.dayNegotiable);
+
+  const { result, isLoading, error, search } = useSearchJobs();
 
   return (
     <>
@@ -76,9 +80,12 @@ export default function JobFilter() {
               </span>
             </button>
 
-            {/* <button className="w-full bg-primary text-white px-2 py-3 rounded-md flex justify-center items-center gap-2">
+            <button
+              className="w-full bg-primary text-white px-2 py-3 rounded-md flex justify-center items-center gap-2"
+              onClick={() => search()}
+            >
               검색하기
-            </button> */}
+            </button>
           </div>
           {showLocation && (
             <FilterLocation setShowLocation={setShowLocation} showLocation={showLocation} />
@@ -90,6 +97,21 @@ export default function JobFilter() {
               showOtherConditions={showOtherConditions}
             />
           )}
+
+          <div className="mt-6">
+            {isLoading && <p>로딩중...</p>}
+            {error && <p>에러 발생</p>}
+            {result && result.results && (
+              <div className="grid grid-cols-1 gap-4">
+                {result.results.map((job: any) => (
+                  <div key={job.id} className="p-4 border rounded-md shadow-sm">
+                    <h3 className="font-semibold text-lg">{job.title}</h3>
+                    {/* 필요에 따라 추가 정보 렌더링 */}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </section>
     </>

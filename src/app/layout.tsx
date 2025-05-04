@@ -1,6 +1,7 @@
 import Script from "next/script";
 import Footer from "../components/Footer";
 import Navigation from "../components/Navigation";
+import QueryProvider from "../components/providers/QueryProvider";
 import { FontSizeProvider } from "../hooks/useFontSize";
 import "./globals.css";
 
@@ -27,11 +28,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <FontSizeProvider>
-          <Navigation />
-          <main>{children}</main>
-          <Footer />
-        </FontSizeProvider>
+        <QueryProvider>
+          <FontSizeProvider>
+            <Navigation />
+            <main>{children}</main>
+            <Footer />
+          </FontSizeProvider>
+        </QueryProvider>
       </body>
     </html>
   );
