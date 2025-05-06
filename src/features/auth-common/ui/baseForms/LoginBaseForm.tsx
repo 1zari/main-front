@@ -35,6 +35,7 @@ export default function LoginBaseForm({
     handleSubmit,
     watch,
     setValue,
+    setError,
     formState: { errors },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -53,22 +54,41 @@ export default function LoginBaseForm({
 
   const handleLogin = async (data: LoginFormValues) => {
     const providerId = join_type === "user" ? "user-credentials" : "company-credentials";
-    const result = await signIn(providerId, {
-      redirect: false,
-      email: data.email,
-      password: data.password,
-    });
+    try {
+      const result = await signIn(providerId, {
+        email: data.email,
+        password: data.password,
+        join_type,
+        redirect: true,
+        callbackUrl: "/"
+      });
 
-    if (result?.ok) {
-      router.push("/");
-    } else {
-      alert("로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.");
+      if (result?.error) {
+        setError("root", { 
+          message: result.error === "CredentialsSignin" 
+            ? "이메일과 비밀번호를 확인해주세요." 
+            : result.error === "ServerError"
+            ? "서버 연결에 실패했습니다. 잠시 후 다시 시도해주세요."
+            : "로그인에 실패했습니다. 잠시 후 다시 시도해주세요." 
+        });
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setError("root", { 
+        message: "로그인 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요." 
+      });
     }
   };
 
   return (
     <form className="p-6 sm:p-8" onSubmit={handleSubmit(handleLogin)}>
-      <Image src="/images/logo.png" alt="로고" width={200} height={200} className="mx-auto mb-6" />
+      <Image 
+        src="/images/logo.png" 
+        alt="로고" 
+        width={200} 
+        height={50} 
+        className="w-auto h-auto mx-auto mb-6" 
+      />
 
       <div className="mb-6 text-left">
         <label htmlFor="email" className="block mb-3 ml-2 text-base font-semibold sm:text-lg">
@@ -82,6 +102,7 @@ export default function LoginBaseForm({
                 id="email"
                 name="email"
                 type="text"
+                autoComplete="username"
                 placeholder="이메일을 입력해주세요."
                 className="w-full border-none outline-none px-2 py-3 bg-transparent leading-tight min-h-[2.75rem]"
               />
@@ -110,6 +131,7 @@ export default function LoginBaseForm({
               id="email"
               name="email"
               type="email"
+              autoComplete="username"
               placeholder="이메일을 입력해주세요."
               className="w-full border-none outline-none px-2 py-3 bg-transparent leading-tight min-h-[2.75rem]"
             />
@@ -130,6 +152,7 @@ export default function LoginBaseForm({
             id="password"
             name="password"
             type={showPassword ? "text" : "password"}
+            autoComplete="current-password"
             placeholder="비밀번호를 입력해주세요."
             className="w-full border-none outline-none px-2 py-3 pr-8 bg-transparent leading-tight min-h-[2.75rem]"
           />
@@ -158,6 +181,12 @@ export default function LoginBaseForm({
           비밀번호 찾기
         </span>
       </div>
+
+      {errors.root && (
+        <div className="p-3 mb-4 text-sm text-red-500 rounded-md bg-red-50">
+          {errors.root.message}
+        </div>
+      )}
 
       <button
         type="submit"

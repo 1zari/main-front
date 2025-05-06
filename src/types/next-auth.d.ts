@@ -1,4 +1,4 @@
-import { DefaultSession } from "next-auth";
+import NextAuth, { DefaultSession, DefaultUser } from "next-auth";
 import { JoinType } from "./commonUser";
 
 declare module "next-auth" {
@@ -6,18 +6,22 @@ declare module "next-auth" {
     user: {
       id: string;
       email: string;
-      name?: string;
-      join_type: JoinType;
+      name?: string | null;
       image?: string | null;
+      join_type: JoinType;
     };
+    accessToken?: string;
+    refreshToken?: string;
   }
 
-  interface User {
+  interface User extends DefaultUser {
     id: string;
     email: string;
-    name?: string;
+    name?: string | null;
     image?: string | null;
     join_type: JoinType;
+    accessToken?: string;
+    refreshToken?: string;
   }
 }
 
@@ -25,7 +29,10 @@ declare module "next-auth/jwt" {
   interface JWT {
     id: string;
     email: string;
-    provider?: string;
+    name?: string | null;
+    image?: string | null;
     join_type: JoinType;
+    accessToken?: string;
+    refreshToken?: string;
   }
 }

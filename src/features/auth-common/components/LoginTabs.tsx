@@ -42,7 +42,7 @@ export default function LoginTabs() {
   return (
     <div className="w-full min-h-[calc(100vh-4rem)] flex flex-col items-center justify-start bg-gray-50 py-6 sm:py-10 px-4">
       <div className="w-full max-w-[min(600px,90vw)] sm:max-w-[500px] md:max-w-[550px] lg:max-w-[600px] animate-fadeIn">
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div className="overflow-hidden bg-white rounded-lg shadow-lg">
           <div className="flex border-b border-gray-100">
             <TabButton
               isActive={activeTab === "user"}
@@ -61,10 +61,10 @@ export default function LoginTabs() {
           </div>
           <LoginBaseForm
             key={activeTab}
+            join_type={activeTab}
             {...config}
             onEmailFind={() => router.push(routes.emailFind)}
             onPasswordFind={() => router.push(routes.passwordFind)}
-            onSignup={() => router.push(routes.signup)}
           />
         </div>
       </div>

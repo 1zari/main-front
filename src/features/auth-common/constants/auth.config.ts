@@ -13,12 +13,12 @@ export const AUTH_ROUTES = {
 
 export const LOGIN_CONFIG = {
   user: {
-    role: "user" as const,
+    join_type: "user" as const,
     showSocialLogin: true,
     showEmailDomainSelect: true,
   },
   company: {
-    role: "company" as const,
+    join_type: "company" as const,
     showSocialLogin: false,
     showEmailDomainSelect: false,
   },
