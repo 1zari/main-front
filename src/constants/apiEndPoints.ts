@@ -4,6 +4,7 @@ export const API_ENDPOINTS = {
     REFRESH_TOKEN: "/user/token/refresh/",
     DELETE_ACCOUNT: "/user/delete/",
     SEND_VERIFICATION: "/user/verification/send/",
+    EMAIL_CHECK: "/user/email/check/",
     VERIFY_CODE: "/user/verification/verify/",
     USER: {
       SIGNUP: "/user/common_user/signup/",
@@ -20,18 +21,29 @@ export const API_ENDPOINTS = {
         },
       },
     },
+
     COMPANY: {
-      SIGNUP: "/user/company/signup/",
+      SIGNUP: "/user/common/signup/",
+      COMPLETE_SIGNUP: "/user/company/signup/",
       LOGIN: "/user/company/login/",
-      COMPLETE_SIGNUP: "/user/company/signup/complete/",
+    },
+
+    VERIFY: {
+      SEND_CODE: "/user/verify/send-code/",
+      VERIFY_CODE: "/user/verify/code/",
+      CHECK_BUSINESS: "/user/verify/business/",
     },
   },
+
   USER: {
     PROFILE: "/user/normal/info/",
     UPDATE_PROFILE: "/user/normal/info/update/",
-    FIND_EMAIL: "/user/find/email/",
-    RESET_PASSWORD: "/user/reset/password/",
+    FIND_EMAIL: "/user/normal/find/email/",
+    RESET_PASSWORD: "/user/normal/reset/password/",
+    REQUEST_PHONE_CODE: "/user/verify/send-code/",
+    VERIFY_PHONE_CODE: "/user/verify/code/",
   },
+
   COMPANY: {
     PROFILE: "/user/company/info/",
     UPDATE_PROFILE: "/user/company/info/update/",
@@ -51,7 +63,6 @@ export const API_ENDPOINTS = {
   },
 } as const;
 
-// API 응답 상태 메시지
 export const API_MESSAGES = {
   SUCCESS: {
     LOGIN: "로그인 성공",

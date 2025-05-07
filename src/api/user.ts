@@ -8,7 +8,10 @@ import type {
   UserFindEmailResponseDto,
   UserResetPasswordRequestDto,
   UserResetPasswordResponseDto,
-  UserProfileResponseDto,
+  PhoneVerificationRequestDto,
+  PhoneVerificationResponseDto,
+  VerifyCodeRequestDto,
+  VerifyCodeResponseDto,
 } from "@/types/api/user";
 
 export const userApi = {
@@ -37,6 +40,17 @@ export const userApi = {
   deleteAccount: () => {
     return fetcher.delete(API_ENDPOINTS.AUTH.DELETE_ACCOUNT, { secure: true });
   },
+
+  // 회원가입시 문자인증 추가 2025.5.3 안
+  requestPhoneCode: (data: PhoneVerificationRequestDto) =>
+    fetcher.post<PhoneVerificationResponseDto>(API_ENDPOINTS.USER.REQUEST_PHONE_CODE, data, {
+      secure: false,
+    }),
+
+  verifyPhoneCode: (data: VerifyCodeRequestDto) =>
+    fetcher.post<VerifyCodeResponseDto>(API_ENDPOINTS.USER.VERIFY_PHONE_CODE, data, {
+      secure: false,
+    }),
 };
 
 export const getUserProfile = async (): Promise<UserProfileResponseDto> => {

@@ -8,6 +8,7 @@ import ClientLayout from "./ClientLayout";
 import { metadata } from "./metadata";
 
 import "./globals.css";
+//import CSRFInit from "./_components/CSRFInit";
 
 export { metadata };
 
