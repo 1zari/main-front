@@ -1,82 +1,4 @@
-// 일반 회원 정보 수정 요청 DTO
-export interface UpdateUserInfoRequestDto {
-  name?: string;
-  phone_number?: string;
-  profile_image?: string;
-  address?: string;
-}
-
-// 일반 회원 정보 수정 응답 DTO
-export interface UpdateUserInfoResponseDto {
-  id: string;
-  email: string;
-  name: string;
-  phone_number: string;
-  profile_image: string | null;
-  address: string | null;
-  updated_at: string;
-}
-
-// 일반 회원 이메일 찾기 요청 DTO
-export interface UserFindEmailRequestDto {
-  name: string;
-  phone_number: string;
-}
-
-// 일반 회원 이메일 찾기 응답 DTO
-export interface UserFindEmailResponseDto {
-  email: string;
-  join_type: string;
-  message: string;
-}
-
-// 일반 회원 비밀번호 재설정 요청 DTO
-export interface UserResetPasswordRequestDto {
-  email: string;
-  new_password: string;
-  verification_code: string;
-}
-
-// 일반 회원 비밀번호 재설정 응답 DTO
-export interface UserResetPasswordResponseDto {
-  message: string;
-  email: string;
-  updated_at: string;
-}
-
-// 회원가입 전화번호 인증 요청 DTO
-export interface PhoneVerificationRequestDto {
-  phone_number: string;
-  join_type: "normal" | "company";
-}
-
-// 인증번호 요청 응답 DTO
-export interface PhoneVerificationResponseDto {
-  message: string;
-}
-
-// 인증번호 검증 요청 DTO
-export interface VerifyCodeRequestDto {
-  phone_number: string;
-  code: string;
-  join_type: "normal" | "company";
-}
-
-// 인증번호 검증 응답 DTO
-export interface VerifyCodeResponseDto {
-  message: string;
-}
-
-// 기본 인증 관련 타입
-// 회원가입 공통 이메일 중복체크 추가 2025.5.3 안
-export interface EmailCheckRequestDto {
-  email: string;
-}
-export interface EmailCheckResponseDto {
-  exists: boolean;
-}
-
-// 공통 회원가입 요청
+// 일반 회원 회원가입 요청 DTO
 export interface SignupRequestDto {
   email: string;
   join_type: string;
@@ -117,17 +39,15 @@ export interface LoginRequestDto {
 
 // 일반 회원 로그인 응답 DTO
 export interface LoginResponseDto {
-  message: "로그인 성공";
+  message: "Login successful.";
   access_token: string;
   refresh_token: string;
   token_type: "bearer";
   user: {
-    id: string;
+    common_user_id: string;
     email: string;
     name: string;
-    role: "normal";
-    created_at: string;
-    updated_at: string;
+    join_type: string;
   };
 }
 
@@ -166,18 +86,15 @@ export interface CompanyLoginRequestDto {
 
 // 기업 회원 로그인 응답 DTO
 export interface CompanyLoginResponseDto {
-  message: "기업 로그인 성공";
+  message: "로그인 성공";
   access_token: string;
   refresh_token: string;
   token_type: "bearer";
-  company: {
-    id: string;
+  user: {
+    common_user_id: string;
     email: string;
     company_name: string;
-    role: "company";
-    is_verified: boolean;
-    created_at: string;
-    updated_at: string;
+    join_type: string;
   };
 }
 
@@ -188,7 +105,9 @@ export interface TokenRefreshRequestDto {
 
 // 토큰 갱신 응답 DTO
 export interface TokenRefreshResponseDto {
-  access: string;
+  access_token: string;
+  message: "Access token refreshed successfully.";
+  token_type: "bearer";
 }
 
 // 로그아웃 요청 DTO
@@ -201,19 +120,70 @@ export interface LogoutResponseDto {
   message: string;
 }
 
-// 소셜 로그인 응답 DTO
-export interface SocialLoginResponseDto {
-  message: string;
+// 카카오 로그인 요청 DTO
+export interface KakaoLoginRequestDto {
+  code: string;
+}
+
+// 네이버 로그인 요청 DTO
+export interface NaverLoginRequestDto {
+  code: string;
+  state: string;
+}
+
+// 소셜 로그인 성공 응답 DTO
+export interface SocialLoginSuccessResponseDto {
+  message: "로그인 성공";
   access_token: string;
   refresh_token: string;
   token_type: "bearer";
-  user: {
-    id: string;
-    email: string;
-    name: string;
-    role: "user";
-    social_provider: "kakao" | "naver";
-    created_at: string;
-    updated_at: string;
-  };
+}
+
+// 소셜 로그인 추가 정보 필요 응답 DTO
+export interface SocialLoginAdditionalInfoResponseDto {
+  message: "추가 정보 입력 필요";
+  email: string;
+}
+
+// 소셜 로그인 응답 DTO (성공 또는 추가 정보 필요)
+export type SocialLoginResponseDto =
+  | SocialLoginSuccessResponseDto
+  | SocialLoginAdditionalInfoResponseDto;
+
+// 문자 인증 코드 발송 요청 DTO
+export interface SendVerificationRequestDto {
+  phone_number: string;
+}
+
+// 문자 인증 코드 발송 응답 DTO
+export interface SendVerificationResponseDto {
+  message: "Verification code sent successfully";
+}
+
+// 문자 인증 코드 검증 요청 DTO
+export interface VerifyCodeRequestDto {
+  phone_number: string;
+  code: string;
+}
+
+// 문자 인증 코드 검증 응답 DTO
+export interface VerifyCodeResponseDto {
+  message: "Verification successful.";
+}
+// 회원가입 전화번호 인증 요청 DTO
+export interface PhoneVerificationRequestDto {
+  phone_number: string;
+  join_type: "normal" | "company";
+}
+
+// 인증번호 요청 응답 DTO
+export interface PhoneVerificationResponseDto {
+  message: string;
+}
+
+// 인증번호 검증 요청 DTO
+export interface VerifyCodeRequestDto {
+  phone_number: string;
+  code: string;
+  join_type: "normal" | "company";
 }

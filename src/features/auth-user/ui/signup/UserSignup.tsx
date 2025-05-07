@@ -15,7 +15,7 @@ export default function UserSignup() {
   const [userId, setUserId] = useState<string>("");
 
   return (
-    <div className="flex justify-center items-center flex-1">
+    <div className="flex items-center justify-center flex-1">
       <div className="bg-white rounded-lg shadow-md px-10 py-[100px] w-full max-w-[1000px]">
         {step === 1 ? (
           <SignupStepOneForm
@@ -37,6 +37,7 @@ export default function UserSignup() {
                 alert("회원가입에 실패했습니다. 다시 시도해주세요.");
               }
             }}
+            userType="normal"
           />
         ) : (
           <SignupStepTwoUser

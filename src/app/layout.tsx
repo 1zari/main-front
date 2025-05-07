@@ -1,14 +1,16 @@
 import Script from "next/script";
-import Footer from "../components/Footer";
-import Navigation from "../components/Navigation";
-import { FontSizeProvider } from "../hooks/useFontSize";
-import "./globals.css";
-import CSRFInit from "./_components/CSRFInit";
 
-export const metadata = {
-  title: "시니어내일",
-  description: "시니어를 위한 채용 플랫폼",
-};
+import Footer from "../components/Footer";
+import QueryProvider from "../components/providers/QueryProvider";
+import { FontSizeProvider } from "../hooks/useFontSize";
+
+import ClientLayout from "./ClientLayout";
+import { metadata } from "./metadata";
+
+import "./globals.css";
+//import CSRFInit from "./_components/CSRFInit";
+
+export { metadata };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -28,12 +30,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <FontSizeProvider>
-          <CSRFInit />
-          <Navigation />
-          <main>{children}</main>
-          <Footer />
-        </FontSizeProvider>
+        <QueryProvider>
+          <FontSizeProvider>
+            <ClientLayout>
+              <main>{children}</main>
+            </ClientLayout>
+            <Footer />
+          </FontSizeProvider>
+        </QueryProvider>
       </body>
     </html>
   );

@@ -21,7 +21,7 @@ const EditRecruitPage = () => {
             </li>
           </ul>
         </nav>
-        <JobPostForm />
+        <JobPostForm mode="edit" id="1" />
         {/* <RecruitForm mode="Edit" /> */}
       </main>
     </div>

@@ -52,7 +52,7 @@ export default function UserFindPasswordForm() {
 
   return (
     <FindPasswordBaseForm
-      type="user"
+      type="normal"
       step={step}
       isVerified={isVerified}
       showPassword={showPassword}

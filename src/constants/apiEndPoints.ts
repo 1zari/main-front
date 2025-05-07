@@ -1,22 +1,23 @@
 export const API_ENDPOINTS = {
   AUTH: {
-    LOGOUT: "/user/logout",
-    REFRESH_TOKEN: "/user/token/refresh",
-    DELETE_ACCOUNT: "/user/delete",
-    EMAIL_CHECK: "/user/email/check/", // 2025. 5. 5 추가 안
-
+    LOGOUT: "/user/logout/",
+    REFRESH_TOKEN: "/user/token/refresh/",
+    DELETE_ACCOUNT: "/user/delete/",
+    SEND_VERIFICATION: "/user/verification/send/",
+    EMAIL_CHECK: "/user/email/check/",
+    VERIFY_CODE: "/user/verification/verify/",
     USER: {
-      SIGNUP: "/user/common/signup/",
-      LOGIN: "/user/normal/login",
-      COMPLETE_SIGNUP: "/user/normal/signup/",
+      SIGNUP: "/user/common_user/signup/",
+      LOGIN: "/user/normal/login/",
+      COMPLETE_SIGNUP: "/user/signup/complete/",
       SOCIAL: {
         KAKAO: {
-          LOGIN: "/user/oauth/kakao/login",
-          CALLBACK: "/user/oauth/kakao/login",
+          LOGIN: "/user/oauth/kakao/login/",
+          CALLBACK: "/user/kakao/callback/",
         },
         NAVER: {
-          LOGIN: "/user/oauth/naver/login",
-          CALLBACK: "/user/oauth/naver/login",
+          LOGIN: "/user/oauth/naver/login/",
+          CALLBACK: "/user/naver/callback/",
         },
       },
     },
@@ -24,7 +25,7 @@ export const API_ENDPOINTS = {
     COMPANY: {
       SIGNUP: "/user/common/signup/",
       COMPLETE_SIGNUP: "/user/company/signup/",
-      LOGIN: "/user/company/login",
+      LOGIN: "/user/company/login/",
     },
 
     VERIFY: {
@@ -35,19 +36,30 @@ export const API_ENDPOINTS = {
   },
 
   USER: {
-    PROFILE: "/user/normal/info",
-    UPDATE_PROFILE: "/user/normal/info/update",
-    FIND_EMAIL: "/user/normal/find/email",
-    RESET_PASSWORD: "/user/normal/reset/password",
+    PROFILE: "/user/normal/info/",
+    UPDATE_PROFILE: "/user/normal/info/update/",
+    FIND_EMAIL: "/user/normal/find/email/",
+    RESET_PASSWORD: "/user/normal/reset/password/",
     REQUEST_PHONE_CODE: "/user/verify/send-code/",
     VERIFY_PHONE_CODE: "/user/verify/code/",
   },
 
   COMPANY: {
-    PROFILE: "/user/company/info",
-    UPDATE_PROFILE: "/user/company/info/update",
-    FIND_EMAIL: "/user/company/find/email",
-    RESET_PASSWORD: "/user/company/reset/password",
+    PROFILE: "/user/company/info/",
+    UPDATE_PROFILE: "/user/company/info/update/",
+    FIND_EMAIL: "/user/find/company/email/",
+    RESET_PASSWORD: "/user/reset/company/password/",
+  },
+  JOB_POST: {
+    LIST: "/job-postings/job-postings/",
+    DETAIL: (id: string) => `/job-postings/job-postings/${id}`,
+    CREATE: "/job-postings/job-postings/",
+    UPDATE: (id: string) => `/job-postings/job-postings/${id}`,
+    DELETE: (id: string) => `/job-postings/job-postings/${id}`,
+  },
+  JOB_FILTER: {
+    LOCATION: "/search/region/",
+    CATEGORY: "/search/job/",
   },
 } as const;
 

@@ -1,14 +1,15 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
-import { AuthHelpers } from "@/utils/authHelpers";
 import { TokenRefreshRequestDto, TokenRefreshResponseDto } from "@/types/api/auth";
+import { AuthHelpers } from "@/utils/authHelpers";
+import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.staging.com";
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const defaultConfig: AxiosRequestConfig = {
   baseURL: API_URL,
-  timeout: 10000,
+  timeout: 30000,
   headers: {
     "Content-Type": "application/json",
+    Accept: "application/json",
   },
   withCredentials: false, // 쿠키 전송은 secure 클라이언트에서만 true 처리
 };
@@ -59,7 +60,7 @@ export function createHttpClient(authHelpers?: AuthHelpers): AxiosInstance {
               requestData,
             );
 
-            const newAccessToken = res.data.access;
+            const newAccessToken = res.data.access_token;
             authHelpers.setTokens(newAccessToken, refreshToken);
 
             // 갱신된 토큰으로 헤더 업데이트 후 재요청

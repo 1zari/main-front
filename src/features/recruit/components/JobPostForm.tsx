@@ -1,3 +1,4 @@
+import { jobPostApi } from "@/api/job";
 import { AgreeTermsCheckbox } from "@/features/recruit/components/inputs/AgreeTermsCheckbox";
 import { CareerRadio } from "@/features/recruit/components/inputs/CareerRadio";
 import { DeadlineInput } from "@/features/recruit/components/inputs/DeadlineInput";
@@ -14,17 +15,30 @@ import { WorkingDaysCheckbox } from "@/features/recruit/components/inputs/Workin
 import { WorkingHoursInput } from "@/features/recruit/components/inputs/WorkingHoursInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { undefined } from "zod";
 import { JobPostFormValues, jobPostSchema } from "../schemas/jobPostSchema";
 import { SectionTitle } from "./inputs";
 
-export default function JobPostForm() {
+type Mode = "create" | "edit";
+
+type JobPostFormProps = {
+  mode: Mode;
+  id?: string;
+  defaultValues?: Partial<JobPostFormValues>;
+  onSubmitSuccess?: () => void;
+};
+
+export default function JobPostForm({
+  mode,
+  id,
+  defaultValues,
+  onSubmitSuccess,
+}: JobPostFormProps) {
   const {
     register,
     handleSubmit,
     setValue,
     watch,
-    formState: { errors, touchedFields },
+    formState: { errors },
   } = useForm<JobPostFormValues>({
     resolver: zodResolver(jobPostSchema),
     mode: "onTouched",
@@ -35,15 +49,53 @@ export default function JobPostForm() {
       locationDetail: "",
       deadline: "",
       workingDays: [],
-      workingHours: { start: "", end: "" },
       jobSummary: "",
       jobDescription: "",
       agreeTerms: false,
+      ...defaultValues,
     },
   });
 
-  const onSubmit = (data: JobPostFormValues) => {
-    console.log(data);
+  const convertFormDataToRequestDto = (formData: JobPostFormValues) => {
+    return {
+      title: formData.title,
+      occupation: formData.occupation,
+      address: `${formData.location} ${formData.locationDetail}`,
+      deadline: formData.deadline,
+      workingDays: formData.workingDays,
+      workingHours: {
+        start: formData.workingHourStart,
+        end: formData.workingHourEnd,
+        negotiable: formData.workingHourNegotiable,
+      },
+      salary: {
+        type: formData.salaryType!,
+        amount: Number(formData.salary),
+      },
+      summary: formData.jobSummary,
+      description: formData.jobDescription,
+    };
+  };
+
+  const onSubmit = async (data: JobPostFormValues) => {
+    const requestData = convertFormDataToRequestDto(data);
+
+    try {
+      if (mode === "create") {
+        await jobPostApi.createJobPost(requestData);
+        alert("등록이 완료되었습니다!");
+      } else {
+        if (!id) throw new Error("수정에는 ID가 필요합니다.");
+
+        await jobPostApi.updateJobPost(id, requestData);
+        alert("수정이 완료되었습니다!");
+      }
+
+      onSubmitSuccess?.();
+    } catch (error) {
+      console.error(error);
+      alert("에러가 발생했습니다.");
+    }
   };
 
   return (
@@ -74,7 +126,12 @@ export default function JobPostForm() {
       <SalaryInput register={register} error={errors.salary} />
       <WorkingDaysCheckbox
         register={register}
-        error={Array.isArray(errors.workingDays) ? errors.workingDays : undefined}
+        // error={Array.isArray(errors.workingDays) ? errors.workingDays : undefined}
+        error={{
+          workingHourStart: errors.workingHourStart,
+          workingHourEnd: errors.workingHourEnd,
+          workingHourNegotiable: errors.workingHourNegotiable,
+        }}
       />
 
       <WorkingHoursInput register={register} error={errors.workingHours} />
@@ -86,7 +143,7 @@ export default function JobPostForm() {
         type="submit"
         className="mt-6 h-12 bg-primary hover:bg-green-700 text-white font-bold py-2 rounded"
       >
-        등록하기 || 수정하기
+        {mode === "create" ? "등록하기" : "수정하기"}
       </button>
     </form>
   );
