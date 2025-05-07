@@ -2,13 +2,16 @@ import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import { AuthHelpers } from "@/utils/authHelpers";
 import { TokenRefreshRequestDto, TokenRefreshResponseDto } from "@/types/api/auth";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.staging.com";
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+console.log("Using API URL:", API_URL);
 
 const defaultConfig: AxiosRequestConfig = {
   baseURL: API_URL,
-  timeout: 10000,
+  timeout: 30000,
   headers: {
     "Content-Type": "application/json",
+    Accept: "application/json",
   },
   withCredentials: true,
 };
@@ -16,6 +19,69 @@ const defaultConfig: AxiosRequestConfig = {
 // axios 인스턴스 생성 함수
 export function createHttpClient(authHelpers?: AuthHelpers): AxiosInstance {
   const instance = axios.create(defaultConfig);
+
+  // 요청 인터셉터 - 디버깅
+  instance.interceptors.request.use(
+    (config) => {
+      console.log("Making request:", {
+        method: config.method,
+        url: config.url,
+        baseURL: config.baseURL,
+        data: config.data,
+        headers: config.headers,
+      });
+      return config;
+    },
+    (error) => {
+      console.error("Request error:", {
+        message: error.message,
+        config: error.config
+          ? {
+              method: error.config.method,
+              url: error.config.url,
+              baseURL: error.config.baseURL,
+              data: error.config.data,
+              headers: error.config.headers,
+            }
+          : undefined,
+      });
+      return Promise.reject(error);
+    },
+  );
+
+  // 응답 인터셉터 - 디버깅
+  instance.interceptors.response.use(
+    (response) => {
+      console.log("Response received:", {
+        status: response.status,
+        data: response.data,
+        headers: response.headers,
+        config: {
+          method: response.config.method,
+          url: response.config.url,
+          baseURL: response.config.baseURL,
+        },
+      });
+      return response;
+    },
+    (error) => {
+      console.error("Response error:", {
+        status: error.response?.status,
+        data: error.response?.data,
+        message: error.message,
+        config: error.config
+          ? {
+              method: error.config.method,
+              url: error.config.url,
+              baseURL: error.config.baseURL,
+              data: error.config.data,
+              headers: error.config.headers,
+            }
+          : undefined,
+      });
+      return Promise.reject(error);
+    },
+  );
 
   // authHelpers가 제공되면 인증 기능 활성화
   if (authHelpers) {
@@ -41,14 +107,14 @@ export function createHttpClient(authHelpers?: AuthHelpers): AxiosInstance {
           originalRequest._retry = true;
 
           try {
-            // 토큰 갱신 요청 - API 경로 일치시킴
+            // 토큰 갱신 요청
             const requestData: TokenRefreshRequestDto = { refresh_token: refreshToken };
             const res = await axios.post<TokenRefreshResponseDto>(
               `${API_URL}/user/token/refresh`,
               requestData,
             );
 
-            const newAccessToken = res.data.access;
+            const newAccessToken = res.data.access_token;
             authHelpers.setTokens(newAccessToken, refreshToken);
 
             // 헤더 업데이트 후 요청 재시도

@@ -1,7 +1,7 @@
 import { UseFormRegister, FieldErrors } from "react-hook-form";
 
 // Common Types
-export type AuthType = "user" | "company";
+export type AuthType = "normal" | "company";
 
 export type VerificationMessage = {
   type: "success" | "error";

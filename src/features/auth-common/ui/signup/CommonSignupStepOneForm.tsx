@@ -11,7 +11,7 @@ import {
 
 type Props = {
   onNext: (data: SignupFormValues) => void;
-  userType: "company" | "user";
+  userType: "company" | "normal";
 };
 
 export default function SignupStepOneForm({ onNext, userType }: Props) {
