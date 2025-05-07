@@ -3,9 +3,25 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
 
+type SearchJobResult = {
+  job_posting_id: string;
+  company_id: string;
+  job_posting_title: string;
+  address: string;
+  city: string;
+  district: string;
+  town: string;
+  work_day: string[];
+  posting_type: string;
+  employment_type: string;
+  education: string;
+  description?: string;
+  [key: string]: any; // 만약 추가적인 필드가 있다면
+};
+
 export function useSearchJobs() {
   const selectedFilters = useSelectedFilterStore();
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<SearchJobResult[] | null>(null);
 
   const mutation = useMutation({
     mutationFn: async () => {
