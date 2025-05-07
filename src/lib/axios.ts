@@ -11,7 +11,7 @@ const defaultConfig: AxiosRequestConfig = {
   timeout: 30000,
   headers: {
     "Content-Type": "application/json",
-    "Accept": "application/json"
+    Accept: "application/json",
   },
   withCredentials: true,
 };
@@ -28,23 +28,25 @@ export function createHttpClient(authHelpers?: AuthHelpers): AxiosInstance {
         url: config.url,
         baseURL: config.baseURL,
         data: config.data,
-        headers: config.headers
+        headers: config.headers,
       });
       return config;
     },
     (error) => {
       console.error("Request error:", {
         message: error.message,
-        config: error.config ? {
-          method: error.config.method,
-          url: error.config.url,
-          baseURL: error.config.baseURL,
-          data: error.config.data,
-          headers: error.config.headers
-        } : undefined
+        config: error.config
+          ? {
+              method: error.config.method,
+              url: error.config.url,
+              baseURL: error.config.baseURL,
+              data: error.config.data,
+              headers: error.config.headers,
+            }
+          : undefined,
       });
       return Promise.reject(error);
-    }
+    },
   );
 
   // 응답 인터셉터 - 디버깅
@@ -57,8 +59,8 @@ export function createHttpClient(authHelpers?: AuthHelpers): AxiosInstance {
         config: {
           method: response.config.method,
           url: response.config.url,
-          baseURL: response.config.baseURL
-        }
+          baseURL: response.config.baseURL,
+        },
       });
       return response;
     },
@@ -67,16 +69,18 @@ export function createHttpClient(authHelpers?: AuthHelpers): AxiosInstance {
         status: error.response?.status,
         data: error.response?.data,
         message: error.message,
-        config: error.config ? {
-          method: error.config.method,
-          url: error.config.url,
-          baseURL: error.config.baseURL,
-          data: error.config.data,
-          headers: error.config.headers
-        } : undefined
+        config: error.config
+          ? {
+              method: error.config.method,
+              url: error.config.url,
+              baseURL: error.config.baseURL,
+              data: error.config.data,
+              headers: error.config.headers,
+            }
+          : undefined,
       });
       return Promise.reject(error);
-    }
+    },
   );
 
   // authHelpers가 제공되면 인증 기능 활성화
