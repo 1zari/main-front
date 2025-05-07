@@ -1,4 +1,4 @@
-import NextAuth, { DefaultSession, DefaultUser } from "next-auth";
+import { DefaultSession, DefaultUser } from "next-auth";
 import { JoinType } from "./commonUser";
 
 declare module "next-auth" {
