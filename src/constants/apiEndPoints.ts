@@ -45,6 +45,10 @@ export const API_ENDPOINTS = {
     UPDATE: (id: string) => `/job-postings/job-postings/${id}`,
     DELETE: (id: string) => `/job-postings/job-postings/${id}`,
   },
+  JOB_FILTER: {
+    LOCATION: "/search/region/",
+    CATEGORY: "/search/job/",
+  },
 } as const;
 
 // API 응답 상태 메시지

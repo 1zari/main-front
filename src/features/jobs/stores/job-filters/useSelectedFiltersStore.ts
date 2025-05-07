@@ -24,6 +24,12 @@ type FilterSelectedStore = {
     checkedDistricts: string[],
     setCheckedDistricts: (value: string[]) => void,
   ) => void;
+  employmentType: string;
+  setEmploymentType: (value: string) => void;
+  education: string;
+  setEducation: (value: string) => void;
+  searchKeyword: string;
+  setSearchKeyword: (value: string) => void;
 };
 
 export const useSelectedFilterStore = create<FilterSelectedStore>()(
@@ -61,6 +67,13 @@ export const useSelectedFilterStore = create<FilterSelectedStore>()(
 
       dayNegotiable: false,
       setDayNegotiable: (value) => set({ dayNegotiable: value }),
+
+      employmentType: "",
+      setEmploymentType: (value) => set({ employmentType: value }),
+      education: "",
+      setEducation: (value) => set({ education: value }),
+      searchKeyword: "",
+      setSearchKeyword: (value) => set({ searchKeyword: value }),
 
       toggleDay: (day: string) => {
         const currentDays = get().selectedDays;
