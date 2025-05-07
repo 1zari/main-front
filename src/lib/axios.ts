@@ -1,10 +1,9 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
-import { AuthHelpers } from "@/utils/authHelpers";
 import { TokenRefreshRequestDto, TokenRefreshResponseDto } from "@/types/api/auth";
+import { AuthHelpers } from "@/utils/authHelpers";
+import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-console.log("Using API URL:", API_URL);
 
 const defaultConfig: AxiosRequestConfig = {
   baseURL: API_URL,
