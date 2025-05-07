@@ -10,7 +10,7 @@ export function useSearchJobs() {
   const mutation = useMutation({
     mutationFn: async () => {
       const response = await axios.get("https://senior-naeil.life/api/search/", {
-        q: {
+        params: {
           city: selectedFilters.locationChecked,
           district: [],
           town: [],
@@ -30,7 +30,7 @@ export function useSearchJobs() {
 
   return {
     result,
-    isLoading: mutation.isLoading,
+    isLoading: mutation.isPending,
     error: mutation.error,
     search: mutation.mutate, // 검색 실행 함수
   };
