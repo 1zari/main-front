@@ -8,11 +8,16 @@ import type {
   CompanyFindEmailResponseDto,
   CompanyResetPasswordRequestDto,
   CompanyResetPasswordResponseDto,
+  CompanyProfileResponseDto,
 } from "@/types/api/company";
+
+export const getCompanyProfile = async (): Promise<CompanyProfileResponseDto> => {
+  return fetcher.get<CompanyProfileResponseDto>(API_ENDPOINTS.COMPANY.PROFILE, { secure: true });
+};
 
 export const companyApi = {
   getProfile: () => {
-    return fetcher.get<CompanyProfile>(API_ENDPOINTS.COMPANY.PROFILE, { secure: true });
+    return fetcher.get<CompanyProfileResponseDto>(API_ENDPOINTS.COMPANY.PROFILE, { secure: true });
   },
 
   updateProfile: (data: Partial<CompanyProfile>) => {
@@ -32,12 +37,10 @@ export const companyApi = {
     );
   },
 
-  updateInfo: (companyId: string, data: UpdateCompanyInfoRequestDto) => {
-    return fetcher.patch<UpdateCompanyInfoResponseDto>(
-      `${API_ENDPOINTS.COMPANY.UPDATE_PROFILE}/${companyId}`,
-      data,
-      { secure: true },
-    );
+  updateInfo: (data: UpdateCompanyInfoRequestDto) => {
+    return fetcher.patch<UpdateCompanyInfoResponseDto>(API_ENDPOINTS.COMPANY.UPDATE_PROFILE, data, {
+      secure: true,
+    });
   },
 
   deleteAccount: () => {

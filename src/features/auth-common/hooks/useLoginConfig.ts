@@ -1,10 +1,10 @@
 import { useRouter } from "next/navigation";
-import { AUTH_ROUTES, LOGIN_CONFIG } from "@/features/auth-common/model/constants/auth.config";
+import { AUTH_ROUTES, LOGIN_CONFIG } from "@/features/auth-common/constants/auth.config";
 
-export function useLoginConfig(role: "user" | "company") {
+export function useLoginConfig(join_type: "normal" | "company") {
   const router = useRouter();
-  const routes = AUTH_ROUTES[role];
-  const baseConfig = LOGIN_CONFIG[role];
+  const routes = AUTH_ROUTES[join_type];
+  const baseConfig = LOGIN_CONFIG[join_type];
 
   return {
     ...baseConfig,

@@ -21,19 +21,19 @@ function ProfileCard({ role, userId, title, children }: ProfileCardProps) {
   const handleEditClick = () => {
     router.push(`/${role}/mypage/${userId}/edit`);
   };
-  const displayTitle = role === "user" ? `${title} 님` : title;
+  const displayTitle = role === "normal" ? `${title} 님` : title;
   return (
     <ProfileCardContext.Provider value={{ role }}>
-      <div className="w-[calc(100%-2rem)] sm:w-[36rem] md:w-[48rem] lg:w-[64rem] mx-auto bg-white rounded-2xl shadow-sm overflow-hidden">
+      <div className="mx-auto w-[calc(100%-2rem)] overflow-hidden rounded-2xl bg-white sm:w-[36rem] md:w-[48rem] lg:w-[64rem]">
         <div className="flex items-center justify-between p-4 border-b sm:p-6">
           <Heading sizeOffset={3} className="font-bold text-gray-900 break-all">
             {displayTitle}
           </Heading>
           <button
             onClick={handleEditClick}
-            className="bg-primary hover:bg-primary/90 text-white px-2.5 sm:px-3 py-1 rounded-lg transition-colors duration-200 font-medium flex items-center gap-1.5 shadow-sm shrink-0 ml-3"
+            className="bg-primary hover:bg-primary/90 ml-3 flex shrink-0 items-center gap-1.5 rounded-lg px-2.5 py-1 font-medium text-white shadow-sm transition-colors duration-200 sm:px-3"
           >
-            <PenSquare className="w-3.5 h-3.5" />
+            <PenSquare className="h-3.5 w-3.5" />
             <Heading sizeOffset={1} className="hidden text-white sm:inline">
               정보 수정
             </Heading>
@@ -42,7 +42,7 @@ function ProfileCard({ role, userId, title, children }: ProfileCardProps) {
             </Heading>
           </button>
         </div>
-        <div className="p-3 m-3 break-words bg-gray-50/50 rounded-xl sm:m-4 md:m-5 sm:p-4 md:p-5">
+        <div className="p-3 m-3 break-words rounded-xl bg-gray-50/50 sm:m-4 sm:p-4 md:m-5 md:p-5">
           <div className="space-y-5">{children}</div>
         </div>
       </div>
@@ -52,7 +52,7 @@ function ProfileCard({ role, userId, title, children }: ProfileCardProps) {
 
 function Item({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex items-center px-4 py-3 transition-colors rounded-lg hover:bg-white/80 group">
+    <div className="flex items-center px-4 py-3 transition-colors rounded-lg group hover:bg-white/80">
       {children}
     </div>
   );
@@ -63,7 +63,7 @@ function Label({ children }: { children: React.ReactNode }) {
   const isEmployer = context?.role === "company";
   return (
     <span
-      className={`${isEmployer ? "min-w-32 mr-8" : "w-32"} text-gray-500 font-medium flex flex-wrap items-center gap-1`}
+      className={`${isEmployer ? "mr-8 min-w-32" : "w-32"} flex flex-wrap items-center gap-1 font-medium text-gray-500`}
     >
       {Array.isArray(children) ? (
         React.Children.map(children, (child, idx) => (
@@ -90,7 +90,7 @@ function Value({
   return (
     <Heading
       sizeOffset={2}
-      className={`flex-1 text-gray-900 font-normal ${isDescription ? "whitespace-pre-wrap leading-relaxed" : ""}`}
+      className={`flex-1 font-normal text-gray-900 ${isDescription ? "leading-relaxed whitespace-pre-wrap" : ""}`}
     >
       {children}
     </Heading>
