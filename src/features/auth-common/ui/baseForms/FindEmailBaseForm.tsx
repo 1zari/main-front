@@ -21,19 +21,19 @@ export default function FindEmailBaseForm({
   const [copied, setCopied] = useState(false);
   const router = useRouter();
 
-  const nameLabel = type === "user" ? "이름" : "기업명";
-  const namePlaceholder = type === "user" ? "이름을 입력해주세요." : "기업명을 입력해주세요.";
-  const nameField = type === "user" ? "name" : "companyName";
-  const phoneLabel = type === "user" ? "전화번호" : "담당자 전화번호";
+  const nameLabel = type === "normal" ? "이름" : "기업명";
+  const namePlaceholder = type === "normal" ? "이름을 입력해주세요." : "기업명을 입력해주세요.";
+  const nameField = type === "normal" ? "name" : "companyName";
+  const phoneLabel = type === "normal" ? "전화번호" : "담당자 전화번호";
 
   return (
     <div className="min-h-screen pt-20 bg-gray-50">
-      <div className="w-full sm:w-[600px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full px-4 sm:w-[600px] sm:px-6 lg:px-8">
         <form onSubmit={onSubmit} className="bg-white rounded-lg shadow-md">
           <div className="p-6 sm:p-8">
             <h2 className="mb-8 text-2xl font-bold text-center sm:text-3xl">
               {step === "verified"
-                ? `${name}${type === "user" ? "님" : ""}의 이메일`
+                ? `${name}${type === "normal" ? "님" : ""}의 이메일`
                 : "이메일 찾기"}
             </h2>
 
@@ -50,7 +50,7 @@ export default function FindEmailBaseForm({
                       {...register(nameField)}
                       name={nameField}
                       placeholder={namePlaceholder}
-                      className="w-full border-none outline-none px-2 py-3 bg-transparent leading-tight min-h-[2.75rem]"
+                      className="min-h-[2.75rem] w-full border-none bg-transparent px-2 py-3 leading-tight outline-none"
                     />
                   </div>
                   {errors[nameField] && (
@@ -70,7 +70,7 @@ export default function FindEmailBaseForm({
                         {...register("businessNumber")}
                         name="businessNumber"
                         placeholder="1234567890 (-제외 번호 입력)"
-                        className="w-full border-none outline-none px-2 py-3 bg-transparent leading-tight min-h-[2.75rem]"
+                        className="min-h-[2.75rem] w-full border-none bg-transparent px-2 py-3 leading-tight outline-none"
                       />
                     </div>
                     {errors.businessNumber && (
@@ -91,7 +91,7 @@ export default function FindEmailBaseForm({
                         {...register("phone")}
                         name="phone"
                         placeholder="010-1234-5678"
-                        className="w-full border-none outline-none px-2 py-3 bg-transparent leading-tight min-h-[2.75rem]"
+                        className="min-h-[2.75rem] w-full border-none bg-transparent px-2 py-3 leading-tight outline-none"
                       />
                     </div>
                     <button
@@ -118,7 +118,7 @@ export default function FindEmailBaseForm({
                         {...register("code")}
                         name="code"
                         placeholder="인증번호 6자리를 입력해주세요."
-                        className="w-full border-none outline-none px-2 py-3 bg-transparent leading-tight min-h-[2.75rem]"
+                        className="min-h-[2.75rem] w-full border-none bg-transparent px-2 py-3 leading-tight outline-none"
                       />
                     </div>
                     <button
@@ -147,8 +147,8 @@ export default function FindEmailBaseForm({
 
                 <button
                   type="submit"
-                  className={`w-full py-3 text-white rounded transition-colors ${
-                    isVerified ? "bg-primary hover:bg-primary/80" : "bg-gray-300 cursor-not-allowed"
+                  className={`w-full rounded py-3 text-white transition-colors ${
+                    isVerified ? "bg-primary hover:bg-primary/80" : "cursor-not-allowed bg-gray-300"
                   }`}
                   disabled={!isVerified}
                 >

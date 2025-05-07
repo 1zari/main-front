@@ -1,5 +1,3 @@
-import { JoinType } from "../commonUser";
-
 // 일반 회원 정보 수정 요청 DTO
 export interface UpdateUserInfoRequestDto {
   name: string;
@@ -45,11 +43,35 @@ export interface UserResetPasswordResponseDto {
   message: "Password reset successful.";
 }
 
+// 일반 회원 정보 조회 응답 DTO
 export interface UserProfileResponseDto {
   message: "User info retrieved successfully.";
-  id: string;
+  common_user_id: string;
   email: string;
-  join_type: JoinType;
+  join_type: string;
+  name: string;
+  phone_number: string;
+  gender: string;
+  birthday: string | null;
+  interest: string[];
+  purpose_subscription: string[];
+  route: string[];
+}
+
+// 일반 회원 정보 수정 요청 DTO
+export interface UpdateUserProfileDto {
+  name: string;
+  phone_number: string;
+  gender: string;
+  birthday: string | null;
+  interest: string[];
+  purpose_subscription: string[];
+  route: string[];
+}
+
+// 일반 회원 정보 수정 응답 DTO
+export interface UpdateUserProfileResponseDto {
+  message: "User info updated successfully.";
   name: string;
   phone_number: string;
   gender: string;

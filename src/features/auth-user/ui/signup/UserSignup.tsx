@@ -11,7 +11,7 @@ export default function UserSignup() {
   const [stepOneData, setStepOneData] = useState<SignupFormValues | null>(null);
 
   return (
-    <div className="flex justify-center items-center flex-1">
+    <div className="flex items-center justify-center flex-1">
       <div className="bg-white rounded-lg shadow-md px-10 py-[100px] w-full max-w-[1000px]">
         {step === 1 ? (
           <SignupStepOneForm
@@ -19,7 +19,7 @@ export default function UserSignup() {
               setStepOneData(data);
               setStep(2);
             }}
-            userType="user"
+            userType="normal"
           />
         ) : (
           <SignupStepTwoUser

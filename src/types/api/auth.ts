@@ -1,4 +1,3 @@
-// 기본 인증 관련 타입
 // 일반 회원 회원가입 요청 DTO
 export interface SignupRequestDto {
   email: string;
@@ -32,6 +31,12 @@ export interface LoginResponseDto {
   access_token: string;
   refresh_token: string;
   token_type: "bearer";
+  user: {
+    common_user_id: string;
+    email: string;
+    name: string;
+    join_type: string;
+  };
 }
 
 // 기업 회원 회원가입 요청 DTO
@@ -71,6 +76,12 @@ export interface CompanyLoginResponseDto {
   access_token: string;
   refresh_token: string;
   token_type: "bearer";
+  user: {
+    common_user_id: string;
+    email: string;
+    company_name: string;
+    join_type: string;
+  };
 }
 
 // 토큰 갱신 요청 DTO

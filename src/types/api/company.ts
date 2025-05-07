@@ -1,5 +1,3 @@
-import { JoinType } from "../commonUser";
-
 // 기업 회원 정보 수정 요청 DTO
 export interface UpdateCompanyInfoRequestDto {
   company_name: string;
@@ -53,11 +51,9 @@ export interface CompanyResetPasswordResponseDto {
 
 export interface CompanyProfileResponseDto {
   message: "Company info retrieved successfully.";
-  id: string;
-  email: string;
-  join_type: JoinType;
-  company_id: string;
   common_user_id: string;
+  email: string;
+  join_type: string;
   company_name: string;
   establishment: string;
   company_address: string;

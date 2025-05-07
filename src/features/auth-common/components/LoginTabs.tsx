@@ -16,15 +16,11 @@ interface TabButtonProps {
 function TabButton({ isActive, onClick, position, children }: TabButtonProps) {
   return (
     <button
-      className={`
-        flex-1 py-5 text-lg sm:text-xl font-semibold transition-all duration-200 ease-in-out border-b-2
-        ${position === "left" ? "rounded-tl-lg" : "rounded-tr-lg"}
-        ${
-          isActive
-            ? "bg-white text-primary border-primary"
-            : "text-gray-400 border-transparent hover:text-gray-600 hover:border-gray-200 bg-gray-50"
-        }
-      `}
+      className={`flex-1 border-b-2 py-5 text-lg font-semibold transition-all duration-200 ease-in-out sm:text-xl ${position === "left" ? "rounded-tl-lg" : "rounded-tr-lg"} ${
+        isActive
+          ? "text-primary border-primary bg-white"
+          : "border-transparent bg-gray-50 text-gray-400 hover:border-gray-200 hover:text-gray-600"
+      } `}
       onClick={onClick}
     >
       {children}
@@ -40,13 +36,13 @@ export default function LoginTabs() {
   const routes = AUTH_ROUTES[activeTab];
 
   return (
-    <div className="w-full min-h-[calc(100vh-4rem)] flex flex-col items-center justify-start bg-gray-50 py-6 sm:py-10 px-4">
-      <div className="w-full max-w-[min(600px,90vw)] sm:max-w-[500px] md:max-w-[550px] lg:max-w-[600px] animate-fadeIn">
+    <div className="flex min-h-[calc(100vh-4rem)] w-full flex-col items-center justify-start bg-gray-50 px-4 py-6 sm:py-10">
+      <div className="animate-fadeIn w-full max-w-[min(600px,90vw)] sm:max-w-[500px] md:max-w-[550px] lg:max-w-[600px]">
         <div className="overflow-hidden bg-white rounded-lg shadow-lg">
           <div className="flex border-b border-gray-100">
             <TabButton
-              isActive={activeTab === "user"}
-              onClick={() => handleTabChange("user")}
+              isActive={activeTab === "normal"}
+              onClick={() => handleTabChange("normal")}
               position="left"
             >
               개인회원

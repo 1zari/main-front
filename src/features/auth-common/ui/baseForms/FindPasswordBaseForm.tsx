@@ -8,7 +8,7 @@ import { FindCompanyPasswordFormValues } from "@/features/auth-company/validatio
 import AuthTypeTabs from "@/features/auth-common/components/AuthTypeTabs";
 
 interface FindPasswordBaseFormProps {
-  type: "user" | "company";
+  type: "normal" | "company";
   step: "input" | "complete";
   isVerified: boolean;
   showPassword: boolean;
@@ -31,7 +31,7 @@ export default function FindPasswordBaseForm({
   onTogglePassword,
 }: FindPasswordBaseFormProps) {
   const router = useRouter();
-  const phoneLabel = type === "user" ? "전화번호" : "담당자 전화번호";
+  const phoneLabel = type === "normal" ? "전화번호" : "담당자 전화번호";
 
   return (
     <div className="flex flex-col items-center justify-start min-h-screen pt-20 bg-gray-50">

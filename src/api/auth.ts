@@ -21,6 +21,7 @@ import type {
   VerifyCodeRequestDto,
   VerifyCodeResponseDto,
 } from "@/types/api/auth";
+import type { CompanyProfileResponseDto } from "@/types/api/company";
 import type {
   UpdateUserInfoRequestDto,
   UserFindEmailRequestDto,
@@ -59,7 +60,7 @@ export const authApi = {
     return fetcher.delete(API_ENDPOINTS.AUTH.DELETE_ACCOUNT, { secure: true });
   },
 
-  // 일반 사용자 인증
+  // 개인회원 인증
   user: {
     login: (email: string, password: string) => {
       const data: LoginRequestDto = { email, password };
@@ -133,7 +134,9 @@ export const authApi = {
     },
 
     getProfile: () => {
-      return fetcher.get(API_ENDPOINTS.COMPANY.PROFILE, { secure: true });
+      return fetcher.get<CompanyProfileResponseDto>(API_ENDPOINTS.COMPANY.PROFILE, {
+        secure: true,
+      });
     },
 
     signup: (data: CompanySignupRequestDto) => {

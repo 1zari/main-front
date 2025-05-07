@@ -20,6 +20,8 @@ export default function Navigation() {
     router.push("/");
   };
 
+  console.log(session?.user);
+
   return (
     <nav className="relative p-4 text-black bg-white">
       <div
@@ -62,7 +64,7 @@ export default function Navigation() {
                 채용공고
               </Link>
             </li>
-            {status === "authenticated" && session ? (
+            {status === "authenticated" && session?.user?.id && session?.user?.join_type ? (
               <>
                 <li>
                   <Link
@@ -73,10 +75,7 @@ export default function Navigation() {
                   </Link>
                 </li>
                 <li>
-                  <button
-                    onClick={handleLogout}
-                    className={`${hoverClassName} text-gray-700`}
-                  >
+                  <button onClick={handleLogout} className={`${hoverClassName} text-gray-700`}>
                     로그아웃
                   </button>
                 </li>

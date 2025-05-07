@@ -1,6 +1,6 @@
 import { JoinType } from "./commonUser";
 export interface CompanyProfile {
-  user_id: string;
+  common_user_id: string;
   company_name: string;
   establishment?: string;
   company_address?: string;
