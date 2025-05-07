@@ -1,24 +1,24 @@
 export const AUTH_ROUTES = {
-  user: {
-    emailFind: "/auth/user/find-email",
-    passwordFind: "/auth/user/find-password",
-    signup: "/auth/user/signup",
+  normal: {
+    emailFind: "/user/normal/find/email/",
+    passwordFind: "/user/normal/reset/password/",
+    signup: "/user/normal/signup/",
   },
   company: {
-    emailFind: "/auth/company/find-email",
-    passwordFind: "/auth/company/find-password",
-    signup: "/auth/company/signup",
+    emailFind: "/user/company/find/email/",
+    passwordFind: "/user/company/reset/password/",
+    signup: "/user/company/signup/",
   },
 } as const;
 
 export const LOGIN_CONFIG = {
-  user: {
-    role: "user" as const,
+  normal: {
+    join_type: "normal" as const,
     showSocialLogin: true,
     showEmailDomainSelect: true,
   },
   company: {
-    role: "company" as const,
+    join_type: "company" as const,
     showSocialLogin: false,
     showEmailDomainSelect: false,
   },

@@ -63,7 +63,7 @@ export default function UserFindEmailForm() {
 
   return (
     <FindEmailBaseForm
-      type="user"
+      type="normal"
       email={email}
       name={name}
       step={step}

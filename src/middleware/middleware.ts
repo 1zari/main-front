@@ -1,24 +1,20 @@
-import { UserRole } from "@/types/commonUser";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { JoinType } from "@/types/commonUser";
 
-export function middleware(request: NextRequest) {
-  const token = request.cookies.get("accessToken")?.value;
+export async function middleware(request: NextRequest) {
+  const token = request.cookies.get("token");
+  const pathname = request.nextUrl.pathname;
 
   if (!token) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(new URL("/auth/login", request.url));
   }
 
-  const payload = JSON.parse(atob(token.split(".")[1]));
-  const role = payload.role as UserRole;
+  const payload = JSON.parse(atob(token.value.split(".")[1]));
+  const join_type = payload.join_type as JoinType;
 
-  const { pathname } = request.nextUrl;
-
-  if (pathname.startsWith("/company") && role !== "company") {
-    return NextResponse.redirect(new URL("/", request.url));
-  }
-
-  if (pathname.startsWith("/admin") && role !== "admin") {
+  // 기업 회원 전용 페이지 접근 제한
+  if (pathname.startsWith("/company") && join_type !== "company") {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
