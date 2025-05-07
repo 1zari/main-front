@@ -1,36 +1,26 @@
 "use client";
 
+import { filterApi } from "@/api/filter";
 import { useSelectedFilterStore } from "@/features/jobs/stores/job-filters/useSelectedFiltersStore";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { FaCaretUp } from "react-icons/fa";
-import { useQuery } from "@tanstack/react-query";
 
-type RegionResponse = Record<string, Record<string, string[]>>;
+export type SubCategory = {
+  id: string;
+  name: string;
+};
 
-async function fetchRegions(): Promise<RegionResponse> {
-  const res = await fetch("https://senior-naeil.life/api/search/region/", {
-    method: "GET",
-  });
-  const data = await res.json();
-
-  const parsedRegions: RegionResponse = {};
-  data.forEach((region: any) => {
-    const regionName = region.name;
-    parsedRegions[regionName] = {};
-
-    region.districts.forEach((district: any) => {
-      const districtName = district.name;
-      parsedRegions[regionName][districtName] = district.towns.map((town: any) => town.name);
-    });
-  });
-
-  return parsedRegions;
-}
+export type Category = {
+  id: string;
+  name: string;
+  children: SubCategory[];
+};
 
 export default function JobLocationFilter({ setShowLocation, showLocation }) {
   const { data: regions = {}, isLoading } = useQuery({
     queryKey: ["regions"],
-    queryFn: fetchRegions,
+    queryFn: () => filterApi.getLocationList(),
     staleTime: 1000 * 60 * 5, // 5분 캐시
   });
 
