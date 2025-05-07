@@ -3,42 +3,54 @@ export const API_ENDPOINTS = {
     LOGOUT: "/user/logout",
     REFRESH_TOKEN: "/user/token/refresh",
     DELETE_ACCOUNT: "/user/delete",
+    EMAIL_CHECK: "/user/email/check/", // 2025. 5. 5 추가 안
+
     USER: {
-      SIGNUP: "/user/common_user/signup",
-      LOGIN: "/user/login",
-      COMPLETE_SIGNUP: "/user/signup/complete",
+      SIGNUP: "/user/common/signup/",
+      LOGIN: "/user/normal/login",
+      COMPLETE_SIGNUP: "/user/normal/signup/",
       SOCIAL: {
         KAKAO: {
-          LOGIN: "/user/kakao/login",
-          CALLBACK: "/user/kakao/callback",
+          LOGIN: "/user/oauth/kakao/login",
+          CALLBACK: "/user/oauth/kakao/login",
         },
         NAVER: {
-          LOGIN: "/user/naver/login",
-          CALLBACK: "/user/naver/callback",
+          LOGIN: "/user/oauth/naver/login",
+          CALLBACK: "/user/oauth/naver/login",
         },
       },
     },
+
     COMPANY: {
-      SIGNUP: "/user/company/signup",
+      SIGNUP: "/user/common/signup/",
+      COMPLETE_SIGNUP: "/user/company/signup/",
       LOGIN: "/user/company/login",
-      COMPLETE_SIGNUP: "/user/company/signup/complete",
+    },
+
+    VERIFY: {
+      SEND_CODE: "/user/verify/send-code/",
+      VERIFY_CODE: "/user/verify/code/",
+      CHECK_BUSINESS: "/user/verify/business/",
     },
   },
+
   USER: {
-    PROFILE: "/user/profile",
-    UPDATE_PROFILE: "/user/info/update",
-    FIND_EMAIL: "/user/find/email",
-    RESET_PASSWORD: "/user/reset/password",
+    PROFILE: "/user/normal/info",
+    UPDATE_PROFILE: "/user/normal/info/update",
+    FIND_EMAIL: "/user/normal/find/email",
+    RESET_PASSWORD: "/user/normal/reset/password",
+    REQUEST_PHONE_CODE: "/user/verify/send-code/",
+    VERIFY_PHONE_CODE: "/user/verify/code/",
   },
+
   COMPANY: {
-    PROFILE: "/user/company/profile",
+    PROFILE: "/user/company/info",
     UPDATE_PROFILE: "/user/company/info/update",
-    FIND_EMAIL: "/user/find/company/email",
-    RESET_PASSWORD: "/user/reset/company/password",
+    FIND_EMAIL: "/user/company/find/email",
+    RESET_PASSWORD: "/user/company/reset/password",
   },
 } as const;
 
-// API 응답 상태 메시지
 export const API_MESSAGES = {
   SUCCESS: {
     LOGIN: "로그인 성공",

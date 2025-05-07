@@ -2,9 +2,16 @@ import { httpClient, createHttpClient } from "./axios";
 import { authHelpers } from "@/utils/authHelpers";
 import qs from "qs";
 import { AxiosResponse } from "axios";
+import { getCookie } from "@/utils/cookie"; // csrftoken 꺼내기
 
-// 인증 전용 axios 인스턴스
+// CSRF 처리를 위한 보안 클라이언트
 const secureClient = createHttpClient(authHelpers);
+
+type RequestOptions = {
+  params?: Record<string, unknown>;
+  headers?: Record<string, string>;
+  secure?: boolean;
+};
 
 export interface ApiError {
   status: number;
@@ -12,69 +19,92 @@ export interface ApiError {
   data?: unknown;
 }
 
-type RequestOptions = {
-  params?: Record<string, unknown>;
-  body?: unknown;
-  headers?: Record<string, string>;
-  secure?: boolean;
-};
-
-// API 응답 기본 타입
-export interface ApiResponse<T> {
-  data: T;
-  success: boolean;
-  message?: string;
-}
-
-// 기본 fetcher (인증 필요 없는 요청용)
 export const fetcher = {
+  // GET
   get: async <T>(path: string, options?: RequestOptions): Promise<T> => {
     const query = options?.params
       ? `?${qs.stringify(options.params, { skipNulls: true, arrayFormat: "brackets" })}`
       : "";
-
-    // 인증이 필요한 요청인 경우 secureClient 사용, 아니면 기본 httpClient 사용
     const client = options?.secure ? secureClient : httpClient;
-
     const res: AxiosResponse<T> = await client.get(`${path}${query}`, {
       headers: options?.headers,
+      withCredentials: options?.secure ?? false,
     });
     return res.data;
   },
 
-  post: async <T>(path: string, body?: unknown, options?: RequestOptions): Promise<T> => {
+  // POST
+  post: async <T, B = unknown>(path: string, body?: B, options?: RequestOptions): Promise<T> => {
     const client = options?.secure ? secureClient : httpClient;
+    const isFormData = body instanceof FormData;
 
-    const res: AxiosResponse<T> = await client.post(path, body, {
-      headers: options?.headers,
+    // FormData면 multipart, 아니면 json
+    const headers: Record<string, string> = {
+      ...(isFormData
+        ? { "Content-Type": "multipart/form-data" }
+        : { "Content-Type": "application/json" }),
+      ...(options?.secure && { "X-CSRFToken": getCookie("csrftoken") || "" }),
+      ...options?.headers,
+    };
+
+    const res: AxiosResponse<T> = await client.post<T, AxiosResponse<T>, B>(path, body!, {
+      withCredentials: options?.secure ?? false,
+      headers,
     });
     return res.data;
   },
 
-  put: async <T>(path: string, body?: unknown, options?: RequestOptions): Promise<T> => {
+  // PUT
+  put: async <T, B = unknown>(path: string, body?: B, options?: RequestOptions): Promise<T> => {
     const client = options?.secure ? secureClient : httpClient;
-
-    const res: AxiosResponse<T> = await client.put(path, body, {
-      headers: options?.headers,
+    const isFormData = body instanceof FormData;
+    const headers: Record<string, string> = {
+      ...(isFormData
+        ? { "Content-Type": "multipart/form-data" }
+        : { "Content-Type": "application/json" }),
+      ...(options?.secure && { "X-CSRFToken": getCookie("csrftoken") || "" }),
+      ...options?.headers,
+    };
+    const res: AxiosResponse<T> = await client.put<T, AxiosResponse<T>, B>(path, body!, {
+      withCredentials: options?.secure ?? false,
+      headers,
     });
     return res.data;
   },
 
-  patch: async <T>(path: string, body?: unknown, options?: RequestOptions): Promise<T> => {
+  // PATCH
+  patch: async <T, B = unknown>(path: string, body?: B, options?: RequestOptions): Promise<T> => {
     const client = options?.secure ? secureClient : httpClient;
-
-    const res: AxiosResponse<T> = await client.patch(path, body, {
-      headers: options?.headers,
+    const isFormData = body instanceof FormData;
+    const headers: Record<string, string> = {
+      ...(isFormData
+        ? { "Content-Type": "multipart/form-data" }
+        : { "Content-Type": "application/json" }),
+      ...(options?.secure && { "X-CSRFToken": getCookie("csrftoken") || "" }),
+      ...options?.headers,
+    };
+    const res: AxiosResponse<T> = await client.patch<T, AxiosResponse<T>, B>(path, body!, {
+      withCredentials: options?.secure ?? false,
+      headers,
     });
     return res.data;
   },
 
-  delete: async <T>(path: string, body?: unknown, options?: RequestOptions): Promise<T> => {
+  // DELETE
+  delete: async <T, B = unknown>(path: string, body?: B, options?: RequestOptions): Promise<T> => {
     const client = options?.secure ? secureClient : httpClient;
-
-    const res: AxiosResponse<T> = await client.delete(path, {
-      data: body,
-      headers: options?.headers,
+    const isFormData = body instanceof FormData;
+    const headers: Record<string, string> = {
+      ...(isFormData
+        ? { "Content-Type": "multipart/form-data" }
+        : { "Content-Type": "application/json" }),
+      ...(options?.secure && { "X-CSRFToken": getCookie("csrftoken") || "" }),
+      ...options?.headers,
+    };
+    const res: AxiosResponse<T> = await client.delete<T, AxiosResponse<T>, B>(path, {
+      data: body!,
+      withCredentials: options?.secure ?? false,
+      headers,
     });
     return res.data;
   },

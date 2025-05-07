@@ -3,6 +3,7 @@ import Footer from "../components/Footer";
 import Navigation from "../components/Navigation";
 import { FontSizeProvider } from "../hooks/useFontSize";
 import "./globals.css";
+import CSRFInit from "./_components/CSRFInit";
 
 export const metadata = {
   title: "시니어내일",
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <FontSizeProvider>
+          <CSRFInit />
           <Navigation />
           <main>{children}</main>
           <Footer />

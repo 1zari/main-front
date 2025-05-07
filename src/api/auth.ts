@@ -14,17 +14,14 @@ import type {
   CompanyLoginResponseDto,
   CompanySignupRequestDto,
   CompanySignupResponseDto,
+  UserCompleteSignupRequestDto,
 } from "@/types/api/auth";
-import type { UpdateUserInfoRequestDto } from "@/types/api/user";
-import type { UpdateCompanyInfoRequestDto } from "@/types/api/company";
 
 export const authApi = {
   // 공통 인증
   logout: (refreshToken: string) => {
     const data: LogoutRequestDto = { refresh_token: refreshToken };
-    return fetcher.post<LogoutResponseDto>(API_ENDPOINTS.AUTH.LOGOUT, data, {
-      secure: true,
-    });
+    return fetcher.post<LogoutResponseDto>(API_ENDPOINTS.AUTH.LOGOUT, data, { secure: true });
   },
 
   refreshToken: (refreshToken: string) => {
@@ -46,18 +43,19 @@ export const authApi = {
     },
 
     signup: (data: SignupRequestDto) => {
-      return fetcher.post<SignupResponseDto>(API_ENDPOINTS.AUTH.USER.SIGNUP, data);
-    },
-
-    completeSignup: (userId: string, data: UpdateUserInfoRequestDto) => {
-      return fetcher.patch<SignupResponseDto>(
-        `${API_ENDPOINTS.AUTH.USER.SIGNUP}/complete/${userId}`,
+      return fetcher.post<SignupResponseDto>(
+        API_ENDPOINTS.AUTH.USER.SIGNUP,
         data,
-        { secure: true },
+        { secure: true }, // CSRF 토큰 자동 포함
       );
     },
 
-    // 소셜 로그인
+    completeSignup: (data: UserCompleteSignupRequestDto) => {
+      return fetcher.post<SignupResponseDto>(API_ENDPOINTS.AUTH.USER.COMPLETE_SIGNUP, data, {
+        secure: true,
+      });
+    },
+
     social: {
       kakao: {
         login: () => {
@@ -82,7 +80,7 @@ export const authApi = {
     },
   },
 
-  // 기업 회원 인증
+  // 기업 사용자 인증
   company: {
     login: (email: string, password: string) => {
       const data: CompanyLoginRequestDto = { email, password };
@@ -90,13 +88,26 @@ export const authApi = {
     },
 
     signup: (data: CompanySignupRequestDto) => {
-      return fetcher.post<CompanySignupResponseDto>(API_ENDPOINTS.AUTH.COMPANY.SIGNUP, data);
+      return fetcher.post<CompanySignupResponseDto>(API_ENDPOINTS.AUTH.COMPANY.SIGNUP, data, {
+        secure: true,
+      });
     },
 
-    completeSignup: (companyId: string, data: UpdateCompanyInfoRequestDto) => {
-      return fetcher.patch<CompanySignupResponseDto>(
-        `${API_ENDPOINTS.AUTH.COMPANY.SIGNUP}/complete/${companyId}`,
-        data,
+    completeSignup: (formData: FormData) => {
+      return fetcher.post<CompanySignupResponseDto>(
+        API_ENDPOINTS.AUTH.COMPANY.COMPLETE_SIGNUP,
+        formData,
+        { secure: true },
+      );
+    },
+  },
+
+  // 사업자등록번호 검증
+  verify: {
+    checkBusiness: (b_no: string, p_nm: string, start_dt: string) => {
+      return fetcher.post<{ valid: boolean; message: string }>(
+        API_ENDPOINTS.AUTH.VERIFY.CHECK_BUSINESS,
+        { b_no, p_nm, start_dt },
         { secure: true },
       );
     },

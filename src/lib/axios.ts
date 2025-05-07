@@ -10,39 +10,50 @@ const defaultConfig: AxiosRequestConfig = {
   headers: {
     "Content-Type": "application/json",
   },
-  withCredentials: true,
+  withCredentials: false, // 쿠키 전송은 secure 클라이언트에서만 true 처리
 };
 
 // axios 인스턴스 생성 함수
 export function createHttpClient(authHelpers?: AuthHelpers): AxiosInstance {
   const instance = axios.create(defaultConfig);
 
-  // authHelpers가 제공되면 인증 기능 활성화
   if (authHelpers) {
-    // 요청 인터셉터 - accessToken 주입
+    // 요청 인터셉터 토큰 주입 & 디버그 로그
     instance.interceptors.request.use((config) => {
       const { accessToken } = authHelpers.getTokens();
       if (accessToken && config.headers) {
-        // 토큰이 있고 헤더가 있으면 헤더에 토큰 주입
-        config.headers.Authorization = `Bearer ${accessToken}`;
+        config.headers.Authorization = `Bearer ${accessToken}`; // 헤더에 액세스 토큰 추가
       }
+
+      // 디버그용 최종 request config 확인
+      console.log("axios request config:", {
+        url: config.url,
+        method: config.method,
+        headers: config.headers,
+        // FormData면 entries 배열로, 아니면 그대로 출력
+        data:
+          config.data instanceof FormData
+            ? Array.from((config.data as FormData).entries())
+            : config.data,
+      });
+
       return config;
     });
 
-    // 응답 인터셉터 - 401 처리 및 토큰 갱신
+    // 응답 인터셉터 401 처리 및 토큰 갱신
     instance.interceptors.response.use(
       (response) => response,
       async (error) => {
         const originalRequest = error.config;
         const { refreshToken } = authHelpers.getTokens();
 
-        // 401 에러 + 재시도되지 않은 요청 + 리프레시 토큰 존재
         if (error.response?.status === 401 && !originalRequest._retry && refreshToken) {
           originalRequest._retry = true;
-
           try {
-            // 토큰 갱신 요청 - API 경로 일치시킴
-            const requestData: TokenRefreshRequestDto = { refresh_token: refreshToken };
+            // 리프레시 토큰으로 새로운 액세스 토큰 요청
+            const requestData: TokenRefreshRequestDto = {
+              refresh_token: refreshToken,
+            };
             const res = await axios.post<TokenRefreshResponseDto>(
               `${API_URL}/user/token/refresh`,
               requestData,
@@ -51,11 +62,11 @@ export function createHttpClient(authHelpers?: AuthHelpers): AxiosInstance {
             const newAccessToken = res.data.access;
             authHelpers.setTokens(newAccessToken, refreshToken);
 
-            // 헤더 업데이트 후 요청 재시도
+            // 갱신된 토큰으로 헤더 업데이트 후 재요청
             originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
             return instance(originalRequest);
           } catch {
-            // 토큰 갱신 실패 시 로그아웃 처리
+            // 갱신 실패 시 로그아웃 처리
             authHelpers.clearTokens();
             authHelpers.redirectToLogin();
             return Promise.reject(error);
@@ -70,5 +81,5 @@ export function createHttpClient(authHelpers?: AuthHelpers): AxiosInstance {
   return instance;
 }
 
-// 기본 HTTP 클라이언트 (인증 없음)
+// 기본 HTTP 클라이언트 (인증 로직 없이 사용)
 export const httpClient = createHttpClient();
