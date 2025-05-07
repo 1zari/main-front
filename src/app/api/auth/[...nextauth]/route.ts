@@ -4,8 +4,7 @@ import KakaoProvider from "next-auth/providers/kakao";
 import NaverProvider from "next-auth/providers/naver";
 import type { JoinType } from "@/types/commonUser";
 import { authApi } from "@/api/auth";
-import { API_ENDPOINTS } from "@/constants/apiEndPoints";
-import { fetcher } from "@/lib/fetcher";
+import type { LoginResponseDto, CompanyLoginResponseDto } from "@/types/api/auth";
 
 async function authorizeUserLogin({
   credentials,
@@ -25,7 +24,7 @@ async function authorizeUserLogin({
     company_name?: string;
   }>;
 }) {
-  const { email, password, join_type } = credentials;
+  const { email, password } = credentials;
 
   if (!email || !password) {
     throw new Error("필수 정보가 누락되었습니다.");
@@ -33,40 +32,40 @@ async function authorizeUserLogin({
 
   const response = await loginFn(email, password);
 
-  // 1. 로그인 응답에서 user 값 추출(없으면 빈 값)
-  let baseProfile = {
-    common_user_id: "",
-    email: "",
-    name: "",
-    join_type: join_type || "normal",
-  };
-
-  if ("user" in response && response.user) {
-    const user = response.user as Partial<{
-      common_user_id: string;
-      email: string;
-      name: string;
-      company_name: string;
-      join_type: string;
-    }>;
-    baseProfile = {
-      common_user_id: user.common_user_id ?? "",
-      email: user.email ?? "",
-      name: user.name ?? user.company_name ?? "",
-      join_type: user.join_type ?? join_type ?? "normal",
-    };
+  // 로그인 응답에 user 값이 없으면 에러 처리
+  if (!("user" in response) || !response.user) {
+    throw new Error("로그인 응답에 user 정보가 없습니다.");
   }
+  const user = response.user as {
+    common_user_id: string;
+    email: string;
+    name?: string;
+    company_name?: string;
+    join_type: string;
+  };
+  if (!user.common_user_id || !user.email || !user.join_type) {
+    throw new Error("로그인 응답에 필수 정보가 없습니다.");
+  }
+  const baseProfile = {
+    common_user_id: user.common_user_id,
+    email: user.email,
+    name: user.name ?? user.company_name ?? "",
+    join_type: user.join_type,
+  };
 
   // 2. getProfileFn이 있으면 프로필 API 값으로 덮어쓰기(필드가 있으면 덮어씀)
   let profile = { ...baseProfile };
   if (getProfileFn) {
     const profileData = await getProfileFn();
+    if (!profileData.common_user_id || !profileData.email || !profileData.join_type) {
+      throw new Error("프로필 응답에 필수 정보가 없습니다.");
+    }
     profile = {
       ...profile,
-      common_user_id: profileData.common_user_id ?? profile.common_user_id,
-      email: profileData.email ?? profile.email,
+      common_user_id: profileData.common_user_id,
+      email: profileData.email,
       name: profileData.name ?? profileData.company_name ?? profile.name,
-      join_type: profileData.join_type ?? profile.join_type,
+      join_type: profileData.join_type,
     };
   }
 
@@ -80,42 +79,32 @@ async function authorizeUserLogin({
   };
 }
 
+type LoginFn = (
+  email: string,
+  password: string,
+) => Promise<LoginResponseDto | CompanyLoginResponseDto>;
+function createCredentialsProvider(id: string, name: string, loginFn: LoginFn) {
+  return CredentialsProvider({
+    id,
+    name,
+    credentials: {
+      email: { label: "이메일", type: "email" },
+      password: { label: "비밀번호", type: "password" },
+      join_type: { label: "가입 유형", type: "text" },
+    },
+    async authorize(credentials) {
+      return authorizeUserLogin({
+        credentials,
+        loginFn,
+      });
+    },
+  });
+}
+
 export const authOptions: NextAuthOptions = {
   providers: [
-    CredentialsProvider({
-      id: "user-credentials",
-      name: "User Credentials",
-      credentials: {
-        email: { label: "이메일", type: "email" },
-        password: { label: "비밀번호", type: "password" },
-        join_type: { label: "가입 유형", type: "text" },
-      },
-      async authorize(credentials) {
-        return authorizeUserLogin({
-          credentials,
-          loginFn: (email, password) =>
-            fetcher.post(API_ENDPOINTS.AUTH.USER.LOGIN, {
-              email,
-              password,
-            }),
-        });
-      },
-    }),
-    CredentialsProvider({
-      id: "company-credentials",
-      name: "Company Credentials",
-      credentials: {
-        email: { label: "이메일", type: "email" },
-        password: { label: "비밀번호", type: "password" },
-        join_type: { label: "가입 유형", type: "text" },
-      },
-      async authorize(credentials) {
-        return authorizeUserLogin({
-          credentials,
-          loginFn: authApi.company.login,
-        });
-      },
-    }),
+    createCredentialsProvider("user-credentials", "User Credentials", authApi.user.login),
+    createCredentialsProvider("company-credentials", "Company Credentials", authApi.company.login),
     KakaoProvider({
       clientId: process.env.KAKAO_CLIENT_ID ?? "",
       clientSecret: process.env.KAKAO_CLIENT_SECRET ?? "",
