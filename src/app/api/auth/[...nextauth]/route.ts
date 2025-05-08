@@ -46,6 +46,12 @@ async function authorizeUserLogin({
   if (!user.common_user_id || !user.email || !user.join_type) {
     throw new Error("로그인 응답에 필수 정보가 없습니다.");
   }
+
+  // 회원 유형 불일치 시 명확한 에러 메시지 던지기
+  if (user.join_type !== credentials.join_type) {
+    throw new Error("회원 유형이 일치하지 않습니다.");
+  }
+
   const baseProfile = {
     common_user_id: user.common_user_id,
     email: user.email,

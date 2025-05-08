@@ -23,14 +23,12 @@ import type {
 } from "@/types/api/auth";
 import type { CompanyProfileResponseDto } from "@/types/api/company";
 import type {
-  UpdateUserInfoRequestDto,
   UserFindEmailRequestDto,
   UserFindEmailResponseDto,
   UserResetPasswordRequestDto,
   UserResetPasswordResponseDto,
 } from "@/types/api/user";
 import type {
-  UpdateCompanyInfoRequestDto,
   CompanyFindEmailRequestDto,
   CompanyFindEmailResponseDto,
   CompanyResetPasswordRequestDto,
