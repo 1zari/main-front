@@ -77,6 +77,7 @@ async function authorizeUserLogin({
 
   return {
     id: profile.common_user_id,
+    sub: profile.common_user_id,
     email: profile.email,
     name: profile.name,
     join_type: profile.join_type as JoinType,
@@ -133,6 +134,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         console.log("user in jwt callback:", user);
         token.id = user.id;
+        token.sub = user.id;
         token.name = user.name;
         token.email = user.email;
         token.join_type = user.join_type;
