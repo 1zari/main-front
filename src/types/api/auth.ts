@@ -178,3 +178,20 @@ export interface VerifyCodeRequestDto {
 export interface VerifyCodeResponseDto {
   message: "Verification successful.";
 }
+// 회원가입 전화번호 인증 요청 DTO
+export interface PhoneVerificationRequestDto {
+  phone_number: string;
+  join_type: "normal" | "company";
+}
+
+// 인증번호 요청 응답 DTO
+export interface PhoneVerificationResponseDto {
+  message: string;
+}
+
+// 인증번호 검증 요청 DTO
+export interface VerifyCodeRequestDto {
+  phone_number: string;
+  code: string;
+  join_type: "normal" | "company";
+}

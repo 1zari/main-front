@@ -89,7 +89,7 @@ export const authApi = {
       return fetcher.post<SignupCompleteResponseDto>(
         API_ENDPOINTS.AUTH.USER.COMPLETE_SIGNUP,
         data,
-        { secure: true },
+        { secure: true }, // CSRF 토큰 자동 포함
       );
     },
 
