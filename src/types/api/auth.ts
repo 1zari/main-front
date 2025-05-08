@@ -5,7 +5,7 @@ export interface SignupRequestDto {
   password: string;
 }
 
-// 공통 회원가입 응답
+// 공통 회원가입 응답 DTO (1단계)
 export interface SignupResponseDto {
   common_user_id: string;
   email: string;
@@ -16,7 +16,7 @@ export interface SignupResponseDto {
   signup_status: SignupStatus;
 }
 
-// 최종 개인회원가입 요청
+// 최종 개인회원가입 요청 DTO
 export type UserCompleteSignupRequestDto = {
   common_user_id: string;
   name: string;
@@ -27,6 +27,14 @@ export type UserCompleteSignupRequestDto = {
   purpose_subscription: string[];
   route: string[];
 };
+
+// wrapper에서 사용하는 이름과 매칭
+export type SignupCompleteRequestDto = UserCompleteSignupRequestDto;
+
+// 최종 개인회원가입 응답 DTO
+export interface SignupCompleteResponseDto {
+  message: string;
+}
 
 // 회원가입 상태 타입
 export type SignupStatus = "PENDING" | "COMPLETED";
@@ -62,7 +70,7 @@ export interface CompanySignupRequestDto {
   join_type: "company";
 }
 
-// 기업 회원 회원가입 응답 DTO
+// 기업 회원 회원가입 응답 DTO (1단계)
 export interface CompanySignupResponseDto {
   company_id: string;
   email: string;
