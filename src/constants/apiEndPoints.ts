@@ -7,9 +7,9 @@ export const API_ENDPOINTS = {
     EMAIL_CHECK: "/user/email/check/",
     VERIFY_CODE: "/user/verification/verify/",
     USER: {
-      SIGNUP: "/user/common_user/signup/",
+      SIGNUP: "/user/common/signup/",
       LOGIN: "/user/normal/login/",
-      COMPLETE_SIGNUP: "/user/signup/complete/",
+      COMPLETE_SIGNUP: "/user/normal/signup/",
       SOCIAL: {
         KAKAO: {
           LOGIN: "/user/oauth/kakao/login/",

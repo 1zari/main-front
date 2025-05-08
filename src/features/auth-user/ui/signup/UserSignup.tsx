@@ -7,9 +7,11 @@ import SignupStepTwoUser, {
 } from "@/features/auth-user/ui/signup/UserSignupStepTwoForm";
 import { SignupFormValues } from "@/features/auth-common/validation/signup-auth.schema";
 import { authApi } from "@/api/auth";
+import { useModalStore } from "@/store/useModalStore";
 
 export default function UserSignup() {
   const router = useRouter();
+  const showModal = useModalStore((s) => s.showModal);
   const [step, setStep] = useState<1 | 2>(1);
   const [stepOneData, setStepOneData] = useState<SignupFormValues | null>(null);
   const [userId, setUserId] = useState<string>("");
@@ -37,7 +39,6 @@ export default function UserSignup() {
                 alert("회원가입에 실패했습니다. 다시 시도해주세요.");
               }
             }}
-            userType="normal"
           />
         ) : (
           <SignupStepTwoUser
@@ -64,9 +65,12 @@ export default function UserSignup() {
                   route: data.channels,
                 });
                 console.log("회원가입 최종 완료");
-                alert("회원가입이 완료되었습니다!");
-
-                router.push("/auth/login?tab=user");
+                showModal({
+                  title: "회원가입 완료",
+                  message: "시니어내일에 오신 것을 환영합니다!",
+                  confirmText: "로그인 하러가기",
+                  onConfirm: () => router.push("/auth/login?tab=user"),
+                });
               } catch (err) {
                 console.error("회원가입 최종 실패:", err);
                 alert("회원정보 입력 중 오류가 발생했습니다.");
