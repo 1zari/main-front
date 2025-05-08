@@ -1,12 +1,12 @@
 import { Heading } from "@/components/ui/Heading";
 import { FaCaretDown } from "react-icons/fa";
 
+import { useFilterTabStore } from "@/features/jobs/components/filter/stores/useJobFilterTabsStore";
 import { useSearchJobs } from "@/features/jobs/hooks/useSearchJobs";
-import { useFilterTabStore } from "@/features/jobs/stores/job-filters/useJobFilterTabsStore";
-import { useSelectedFilterStore } from "@/features/jobs/stores/job-filters/useSelectedFiltersStore";
 import FilterJobs from "./filter/JobCategoryFilter";
 import FilterOtherConditions from "./filter/JobConditionsFilter";
-import FilterLocation from "./filter/JobLocationFilter";
+import JobLocationFilter from "./filter/JobLocationFilter";
+import useFiltersStore from "./filter/stores/useFiltersStore";
 
 export default function JobFilter() {
   const {
@@ -22,10 +22,10 @@ export default function JobFilter() {
     "w-full border border-gray-300 px-2 py-3 rounded-md flex justify-center items-center gap-2 text-gray-500";
 
   const navBtnSelectedClassName = "border-primary font-bold text-primary";
-  const locationChecked = useSelectedFilterStore((state) => state.locationChecked);
-  const checkedJobs = useSelectedFilterStore((state) => state.checkedJobs);
-  const selectedDays = useSelectedFilterStore((state) => state.selectedDays);
-  const dayNegotiable = useSelectedFilterStore((state) => state.dayNegotiable);
+  const towns = useFiltersStore((state) => state.towns);
+  const jobCats = useFiltersStore((state) => state.jobCats);
+  const selectedDays = useFiltersStore((state) => state.selectedDays);
+  const dayNegotiable = useFiltersStore((state) => state.dayNegotiable);
 
   const { result, isLoading, error, search } = useSearchJobs();
 
@@ -42,9 +42,7 @@ export default function JobFilter() {
               onClick={() => setShowLocation(!showLocation)}
             >
               지역
-              {locationChecked.length > 0 && (
-                <span className="text-primary">{locationChecked.length}</span>
-              )}
+              {towns.length > 0 && <span className="text-primary">{towns.length}</span>}
               <span
                 className={`transition-transform duration-300 ${showLocation ? "rotate-180" : ""}`}
               >
@@ -56,7 +54,7 @@ export default function JobFilter() {
               onClick={() => setShowJobs(!showJobs)}
             >
               직종
-              {checkedJobs.length > 0 && <span className="text-primary">{checkedJobs.length}</span>}
+              {jobCats.length > 0 && <span className="text-primary">{jobCats.length}</span>}
               <span className={`transition-transform duration-300 ${showJobs ? "rotate-180" : ""}`}>
                 <FaCaretDown />
               </span>
@@ -85,9 +83,7 @@ export default function JobFilter() {
               검색하기
             </button>
           </div>
-          {showLocation && (
-            <FilterLocation setShowLocation={setShowLocation} showLocation={showLocation} />
-          )}
+          {showLocation && <JobLocationFilter setOpen={setShowLocation} open={showLocation} />}
           {showJobs && <FilterJobs setShowJobs={setShowJobs} showJobs={showJobs} />}
           {showOtherConditions && (
             <FilterOtherConditions
