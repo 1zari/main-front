@@ -53,6 +53,9 @@ export const fetcher = {
       headers: options?.headers,
       withCredentials: options?.secure ?? false,
     });
+    console.log("🚀 요청 path:", path);
+    console.log("📎 요청 query:", query);
+    console.log("📦 최종 요청 URL:", `${path}${query}`);
     return res.data;
   },
 
