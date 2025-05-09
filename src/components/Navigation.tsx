@@ -1,10 +1,10 @@
 "use client";
 
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useFontSize } from "../hooks/useFontSize";
-import { useSession, signOut } from "next-auth/react";
 
 export default function Navigation() {
   const pathname = usePathname();
@@ -64,6 +64,26 @@ export default function Navigation() {
                 채용공고
               </Link>
             </li>
+            {session?.user?.join_type === "company" && (
+              <>
+                <li>
+                  <Link
+                    href="/recruit"
+                    className={`${pathname.startsWith("/recruit") ? selectedNavBtnClassName : ""}  ${hoverClassName}`}
+                  >
+                    공고관리
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/applicants"
+                    className={`${pathname.startsWith("/applicants") ? selectedNavBtnClassName : ""}  ${hoverClassName}`}
+                  >
+                    지원자조회
+                  </Link>
+                </li>
+              </>
+            )}
             {status === "authenticated" && session?.user?.id && session?.user?.join_type ? (
               <>
                 <li>
@@ -102,20 +122,22 @@ export default function Navigation() {
             )}
           </ul>
         </div>
-        <div className="items-center justify-end hidden w-full gap-2 md:flex">
-          <button
-            onClick={decrease}
-            className="px-2 py-1 text-sm transition-colors duration-200 border rounded hover:bg-gray-100"
-          >
-            가-
-          </button>
-          <button
-            onClick={increase}
-            className="px-2 py-1 text-sm transition-colors duration-200 border rounded hover:bg-gray-100"
-          >
-            가+
-          </button>
-        </div>
+        {session?.user?.join_type !== "company" && (
+          <div className="items-center justify-end hidden w-full gap-2 md:flex">
+            <button
+              onClick={decrease}
+              className="px-2 py-1 text-sm transition-colors duration-200 border rounded hover:bg-gray-100"
+            >
+              가-
+            </button>
+            <button
+              onClick={increase}
+              className="px-2 py-1 text-sm transition-colors duration-200 border rounded hover:bg-gray-100"
+            >
+              가+
+            </button>
+          </div>
+        )}
       </div>
     </nav>
   );
