@@ -5,10 +5,7 @@ export interface SignupRequestDto {
   password: string;
 }
 
-// 회원가입 상태 타입
-export type SignupStatus = "PENDING" | "COMPLETED";
-
-// 일반 회원 회원가입 응답 DTO
+// 공통 회원가입 응답 DTO (1단계)
 export interface SignupResponseDto {
   common_user_id: string;
   email: string;
@@ -18,6 +15,29 @@ export interface SignupResponseDto {
   last_login: string | null;
   signup_status: SignupStatus;
 }
+
+// 최종 개인회원가입 요청 DTO
+export type UserCompleteSignupRequestDto = {
+  common_user_id: string;
+  name: string;
+  phone_number: string;
+  gender: string;
+  birthday: string | null;
+  interest: string[];
+  purpose_subscription: string[];
+  route: string[];
+};
+
+// wrapper에서 사용하는 이름과 매칭
+export type SignupCompleteRequestDto = UserCompleteSignupRequestDto;
+
+// 최종 개인회원가입 응답 DTO
+export interface SignupCompleteResponseDto {
+  message: string;
+}
+
+// 회원가입 상태 타입
+export type SignupStatus = "PENDING" | "COMPLETED";
 
 // 일반 회원 로그인 요청 DTO
 export interface LoginRequestDto {
@@ -47,9 +67,10 @@ export interface CompanySignupRequestDto {
   business_number: string;
   representative_name: string;
   phone_number: string;
+  join_type: "company";
 }
 
-// 기업 회원 회원가입 응답 DTO
+// 기업 회원 회원가입 응답 DTO (1단계)
 export interface CompanySignupResponseDto {
   company_id: string;
   email: string;
@@ -62,6 +83,7 @@ export interface CompanySignupResponseDto {
   created_at: string;
   updated_at: string;
   signup_status: SignupStatus;
+  common_user_id: string;
 }
 
 // 기업 회원 로그인 요청 DTO
@@ -155,4 +177,21 @@ export interface VerifyCodeRequestDto {
 // 문자 인증 코드 검증 응답 DTO
 export interface VerifyCodeResponseDto {
   message: "Verification successful.";
+}
+// 회원가입 전화번호 인증 요청 DTO
+export interface PhoneVerificationRequestDto {
+  phone_number: string;
+  join_type: "normal" | "company";
+}
+
+// 인증번호 요청 응답 DTO
+export interface PhoneVerificationResponseDto {
+  message: string;
+}
+
+// 인증번호 검증 요청 DTO
+export interface VerifyCodeRequestDto {
+  phone_number: string;
+  code: string;
+  join_type: "normal" | "company";
 }
