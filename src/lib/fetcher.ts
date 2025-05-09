@@ -1,11 +1,26 @@
-import { httpClient, createHttpClient } from "./axios";
 import { authHelpers } from "@/utils/authHelpers";
-import qs from "qs";
 import { AxiosResponse } from "axios";
+import qs from "qs";
+import { createHttpClient, httpClient } from "./axios";
 
 // 인증 전용 axios 인스턴스
 const secureClient = createHttpClient(authHelpers);
 
+secureClient.interceptors.request.use(async (config) => {
+  const token = await authHelpers.getAccessToken?.();
+  const role = await authHelpers.getUserRole?.();
+
+  console.log("🔐 secureClient 요청 직전 token:", token);
+  console.log("🧾 secureClient 요청 직전 role:", role);
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  if (role) {
+    config.headers["X-User-Role"] = role;
+  }
+  return config;
+});
 export interface ApiError {
   status: number;
   message: string;
