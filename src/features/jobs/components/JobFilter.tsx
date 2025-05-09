@@ -28,7 +28,7 @@ export default function JobFilter() {
   const dayNegotiable = useFiltersStore((state) => state.dayNegotiable);
 
   const { result, isLoading, error, search } = useSearchJobs();
-  
+
   return (
     <>
       <section className="w-full max-w-7xl mx-auto my-8">
@@ -75,13 +75,6 @@ export default function JobFilter() {
                 <FaCaretDown />
               </span>
             </button>
-
-            <button
-              className="w-full bg-primary text-white px-2 py-3 rounded-md flex justify-center items-center gap-2"
-              onClick={() => search()}
-            >
-              검색하기
-            </button>
           </div>
           {showLocation && <JobLocationFilter setOpen={setShowLocation} open={showLocation} />}
           {showJobs && <FilterJobs setShowJobs={setShowJobs} showJobs={showJobs} />}
@@ -91,8 +84,8 @@ export default function JobFilter() {
               showOtherConditions={showOtherConditions}
             />
           )}
-
-          <div className="mt-6">
+          {/* 채용공고 api 연결 후 응답 재작성해야함 */}
+          {/* <div className="mt-6">
             {isLoading && <p>로딩중...</p>}
             {error && <p>에러 발생</p>}
             {result && result.results && (
@@ -100,12 +93,11 @@ export default function JobFilter() {
                 {result.results.map((job: any) => (
                   <div key={job.id} className="p-4 border rounded-md shadow-sm">
                     <h3 className="font-semibold text-lg">{job.title}</h3>
-                    {/* 필요에 따라 추가 정보 렌더링 */}
                   </div>
                 ))}
               </div>
             )}
-          </div>
+          </div> */}
         </div>
       </section>
     </>
