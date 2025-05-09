@@ -47,9 +47,7 @@ export const filterApi = {
     return fetcher.get<Category[]>(API_ENDPOINTS.JOB_FILTER.CATEGORY);
   },
   getLocationList: async () => {
-    return fetch(`https://senior-naeil.life/api${API_ENDPOINTS.JOB_FILTER.LOCATION}`, {
-      credentials: "include",
-    }) as unknown as City[];
+    return fetcher.get<Category[]>(API_ENDPOINTS.JOB_FILTER.LOCATION) as unknown as City[];
     // return await fetcher.get<City[]>(API_ENDPOINTS.JOB_FILTER.LOCATION);
   },
 };
