@@ -41,7 +41,7 @@ export const API_ENDPOINTS = {
   JOB_POST: {
     LIST: "/job-postings/job-postings/",
     DETAIL: (id: string) => `/job-postings/job-postings/${id}`,
-    CREATE: "/job-postings/job-postings/",
+    CREATE: "/job-postings/create/",
     UPDATE: (id: string) => `/job-postings/job-postings/${id}`,
     DELETE: (id: string) => `/job-postings/job-postings/${id}`,
   },
