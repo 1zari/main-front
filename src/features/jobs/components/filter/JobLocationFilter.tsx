@@ -4,7 +4,7 @@ import { City, District, filterApi, Town } from "@/api/filter";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { FaCaretUp } from "react-icons/fa";
-import useFiltersStore, { HoleTown } from "./stores/useFiltersStore";
+import useFiltersStore, { AllTown } from "./stores/useFiltersStore";
 
 /**
  * 도,시 (경기도, 서울특별시 등) 컴포넌트
@@ -117,7 +117,7 @@ export default function JobLocationFilter({ open, setOpen }: JobLocationFilterPr
 
   const [selectedCity, setSelectedCity] = useState<City>(city);
   const [selectedDistrict, setSelectedDistrict] = useState<District>(district);
-  const [checkedTowns, setCheckedTowns] = useState<HoleTown[]>(towns);
+  const [checkedTowns, setCheckedTowns] = useState<AllTown[]>(towns);
 
   /** 시.도 초기화 */
   React.useEffect(() => {

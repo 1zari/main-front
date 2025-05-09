@@ -1,6 +1,7 @@
 "use client";
 
 import useFiltersStore from "@/features/jobs/components/filter/stores/useFiltersStore";
+import { useSearchJobs } from "@/features/jobs/hooks/useSearchJobs";
 
 import { IoMdRefresh } from "react-icons/io";
 
@@ -27,6 +28,7 @@ export default function SelectedChips() {
 
   // if (selectedFilters.length === 0) return null;
 
+  const { search } = useSearchJobs();
   return (
     <>
       <div className="flex flex-wrap gap-2 my-4">
@@ -87,7 +89,7 @@ export default function SelectedChips() {
             </button>
           </div>
         )}
-        {/* // 경력 */}
+        {/*  경력 */}
         {workExperiences.length > 0 &&
           workExperiences.map((experience) => (
             <div
@@ -170,7 +172,10 @@ export default function SelectedChips() {
           </span>
           초기화
         </button>
-        <button className="w-44 md:w-32 grid-rows-5 bg-primary text-white  px-2 py-3 rounded-md flex justify-center items-center gap-2">
+        <button
+          onClick={() => search()}
+          className="w-44 md:w-32 grid-rows-5 bg-primary text-white  px-2 py-3 rounded-md flex justify-center items-center gap-2"
+        >
           검색하기
         </button>
       </div>

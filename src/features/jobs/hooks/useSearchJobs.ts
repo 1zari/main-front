@@ -1,5 +1,7 @@
+import useFiltersStore from "@/features/jobs/components/filter/stores/useFiltersStore";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import qs from "qs";
 import { useState } from "react";
 
 type SearchJobResult = {
@@ -19,21 +21,24 @@ type SearchJobResult = {
 };
 
 export function useSearchJobs() {
-  // const {} = useFiltersStore();
+  const { city, district, towns, selectedDays, employmentType, educations } = useFiltersStore();
   const [result, setResult] = useState<SearchJobResult[] | null>(null);
 
   const mutation = useMutation({
     mutationFn: async () => {
       const response = await axios.get("https://senior-naeil.life/api/search/", {
         params: {
-          // city: selectedFilters.locationChecked,
-          // district: [],
-          // town: [],
-          // work_day: selectedFilters.selectedDays,
-          // posting_types: selectedFilters.checkedJobs[0] || "",
-          // employment_type: selectedFilters.employmentType,
-          // education: selectedFilters.education,
-          // search: selectedFilters.searchKeyword,
+          city: city?.id,
+          district: district?.id,
+          town: towns.map((town) => town.id),
+          work_day: selectedDays,
+          posting_types: false || "",
+          employment_type: employmentType,
+          education: educations,
+          search: "",
+        },
+        paramsSerializer: (params) => {
+          return qs.stringify(params, { arrayFormat: "repeat" });
         },
       });
       return response.data;

@@ -28,7 +28,7 @@ export default function JobFilter() {
   const dayNegotiable = useFiltersStore((state) => state.dayNegotiable);
 
   const { result, isLoading, error, search } = useSearchJobs();
-
+  
   return (
     <>
       <section className="w-full max-w-7xl mx-auto my-8">

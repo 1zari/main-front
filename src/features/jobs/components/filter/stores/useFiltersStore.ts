@@ -8,7 +8,7 @@ export interface JobCat extends SubCategory {
   };
 }
 
-export interface HoleTown extends Town {
+export interface AllTown extends Town {
   district: {
     id: string;
     name: string;
@@ -24,8 +24,8 @@ interface LocationFiltersState {
   setCity: (city: City) => void;
   district?: District;
   setDistrict: (district: District) => void;
-  towns: HoleTown[];
-  setTowns: (towns: HoleTown[]) => void;
+  towns: AllTown[];
+  setTowns: (towns: AllTown[]) => void;
 }
 
 interface JobCategoryFilterState {
@@ -78,7 +78,7 @@ const useFiltersStore = create<
     district: undefined,
     setDistrict: (district: District) => set({ district }),
     towns: [],
-    setTowns: (towns: HoleTown[]) => set({ towns }),
+    setTowns: (towns: AllTown[]) => set({ towns }),
     // Job Category Filter
     // 대분류, 중분류
     cat: undefined,
