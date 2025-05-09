@@ -32,7 +32,6 @@ async function authorizeUserLogin({
 
   const response = await loginFn(email, password);
 
-  // 로그인 응답에 user 값이 없으면 에러 처리
   if (!("user" in response) || !response.user) {
     throw new Error("로그인 응답에 user 정보가 없습니다.");
   }
@@ -43,11 +42,11 @@ async function authorizeUserLogin({
     company_name?: string;
     join_type: string;
   };
+
   if (!user.common_user_id || !user.email || !user.join_type) {
     throw new Error("로그인 응답에 필수 정보가 없습니다.");
   }
 
-  // 회원 유형 불일치 시 명확한 에러 메시지 던지기
   if (user.join_type !== credentials.join_type) {
     throw new Error("회원 유형이 일치하지 않습니다.");
   }
@@ -59,7 +58,6 @@ async function authorizeUserLogin({
     join_type: user.join_type,
   };
 
-  // 2. getProfileFn이 있으면 프로필 API 값으로 덮어쓰기(필드가 있으면 덮어씀)
   let profile = { ...baseProfile };
   if (getProfileFn) {
     const profileData = await getProfileFn();
@@ -90,6 +88,7 @@ type LoginFn = (
   email: string,
   password: string,
 ) => Promise<LoginResponseDto | CompanyLoginResponseDto>;
+
 function createCredentialsProvider(id: string, name: string, loginFn: LoginFn) {
   return CredentialsProvider({
     id,
@@ -100,10 +99,7 @@ function createCredentialsProvider(id: string, name: string, loginFn: LoginFn) {
       join_type: { label: "가입 유형", type: "text" },
     },
     async authorize(credentials) {
-      return authorizeUserLogin({
-        credentials,
-        loginFn,
-      });
+      return authorizeUserLogin({ credentials, loginFn });
     },
   });
 }
@@ -115,10 +111,22 @@ export const authOptions: NextAuthOptions = {
     KakaoProvider({
       clientId: process.env.KAKAO_CLIENT_ID ?? "",
       clientSecret: process.env.KAKAO_CLIENT_SECRET ?? "",
+      authorization: {
+        params: {
+          redirect_uri: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}api/auth/callback/kakao`,
+          response_type: "code",
+        },
+      },
     }),
     NaverProvider({
       clientId: process.env.NAVER_CLIENT_ID ?? "",
       clientSecret: process.env.NAVER_CLIENT_SECRET ?? "",
+      authorization: {
+        params: {
+          redirect_uri: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}api/auth/callback/naver`,
+          response_type: "code",
+        },
+      },
     }),
   ],
   pages: {
@@ -127,12 +135,12 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30일
+    maxAge: 30 * 24 * 60 * 60,
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
+      // 기존 로그인(로그인 직후)인 경우
       if (user) {
-        console.log("user in jwt callback:", user);
         token.id = user.id;
         token.sub = user.id;
         token.name = user.name;
@@ -140,20 +148,54 @@ export const authOptions: NextAuthOptions = {
         token.join_type = user.join_type;
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
+        return token;
       }
-      console.log("token in jwt callback:", token);
+
+      // ✅ Kakao/Naver 로그인 후 code로 백엔드에 토큰 요청
+      if (account?.provider === "kakao" || account?.provider === "naver") {
+        const provider = account.provider;
+
+        const url = `${process.env.NEXT_PUBLIC_API_URL}api/user/oauth/${provider}/login/`;
+        const params = new URLSearchParams(account.params as Record<string, string>);
+        const code = params.get("code");
+
+        if (!code) {
+          throw new Error(`${provider} 로그인 실패: code 없음`);
+        }
+
+        const res = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code }),
+        });
+
+        if (!res.ok) {
+          throw new Error(`${provider} 로그인 실패`);
+        }
+
+        const data = await res.json();
+        const userData = data.user;
+
+        token.id = userData.common_user_id;
+        token.sub = userData.common_user_id;
+        token.name = userData.name;
+        token.email = userData.email;
+        token.join_type = userData.join_type;
+        token.accessToken = data.access_token;
+        token.refreshToken = data.refresh_token;
+      }
+
       return token;
     },
+
     async session({ session, token }) {
       if (session.user) {
-        console.log("token in session callback:", token);
         session.user.id = token.id as string;
         session.user.name = token.name as string;
         session.user.email = token.email as string;
         session.user.join_type = token.join_type as JoinType;
         session.accessToken = token.accessToken as string;
         session.refreshToken = token.refreshToken as string;
-        console.log("session.user after assignment:", session.user);
       }
       return session;
     },
@@ -163,5 +205,4 @@ export const authOptions: NextAuthOptions = {
 };
 
 const handler = NextAuth(authOptions);
-
 export { handler as GET, handler as POST };

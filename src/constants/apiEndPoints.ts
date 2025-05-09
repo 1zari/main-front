@@ -13,11 +13,11 @@ export const API_ENDPOINTS = {
       SOCIAL: {
         KAKAO: {
           LOGIN: "/user/oauth/kakao/login/",
-          CALLBACK: "/user/kakao/callback/",
+          CALLBACK: "/auth/callback/kakao",
         },
         NAVER: {
           LOGIN: "/user/oauth/naver/login/",
-          CALLBACK: "/user/naver/callback/",
+          CALLBACK: "/auth/callback/naver/",
         },
       },
     },
