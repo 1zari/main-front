@@ -2,7 +2,6 @@ import { Heading } from "@/components/ui/Heading";
 import { FaCaretDown } from "react-icons/fa";
 
 import { useFilterTabStore } from "@/features/jobs/components/filter/stores/useJobFilterTabsStore";
-import { useSearchJobs } from "@/features/jobs/hooks/useSearchJobs";
 import FilterJobs from "./filter/JobCategoryFilter";
 import FilterOtherConditions from "./filter/JobConditionsFilter";
 import JobLocationFilter from "./filter/JobLocationFilter";
@@ -26,8 +25,6 @@ export default function JobFilter() {
   const jobCats = useFiltersStore((state) => state.jobCats);
   const selectedDays = useFiltersStore((state) => state.selectedDays);
   const dayNegotiable = useFiltersStore((state) => state.dayNegotiable);
-
-  const { result, isLoading, error, search } = useSearchJobs();
 
   return (
     <>
