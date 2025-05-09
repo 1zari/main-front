@@ -39,8 +39,8 @@ export const API_ENDPOINTS = {
     RESET_PASSWORD: "/user/reset/company/password/",
   },
   JOB_POST: {
-    LIST: "/job-postings/job-postings/",
-    DETAIL: (id: string) => `/job-postings/job-postings/${id}`,
+    LIST: "/job-postings/",
+    DETAIL: (id: string) => `/job-postings/${id}`,
     CREATE: "/job-postings/create/",
     UPDATE: (id: string) => `/job-postings/job-postings/${id}`,
     DELETE: (id: string) => `/job-postings/job-postings/${id}`,
