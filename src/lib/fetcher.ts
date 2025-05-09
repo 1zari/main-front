@@ -30,7 +30,6 @@ export interface ApiError {
   data?: unknown;
 }
 
-
 type RequestOptions = {
   params?: Record<string, unknown>;
   headers?: Record<string, string>;
