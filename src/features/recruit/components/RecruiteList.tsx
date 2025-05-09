@@ -1,10 +1,18 @@
+"use client";
+
 import Link from "next/link";
-
-import { jobPostApi } from "@/api/job";
+import { useEffect, useState } from "react";
 import { format, isBefore } from "date-fns";
+import { jobPostApi } from "@/api/job";
 
-export default async function RecruiteList() {
-  const data = await jobPostApi.getJobPostList();
+export default function RecruiteList() {
+  const [jobPosts, setJobPosts] = useState<any[]>([]);
+
+  useEffect(() => {
+    jobPostApi.getJobPostList().then((res) => {
+      setJobPosts(res.data);
+    });
+  }, []);
 
   return (
     <section className="p-4">
@@ -18,16 +26,15 @@ export default async function RecruiteList() {
         </Link>
       </div>
 
-      {data?.data?.length === 0 && (
+      {jobPosts.length === 0 && (
         <div className="text-sm text-gray-500 min-h-100">아직 등록된 공고가 없습니다.</div>
       )}
 
       <ul className="space-y-4">
-        {data?.data?.map((item) => (
+        {jobPosts.map((item) => (
           <li key={item.job_posting_id}>
             <Link href={`/recruit/${item.job_posting_id}`}>
               <a className="block p-4 border rounded-md shadow-sm hover:shadow-md transition">
-                {/* <div className="text-sm text-gray-600">{item.company_name}</div> */}
                 <div className="font-semibold text-gray-900 mb-2">{item.job_posting_title}</div>
                 <div className="font-semibold text-gray-900 mb-2">{item.summary}</div>
                 <div
