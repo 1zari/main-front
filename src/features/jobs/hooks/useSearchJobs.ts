@@ -17,7 +17,7 @@ type SearchJobResult = {
   employment_type: string;
   education: string;
   description?: string;
-  [key: string]: any; // 만약 추가적인 필드가 있다면
+  [key: string]: string | number | string[] | undefined; // 가능한 필드 타입으로 제한
 };
 
 export function useSearchJobs() {
