@@ -17,11 +17,24 @@ type SearchJobResult = {
   employment_type: string;
   education: string;
   description?: string;
+  cat?: string[];
+  jobCats?: string[];
+  work_experience?: string[];
   [key: string]: string | number | string[] | undefined; // 가능한 필드 타입으로 제한
 };
 
 export function useSearchJobs() {
-  const { city, district, towns, selectedDays, employmentType, educations } = useFiltersStore();
+  const {
+    city,
+    district,
+    towns,
+    selectedDays,
+    employmentType,
+    educations,
+    cat,
+    jobCats,
+    workExperiences,
+  } = useFiltersStore();
   const [result, setResult] = useState<SearchJobResult[] | null>(null);
 
   const mutation = useMutation({
@@ -35,7 +48,11 @@ export function useSearchJobs() {
           posting_types: false,
           employment_type: employmentType,
           education: educations,
+          job_keyword_main: cat?.id,
+          job_keyword_sub: jobCats?.map((cat) => cat?.id).filter(Boolean),
+          // job_keyword_sub: ["서빙"],
           search: "",
+          work_experience: workExperiences,
         },
         paramsSerializer: (params) => {
           return qs.stringify(params, { arrayFormat: "repeat" });
