@@ -1,9 +1,9 @@
 "use client";
 
+import { jobPostApi } from "@/api/job";
+import { format, isBefore } from "date-fns";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { format, isBefore } from "date-fns";
-import { jobPostApi } from "@/api/job";
 
 export default function RecruiteList() {
   const [jobPosts, setJobPosts] = useState<any[]>([]);
@@ -34,7 +34,7 @@ export default function RecruiteList() {
         {jobPosts.map((item) => (
           <li key={item.job_posting_id}>
             <Link href={`/recruit/${item.job_posting_id}`}>
-              <a className="block p-4 border rounded-md shadow-sm hover:shadow-md transition">
+              <div className="block p-4 border rounded-md shadow-sm hover:shadow-md transition">
                 <div className="font-semibold text-gray-900 mb-2">{item.job_posting_title}</div>
                 <div className="font-semibold text-gray-900 mb-2">{item.summary}</div>
                 <div
@@ -45,7 +45,7 @@ export default function RecruiteList() {
                   {format(new Date(item.deadline), "yyyy.MM.dd")}{" "}
                   {isBefore(new Date(item.deadline), new Date()) ? "마감" : "진행중"}
                 </div>
-              </a>
+              </div>
             </Link>
           </li>
         ))}
