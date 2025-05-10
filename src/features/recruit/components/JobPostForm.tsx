@@ -68,22 +68,31 @@ export default function JobPostForm({
   }, [session, status]);
   const convertFormDataToRequestDto = (formData: JobPostFormValues) => {
     return {
-      title: formData.title,
+      job_posting_title: formData.title,
       occupation: formData.occupation,
       address: `${formData.location} ${formData.locationDetail}`,
-      deadline: formData.deadline,
+      city: "",
+      town: "",
+      district: "",
+      location: [2.3, 2.3],
       workingDays: formData.workingDays,
-      // workingHours: {
-      //   start: formData.workingHourStart,
-      //   end: formData.workingHourEnd,
-      //   negotiable: formData.workingHourNegotiable,
-      // },
-      salary: {
-        type: formData.salaryType!,
-        amount: Number(formData.salary),
-      },
+      work_time_start: "09:00",
+      work_time_end: "18:00",
+      posting_type: "",
+      employment_type: "",
+      work_experience: "",
+      job_keyword_main: "",
+      job_keyword_sub: ["서빙"],
+      number_of_positions: Number(formData.numberOfRecruits),
+      education: "",
+      deadline: formData.deadline,
+      time_discussion: true,
+      day_discussion: true,
+      work_day: ["월"],
+      salary_type: formData.salaryType!,
+      salary: Number(formData.salary),
       summary: formData.jobSummary,
-      description: formData.jobDescription,
+      content: formData.jobDescription,
     };
   };
 
