@@ -79,7 +79,7 @@ const useFiltersStore = create<
     setDistrict: (district: District) => set({ district }),
     towns: [],
     setTowns: (towns: AllTown[]) => set({ towns }),
-    // Job Category Filter
+    // 직종
     // 대분류, 중분류
     cat: undefined,
     setCat: (category: Category) => set({ cat: category }),
