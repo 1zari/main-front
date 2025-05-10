@@ -6,7 +6,8 @@ import KakaoShareButton from "@/features/jobs/components/job-detail-bottom-btns/
 import StickyApplyKakaoShareButton from "@/features/jobs/components/job-detail-bottom-btns/StickyApplyKakaoShareButton";
 import JobDetailSection from "@/features/jobs/components/JobDetailSection";
 import type { JobPostDetailResponseDto } from "@/types/api/job";
-import { Link } from "lucide-react";
+import Link from "next/link";
+
 import { useEffect, useRef, useState } from "react";
 
 interface JobDetailContentProps {
@@ -140,7 +141,7 @@ export default function JobDetailContent({ jobPostingId }: JobDetailContentProps
             <KakaoShareButton />
           </div>
           <div className="flex gap-4 justify-end">
-            <Link href={`/recruit/edit/${jobPostingId}`}>
+            <Link href={`/recruit/${jobPostingId}/edit`}>
               <button className="px-4 py-2 bg-blue-500 text-white rounded">수정하기</button>
             </Link>
             <button

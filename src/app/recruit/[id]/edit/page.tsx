@@ -2,10 +2,12 @@
 
 import { Heading } from "@/components/ui/Heading";
 import JobPostForm from "@/features/recruit/components/JobPostForm";
+import { use } from "react";
 
 import { FaChevronLeft } from "react-icons/fa";
 
-const EditRecruitPage = () => {
+const EditRecruitPage = ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id } = use(params);
   return (
     <div className="bg-gray-z-light pb-10">
       <main className="w-full mx-auto">
@@ -21,7 +23,7 @@ const EditRecruitPage = () => {
             </li>
           </ul>
         </nav>
-        <JobPostForm mode="edit" id="1" />
+        <JobPostForm mode="edit" id={id} />
         {/* <RecruitForm mode="Edit" /> */}
       </main>
     </div>

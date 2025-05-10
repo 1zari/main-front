@@ -1,6 +1,7 @@
 import { API_ENDPOINTS } from "@/constants/apiEndPoints";
 import { fetcher } from "@/lib/fetcher";
 import type {
+  AddBookmarkRequestDto,
   DeleteJobPostResponseDto,
   JobPostDetailResponseDto,
   JobPostRequestDto,
@@ -36,5 +37,20 @@ export const jobPostApi = {
     return fetcher.delete<DeleteJobPostResponseDto>(API_ENDPOINTS.JOB_POST.DELETE(id), undefined, {
       secure: true,
     });
+  },
+
+  addBookmark: (id: string) => {
+    return fetcher.post<AddBookmarkRequestDto, undefined>(
+      API_ENDPOINTS.BOOKMARK.ADD(id),
+      undefined,
+      { secure: true },
+    );
+  },
+  removeBookmark: (id: string) => {
+    return fetcher.delete<AddBookmarkRequestDto, undefined>(
+      API_ENDPOINTS.BOOKMARK.ADD(id),
+      undefined,
+      { secure: true },
+    );
   },
 };

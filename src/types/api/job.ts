@@ -28,15 +28,15 @@ export interface JobPostDetailResponseDto {
     posting_type: string;
     employment_type: string;
     job_keyword_main: string;
-    job_keyword_sub: string;
+    job_keyword_sub: string[];
     number_of_positions: number;
     education: string;
     deadline: string;
     time_discussion: string;
     day_discussion: string;
-    work_day: string;
+    work_day: string[];
     salary_type: string;
-    salary: string;
+    salary: number;
     summary: string;
     content: string;
     is_bookmarked: boolean;
@@ -158,4 +158,10 @@ export interface UpdateJobPostResponseDto {
 // 채용 공고 삭제 응답 DTO
 export interface DeleteJobPostResponseDto {
   message: string;
+}
+
+//북마크
+// 북마크 등록 요청 DTO
+export interface AddBookmarkRequestDto {
+  job_posting_id: string;
 }

@@ -41,6 +41,7 @@ export default function JobPostForm({
     setValue,
     watch,
     formState: { errors },
+    reset,
   } = useForm<JobPostFormValues>({
     resolver: zodResolver(jobPostSchema),
     mode: "onTouched",
@@ -66,6 +67,35 @@ export default function JobPostForm({
       console.log("로그인 상태 아님:", status);
     }
   }, [session, status]);
+
+  useEffect(() => {
+    const fetchJobPostData = async () => {
+      if (mode === "edit" && id) {
+        try {
+          const data = await jobPostApi.getJobPostDetail(id);
+          const job_posting = data.job_posting;
+          reset({
+            title: job_posting.job_posting_title,
+            occupation: job_posting.job_keyword_sub,
+            location: job_posting.city || "",
+            locationDetail: job_posting.address || "",
+            deadline: job_posting.deadline || "",
+            workingDays: job_posting.work_day as JobPostFormValues["workingDays"],
+            jobSummary: job_posting.summary || "",
+            jobDescription: job_posting.content || "",
+            agreeTerms: true,
+            numberOfRecruits: job_posting.number_of_positions ?? 0,
+            salary: job_posting.salary ?? 0,
+            salaryType: job_posting.salary_type || "",
+          });
+        } catch (error) {
+          console.error("공고 데이터를 불러오는 중 에러 발생:", error);
+        }
+      }
+    };
+
+    fetchJobPostData();
+  }, [mode, id, reset]);
   const convertFormDataToRequestDto = (formData: JobPostFormValues) => {
     return {
       job_posting_title: formData.title,
@@ -74,7 +104,13 @@ export default function JobPostForm({
       city: "",
       town: "",
       district: "",
-      location: [2.3, 2.3],
+      // location: [2.3, 2.3],
+      location: [127.123456, 37.123456],
+      // location: null,
+      // location: {
+      //   type: "Point",
+      //   coordinates: [127.123456, 37.123456],
+      // },
       workingDays: formData.workingDays,
       work_time_start: "09:00",
       work_time_end: "18:00",
