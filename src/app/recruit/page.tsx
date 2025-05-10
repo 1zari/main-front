@@ -9,7 +9,7 @@ async function NewRecruitPage() {
           <ul className="w-full max-w-7xl mx-auto flex flex-wrap justify-between items-center p-4  gap-5">
             <li className="grow text-center font-bold ml-[-30px]">
               <Heading sizeOffset={2} className="font-bold">
-                채용공고 등록
+                공고관리
               </Heading>
             </li>
           </ul>
