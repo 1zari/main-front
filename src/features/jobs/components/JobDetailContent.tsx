@@ -86,10 +86,10 @@ export default function JobDetailContent({ jobPostingId }: JobDetailContentProps
           <div className="flex flex-col gap-2">
             <img
               src={"/default-image.png"}
-              className="rounded w-12 h-12 object-contain"
+              className="rounded w-12 h-12 object-contain bg-gray-200"
               alt="회사 로고"
             />
-            <p>회사 ID: {company_id}</p>
+            <p>회사명: {company_id}</p>
             <h2 className="text-xl font-semibold mb-2">{job_posting_title}</h2>
           </div>
 
@@ -127,7 +127,7 @@ export default function JobDetailContent({ jobPostingId }: JobDetailContentProps
                   <img
                     src={"/default-image.png"}
                     alt="회사 로고"
-                    className="rounded object-contain w-24 h-24"
+                    className="rounded object-contain w-24 h-24 bg-gray-200"
                   />
                 ),
               },
