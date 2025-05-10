@@ -26,13 +26,13 @@ export function useSearchJobs() {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const response = await axios.get("https://senior-naeil.life/api/search/", {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/search/`, {
         params: {
           city: city?.id,
           district: district?.id,
           town: towns.map((town) => town.id),
           work_day: selectedDays,
-          posting_types: false || "",
+          posting_types: false,
           employment_type: employmentType,
           education: educations,
           search: "",
