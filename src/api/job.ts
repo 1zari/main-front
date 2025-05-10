@@ -17,7 +17,9 @@ export const jobPostApi = {
   },
 
   getJobPostDetail: (id: string) => {
-    return fetcher.get<JobPostDetailResponseDto>(API_ENDPOINTS.JOB_POST.DETAIL(id));
+    return fetcher.get<JobPostDetailResponseDto>(API_ENDPOINTS.JOB_POST.DETAIL(id), {
+      secure: true,
+    });
   },
 
   createJobPost: (data: JobPostRequestDto) => {

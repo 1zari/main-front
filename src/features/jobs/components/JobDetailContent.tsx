@@ -1,12 +1,13 @@
 "use client";
 
+import { jobPostApi } from "@/api/job";
 import ApplyButton from "@/features/jobs/components/job-detail-bottom-btns/ApplyButton";
 import KakaoShareButton from "@/features/jobs/components/job-detail-bottom-btns/KakaoShareButton";
 import StickyApplyKakaoShareButton from "@/features/jobs/components/job-detail-bottom-btns/StickyApplyKakaoShareButton";
 import JobDetailSection from "@/features/jobs/components/JobDetailSection";
-import { useEffect, useRef, useState } from "react";
-import { jobPostApi } from "@/api/job";
 import type { JobPostDetailResponseDto } from "@/types/api/job";
+import { Link } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 interface JobDetailContentProps {
   jobPostingId: string;
@@ -137,6 +138,28 @@ export default function JobDetailContent({ jobPostingId }: JobDetailContentProps
           <div ref={bottomButtonRef}>
             <ApplyButton />
             <KakaoShareButton />
+          </div>
+          <div className="flex gap-4 justify-end">
+            <Link href={`/recruit/edit/${jobPostingId}`}>
+              <button className="px-4 py-2 bg-blue-500 text-white rounded">수정하기</button>
+            </Link>
+            <button
+              onClick={async () => {
+                const confirmed = confirm("정말 삭제하시겠습니까?");
+                if (!confirmed) return;
+                try {
+                  await jobPostApi.deleteJobPost(jobPostingId);
+                  alert("삭제되었습니다.");
+                  window.location.href = "/recruit";
+                } catch (error) {
+                  console.error("삭제 실패:", error);
+                  alert("삭제에 실패했습니다.");
+                }
+              }}
+              className="px-4 py-2 bg-red-500 text-white rounded"
+            >
+              삭제하기
+            </button>
           </div>
         </section>
       </div>

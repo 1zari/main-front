@@ -54,8 +54,8 @@ export const API_ENDPOINTS = {
     LIST: "/job-postings/",
     DETAIL: (id: string) => `/job-postings/${id}`,
     CREATE: "/job-postings/create/",
-    UPDATE: (id: string) => `/job-postings/job-postings/${id}`,
-    DELETE: (id: string) => `/job-postings/job-postings/${id}`,
+    UPDATE: (id: string) => `/job-postings/${id}`,
+    DELETE: (id: string) => `/job-postings/${id}/`,
   },
   JOB_FILTER: {
     LOCATION: "/search/region/",
