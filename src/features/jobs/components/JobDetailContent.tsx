@@ -1,8 +1,6 @@
 "use client";
 
 import { jobPostApi } from "@/api/job";
-import ApplyButton from "@/features/jobs/components/job-detail-bottom-btns/ApplyButton";
-import KakaoShareButton from "@/features/jobs/components/job-detail-bottom-btns/KakaoShareButton";
 import StickyApplyKakaoShareButton from "@/features/jobs/components/job-detail-bottom-btns/StickyApplyKakaoShareButton";
 import JobDetailSection from "@/features/jobs/components/JobDetailSection";
 import type { JobPostDetailResponseDto } from "@/types/api/job";
@@ -75,7 +73,11 @@ export default function JobDetailContent({ jobPostingId }: JobDetailContentProps
     education,
     number_of_positions,
     content,
-    company_id,
+    company_name,
+    manager_phone_number,
+    manager_name,
+    company_logo,
+    salary_type,
   } = jobPosting;
 
   return (
@@ -84,23 +86,35 @@ export default function JobDetailContent({ jobPostingId }: JobDetailContentProps
         <section className="bg-white space-y-8">
           {/* 회사정보 */}
           <div className="flex flex-col gap-2">
-            <img
-              src={"/default-image.png"}
+            {/* <img
+              src={company_logo || "/default-image.png"}
               className="rounded w-12 h-12 object-contain bg-gray-200"
               alt="회사 로고"
-            />
-            <p>회사명: {company_id}</p>
+            /> */}
+            <div className="rounded w-12 h-12 bg-gray-200 flex items-center justify-center text-gray-500 text-xl">
+              🏢
+            </div>
+            <p>{company_name}</p>
             <h2 className="text-xl font-semibold mb-2">{job_posting_title}</h2>
           </div>
 
           <JobDetailSection
             title="고용조건"
             items={[
-              { label: "급여", value: salary || "협의 후 결정" },
+              {
+                label: "급여",
+                value: salary ? `${salary_type} ${salary.toLocaleString()}원` : "협의 후 결정",
+              },
               { label: "고용형태", value: employment_type },
               { label: "근무요약", value: summary },
-              { label: "근무요일", value: work_day },
-              { label: "근무시간", value: `${work_time_start} ~ ${work_time_end}` },
+              {
+                label: "근무요일",
+                value: Array.isArray(work_day) ? work_day.join(", ") : work_day,
+              },
+              {
+                label: "근무시간",
+                value: `${work_time_start.slice(0, 5)} ~ ${work_time_end.slice(0, 5)}`,
+              },
             ]}
           />
 
@@ -120,26 +134,30 @@ export default function JobDetailContent({ jobPostingId }: JobDetailContentProps
           <JobDetailSection
             title="채용담당자 연락처"
             items={[
-              { label: "회사 ID", value: company_id },
+              { label: "회사", value: company_name },
               {
                 label: "로고",
                 value: (
-                  <img
-                    src={"/default-image.png"}
-                    alt="회사 로고"
-                    className="rounded object-contain w-24 h-24 bg-gray-200"
-                  />
+                  // <img
+                  //   src={"/default-image.png"}
+                  //   alt="회사 로고"
+                  //   className="rounded object-contain w-24 h-24 bg-gray-200"
+                  // />
+                  <div className="rounded w-12 h-12 bg-gray-200 flex items-center justify-center text-gray-500 text-xl">
+                    🏢
+                  </div>
                 ),
               },
-              { label: "전화", value: "등록된 전화 없음" },
+              { label: "채용 담당자", value: manager_name },
+              { label: "전화", value: manager_phone_number },
             ]}
           />
 
           <StickyApplyKakaoShareButton isBottomVisible={isBottomVisible} />
-          <div ref={bottomButtonRef}>
+          {/* <div ref={bottomButtonRef}>
             <ApplyButton />
             <KakaoShareButton />
-          </div>
+          </div> */}
           <div className="flex gap-4 justify-end">
             <Link href={`/recruit/${jobPostingId}/edit`}>
               <button className="px-4 py-2 bg-blue-500 text-white rounded">수정하기</button>
