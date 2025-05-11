@@ -1,36 +1,77 @@
 "use client";
-import { useParams } from "next/navigation";
-import { resumeMockList } from "@/features/resume/mock/resumeMock";
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import Spinner from "@/components/common/Spinner";
+import ResumeSelect from "@/features/resume/components/common/ui/ResumeSelect";
 import ResumeContainer from "@/features/resume/components/ResumeContainer";
-import { ResumeFormData } from "@/features/resume/validation/resumeSchema";
 import ResumeActionButtons from "@/features/resume/components/ResumeActionButton";
+import { useGetResumeDetail } from "@/features/resume/api/useGetResumeDetail";
+import { useGetResumeList } from "@/features/resume/api/useGetResumeList";
+import { mapToResumeFormData } from "@/features/resume/utils/mapToResumeFormData";
+import type { ResumeFormData } from "@/features/resume/validation/resumeSchema";
 
-const getMockResumeById = (resumeId: string): ResumeFormData | undefined => {
-  return resumeMockList.find((r) => r.id === resumeId);
-};
+export default function ResumeViewPage() {
+  const router = useRouter();
+  const { data: session, status } = useSession();
+  const { type, userId, resumeId } = useParams() as {
+    type: string;
+    userId: string;
+    resumeId: string;
+  };
 
-const ResumeViewPage = () => {
-  const { resumeId } = useParams<{ resumeId: string }>();
+  const [selectedId, setSelectedId] = useState(resumeId);
+  const {
+    data: listData,
+    isLoading: isListLoading,
+    error: listError,
+  } = useGetResumeList(type, userId);
 
-  const resume = resumeId ? getMockResumeById(resumeId) : undefined;
+  const {
+    data: detailData,
+    isLoading: isDetailLoading,
+    error: detailError,
+  } = useGetResumeDetail(selectedId);
 
-  if (!resumeId || !resume) {
-    return (
-      <div className="py-8 text-center text-red-500">
-        {resumeId ? `존재하지 않는 이력서입니다. (ID: ${resumeId})` : "잘못된 접근입니다."}
-      </div>
-    );
+  useEffect(() => {
+    if (!session) {
+      router.push("/auth/login");
+      return;
+    }
+    if (session.user.id !== userId) {
+      router.replace(`/${session.user.join_type}/mypage/${session.user.id}`);
+    }
+  }, [session, userId, router]);
+
+  if (status === "loading" || isListLoading || isDetailLoading) {
+    return <Spinner />;
   }
+  if (listError) return <p className="text-red-500">리스트 불러오기 실패: {listError.message}</p>;
+  if (detailError) return <p className="text-red-500">상세 불러오기 실패: {detailError.message}</p>;
+
+  const resume: ResumeFormData = mapToResumeFormData(detailData!.resume, session!.user.email ?? "");
+
+  const options = listData!.resume_list.map((r) => ({
+    label: r.resume_title,
+    value: r.resume_id,
+  }));
+
+  const handleSelectChange = (val: string) => {
+    setSelectedId(val);
+    router.push(`/${type}/mypage/${userId}/resume/${val}`);
+  };
 
   return (
-    <div className="flex justify-center items-center flex-1">
-      <div className="bg-white rounded-lg shadow-md px-10 py-[80px] w-full max-w-[1000px]">
+    <div className="flex flex-col items-center flex-1 space-y-6">
+      <div className="w-full max-w-[1000px]">
+        <ResumeSelect label="" value={selectedId} onChange={handleSelectChange} options={options} />
+      </div>
+
+      <div className="bg-white rounded-lg shadow-md px-5 py-20 w-full max-w-[1000px]">
         <h1 className="text-3xl font-bold mb-10 text-center text-primary">{resume.title}</h1>
         <ResumeContainer resume={resume} />
-        <ResumeActionButtons resumeId={resumeId} />
+        <ResumeActionButtons resumeId={selectedId} />
       </div>
     </div>
   );
-};
-
-export default ResumeViewPage;
+}

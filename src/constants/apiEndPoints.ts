@@ -21,19 +21,19 @@ export const API_ENDPOINTS = {
         },
       },
     },
-
     COMPANY: {
       SIGNUP: "/user/common/signup/",
       COMPLETE_SIGNUP: "/user/company/signup/",
       LOGIN: "/user/company/login/",
     },
-
     VERIFY: {
       SEND_CODE: "/user/verify/send-code/",
       VERIFY_CODE: "/user/verify/code/",
       CHECK_BUSINESS: "/user/verify/business/",
     },
   },
+
+  CSRF: "/csrf",
 
   USER: {
     PROFILE: "/user/normal/info/",
@@ -43,7 +43,6 @@ export const API_ENDPOINTS = {
     REQUEST_PHONE_CODE: "/user/verify/send-code/",
     VERIFY_PHONE_CODE: "/user/verify/code/",
   },
-
   COMPANY: {
     PROFILE: "/user/company/info/",
     UPDATE_PROFILE: "/user/company/info/update/",
@@ -60,6 +59,12 @@ export const API_ENDPOINTS = {
   JOB_FILTER: {
     LOCATION: "/search/region/",
     CATEGORY: "/search/job/",
+  },
+  RESUME: {
+    LIST: "/resume/",
+    DETAIL: (id: string) => `/resume/${id}/`,
+    UPDATE: (id: string) => `/resume/${id}/`,
+    DELETE: (id: string) => `/resume/${id}/`,
   },
   BOOKMARK: {
     LIST: "job-postings/bookmark/",
