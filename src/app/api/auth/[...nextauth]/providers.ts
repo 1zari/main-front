@@ -17,18 +17,31 @@ const userCredentialsProvider = CredentialsProvider({
   async authorize(credentials) {
     try {
       const { email, password } = credentials;
+      console.log("[user-credentials] authorize 입력값:", { email, password });
 
-      const response = await fetch("https://senior-naeil.life/api/user/normal/login", {
+      const url = "https://senior-naeil.life/api/user/normal/login";
+      console.log("[user-credentials] fetch 요청 URL:", url);
+      const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-      console.log("response", response);
+      console.log("[user-credentials] fetch response:", response);
 
       const data = await response.json();
+      console.log("[user-credentials] fetch data:", data);
 
-      return data;
+      return {
+        id: data.common_user_id,
+        sub: data.common_user_id,
+        email: data.email,
+        name: data.name,
+        join_type: data.join_type,
+        accessToken: data.access_token,
+        refreshToken: data.refresh_token,
+      };
     } catch (error) {
+      console.error("[user-credentials] authorize error:", error);
       if (error instanceof ZodError) {
         console.error("검증 오류:", error.errors);
         throw new Error(error.errors[0]?.message || "유효성 검증 실패");
@@ -50,12 +63,15 @@ const companyCredentialsProvider = CredentialsProvider({
   async authorize(credentials) {
     try {
       if (!credentials) return null;
+      console.log("[company-credentials] authorize 입력값:", credentials);
 
       const { email, password, join_type } = credentialsSchema.parse(credentials);
 
       const response = await authApi.company.login(email, password);
+      console.log("[company-credentials] fetch response:", response);
 
       const { user, access_token, refresh_token } = loginResponseSchema.parse(response);
+      console.log("[company-credentials] fetch data:", { user, access_token, refresh_token });
 
       if (user.join_type !== join_type) {
         throw new Error("회원 유형이 일치하지 않습니다.");
@@ -71,6 +87,7 @@ const companyCredentialsProvider = CredentialsProvider({
         refreshToken: refresh_token,
       };
     } catch (error) {
+      console.error("[company-credentials] authorize error:", error);
       if (error instanceof ZodError) {
         console.error("검증 오류:", error.errors);
         throw new Error(error.errors[0]?.message || "유효성 검증 실패");

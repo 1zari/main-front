@@ -3,6 +3,7 @@ import { tokenService } from "@/utils/tokenService";
 
 export const callbacks = {
   async jwt({ token, account }) {
+    console.log("[jwt 콜백 시작]", { token, account });
     // Only proceed if we have an account with tokens
     if (account?.access_token) {
       try {
@@ -77,11 +78,12 @@ export const callbacks = {
         // Don't throw the error, just log it to prevent breaking the auth flow
       }
     }
-
+    console.log("[jwt 콜백 끝]", token);
     return token;
   },
 
   async session({ session, token }) {
+    console.log("[session 콜백 시작]", { session, token });
     session.user = {
       id: token.id as string,
       name: token.name as string,
@@ -90,6 +92,7 @@ export const callbacks = {
       accessToken: token.accessToken as string,
       refreshToken: token.refreshToken as string,
     };
+    console.log("[session 콜백 끝]", session);
     return session;
   },
 };

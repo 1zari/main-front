@@ -60,6 +60,7 @@ export const useAuthStore = create<AuthState>()(
       setError: (error) => set({ error }),
 
       initialize: async () => {
+        console.log("[useAuthStore] initialize 시작");
         const { setAuth, setError, clearAuth } = get();
         try {
           set({ isLoading: true, isInitialized: false });
@@ -84,6 +85,7 @@ export const useAuthStore = create<AuthState>()(
           } else {
             clearAuth();
           }
+          console.log("[useAuthStore] initialize 세션 결과", session);
         } catch (error) {
           setError(error instanceof Error ? error.message : "인증 초기화 실패");
           clearAuth();
@@ -97,10 +99,16 @@ export const useAuthStore = create<AuthState>()(
             // 사용자 객체만 있어도 로그인 상태로 간주
             isUserLoggedIn: !!currentState.user,
           });
+          console.log("[useAuthStore] initialize 끝", {
+            user: get().user,
+            isAuthenticated: get().isAuthenticated,
+            isUserLoggedIn: get().isUserLoggedIn,
+          });
         }
       },
 
       loginWithCredentials: async (email, password, joinType) => {
+        console.log("[useAuthStore] loginWithCredentials 시작", { email, joinType });
         const { setLoading, setError, initialize } = get();
 
         try {
@@ -124,9 +132,16 @@ export const useAuthStore = create<AuthState>()(
           }
 
           await initialize();
+          console.log("[useAuthStore] loginWithCredentials 끝", {
+            user: get().user,
+            isAuthenticated: get().isAuthenticated,
+            isUserLoggedIn: get().isUserLoggedIn,
+            error: get().error,
+          });
           return true;
         } catch (error) {
           setError(error instanceof Error ? error.message : "로그인 실패");
+          console.error("[useAuthStore] loginWithCredentials error", error);
           return false;
         } finally {
           setLoading(false);
@@ -134,11 +149,13 @@ export const useAuthStore = create<AuthState>()(
       },
 
       loginWithSocial: async (provider) => {
+        console.log("[useAuthStore] loginWithSocial 시작", { provider });
         const { setLoading } = get();
 
         try {
           setLoading(true);
           await signIn(provider, { callbackUrl: "/" });
+          console.log("[useAuthStore] loginWithSocial 끝");
         } catch (error) {
           console.error(`[AuthStore] ${provider} 로그인 오류:`, error);
           setLoading(false);
@@ -146,12 +163,18 @@ export const useAuthStore = create<AuthState>()(
       },
 
       logout: async () => {
+        console.log("[useAuthStore] logout 시작");
         const { clearAuth, setLoading, setError } = get();
 
         try {
           setLoading(true);
           await signOut({ redirect: false });
           clearAuth();
+          console.log("[useAuthStore] logout 끝", {
+            user: get().user,
+            isAuthenticated: get().isAuthenticated,
+            isUserLoggedIn: get().isUserLoggedIn,
+          });
         } catch (error) {
           console.error("[AuthStore] 로그아웃 오류:", error);
           setError(error instanceof Error ? error.message : "로그아웃 실패");
