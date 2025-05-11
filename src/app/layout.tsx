@@ -1,12 +1,10 @@
+import ConfirmModal from "@/components/common/ConfirmModal";
 import Script from "next/script";
 import QueryProvider from "../components/providers/QueryProvider";
-import { FontSizeProvider } from "../hooks/useFontSize";
 import ClientLayout from "./ClientLayout";
-import { metadata } from "./metadata";
-import ConfirmModal from "@/components/common/ConfirmModal";
 import "./globals.css";
+import { metadata } from "./metadata";
 //import CSRFInit from "./_components/CSRFInit";
-
 export { metadata };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -28,12 +26,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <QueryProvider>
-          <FontSizeProvider>
-            <ClientLayout>
-              <main>{children}</main>
-              <ConfirmModal />
-            </ClientLayout>
-          </FontSizeProvider>
+          <ClientLayout>
+            <main>{children}</main>
+            <ConfirmModal />
+          </ClientLayout>
         </QueryProvider>
       </body>
     </html>
