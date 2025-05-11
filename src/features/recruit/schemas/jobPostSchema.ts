@@ -21,24 +21,24 @@ export const jobPostSchema = z.object({
   salaryType: z.string(),
   salary: z.number({ invalid_type_error: "급여를 숫자로 입력해주세요." }),
   workingDays: z.array(z.enum(["월", "화", "수", "목", "금", "토", "일", "요일협의"])),
-  workingHours: z
-    .object({
-      start: z.string(),
-      end: z.string(),
-      negotiable: z.boolean().optional(), // 추가
-    })
-    .refine(
-      ({ start, end, negotiable }) => {
-        return (start && end) || negotiable;
-      },
-      {
-        message: "근무 시간을 입력하거나 시간협의를 선택해주세요.",
-        path: ["start"],
-      },
-    ),
-  workingHourStart: z.string().min(1, "시작 시간을 입력해주세요."),
-  workingHourEnd: z.string().min(1, "종료 시간을 입력해주세요."),
-  workingHourNegotiable: z.boolean().optional(),
+  // workingHours: z
+  //   .object({
+  //     start: z.string().optional(),
+  //     end: z.string().optional(),
+  //     negotiable: z.boolean().optional(), // 추가
+  //   })
+  //   .refine(
+  //     ({ start, end, negotiable }) => {
+  //       return (start && end) || negotiable;
+  //     },
+  //     {
+  //       message: "근무 시간을 입력하거나 시간협의를 선택해주세요.",
+  //       path: ["start"],
+  //     },
+  //   ),
+  // workingHourStart: z.string().min(1, "시작 시간을 입력해주세요.").optional(),
+  // workingHourEnd: z.string().min(1, "종료 시간을 입력해주세요.").optional(),
+  // workingHourNegotiable: z.boolean().optional(),
 
   jobSummary: z.string().max(50),
   jobDescription: z.string(),

@@ -1,9 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { jobPostApi } from "@/api/job";
 import { Star } from "lucide-react";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function ScrapBtn({ showLabel = false }: { showLabel?: boolean }) {
+  const params = useParams();
+  const jobPostingId = params?.id as string;
   const [isSaved, setIsSaved] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -11,17 +15,33 @@ export default function ScrapBtn({ showLabel = false }: { showLabel?: boolean })
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    const fetchIsSaved = async () => {
+      try {
+        const res = await jobPostApi.getJobPostDetail(jobPostingId);
+        setIsSaved(res.job_posting.is_bookmarked);
+      } catch (error) {
+        console.error("북마크 상태를 불러오는데 실패했습니다:", error);
+      }
+    };
+
+    fetchIsSaved();
+  }, [jobPostingId]);
+
   const handleClick = async () => {
     const prev = isSaved;
     setIsSaved(!prev);
 
-    // try {
-    //   //API 준비되면 아래 코드 수정필요
-    //   await axios.post("/api/save", { method: "POST" });
-    // } catch (err) {
-    //   setIsSaved(prev);
-    //   alert("저장에 실패했어요.");
-    // }
+    try {
+      if (prev) {
+        await jobPostApi.removeBookmark(jobPostingId);
+      } else {
+        await jobPostApi.addBookmark(jobPostingId);
+      }
+    } catch (err) {
+      setIsSaved(prev);
+      alert("저장에 실패했어요.");
+    }
   };
 
   const label = isSaved ? "저장 취소" : "저장하기";

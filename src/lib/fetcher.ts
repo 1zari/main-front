@@ -1,11 +1,34 @@
-import { httpClient, createHttpClient } from "./axios";
 import { authHelpers } from "@/utils/authHelpers";
-import qs from "qs";
 import { AxiosResponse } from "axios";
+
+import qs from "qs";
+import { createHttpClient, httpClient } from "./axios";
+
 import { getCookie } from "@/utils/cookie"; // csrftoken 꺼내기
 
 // CSRF 처리를 위한 보안 클라이언트
 const secureClient = createHttpClient(authHelpers);
+
+secureClient.interceptors.request.use(async (config) => {
+  const token = await authHelpers.getAccessToken?.();
+  const role = await authHelpers.getUserRole?.();
+
+  console.log("🔐 secureClient 요청 직전 token:", token);
+  console.log("🧾 secureClient 요청 직전 role:", role);
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  if (role) {
+    config.headers["X-User-Role"] = role;
+  }
+  return config;
+});
+export interface ApiError {
+  status: number;
+  message: string;
+  data?: unknown;
+}
 
 type RequestOptions = {
   params?: Record<string, unknown>;
@@ -30,6 +53,9 @@ export const fetcher = {
       headers: options?.headers,
       withCredentials: options?.secure ?? false,
     });
+    console.log("🚀 요청 path:", path);
+    console.log("📎 요청 query:", query);
+    console.log("📦 최종 요청 URL:", `${path}${query}`);
     return res.data;
   },
 

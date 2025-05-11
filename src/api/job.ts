@@ -1,6 +1,7 @@
 import { API_ENDPOINTS } from "@/constants/apiEndPoints";
 import { fetcher } from "@/lib/fetcher";
 import type {
+  AddBookmarkRequestDto,
   DeleteJobPostResponseDto,
   JobPostDetailResponseDto,
   JobPostRequestDto,
@@ -13,11 +14,13 @@ import type {
 // 채용공고 리스트 조회
 export const jobPostApi = {
   getJobPostList: () => {
-    return fetcher.get<JobPostsListResponseDto>(API_ENDPOINTS.JOB_POST.LIST);
+    return fetcher.get<JobPostsListResponseDto>(API_ENDPOINTS.JOB_POST.LIST, { secure: true });
   },
 
   getJobPostDetail: (id: string) => {
-    return fetcher.get<JobPostDetailResponseDto>(API_ENDPOINTS.JOB_POST.DETAIL(id));
+    return fetcher.get<JobPostDetailResponseDto>(API_ENDPOINTS.JOB_POST.DETAIL(id), {
+      secure: true,
+    });
   },
 
   createJobPost: (data: JobPostRequestDto) => {
@@ -34,5 +37,20 @@ export const jobPostApi = {
     return fetcher.delete<DeleteJobPostResponseDto>(API_ENDPOINTS.JOB_POST.DELETE(id), undefined, {
       secure: true,
     });
+  },
+
+  addBookmark: (id: string) => {
+    return fetcher.post<AddBookmarkRequestDto, undefined>(
+      API_ENDPOINTS.BOOKMARK.ADD(id),
+      undefined,
+      { secure: true },
+    );
+  },
+  removeBookmark: (id: string) => {
+    return fetcher.delete<AddBookmarkRequestDto, undefined>(
+      API_ENDPOINTS.BOOKMARK.ADD(id),
+      undefined,
+      { secure: true },
+    );
   },
 };

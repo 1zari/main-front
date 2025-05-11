@@ -59,19 +59,20 @@ export default function LoginBaseForm({
         email: data.email,
         password: data.password,
         join_type,
-        redirect: true,
+        redirect: false,
         callbackUrl: "/",
       });
 
       if (result?.error) {
-        setError("root", {
-          message:
-            result.error === "CredentialsSignin"
-              ? "이메일과 비밀번호를 확인해주세요."
-              : result.error === "ServerError"
-                ? "서버 연결에 실패했습니다. 잠시 후 다시 시도해주세요."
-                : "로그인에 실패했습니다. 잠시 후 다시 시도해주세요.",
-        });
+        let message = result.error || "로그인에 실패했습니다. 잠시 후 다시 시도해주세요.";
+        if (result.status === 401) {
+          message = "이메일, 비밀번호, 회원 유형(개인/기업) 탭을 다시 확인해 주세요.";
+        } else if (result.status === 400) {
+          message = "입력값이 올바르지 않습니다. 다시 확인해 주세요.";
+        }
+        setError("root", { message });
+      } else if (result?.ok) {
+        window.location.href = result.url || "/";
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -184,7 +185,10 @@ export default function LoginBaseForm({
       </div>
 
       {errors.root && (
-        <div className="p-3 mb-4 text-sm text-red-500 rounded-md bg-red-50">
+        <div
+          className="p-3 mb-4 text-red-500 rounded-md bg-red-50"
+          style={{ whiteSpace: "pre-line" }}
+        >
           {errors.root.message}
         </div>
       )}

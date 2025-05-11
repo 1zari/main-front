@@ -1,6 +1,7 @@
-import { useSelectedFilterStore } from "@/features/jobs/stores/job-filters/useSelectedFiltersStore";
+import useFiltersStore from "@/features/jobs/components/filter/stores/useFiltersStore";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import qs from "qs";
 import { useState } from "react";
 
 type SearchJobResult = {
@@ -16,25 +17,45 @@ type SearchJobResult = {
   employment_type: string;
   education: string;
   description?: string;
-  [key: string]: any; // 만약 추가적인 필드가 있다면
+  cat?: string[];
+  jobCats?: string[];
+  work_experience?: string[];
+  [key: string]: string | number | string[] | undefined; // 가능한 필드 타입으로 제한
 };
 
 export function useSearchJobs() {
-  const selectedFilters = useSelectedFilterStore();
+  const {
+    city,
+    district,
+    towns,
+    selectedDays,
+    employmentType,
+    educations,
+    cat,
+    jobCats,
+    workExperiences,
+  } = useFiltersStore();
   const [result, setResult] = useState<SearchJobResult[] | null>(null);
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const response = await axios.get("https://senior-naeil.life/api/search/", {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/search/`, {
         params: {
-          city: selectedFilters.locationChecked,
-          district: [],
-          town: [],
-          work_day: selectedFilters.selectedDays,
-          posting_types: selectedFilters.checkedJobs[0] || "",
-          employment_type: selectedFilters.employmentType,
-          education: selectedFilters.education,
-          search: selectedFilters.searchKeyword,
+          city: city?.id,
+          district: district?.id,
+          town: towns.map((town) => town.id),
+          work_day: selectedDays,
+          posting_types: false,
+          employment_type: employmentType,
+          education: educations,
+          job_keyword_main: cat?.id,
+          job_keyword_sub: jobCats?.map((cat) => cat?.id).filter(Boolean),
+          // job_keyword_sub: ["서빙"],
+          search: "",
+          work_experience: workExperiences,
+        },
+        paramsSerializer: (params) => {
+          return qs.stringify(params, { arrayFormat: "repeat" });
         },
       });
       return response.data;

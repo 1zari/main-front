@@ -14,6 +14,8 @@ import { TitleInput } from "@/features/recruit/components/inputs/TitleInput";
 import { WorkingDaysCheckbox } from "@/features/recruit/components/inputs/WorkingDaysCheckbox";
 import { WorkingHoursInput } from "@/features/recruit/components/inputs/WorkingHoursInput";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { JobPostFormValues, jobPostSchema } from "../schemas/jobPostSchema";
 import { SectionTitle } from "./inputs";
@@ -39,6 +41,7 @@ export default function JobPostForm({
     setValue,
     watch,
     formState: { errors },
+    reset,
   } = useForm<JobPostFormValues>({
     resolver: zodResolver(jobPostSchema),
     mode: "onTouched",
@@ -55,25 +58,77 @@ export default function JobPostForm({
       ...defaultValues,
     },
   });
+  const { data: session, status } = useSession();
 
+  useEffect(() => {
+    if (status === "authenticated") {
+      console.log("현재 로그인한 유저:", session?.user);
+    } else {
+      console.log("로그인 상태 아님:", status);
+    }
+  }, [session, status]);
+
+  useEffect(() => {
+    const fetchJobPostData = async () => {
+      if (mode === "edit" && id) {
+        try {
+          const data = await jobPostApi.getJobPostDetail(id);
+          const job_posting = data.job_posting;
+          reset({
+            title: job_posting.job_posting_title,
+            occupation: job_posting.job_keyword_sub,
+            location: job_posting.city || "",
+            locationDetail: job_posting.address || "",
+            deadline: job_posting.deadline || "",
+            workingDays: job_posting.work_day as JobPostFormValues["workingDays"],
+            jobSummary: job_posting.summary || "",
+            jobDescription: job_posting.content || "",
+            agreeTerms: true,
+            numberOfRecruits: job_posting.number_of_positions ?? 0,
+            salary: job_posting.salary ?? 0,
+            salaryType: job_posting.salary_type || "",
+          });
+        } catch (error) {
+          console.error("공고 데이터를 불러오는 중 에러 발생:", error);
+        }
+      }
+    };
+
+    fetchJobPostData();
+  }, [mode, id, reset]);
   const convertFormDataToRequestDto = (formData: JobPostFormValues) => {
     return {
-      title: formData.title,
+      job_posting_title: formData.title,
       occupation: formData.occupation,
       address: `${formData.location} ${formData.locationDetail}`,
-      deadline: formData.deadline,
+      city: "",
+      town: "",
+      district: "",
+      // location: [2.3, 2.3],
+      location: [127.123456, 37.123456],
+      // location: null,
+      // location: {
+      //   type: "Point",
+      //   coordinates: [127.123456, 37.123456],
+      // },
       workingDays: formData.workingDays,
-      workingHours: {
-        start: formData.workingHourStart,
-        end: formData.workingHourEnd,
-        negotiable: formData.workingHourNegotiable,
-      },
-      salary: {
-        type: formData.salaryType!,
-        amount: Number(formData.salary),
-      },
+      work_time_start: "09:00",
+      work_time_end: "18:00",
+      posting_type: "",
+      employment_type: "",
+      work_experience: "",
+      job_keyword_main: "",
+      job_keyword_sub: ["서빙"],
+      number_of_positions: Number(formData.numberOfRecruits),
+      education: "",
+      deadline: formData.deadline,
+      time_discussion: true,
+      day_discussion: true,
+      work_day: ["월"],
+      salary_type: formData.salaryType!,
+      salary: Number(formData.salary),
       summary: formData.jobSummary,
-      description: formData.jobDescription,
+      content: formData.jobDescription,
     };
   };
 
@@ -100,7 +155,9 @@ export default function JobPostForm({
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(onSubmit, (errors) => {
+        console.log("유효성 검사 실패", errors);
+      })}
       className="flex flex-col gap-6 p-6 mt-3 max-w-3xl mx-auto mb-10 bg-white rounded-lg shadow-lg"
     >
       <TitleInput register={register} error={errors.title} />
@@ -126,15 +183,13 @@ export default function JobPostForm({
       <SalaryInput register={register} error={errors.salary} />
       <WorkingDaysCheckbox
         register={register}
-        // error={Array.isArray(errors.workingDays) ? errors.workingDays : undefined}
-        error={{
-          workingHourStart: errors.workingHourStart,
-          workingHourEnd: errors.workingHourEnd,
-          workingHourNegotiable: errors.workingHourNegotiable,
-        }}
+        error={Array.isArray(errors.workingDays) ? errors.workingDays : undefined}
       />
 
-      <WorkingHoursInput register={register} error={errors.workingHours} />
+      <WorkingHoursInput
+        register={register}
+        error={errors.workingHourStart || errors.workingHourEnd || errors.workingHourNegotiable}
+      />
       <SectionTitle title="공고상세" />
       <JobSummaryInput register={register} error={errors.jobSummary} />
       <JobDescriptionInput register={register} error={errors.jobDescription} />
