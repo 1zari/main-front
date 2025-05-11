@@ -9,6 +9,13 @@ export const callbacks = {
         // NEXT_PUBLIC_API_URL 환경 변수의 설정값 확인
         const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://senior-naeil.life/api";
 
+        // fetch 요청 전 값 출력
+        console.log("[카카오 fetch 요청 전]", {
+          apiUrl,
+          access_token: account.access_token,
+          refresh_token: account.refresh_token,
+        });
+
         // 카카오 액세스 토큰으로 백엔드에 요청
         const response = await fetch(`${apiUrl}/user/oauth/kakao/login/`, {
           method: "POST",
@@ -22,6 +29,10 @@ export const callbacks = {
             refresh_token: account.refresh_token,
           }),
         });
+
+        // fetch 요청 후 응답 상태 출력
+        console.log("[카카오 fetch 응답]", response.status, response.statusText);
+
         // Check if response is ok before parsing
         if (!response.ok) {
           const text = await response.text();
@@ -31,6 +42,8 @@ export const callbacks = {
           console.error(`API error: ${response.status}`);
         } else {
           const data = await response.json();
+          // 응답 데이터 출력
+          console.log("[카카오 fetch 응답 데이터]", data);
 
           // 백엔드에서 받은 토큰을 NextAuth 토큰에 저장
           if (data.accessToken) {

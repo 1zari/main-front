@@ -130,13 +130,12 @@ export interface LogoutResponseDto {
 
 // 카카오 로그인 요청 DTO
 export interface KakaoLoginRequestDto {
-  code: string;
+  access_token: string;
 }
 
 // 네이버 로그인 요청 DTO
 export interface NaverLoginRequestDto {
-  code: string;
-  state: string;
+  access_token: string;
 }
 
 // 소셜 로그인 성공 응답 DTO
@@ -145,6 +144,10 @@ export interface SocialLoginSuccessResponseDto {
   access_token: string;
   refresh_token: string;
   token_type: "bearer";
+  common_user_id: string;
+  email: string;
+  name: string;
+  join_type: string;
 }
 
 // 소셜 로그인 추가 정보 필요 응답 DTO
