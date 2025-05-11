@@ -20,7 +20,9 @@ export default function JobsArea({ className }: { className?: string }) {
       </div>
       <section className="w-full max-w-7xl mx-auto my-8 px-4 ">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
-          <JobCard />
+          {Array.from({ length: 9 }).map((_, index) => (
+            <JobCard key={index} />
+          ))}
         </div>
       </section>
     </div>
