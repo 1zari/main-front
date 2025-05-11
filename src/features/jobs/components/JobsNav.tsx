@@ -70,7 +70,7 @@ export default function JobsNav() {
             >
               닫기 ✕
             </button>
-            <SearchPage />
+            <SearchPage setIsOpen={setIsOpen} />
           </div>
         </div>
       )}

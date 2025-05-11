@@ -66,7 +66,7 @@ export default function JobSearch({ className }: { className?: string }) {
             >
               닫기 ✕
             </button>
-            <SearchPage />
+            <SearchPage setIsOpen={setIsOpen} />
           </div>
         </div>
       )}

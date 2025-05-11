@@ -1,5 +1,3 @@
-import type { JobPostsListResponseDto } from "@/types/api/job";
-
 //채용 공고 리스트 조회 응답 DTO
 export interface JobPostsListResponseDto {
   message: string;
@@ -171,4 +169,22 @@ export interface DeleteJobPostResponseDto {
 // 북마크 등록 요청 DTO
 export interface AddBookmarkRequestDto {
   job_posting_id: string;
+}
+
+
+
+// 검색 결과 응답 DTO
+export interface SearchJobResultResponseDto {
+  results: SearchJobResult[];
+}
+
+export interface SearchJobResult {
+  job_posting_id: string;
+  job_posting_title: string;
+  city: string;
+  district: string;
+  is_bookmarked: boolean;
+  deadline: string;
+  summary: string;
+  company_logo: string;
 }

@@ -1,4 +1,5 @@
 import useFiltersStore from "@/features/jobs/components/filter/stores/useFiltersStore";
+import useSearchedListStore from "@/store/useSearchedListStore";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import qs from "qs";
@@ -37,8 +38,9 @@ export function useSearchJobs() {
   } = useFiltersStore();
   const [result, setResult] = useState<SearchJobResult[] | null>(null);
 
+  const { setSearchedList } = useSearchedListStore();
   const mutation = useMutation({
-    mutationFn: async () => {
+    mutationFn: async ({ searchKeyword }: { searchKeyword: string }) => {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/search/`, {
         params: {
           city: city?.id,
@@ -51,7 +53,7 @@ export function useSearchJobs() {
           job_keyword_main: cat?.id,
           job_keyword_sub: jobCats?.map((cat) => cat?.id).filter(Boolean),
           // job_keyword_sub: ["서빙"],
-          search: "",
+          search: searchKeyword,
           work_experience: workExperiences,
         },
         paramsSerializer: (params) => {
@@ -61,7 +63,9 @@ export function useSearchJobs() {
       return response.data;
     },
     onSuccess: (data) => {
+      setSearchedList([]);
       setResult(data);
+      setSearchedList(data.results);
     },
   });
 
@@ -69,6 +73,6 @@ export function useSearchJobs() {
     result,
     isLoading: mutation.isPending,
     error: mutation.error,
-    search: mutation.mutate, // 검색 실행 함수
+    search: (keyword: string) => mutation.mutate({ searchKeyword: keyword }), // 검색 실행 함수
   };
 }

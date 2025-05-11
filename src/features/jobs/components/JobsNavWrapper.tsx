@@ -5,6 +5,9 @@ import { usePathname } from "next/navigation";
 
 export default function JobsNavWrapper() {
   const pathname = usePathname();
+
+  if (!pathname) return null;
+
   const isDetailPage =
     pathname.startsWith("/jobs/") &&
     ![
@@ -12,6 +15,7 @@ export default function JobsNavWrapper() {
       "/jobs/by-location",
       "/jobs/public-jobs",
       "/jobs/recommended-jobs",
+      "/jobs/searched",
     ].includes(pathname);
 
   if (isDetailPage) return null;
