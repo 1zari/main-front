@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const resumeSchema = z.object({
+  jobCategory: z.string().min(1, "직종을 입력해주세요. ex) IT, 디자인, 마케팅"),
   title: z.string().min(1, "이력서 제목을 입력해주세요."),
   name: z.string().min(1, "이름을 입력해주세요."),
   phone: z.string().regex(/^010-\d{4}-\d{4}$/, "010-1234-5678 형식으로 입력해주세요."),

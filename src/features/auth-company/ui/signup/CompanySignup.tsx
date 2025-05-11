@@ -32,7 +32,6 @@ const toCompanyFormData = (payload: {
 export default function SignupFormCompany() {
   const router = useRouter();
   const showModal = useModalStore((s) => s.showModal);
-
   const [step, setStep] = useState<1 | 2>(1);
   const [stepOneData, setStepOneData] = useState<SignupFormValues | null>(null);
   const [commonUserId, setCommonUserId] = useState<string | null>(null);
@@ -61,7 +60,12 @@ export default function SignupFormCompany() {
                 setStep(2);
               } catch (err) {
                 console.error("1단계 회원가입 실패:", err);
-                alert("회원가입에 실패했습니다. 다시 시도해주세요.");
+                showModal({
+                  title: "회원가입 실패",
+                  message: "회원정보 입력 중 오류가 발생했습니다. \n 잠시 후 다시 시도해주세요.",
+                  confirmText: "확인",
+                  onConfirm: () => router.push("/"),
+                });
               }
             }}
           />
@@ -72,13 +76,23 @@ export default function SignupFormCompany() {
 
               const businessFile = data.businessFile?.[0];
               if (!businessFile) {
-                alert("사업자등록증 파일이 누락되었습니다.");
+                showModal({
+                  title: "사업자등록증 미첨부",
+                  message: "사업자등록증을 첨부해주세요.",
+                  confirmText: "확인",
+                  onConfirm: () => router.push("/"),
+                });
                 return;
               }
 
               const dateObj = new Date(data.startDate);
               if (isNaN(dateObj.getTime())) {
-                alert("개업년월일 형식이 올바르지 않습니다.");
+                showModal({
+                  title: "개업년월일 미입력",
+                  message: "개업년월일을 입력해주세요.",
+                  confirmText: "확인",
+                  onConfirm: () => router.push("/"),
+                });
                 return;
               }
               const isoDate = dateObj.toISOString();
@@ -107,13 +121,18 @@ export default function SignupFormCompany() {
                 console.log("기업회원 가입 최종 완료");
                 showModal({
                   title: "회원가입 완료",
-                  message: "시니어내일에 오신 것을 환영합니다!",
+                  message: `시니어내일에 오신 것을 환영합니다! \n ${data.companyName}님의 비즈니스 여정을 응원합니다 🤗🎉`,
                   confirmText: "로그인 하러가기",
                   onConfirm: () => router.push("/auth/login?tab=company"),
                 });
               } catch (err) {
                 console.error("회원가입 최종 실패:", err);
-                alert("회원정보 입력 중 오류가 발생했습니다.");
+                showModal({
+                  title: "회원가입 실패",
+                  message: "회원정보 입력 중 오류가 발생했습니다. \n 잠시 후 다시 시도해주세요.",
+                  confirmText: "확인",
+                  onConfirm: () => router.push("/"),
+                });
               }
             }}
           />

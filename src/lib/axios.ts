@@ -28,10 +28,9 @@ export function createHttpClient(authHelpers?: AuthHelpers): AxiosInstance {
 
       // 디버그용 최종 request config 확인
       console.log("axios request config:", {
-        url: config.url,
+        url: `${config.baseURL}${config.url}`,
         method: config.method,
         headers: config.headers,
-        // FormData면 entries 배열로, 아니면 그대로 출력
         data:
           config.data instanceof FormData
             ? Array.from((config.data as FormData).entries())
