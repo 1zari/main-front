@@ -8,8 +8,8 @@ export const useAuth = () => {
   const router = useRouter();
   const {
     user,
-    accessToken,
-    refreshToken,
+    // accessToken,
+    // refreshToken,
     isAuthenticated,
     isLoading,
     isInitialized,
@@ -97,8 +97,8 @@ export const useAuth = () => {
 
   return {
     user,
-    accessToken,
-    refreshToken,
+    // accessToken,
+    // refreshToken,
     isAuthenticated,
     isLoading,
     isInitialized,

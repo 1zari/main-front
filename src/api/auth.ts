@@ -111,8 +111,8 @@ export const authApi = {
         login: () => {
           window.location.href = API_ENDPOINTS.AUTH.USER.SOCIAL.KAKAO.LOGIN;
         },
-        callback: async (code: string) => {
-          const data: KakaoLoginRequestDto = { code };
+        callback: async (access_token: string) => {
+          const data: KakaoLoginRequestDto = { access_token };
           const response = await fetcher.post<SocialLoginResponseDto>(
             API_ENDPOINTS.AUTH.USER.SOCIAL.KAKAO.CALLBACK,
             data,
@@ -125,8 +125,8 @@ export const authApi = {
         login: () => {
           window.location.href = API_ENDPOINTS.AUTH.USER.SOCIAL.NAVER.LOGIN;
         },
-        callback: (code: string, state: string) => {
-          const data: NaverLoginRequestDto = { code, state };
+        callback: (access_token: string) => {
+          const data: NaverLoginRequestDto = { access_token };
           return fetcher.post<SocialLoginResponseDto>(
             API_ENDPOINTS.AUTH.USER.SOCIAL.NAVER.CALLBACK,
             data,
