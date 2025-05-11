@@ -143,9 +143,9 @@ export default function JobDetailContent({ jobPostingId }: JobDetailContentProps
                   //   alt="회사 로고"
                   //   className="rounded object-contain w-24 h-24 bg-gray-200"
                   // />
-                  <div className="rounded w-12 h-12 bg-gray-200 flex items-center justify-center text-gray-500 text-xl">
+                  <span className="rounded w-12 h-12 bg-gray-200 flex items-center justify-center text-gray-500 text-xl">
                     🏢
-                  </div>
+                  </span>
                 ),
               },
               { label: "채용 담당자", value: manager_name },

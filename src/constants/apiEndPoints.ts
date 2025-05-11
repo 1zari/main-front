@@ -74,6 +74,9 @@ export const API_ENDPOINTS = {
   APPLICANT: {
     LIST: "submission/company/",
   },
+  APPLY: {
+    POST: "submission/",
+  },
 } as const;
 
 export const API_MESSAGES = {
