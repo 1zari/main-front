@@ -1,3 +1,5 @@
+import type { JobPostsListResponseDto } from "@/types/api/job";
+
 //채용 공고 리스트 조회 응답 DTO
 export interface JobPostsListResponseDto {
   message: string;
@@ -15,9 +17,14 @@ export interface JobPostsListResponseDto {
 //채용공고 상세 조회 응답 Dto
 export interface JobPostDetailResponseDto {
   message: string;
+
   job_posting: {
     job_posting_id: string;
     company_id: string;
+    company_logo: string;
+    company_name: string;
+    manager_phone_number: string;
+    manager_name: string;
     job_posting_title: string;
     address: string;
     city: string;

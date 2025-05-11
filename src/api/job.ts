@@ -14,7 +14,7 @@ import type {
 // 채용공고 리스트 조회
 export const jobPostApi = {
   getJobPostList: () => {
-    return fetcher.get<JobPostsListResponseDto>(API_ENDPOINTS.JOB_POST.LIST, { secure: true });
+    return fetcher.get<JobPostsListResponseDto>(API_ENDPOINTS.JOB_POST.LIST);
   },
 
   getJobPostDetail: (id: string) => {
