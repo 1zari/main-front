@@ -66,6 +66,9 @@ export const API_ENDPOINTS = {
     ADD: (id: string) => `job-postings/bookmark/${id}/`,
     DELETE: (id: string) => `job-postings/bookmark/${id}/`,
   },
+  APPLICANT: {
+    LIST: "submission/company/",
+  },
 } as const;
 
 export const API_MESSAGES = {
