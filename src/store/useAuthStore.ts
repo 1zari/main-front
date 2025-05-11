@@ -68,7 +68,7 @@ export const useAuthStore = create<AuthState>()(
           const session = await getSession();
 
           // 세션 유효성 확인 - user 정보만 있어도 로그인 처리
-          if (session?.user && session.accessToken) {
+          if (session?.user && session.user.id) {
             // 사용자 정보 구성
             const user: UserBase = {
               id: session.user.id,
