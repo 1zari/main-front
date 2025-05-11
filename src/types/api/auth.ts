@@ -172,12 +172,14 @@ export interface SendVerificationResponseDto {
 export interface VerifyCodeRequestDto {
   phone_number: string;
   code: string;
+  join_type: "normal" | "company";
 }
 
 // 문자 인증 코드 검증 응답 DTO
 export interface VerifyCodeResponseDto {
   message: "Verification successful.";
 }
+
 // 회원가입 전화번호 인증 요청 DTO
 export interface PhoneVerificationRequestDto {
   phone_number: string;
@@ -195,3 +197,5 @@ export interface VerifyCodeRequestDto {
   code: string;
   join_type: "normal" | "company";
 }
+
+// NextAuthUser 타입은 src/types/next-auth.d.ts에 정의되어 있습니다.

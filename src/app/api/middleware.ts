@@ -1,17 +1,16 @@
-import { UserRole } from "@/types/commonUser";
+import { JoinType } from "@/types/commonUser";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { getToken } from "next-auth/jwt";
 
-export function middleware(request: NextRequest) {
-  const token = request.cookies.get("accessToken")?.value;
+export async function middleware(request: NextRequest) {
+  const token = await getToken({ req: request });
 
   if (!token) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(new URL("/auth/login", request.url));
   }
 
-  const payload = JSON.parse(atob(token.split(".")[1]));
-  const role = payload.role as UserRole;
-
+  const role = token.join_type as JoinType;
   const { pathname } = request.nextUrl;
 
   if (pathname.startsWith("/company") && role !== "company") {

@@ -28,6 +28,7 @@ import type {
   //UpdateUserInfoRequestDto,
   UserFindEmailRequestDto,
   UserFindEmailResponseDto,
+  UserProfileResponseDto,
   UserResetPasswordRequestDto,
   UserResetPasswordResponseDto,
 } from "@/types/api/user";
@@ -38,15 +39,8 @@ import type {
   CompanyResetPasswordRequestDto,
   CompanyResetPasswordResponseDto,
 } from "@/types/api/company";*/
-import { useAuthStore } from "@/store/useAuthStore";
 
 export const authApi = {
-  // ─── 공통 인증 ───────────────────────────────────────────────
-  // 액세스·리프레시 토큰 저장
-  setTokens: (accessToken: string, refreshToken: string) => {
-    useAuthStore.getState().setAuth(accessToken, refreshToken, null);
-  },
-
   // 로그아웃
   logout: (refreshToken: string) => {
     const data: LogoutRequestDto = { refresh_token: refreshToken };
@@ -67,14 +61,16 @@ export const authApi = {
   // ─── 개인회원 인증 ────────────────────────────────────────────
   user: {
     // 로그인
-    login: (email: string, password: string) => {
+    login: async (email: string, password: string) => {
       const data: LoginRequestDto = { email, password };
-      return fetcher.post<LoginResponseDto>(API_ENDPOINTS.AUTH.USER.LOGIN, data);
+
+      const response = await fetcher.post<LoginResponseDto>(API_ENDPOINTS.AUTH.USER.LOGIN, data);
+      return response;
     },
 
     // 내 프로필 조회
     getProfile: () => {
-      return fetcher.get(API_ENDPOINTS.USER.PROFILE, { secure: true });
+      return fetcher.get<UserProfileResponseDto>(API_ENDPOINTS.USER.PROFILE, { secure: true });
     },
 
     // 1단계 회원가입
@@ -115,12 +111,14 @@ export const authApi = {
         login: () => {
           window.location.href = API_ENDPOINTS.AUTH.USER.SOCIAL.KAKAO.LOGIN;
         },
-        callback: (code: string) => {
+        callback: async (code: string) => {
           const data: KakaoLoginRequestDto = { code };
-          return fetcher.post<SocialLoginResponseDto>(
+          const response = await fetcher.post<SocialLoginResponseDto>(
             API_ENDPOINTS.AUTH.USER.SOCIAL.KAKAO.CALLBACK,
             data,
           );
+          console.log("response", response);
+          return response;
         },
       },
       naver: {

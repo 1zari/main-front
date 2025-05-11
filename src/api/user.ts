@@ -12,6 +12,7 @@ import type {
   PhoneVerificationResponseDto,
   VerifyCodeRequestDto,
   VerifyCodeResponseDto,
+  UserProfileResponseDto,
 } from "@/types/api/user";
 
 export const userApi = {

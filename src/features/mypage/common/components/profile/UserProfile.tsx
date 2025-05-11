@@ -1,40 +1,18 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { useSession } from "next-auth/react";
-import useSWR from "swr";
 import ProfileCard from "./ProfileCard";
 import UserProfileTabs from "./UserProfileTabs";
 import { Heading } from "@/components/ui/Heading";
 import { formatBirthDate } from "@/utils/format";
-import type { UserProfileResponseDto } from "@/types/api/user";
-import { API_ENDPOINTS } from "@/constants/apiEndPoints";
-import { fetcher } from "@/lib/fetcher";
-
-// fetcher 함수를 컴포넌트 외부로 이동
-const fetchUserProfile = async (url: string, accessToken?: string) => {
-  try {
-    const response = await fetcher.get<UserProfileResponseDto>(url, {
-      secure: true,
-      headers: {
-        "Content-Type": "application/json",
-        ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
-      },
-    });
-    return response;
-  } catch (error) {
-    console.error("Error fetching user profile:", error);
-    throw error;
-  }
-};
+import { useQuery } from "@tanstack/react-query";
+import { authApi } from "@/api/auth";
 
 export default function UserProfile() {
-  const { data: session } = useSession();
-
-  const { data: userProfileData, error } = useSWR(
-    session ? [API_ENDPOINTS.USER.PROFILE, session.accessToken] : null,
-    ([url, token]) => fetchUserProfile(url, token),
-  );
+  const { data: userProfileData, error } = useQuery({
+    queryKey: ["userProfile"],
+    queryFn: () => authApi.user.getProfile(),
+  });
 
   // 프로필 아이템 구성
   const profileItems = useMemo(() => {

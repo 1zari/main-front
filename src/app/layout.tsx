@@ -1,10 +1,10 @@
 import Script from "next/script";
-import QueryProvider from "../components/providers/QueryProvider";
-import { FontSizeProvider } from "../hooks/useFontSize";
-import ClientLayout from "./ClientLayout";
-import { metadata } from "./metadata";
+import { Providers } from "./providers";
 import ConfirmModal from "@/components/common/ConfirmModal";
+import NavigationBar from "@/components/layout/NavigationBar";
+import Footer from "@/components/layout/Footer";
 import "./globals.css";
+import { metadata } from "./metadata";
 //import CSRFInit from "./_components/CSRFInit";
 
 export { metadata };
@@ -27,14 +27,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <QueryProvider>
-          <FontSizeProvider>
-            <ClientLayout>
-              <main>{children}</main>
-              <ConfirmModal />
-            </ClientLayout>
-          </FontSizeProvider>
-        </QueryProvider>
+        <Providers>
+          <NavigationBar />
+          <main>{children}</main>
+          <Footer />
+          <ConfirmModal />
+        </Providers>
       </body>
     </html>
   );
