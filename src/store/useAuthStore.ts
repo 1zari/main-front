@@ -5,8 +5,6 @@ import type { UserBase } from "@/types/commonUser";
 import type { JoinType } from "@/types/commonUser";
 
 interface AuthState {
-  accessToken: string | null;
-  refreshToken: string | null;
   user: UserBase | null;
   isAuthenticated: boolean;
   isLoading: boolean;
@@ -14,7 +12,7 @@ interface AuthState {
   isUserLoggedIn: boolean;
   error: string | null;
 
-  setAuth: (accessToken: string, refreshToken: string, user: UserBase | null) => void;
+  setAuth: (user: UserBase | null) => void;
   clearAuth: () => void;
   setLoading: (isLoading: boolean) => void;
   setError: (error: string | null) => void;
@@ -28,26 +26,21 @@ interface AuthState {
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
-      accessToken: null,
-      refreshToken: null,
       user: null,
-      isAuthenticated: false,
       isLoading: false,
+      isAuthenticated: false,
       isInitialized: false,
       isUserLoggedIn: false,
       error: null,
 
-      setAuth: (accessToken, refreshToken, user) => {
+      setAuth: (user) => {
         console.log("[AuthStore] 인증 정보 설정", {
-          accessToken: accessToken ? "exists" : "none",
-          user: user ? `${user.name} (${user.join_type})` : "none",
+          user: user ? `${user?.name} (${user?.join_type})` : "none",
         });
 
         set({
-          accessToken,
-          refreshToken,
           user,
-          isAuthenticated: !!accessToken && !!user,
+          isAuthenticated: !!user,
           isUserLoggedIn: !!user,
           error: null,
         });
@@ -55,8 +48,6 @@ export const useAuthStore = create<AuthState>()(
 
       clearAuth: () => {
         set({
-          accessToken: null,
-          refreshToken: null,
           user: null,
           isAuthenticated: false,
           isUserLoggedIn: false,
@@ -77,7 +68,7 @@ export const useAuthStore = create<AuthState>()(
           const session = await getSession();
 
           // 세션 유효성 확인 - user 정보만 있어도 로그인 처리
-          if (session?.user) {
+          if (session?.user && session.accessToken) {
             // 사용자 정보 구성
             const user: UserBase = {
               id: session.user.id,
@@ -89,11 +80,7 @@ export const useAuthStore = create<AuthState>()(
               updated_at: new Date().toISOString(),
             };
 
-            // 토큰이 없어도 세션 기반 인증 처리
-            const accessToken = session.accessToken ?? "session-auth";
-            const refreshToken = session.refreshToken ?? "";
-
-            setAuth(accessToken, refreshToken, user);
+            setAuth(user);
           } else {
             clearAuth();
           }
