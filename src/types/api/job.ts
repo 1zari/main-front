@@ -1,3 +1,5 @@
+import type { JobPostsListResponseDto } from "@/types/api/job";
+
 //채용 공고 리스트 조회 응답 DTO
 export interface JobPostsListResponseDto {
   message: string;
