@@ -5,10 +5,18 @@ import { Star } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function ScrapBtn({ showLabel = false }: { showLabel?: boolean }) {
+export default function ScrapBtn({
+  showLabel = false,
+  initialIsBookmarked = false,
+  jobPostingId,
+}: {
+  showLabel?: boolean;
+  initialIsBookmarked?: boolean;
+  jobPostingId?: string;
+}) {
   const params = useParams();
-  const jobPostingId = params?.id as string;
-  const [isSaved, setIsSaved] = useState(false);
+  const resolvedJobPostingId = jobPostingId || (params?.id as string | undefined);
+  const [isSaved, setIsSaved] = useState(initialIsBookmarked);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -18,15 +26,19 @@ export default function ScrapBtn({ showLabel = false }: { showLabel?: boolean })
   useEffect(() => {
     const fetchIsSaved = async () => {
       try {
-        const res = await jobPostApi.getJobPostDetail(jobPostingId);
+        const res = await jobPostApi.getJobPostDetail(resolvedJobPostingId as string);
         setIsSaved(res.job_posting.is_bookmarked);
       } catch (error) {
         console.error("북마크 상태를 불러오는데 실패했습니다:", error);
       }
     };
 
-    fetchIsSaved();
-  }, [jobPostingId]);
+    if (resolvedJobPostingId) {
+      fetchIsSaved();
+    } else {
+      setIsSaved(initialIsBookmarked);
+    }
+  }, [resolvedJobPostingId, initialIsBookmarked]);
 
   const handleClick = async () => {
     const prev = isSaved;
@@ -34,9 +46,9 @@ export default function ScrapBtn({ showLabel = false }: { showLabel?: boolean })
 
     try {
       if (prev) {
-        await jobPostApi.removeBookmark(jobPostingId);
+        await jobPostApi.removeBookmark(resolvedJobPostingId as string);
       } else {
-        await jobPostApi.addBookmark(jobPostingId);
+        await jobPostApi.addBookmark(resolvedJobPostingId as string);
       }
     } catch (err) {
       setIsSaved(prev);
