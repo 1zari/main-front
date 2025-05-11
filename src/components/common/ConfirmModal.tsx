@@ -30,9 +30,11 @@ export default function ConfirmModal() {
           enterTo="opacity-100 scale-100"
           leave="duration-0"
         >
-          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-            <h2 className="text-xl font-semibold mb-2">{title}</h2>
-            <Description className="text-base mb-4">{message}</Description>
+          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-sm">
+            <h2 className="text-xl font-semibold mb-2 text-center text-primary">{title}</h2>
+            <Description className="text-base mb-7 mt-3 whitespace-pre-line text-center">
+              {message}
+            </Description>
             <button
               type="button"
               className="w-full h-12 bg-primary text-white font-medium rounded-sm hover:opacity-90 transition"

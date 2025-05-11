@@ -36,7 +36,12 @@ export default function UserSignup() {
                 setStep(2);
               } catch (err) {
                 console.error("1단계 회원가입 실패:", err);
-                alert("회원가입에 실패했습니다. 다시 시도해주세요.");
+                showModal({
+                  title: "회원가입 실패",
+                  message: "회원정보 입력 중 오류가 발생했습니다. \n 잠시 후 다시 시도해주세요.",
+                  confirmText: "확인",
+                  onConfirm: () => router.push("/"),
+                });
               }
             }}
           />
@@ -47,7 +52,6 @@ export default function UserSignup() {
 
               const birthDate = new Date(data.birth);
               if (isNaN(birthDate.getTime())) {
-                alert("생년월일 형식이 올바르지 않습니다.");
                 return;
               }
               const isoBirth = birthDate.toISOString();
@@ -60,20 +64,25 @@ export default function UserSignup() {
                   phone_number: data.phone,
                   gender: data.gender!,
                   birthday: isoBirth,
-                  interest: data.interests,
+                  interest: data.interests || [],
                   purpose_subscription: data.purposes,
                   route: data.channels,
                 });
                 console.log("회원가입 최종 완료");
                 showModal({
                   title: "회원가입 완료",
-                  message: "시니어내일에 오신 것을 환영합니다!",
+                  message: `시니어내일에 오신 것을 환영합니다! \n ${data.name}님의 내일을 응원해요 🤗🎉`,
                   confirmText: "로그인 하러가기",
                   onConfirm: () => router.push("/auth/login?tab=user"),
                 });
               } catch (err) {
                 console.error("회원가입 최종 실패:", err);
-                alert("회원정보 입력 중 오류가 발생했습니다.");
+                showModal({
+                  title: "회원가입 실패",
+                  message: "회원정보 입력 중 오류가 발생했습니다. \n 잠시 후 다시 시도해주세요.",
+                  confirmText: "확인",
+                  onConfirm: () => router.push("/"),
+                });
               }
             }}
           />

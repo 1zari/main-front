@@ -1,16 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['senior-naeil.life', 'senior-tomorrow.kro.kr'],
+    domains: ["senior-naeil.life", "senior-tomorrow.kro.kr"],
   },
   async rewrites() {
     return [
       {
-        source: '/api/auth/:path*',
-        destination: '/api/auth/:path*',
+        source: "/api/auth/:path*",
+        destination: "/api/auth/:path*",
       },
     ];
   },
 };
 
-export default nextConfig; 
+export default nextConfig;

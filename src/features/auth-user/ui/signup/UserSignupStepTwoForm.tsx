@@ -3,15 +3,15 @@ import { useState, useEffect } from "react";
 import { useForm, FormProvider, Controller, FieldValues, Path, Control } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import "react-datepicker/dist/react-datepicker.css";
-
+import { useModalStore } from "@/store/useModalStore";
 import { userSignupSchema, UserFormValues } from "@/features/auth-user/validation/user-auth.schema";
 import FormActionInput from "@/features/auth-common/components/baseFields/FormActionInput";
 import FormInput from "@/features/auth-common/components/baseFields/FormInput";
 import FormDatePicker from "@/features/auth-common/components/baseFields/FormDatePicker";
 import UserTermsAgreement from "@/features/auth-common/components/terms/UserTermsAgreement";
 
-//import { userApi } from "@/api/user";
-//import type { PhoneVerificationRequestDto, VerifyCodeRequestDto } from "@/types/api/user";
+import { userApi } from "@/api/user";
+import type { PhoneVerificationRequestDto, VerifyCodeRequestDto } from "@/types/api/user";
 
 export type UserStepTwoValues = UserFormValues;
 
@@ -53,6 +53,7 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
   const [isVerified, setIsVerified] = useState(false);
+  const showModal = useModalStore((s) => s.showModal);
 
   useEffect(() => {
     if (!isRequesting) return;
@@ -65,7 +66,6 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
   }, [isRequesting, timeLeft]);
 
   const onFormSubmit = async (data: UserFormValues) => {
-    /* ===== 인증 검증 유지  ===== */
     if (!isVerified) {
       setError("phone", {
         type: "manual",
@@ -73,7 +73,6 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
       });
       return;
     }
-    /* ======================== */
 
     const birthDate = new Date(data.birth);
     if (isNaN(birthDate.getTime())) {
@@ -127,20 +126,22 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
               }
               clearErrors("phone");
 
-              // ====== 실제 API 호출 주석 처리 ======
-              // const payload: PhoneVerificationRequestDto = {
-              //   phone_number: rawPhone.replace(/\D/g, ""),
-              //   join_type: "normal",
-              // };
-              // await userApi.requestPhoneCode(payload);
-              // ====================================
+              const payload: PhoneVerificationRequestDto = {
+                phone_number: rawPhone.replace(/\D/g, ""),
+                join_type: "normal",
+              };
+              await userApi.requestPhoneCode(payload);
 
-              // UI 동작만 흉내
               setIsRequesting(true);
               setTimeLeft(120);
               setIsVerifyInputVisible(true);
               setIsFadingOut(false);
-              alert("인증번호가 발송되었습니다.");
+              showModal({
+                title: "인증번호가 발송되었습니다.",
+                message: "휴대폰 문자를 확인 후 \n 인증번호를 입력해주세요.",
+                confirmText: "확인",
+                onConfirm: () => {},
+              });
             }}
           />
 
@@ -165,17 +166,14 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
                     return;
                   }
 
-                  // ====== 실제 API 호출 주석 처리 ======
-                  // const rawPhone = getValues("phone");
-                  // const payload: VerifyCodeRequestDto = {
-                  //   phone_number: rawPhone.replace(/\D/g, ""),
-                  //   code,
-                  //   join_type: "normal",
-                  // };
-                  // await userApi.verifyPhoneCode(payload);
-                  // ====================================
+                  const rawPhone = getValues("phone");
+                  const payload: VerifyCodeRequestDto = {
+                    phone_number: rawPhone.replace(/\D/g, ""),
+                    code,
+                    join_type: "normal",
+                  };
+                  await userApi.verifyPhoneCode(payload);
 
-                  // 항상 성공 처리
                   setIsVerified(true);
                   setValue("verifyCode", code, { shouldValidate: true });
                   setIsFadingOut(true);
@@ -183,7 +181,12 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
                     setIsVerifyInputVisible(false);
                     setIsRequesting(false);
                   }, 100);
-                  alert("인증이 완료되었습니다.");
+                  showModal({
+                    title: "문자인증 성공",
+                    message: "인증이 완료되었습니다. \n 회원가입을 진행해주세요.",
+                    confirmText: "확인",
+                    onConfirm: () => {},
+                  });
                 }}
               />
             </div>
@@ -318,7 +321,7 @@ function ControlledCheckboxGroup<T extends FieldValues>({
       control={control}
       name={name}
       render={({ field }) => {
-        const selected = Array.isArray(field.value) ? field.value : [];
+        const selected: string[] = Array.isArray(field.value) ? field.value : [];
         const toggleOption = (value: string) => {
           const exists = selected.includes(value);
           const updated = exists ? selected.filter((v) => v !== value) : [...selected, value];

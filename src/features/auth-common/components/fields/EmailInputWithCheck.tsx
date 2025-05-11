@@ -3,6 +3,7 @@ import { useFormContext, type UseFormRegister } from "react-hook-form";
 import { fetcher } from "@/lib/fetcher";
 import { API_ENDPOINTS } from "@/constants/apiEndPoints";
 import type { SignupFormValues } from "@/features/auth-common/validation/signup-auth.schema";
+import { useModalStore } from "@/store/useModalStore";
 
 type Props = {
   register: UseFormRegister<SignupFormValues>;
@@ -18,6 +19,7 @@ export default function EmailInputWithCheck({
   onEmailChange,
 }: Props) {
   const { getValues, setError, clearErrors } = useFormContext<SignupFormValues>();
+  const showModal = useModalStore((s) => s.showModal);
 
   const handleCheckEmail = async () => {
     const email = getValues("email");
@@ -40,7 +42,12 @@ export default function EmailInputWithCheck({
       if (res.message === "Email is available.") {
         clearErrors("email");
         onCheckSuccess();
-        alert("사용 가능한 이메일입니다.");
+        showModal({
+          title: "이메일 체크성공",
+          message: "사용가능한 이메일 입니다. \n 회원가입을 진행해주세요.",
+          confirmText: "확인",
+          onConfirm: () => {},
+        });
       } else {
         setError("email", {
           type: "manual",
