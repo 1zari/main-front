@@ -1,3 +1,6 @@
+"use client";
+
+import { useSession } from "next-auth/react";
 import VoiceInput from "@/components/VoiceInput";
 import CompanyDashboard from "@/features/home/components/CompanyDashboard";
 import JobsArea from "../features/home/components/JobsArea";
@@ -8,10 +11,14 @@ import SavedJobsArea from "../features/home/components/SavedJobsArea";
 import WelcomeBanner from "../features/home/components/WelcomeBanner";
 
 export default function Home() {
+  const { data: session } = useSession();
+
   return (
     <main className="flex flex-col items-center min-h-screen">
       <WelcomeBanner />
-      <CompanyDashboard className="w-full text-center bg-gray-z" />
+      {session?.user?.join_type === "company" && (
+        <CompanyDashboard className="w-full text-center bg-gray-z" />
+      )}
       <JobSearch className="w-full text-center bg-white" />
       <JobsArea className="w-full bg-gray-z" />
       <SavedJobsArea className="w-full bg-white" />
