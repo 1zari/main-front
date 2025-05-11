@@ -14,8 +14,9 @@ import { TitleInput } from "@/features/recruit/components/inputs/TitleInput";
 import { WorkingDaysCheckbox } from "@/features/recruit/components/inputs/WorkingDaysCheckbox";
 import { WorkingHoursInput } from "@/features/recruit/components/inputs/WorkingHoursInput";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { JobPostFormValues, jobPostSchema } from "../schemas/jobPostSchema";
 import { SectionTitle } from "./inputs";
@@ -58,14 +59,17 @@ export default function JobPostForm({
       ...defaultValues,
     },
   });
+  const sessionRef = useRef<Session | null>(null);
   const { data: session, status } = useSession();
 
   useEffect(() => {
-    if (status === "authenticated") {
-      console.log("현재 로그인한 유저:", session?.user);
-    } else {
-      console.log("로그인 상태 아님:", status);
+    if (status === "authenticated" && !sessionRef.current) {
+      sessionRef.current = session;
+      console.log("세션 캐싱:", sessionRef.current);
     }
+    // else {
+    //   console.log("로그인 상태 아님:", status);
+    // }
   }, [session, status]);
 
   useEffect(() => {
@@ -87,6 +91,7 @@ export default function JobPostForm({
             numberOfRecruits: job_posting.number_of_positions ?? 0,
             salary: job_posting.salary ?? 0,
             salaryType: job_posting.salary_type || "",
+            posting_type: job_posting.posting_type ?? false,
           });
         } catch (error) {
           console.error("공고 데이터를 불러오는 중 에러 발생:", error);
@@ -114,10 +119,10 @@ export default function JobPostForm({
       workingDays: formData.workingDays,
       work_time_start: "09:00",
       work_time_end: "18:00",
-      posting_type: "",
+      posting_type: false,
       employment_type: formData.employmentType,
-      work_experience: formData.,
-      job_keyword_main: formData.,
+      work_experience: "",
+      job_keyword_main: "",
       job_keyword_sub: ["서빙"],
       number_of_positions: Number(formData.numberOfRecruits),
       education: "",
@@ -193,6 +198,14 @@ export default function JobPostForm({
       <SectionTitle title="공고상세" />
       <JobSummaryInput register={register} error={errors.jobSummary} />
       <JobDescriptionInput register={register} error={errors.jobDescription} />
+
+      <div className="flex items-center gap-2">
+        <input type="checkbox" id="isPublicJob" {...register("posting_type")} className="w-4 h-4" />
+        <label htmlFor="isPublicJob" className="text-sm">
+          공공일자리 여부
+        </label>
+      </div>
+
       <AgreeTermsCheckbox register={register} error={errors.agreeTerms} />
       <button
         type="submit"
