@@ -72,8 +72,29 @@ export function JobLocationInput({
       document.body.appendChild(elementLayer);
 
       new window.daum.Postcode({
-        oncomplete: function (data: DaumPostcodeData) {
-          setValue("location", data.address);
+        oncomplete: async function (data: DaumPostcodeData) {
+          const address = data.address;
+          setValue("location", address);
+
+          try {
+            const res = await fetch(
+              `https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(address)}`,
+              {
+                headers: {
+                  Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}`,
+                },
+              },
+            );
+            const result = await res.json();
+            const coords = result.documents?.[0];
+            if (coords) {
+              setValue("latitude", parseFloat(coords.y));
+              setValue("longitude", parseFloat(coords.x));
+            }
+          } catch (e) {
+            console.error("좌표 변환 실패:", e);
+          }
+
           document.body.removeChild(elementLayer);
         },
         width: "100%",
@@ -81,8 +102,28 @@ export function JobLocationInput({
       }).embed(elementLayer);
     } else {
       new window.daum.Postcode({
-        oncomplete: function (data: DaumPostcodeData) {
-          setValue("location", data.address);
+        oncomplete: async function (data: DaumPostcodeData) {
+          const address = data.address;
+          setValue("location", address);
+
+          try {
+            const res = await fetch(
+              `https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(address)}`,
+              {
+                headers: {
+                  Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}`,
+                },
+              },
+            );
+            const result = await res.json();
+            const coords = result.documents?.[0];
+            if (coords) {
+              setValue("latitude", parseFloat(coords.y));
+              setValue("longitude", parseFloat(coords.x));
+            }
+          } catch (e) {
+            console.error("좌표 변환 실패:", e);
+          }
         },
         width: "100%",
         height: "100%",

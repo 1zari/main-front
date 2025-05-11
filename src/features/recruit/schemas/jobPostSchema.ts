@@ -43,6 +43,10 @@ export const jobPostSchema = z.object({
   jobSummary: z.string().max(50),
   jobDescription: z.string(),
   agreeTerms: z.boolean().refine((v) => v === true, { message: "이용약관에 동의해야 합니다." }),
+  locationxy: z.tuple([z.number(), z.number()]).optional(),
+  city: z.string().min(1).optional(),
+  district: z.string().min(1).optional(),
+  town: z.string().min(1).optional(),
 });
 
 export type JobPostFormValues = z.infer<typeof jobPostSchema>;

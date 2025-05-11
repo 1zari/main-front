@@ -6,6 +6,7 @@ import JobDetailSection from "@/features/jobs/components/JobDetailSection";
 import type { JobPostDetailResponseDto } from "@/types/api/job";
 import Link from "next/link";
 
+import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 
 interface JobDetailContentProps {
@@ -13,6 +14,7 @@ interface JobDetailContentProps {
 }
 
 export default function JobDetailContent({ jobPostingId }: JobDetailContentProps) {
+  const { data: session } = useSession();
   const [jobPosting, setJobPosting] = useState<JobPostDetailResponseDto["job_posting"] | null>(
     null,
   );
@@ -153,33 +155,37 @@ export default function JobDetailContent({ jobPostingId }: JobDetailContentProps
             ]}
           />
 
-          <StickyApplyKakaoShareButton isBottomVisible={isBottomVisible} />
+          {session?.user?.join_type !== "company" && (
+            <StickyApplyKakaoShareButton isBottomVisible={isBottomVisible} />
+          )}
           {/* <div ref={bottomButtonRef}>
             <ApplyButton />
             <KakaoShareButton />
           </div> */}
-          <div className="flex gap-4 justify-end">
-            <Link href={`/recruit/${jobPostingId}/edit`}>
-              <button className="px-4 py-2 bg-blue-500 text-white rounded">수정하기</button>
-            </Link>
-            <button
-              onClick={async () => {
-                const confirmed = confirm("정말 삭제하시겠습니까?");
-                if (!confirmed) return;
-                try {
-                  await jobPostApi.deleteJobPost(jobPostingId);
-                  alert("삭제되었습니다.");
-                  window.location.href = "/recruit";
-                } catch (error) {
-                  console.error("삭제 실패:", error);
-                  alert("삭제에 실패했습니다.");
-                }
-              }}
-              className="px-4 py-2 bg-red-500 text-white rounded"
-            >
-              삭제하기
-            </button>
-          </div>
+          {session?.user?.join_type === "company" && (
+            <div className="flex gap-4 justify-end">
+              <button
+                onClick={async () => {
+                  const confirmed = confirm("정말 삭제하시겠습니까?");
+                  if (!confirmed) return;
+                  try {
+                    await jobPostApi.deleteJobPost(jobPostingId);
+                    alert("삭제되었습니다.");
+                    window.location.href = "/recruit";
+                  } catch (error) {
+                    console.error("삭제 실패:", error);
+                    alert("삭제에 실패했습니다.");
+                  }
+                }}
+                className="px-4 py-2 text-black rounded"
+              >
+                x 삭제하기
+              </button>
+              <Link href={`/recruit/${jobPostingId}/edit`}>
+                <button className="px-4 py-2 bg-primary text-white rounded">수정하기</button>
+              </Link>
+            </div>
+          )}
         </section>
       </div>
     </div>

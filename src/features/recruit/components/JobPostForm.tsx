@@ -17,6 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { JobPostFormValues, jobPostSchema } from "../schemas/jobPostSchema";
 import { SectionTitle } from "./inputs";
@@ -36,6 +37,7 @@ export default function JobPostForm({
   defaultValues,
   onSubmitSuccess,
 }: JobPostFormProps) {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -91,7 +93,7 @@ export default function JobPostForm({
             numberOfRecruits: job_posting.number_of_positions ?? 0,
             salary: job_posting.salary ?? 0,
             salaryType: job_posting.salary_type || "",
-            posting_type: job_posting.posting_type ?? false,
+            posting_type: job_posting.posting_type === "true" ? true : false,
           });
         } catch (error) {
           console.error("공고 데이터를 불러오는 중 에러 발생:", error);
@@ -106,30 +108,31 @@ export default function JobPostForm({
       job_posting_title: formData.title,
       occupation: formData.occupation,
       address: `${formData.location} ${formData.locationDetail}`,
-      city: formData.location,
-      town: formData.location,
-      district: formData.location,
+      city: "서울",
+      town: "개포동",
+      district: "강남구",
       // location: [2.3, 2.3],
-      location: formData.location,
+      // location: formData.locationxy,
       // location: null,
       // location: {
       //   type: "Point",
       //   coordinates: [127.123456, 37.123456],
       // },
+      location: [127.123456, 37.123456],
       workingDays: formData.workingDays,
       work_time_start: "09:00",
       work_time_end: "18:00",
-      posting_type: false,
+      posting_type: String(formData.posting_type),
       employment_type: formData.employmentType,
-      work_experience: "",
+      work_experience: formData.career,
       job_keyword_main: "",
-      job_keyword_sub: ["서빙"],
+      job_keyword_sub: formData.occupation,
       number_of_positions: Number(formData.numberOfRecruits),
-      education: "",
+      education: formData.education,
       deadline: formData.deadline,
       time_discussion: true,
       day_discussion: true,
-      work_day: ["월"],
+      work_day: formData.workingDays,
       salary_type: formData.salaryType!,
       salary: Number(formData.salary),
       summary: formData.jobSummary,
@@ -144,11 +147,13 @@ export default function JobPostForm({
       if (mode === "create") {
         await jobPostApi.createJobPost(requestData);
         alert("등록이 완료되었습니다!");
+        router.push("/recruit");
       } else {
         if (!id) throw new Error("수정에는 ID가 필요합니다.");
 
         await jobPostApi.updateJobPost(id, requestData);
         alert("수정이 완료되었습니다!");
+        router.push("/recruit");
       }
 
       onSubmitSuccess?.();

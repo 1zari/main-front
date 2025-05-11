@@ -23,6 +23,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           src="https://developers.kakao.com/sdk/js/kakao.min.js"
           strategy="beforeInteractive"
         />
+        <Script
+          src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_JS_KEY}&libraries=services&autoload=false`}
+          strategy="beforeInteractive"
+        />
       </head>
       <body>
         <QueryProvider>
