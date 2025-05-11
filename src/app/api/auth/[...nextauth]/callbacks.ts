@@ -46,24 +46,20 @@ export const callbacks = {
           console.log("[카카오 fetch 응답 데이터]", data);
 
           // 백엔드에서 받은 토큰을 NextAuth 토큰에 저장
-          if (data.accessToken) {
-            token.accessToken = data.accessToken;
-            token.refreshToken = data.refreshToken;
+          if (data.access_token) {
+            token.accessToken = data.access_token;
+            token.refreshToken = data.refresh_token;
+            token.id = data.common_user_id;
+            token.name = data.name;
+            token.email = data.email;
+            token.join_type = data.join_type;
 
             // 백엔드 JWT 토큰을 쿠키에도 저장
             // 클라이언트 사이드에서만 실행됨 (서버 사이드에서는 무시됨)
             try {
-              tokenService.setTokens(data.accessToken, data.refreshToken);
+              tokenService.setTokens(data.access_token, data.refresh_token);
             } catch (error) {
               console.error("토큰 쿠키 저장 실패:", error);
-            }
-
-            // 사용자 정보가 있으면 토큰에 저장
-            if (data.user) {
-              token.id = data.user.id;
-              token.name = data.user.name;
-              token.email = data.user.email;
-              token.join_type = data.user.join_type;
             }
           }
 
@@ -79,12 +75,14 @@ export const callbacks = {
   },
 
   async session({ session, token }) {
-    session.user.id = token.id as string;
-    session.user.name = token.name as string;
-    session.user.email = token.email as string;
-    session.user.join_type = (token.join_type as JoinType) || "normal";
-    session.accessToken = token.accessToken as string;
-    session.refreshToken = token.refreshToken as string;
+    session.user = {
+      id: token.id as string,
+      name: token.name as string,
+      email: token.email as string,
+      join_type: (token.join_type as JoinType) || "normal",
+      accessToken: token.accessToken as string,
+      refreshToken: token.refreshToken as string,
+    };
     return session;
   },
 };
