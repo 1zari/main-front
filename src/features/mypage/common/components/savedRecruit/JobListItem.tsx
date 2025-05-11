@@ -1,11 +1,10 @@
-import { formatDate, formatSalary, isPrevious } from "@/utils/format";
 import { Heading } from "@/components/ui/Heading";
-import ScrapBtn from "@/components/ScrapBtn";
 import {
   JOB_LIST_STYLES,
   SALARY_TYPE_STYLES,
 } from "@/features/mypage/common/constants/savedJobListStyles";
 import type { SavedRecruit } from "@/features/mypage/common/types/savedRecruit.types";
+import { formatDate, formatSalary, isPrevious } from "@/utils/format";
 
 interface JobListItemProps {
   job: SavedRecruit;
@@ -48,7 +47,7 @@ export default function JobListItem({
                 onToggleSave(job.job_posting_id);
               }}
             >
-              <ScrapBtn />
+              {/* <ScrapBtn /> */}
             </div>
           )}
         </div>
