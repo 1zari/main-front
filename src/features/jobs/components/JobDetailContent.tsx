@@ -78,8 +78,9 @@ export default function JobDetailContent({ jobPostingId }: JobDetailContentProps
     company_name,
     manager_phone_number,
     manager_name,
-    // company_logo,
+    company_logo,
     salary_type,
+    location,
   } = jobPosting;
 
   return (
@@ -88,14 +89,14 @@ export default function JobDetailContent({ jobPostingId }: JobDetailContentProps
         <section className="bg-white space-y-8">
           {/* 회사정보 */}
           <div className="flex flex-col gap-2">
-            {/* <img
+            <img
               src={company_logo || "/default-image.png"}
-              className="rounded w-12 h-12 object-contain bg-gray-200"
+              className="rounded w-12 h-12 object-contain bg-white"
               alt="회사 로고"
-            /> */}
-            <div className="rounded w-12 h-12 bg-gray-200 flex items-center justify-center text-gray-500 text-xl">
+            />
+            {/* <div className="rounded w-12 h-12 bg-gray-200 flex items-center justify-center text-gray-500 text-xl">
               🏢
-            </div>
+            </div> */}
             <p>{company_name}</p>
             <h2 className="text-xl font-semibold mb-2">{job_posting_title}</h2>
           </div>
@@ -130,7 +131,11 @@ export default function JobDetailContent({ jobPostingId }: JobDetailContentProps
             ]}
           />
 
-          <JobDetailSection title="근무지" items={[{ value: address }]} />
+          <JobDetailSection
+            title="근무지"
+            items={[{ value: address }]}
+            location={{ lat: location[1], lng: location[0] }}
+          />
           <JobDetailSection title="상세요강" items={[{ value: content }]} />
 
           <JobDetailSection
@@ -140,14 +145,14 @@ export default function JobDetailContent({ jobPostingId }: JobDetailContentProps
               {
                 label: "로고",
                 value: (
-                  // <img
-                  //   src={"/default-image.png"}
-                  //   alt="회사 로고"
-                  //   className="rounded object-contain w-24 h-24 bg-gray-200"
-                  // />
-                  <span className="rounded w-12 h-12 bg-gray-200 flex items-center justify-center text-gray-500 text-xl">
-                    🏢
-                  </span>
+                  <img
+                    src={company_logo}
+                    alt="회사 로고"
+                    className="rounded object-contain w-24 h-24 bg-white"
+                  />
+                  // <span className="rounded w-12 h-12 bg-gray-200 flex items-center justify-center text-gray-500 text-xl">
+                  //   🏢
+                  // </span>
                 ),
               },
               { label: "채용 담당자", value: manager_name },

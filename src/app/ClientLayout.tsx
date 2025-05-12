@@ -1,4 +1,5 @@
 "use client";
+import Footer from "@/components/Footer";
 //import Footer from "../components/Footer";
 import Navigation from "../components/Navigation";
 import { FontSizeProvider } from "../hooks/useFontSize";
@@ -10,7 +11,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       <FontSizeProvider>
         <Navigation />
         <main>{children}</main>
-        {/* <Footer /> */}
+        <Footer />
       </FontSizeProvider>
     </Providers>
   );

@@ -32,7 +32,7 @@ export default function JobConditionsFilter({ setShowOtherConditions, showOtherC
         <div className="grid grid-cols-[4rem_2fr] items-start gap-x-3">
           <span className="w-16 font-bold">고용형태</span>
           <div className="flex gap-4 flex-wrap">
-            {["무관", "정규직", "계약직"].map((option: EmploymentType) => {
+            {["무관", "정규직", "비정규직"].map((option: EmploymentType) => {
               return (
                 <label key={option} className="flex items-center gap-1">
                   <input

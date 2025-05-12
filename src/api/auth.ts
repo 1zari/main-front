@@ -1,27 +1,23 @@
-import { fetcher } from "@/lib/fetcher";
 import { API_ENDPOINTS } from "@/constants/apiEndPoints";
+import { fetcher } from "@/lib/fetcher";
 import type {
-  LoginRequestDto,
-  LoginResponseDto,
-  SignupRequestDto,
-  SignupResponseDto,
-  SignupCompleteRequestDto,
-  SignupCompleteResponseDto,
-  TokenRefreshRequestDto,
-  TokenRefreshResponseDto,
-  LogoutRequestDto,
-  LogoutResponseDto,
-  SocialLoginResponseDto,
   CompanyLoginRequestDto,
   CompanyLoginResponseDto,
   CompanySignupRequestDto,
   CompanySignupResponseDto,
   KakaoLoginRequestDto,
+  LoginRequestDto,
+  LoginResponseDto,
+  LogoutRequestDto,
+  LogoutResponseDto,
   NaverLoginRequestDto,
-  //SendVerificationRequestDto,
-  //SendVerificationResponseDto,
-  //VerifyCodeRequestDto,
-  //VerifyCodeResponseDto,
+  SignupCompleteRequestDto,
+  SignupCompleteResponseDto,
+  SignupRequestDto,
+  SignupResponseDto,
+  SocialLoginResponseDto,
+  TokenRefreshRequestDto,
+  TokenRefreshResponseDto,
 } from "@/types/api/auth";
 import type { CompanyProfileResponseDto } from "@/types/api/company";
 import type {
@@ -175,7 +171,7 @@ export const authApi = {
     checkBusiness: (b_no: string, p_nm: string, start_dt: string) =>
       fetcher.post<{ valid: boolean; message: string }>(
         API_ENDPOINTS.AUTH.VERIFY.CHECK_BUSINESS,
-        { b_no, p_nm, start_dt },
+        { b_no: b_no.replace(/\D/g, ""), p_nm, start_dt: start_dt.replace(/\D/g, "") },
         { secure: true },
       ),
   },

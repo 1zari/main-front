@@ -2,6 +2,7 @@ import useFiltersStore from "@/features/jobs/components/filter/stores/useFilters
 import useSearchedListStore from "@/store/useSearchedListStore";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import qs from "qs";
 import { useState } from "react";
 
@@ -35,26 +36,33 @@ export function useSearchJobs() {
     cat,
     jobCats,
     workExperiences,
+    dayNegotiable,
   } = useFiltersStore();
   const [result, setResult] = useState<SearchJobResult[] | null>(null);
 
   const { setSearchedList } = useSearchedListStore();
+  const router = useRouter();
   const mutation = useMutation({
     mutationFn: async ({ searchKeyword }: { searchKeyword: string }) => {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/search/`, {
         params: {
-          city_no: city?.id,
-          district_no: district?.id,
+          ...(towns.length > 0
+            ? {}
+            : district
+              ? { district_no: district.id }
+              : city
+                ? { city_no: city.id }
+                : {}),
           town_no: towns.map((town) => town.id),
           work_day: selectedDays,
-          posting_types: "false",
+          posting_type: "공공",
           employment_type: employmentType,
           education: educations,
-          job_keyword_main: cat?.id,
-          job_keyword_sub: jobCats?.map((cat) => cat?.id).filter(Boolean),
-          // job_keyword_sub: ["서빙"],
+          job_keyword_main: cat?.name,
+          job_keyword_sub: jobCats?.map((cat) => cat?.name).filter(Boolean),
           search: searchKeyword,
           work_experience: workExperiences,
+          day_discussion: dayNegotiable,
         },
         paramsSerializer: (params) => {
           return qs.stringify(params, { arrayFormat: "repeat" });
@@ -63,9 +71,9 @@ export function useSearchJobs() {
       return response.data;
     },
     onSuccess: (data) => {
-      setSearchedList([]);
-      setResult(data);
-      setSearchedList(data.results);
+      setResult(data.data);
+      setSearchedList(data);
+      router.push("/jobs/searched");
     },
   });
 

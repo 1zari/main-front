@@ -3,10 +3,17 @@
 import { FadeInUp } from "@/components/motion/FadeInUp";
 import SearchPage from "@/components/SearchPage";
 import { Heading } from "@/components/ui/Heading";
+
+import { useSearchJobs } from "@/features/jobs/hooks/useSearchJobs";
+import { useSearchStore } from "@/store/useSearchStore";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { IoSearchSharp } from "react-icons/io5";
 export default function JobSearch({ className }: { className?: string }) {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+  const { search } = useSearchJobs();
+  const { setKeyword } = useSearchStore();
 
   return (
     <div className={className}>
@@ -31,7 +38,14 @@ export default function JobSearch({ className }: { className?: string }) {
             </div>
             <div className="max-w-2xl flex gap-2 mt-4 justify-between items-center">
               <div className="flex flex-wrap gap-x-2 gap-y-3 mt-4">
-                <button className="bg-gray-z-light text-gray-700 px-4 py-1 rounded-2xl">
+                <button
+                  className="bg-gray-z-light text-gray-700 px-4 py-1 rounded-2xl"
+                  onClick={async () => {
+                    setKeyword("공공 일자리");
+                    await search("공공 일자리");
+                    router.push("/jobs/searched");
+                  }}
+                >
                   공공 일자리
                 </button>
                 <button className="bg-gray-z-light text-gray-700 px-4 py-1 rounded-2xl">
