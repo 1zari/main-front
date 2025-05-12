@@ -9,6 +9,10 @@ export interface JobPostsListResponseDto {
     summary: string;
     deadline: string;
     is_bookmarked: boolean;
+    city: string;
+    town: string;
+    district: string;
+    company_logo: string;
   }[];
 }
 

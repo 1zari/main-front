@@ -14,7 +14,13 @@ export function JobCardSearched({ job }: { job: SearchJobResult }) {
       <div className="bg-white shadow-sm rounded-lg p-4 transition duration-200 hover:shadow-md hover:-translate-y-1">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <span>🏢</span>
+            {job.company_logo && (
+              <img
+                src={job.company_logo}
+                alt="회사 로고"
+                className="w-8 h-8 object-cover rounded-full"
+              />
+            )}
             <p className="text-black/70">{job.company_name}</p>
           </div>
           <div onClick={(e) => e.stopPropagation()}>

@@ -16,8 +16,8 @@ import { WorkingHoursInput } from "@/features/recruit/components/inputs/WorkingH
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
-import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { JobPostFormValues, jobPostSchema } from "../schemas/jobPostSchema";
 import { SectionTitle } from "./inputs";
@@ -108,9 +108,9 @@ export default function JobPostForm({
       job_posting_title: formData.title,
       occupation: formData.occupation,
       address: `${formData.location} ${formData.locationDetail}`,
-      city: "서울",
-      town: "개포동",
-      district: "강남구",
+      // city: "",
+      // town: "",
+      // district: "",
       // location: [2.3, 2.3],
       // location: formData.locationxy,
       // location: null,
