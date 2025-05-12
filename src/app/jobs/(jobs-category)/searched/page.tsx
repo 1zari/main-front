@@ -1,6 +1,6 @@
 "use client";
 
-import JobCardSearched from "@/features/home/components/JobCardSearched";
+import { JobCardSearched } from "@/features/home/components/JobCardSearched";
 import SelectedChips from "@/features/jobs/components/SelectedChips";
 import { useFilterTabStore } from "@/features/jobs/components/filter/stores/useJobFilterTabsStore";
 import { useSearchStore } from "@/store/useSearchStore";

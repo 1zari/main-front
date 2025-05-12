@@ -178,6 +178,7 @@ export interface SearchJobResultResponseDto {
 
 export interface SearchJobResult {
   job_posting_id: string;
+  company_name: string;
   job_posting_title: string;
   city: string;
   district: string;
