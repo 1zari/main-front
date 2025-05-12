@@ -179,13 +179,6 @@ src/
 
 ---
 
-## ✨ 커뮤니케이션 규칙
-### Communication Rules
-> - Zep, Discord 활용
-> - 13시 정기 회의 통해 데일리 스크럼 진행
-
----
-
 ## :clipboard: Documents
 > [📜 API 명세서](https://www.notion.so/API-1cfcaf5650aa80b6999bf3a2733a030f)
 > 
