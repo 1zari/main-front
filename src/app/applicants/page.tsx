@@ -1,4 +1,5 @@
 "use client";
+
 import { Heading } from "@/components/ui/Heading";
 import ApplicantsListContainer from "@/features/applicants/components/ApplicantsListContainer";
 
