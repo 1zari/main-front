@@ -267,7 +267,7 @@ src/
 > 
 > [📜 사업기획팀 요구사항 정의서](https://www.notion.so/1cecaf5650aa80c1ae32ff4f2efff850)
 > 
-> [📜 FE 요구사항 정의서](https://www.notion.so/1cecaf5650aa80c1ae32ff4f2efff850)
+> [📜 FE 요구사항 정의서](https://docs.google.com/document/d/1rmbJZBB7H0fK-2nM2vk_Fqd1gL9m1Rmp0jahHoRzJXg/edit?tab=t.0)
 > 
 > [📜 BE 요구사항 정의서](https://docs.google.com/document/d/1DVcntERD_Ypr-7SBBtSy8bu_6zjl6Ka7e1It-mRyq0U/edit?tab=t.0)
 > 
