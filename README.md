@@ -189,7 +189,7 @@
 
 ### 2️⃣ 폴더 구조 (기능 중심 구조)
 
-```bash
+```plaintext
 src/
 ├── app/                         # Next.js App Router 라우팅
 ├── assets/                      # 이미지 리소스
