@@ -6,12 +6,6 @@ import { format, isBefore } from "date-fns";
 import Link from "next/link";
 import { useState } from "react";
 
-interface JobPost {
-  job_posting_id: string;
-  job_posting_title: string;
-  summary: string;
-  deadline: string;
-}
 interface JobPosting {
   job_posting_id: string;
   job_posting_title: string;
