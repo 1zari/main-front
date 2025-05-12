@@ -5,8 +5,7 @@ import SelectedChips from "@/features/jobs/components/SelectedChips";
 import { useFilterTabStore } from "@/features/jobs/components/filter/stores/useJobFilterTabsStore";
 import { useSearchStore } from "@/store/useSearchStore";
 import useSearchedListStore from "@/store/useSearchedListStore";
-import { SearchJobResult } from "@/types/api/job";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import JobFilter from "../../../../features/jobs/components/JobFilter";
 
 export default function SearchedJobsListPage() {
@@ -20,17 +19,9 @@ export default function SearchedJobsListPage() {
     setShowOtherConditions(false);
   }, []);
 
-  const { searchedList } = useSearchedListStore();
-  console.log("searchedList", searchedList);
-  const [jobs, setJobs] = useState<SearchJobResult[]>([]);
-
-  useEffect(() => {
-    if (Array.isArray(searchedList)) {
-      setJobs(searchedList);
-    } else {
-      setJobs([]);
-    }
-  }, [searchedList]);
+  const searchedList = useSearchedListStore((state) => state.searchedList);
+  const jobs = searchedList?.results ?? [];
+  const totalResults = searchedList?.total_results ?? 0;
 
   const keyword = useSearchStore((state) => state.keyword);
 
@@ -46,7 +37,7 @@ export default function SearchedJobsListPage() {
             <h2 className="text-2xl font-semibold">
               검색 된 채용공고{" "}
               <span>
-                <span className="text-primary">{jobs.length}</span>건
+                <span className="text-primary">{totalResults}</span>건
               </span>
             </h2>
 

@@ -62,7 +62,7 @@ export function useSearchJobs() {
           job_keyword_sub: jobCats?.map((cat) => cat?.name).filter(Boolean),
           search: searchKeyword,
           work_experience: workExperiences,
-          dayNegotiable: dayNegotiable,
+          day_discussion: dayNegotiable,
         },
         paramsSerializer: (params) => {
           return qs.stringify(params, { arrayFormat: "repeat" });
@@ -71,9 +71,8 @@ export function useSearchJobs() {
       return response.data;
     },
     onSuccess: (data) => {
-      setSearchedList([]);
-      setResult(data);
-      setSearchedList(data.results);
+      setResult(data.data);
+      setSearchedList(data);
       router.push("/jobs/searched");
     },
   });
