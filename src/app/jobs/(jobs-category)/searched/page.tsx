@@ -43,8 +43,13 @@ export default function SearchedJobsListPage() {
       <div className="bg-gray-z-light py-6">
         <section className="w-full max-w-7xl mx-auto my-8 px-4 ">
           <div className="flex justify-between items-center py-6 mb-4">
-            <h2 className="text-2xl font-semibold">검색 된 채용공고</h2>
-            <span>{}건</span>
+            <h2 className="text-2xl font-semibold">
+              검색 된 채용공고{" "}
+              <span>
+                <span className="text-primary">{jobs.length}</span>건
+              </span>
+            </h2>
+
             <span>검색키워드: {keyword || "없음"}</span>
           </div>
           {jobs.length > 0 ? (

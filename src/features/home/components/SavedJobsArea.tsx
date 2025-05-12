@@ -6,6 +6,7 @@ import { FaChevronRight } from "react-icons/fa";
 interface JobPosting {
   job_posting_id: string;
   // add more fields if needed
+  deadline: string;
 }
 
 interface JobResponse {
@@ -36,13 +37,15 @@ export default function JobsArea({ className }: { className?: string }) {
     queryFn: fetchJobs,
   });
 
-  const recentJobs = data?.data ?? [];
+  const recentJobs = (data?.data ?? []).sort(
+    (a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime(),
+  );
 
   return (
     <div className={className}>
       <div className="sticky top-0  z-999 bg-white">
         <div className="w-full max-w-7xl px-4 flex justify-between items-center py-6 mb-4 mx-auto">
-          <h2 className="text-2xl font-semibold">최근에 등록된 공고</h2>
+          <h2 className="text-2xl font-semibold">마감 임박 공고</h2>
           <MoreButton />
         </div>
       </div>

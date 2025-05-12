@@ -36,6 +36,7 @@ export function useSearchJobs() {
     cat,
     jobCats,
     workExperiences,
+    dayNegotiable,
   } = useFiltersStore();
   const [result, setResult] = useState<SearchJobResult[] | null>(null);
 
@@ -45,18 +46,23 @@ export function useSearchJobs() {
     mutationFn: async ({ searchKeyword }: { searchKeyword: string }) => {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/search/`, {
         params: {
-          city_no: city?.id,
-          district_no: district?.id,
+          ...(towns.length > 0
+            ? {}
+            : district
+              ? { district_no: district.id }
+              : city
+                ? { city_no: city.id }
+                : {}),
           town_no: towns.map((town) => town.id),
           work_day: selectedDays,
-          posting_types: "false",
+          posting_type: "공공",
           employment_type: employmentType,
           education: educations,
           job_keyword_main: cat?.name,
           job_keyword_sub: jobCats?.map((cat) => cat?.name).filter(Boolean),
-          // job_keyword_sub: ["서빙"],
           search: searchKeyword,
           work_experience: workExperiences,
+          dayNegotiable: dayNegotiable,
         },
         paramsSerializer: (params) => {
           return qs.stringify(params, { arrayFormat: "repeat" });
