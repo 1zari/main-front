@@ -256,8 +256,11 @@ src/
 > - Zep, Discord 활용
 > - 13시 정기 회의
 
+---
+
 ## ✨ 백엔드 개발 규칙
 
+---
 
 ## :clipboard: Documents
 > [📜 API 명세서](https://www.notion.so/API-1cfcaf5650aa80b6999bf3a2733a030f)
