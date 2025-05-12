@@ -3,12 +3,6 @@
 import ScrapBtn from "@/components/ScrapBtn";
 import type { SearchJobResult } from "@/types/api/job";
 import { useRouter } from "next/navigation";
-interface Job {
-  job_posting_id: string;
-  company_name: string;
-  address: string;
-  job_posting_title: string;
-}
 
 export function JobCardSearched({ job }: { job: SearchJobResult }) {
   const router = useRouter();

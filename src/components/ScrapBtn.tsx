@@ -50,7 +50,7 @@ export default function ScrapBtn({
       } else {
         await jobPostApi.addBookmark(resolvedJobPostingId as string);
       }
-    } catch (err) {
+    } catch {
       setIsSaved(prev);
       alert("저장에 실패했어요.");
     }
