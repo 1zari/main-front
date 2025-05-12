@@ -5,7 +5,8 @@
 ---
 ## :link: 배포 링크
 
-> ### https://senior-tomorrow.kro.kr/
+> ### FE : https://senior-tomorrow.kro.kr/
+> ### BE : https://senior-naeil.life/
 
 ---
 ## 🗣️ 프로젝트 발표 영상 & 발표 문서
