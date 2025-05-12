@@ -170,6 +170,48 @@
 
 ## 📑 프로젝트 규칙
 
+## ✨ 프론트엔드 개발 규칙
+
+---
+
+### 1️⃣ 변수 및 CSS 네이밍 컨벤션
+
+- ✅ **클래스 네임 (CSS)**: `언더스코어(_)` 사용  
+  예시: `className="title_style"`
+
+- ✅ **함수명**: `카멜 케이스(camelCase)`  
+  예시: `handleLogin`, `submitForm`
+
+- ✅ **컴포넌트명**: `파스칼 케이스(PascalCase)`  
+  예시: `LoginForm`, `JobList`
+
+---
+
+### 2️⃣ 폴더 구조 (기능 중심 구조)
+
+```bash
+src/
+├── app/                         # Next.js App Router 라우팅
+├── assets/                      # 이미지 리소스
+├── components/                  # 공통 UI 컴포넌트 (Button, Modal 등)
+├── constants/                   # 상수 (경로, 메시지, 권한 등)
+├── features/
+│   ├── auth/                    # 로그인, 회원가입, 권한 처리
+│   ├── jobs/                    # 공고 목록, 상세, 필터링, 검색
+│   ├── resume/                  # 이력서 작성/수정 (구직자)
+│   ├── apply/                   # 지원 및 내역 (구직자)
+│   ├── user/                    # 구직자 정보 수정
+│   ├── company/                 # 기업 정보 수정
+│   ├── recruit/                 # 채용공고 등록/수정 (기업)
+│   └── applicants/              # 지원자 목록 (기업)
+├── hooks/                       # 커스텀 훅
+├── lib/                         # 초기 설정 (axios, queryClient 등)
+├── stores/                      # Zustand 전역 상태
+├── styles/                      # 글로벌 스타일, Tailwind 설정
+├── types/                       # 전역 타입 정의
+├── utils/                       # 유틸 함수
+└── middleware.ts                # 권한 처리 미들웨어
+
 ### Branch Strategy
 > - main / dev 브랜치 기본 생성 
 > - main과 dev로 직접 push 제한
@@ -189,7 +231,6 @@
 >| Test       | ✅     | 테스트 코드 추가 및 수정 (프로덕션 코드 변경 없음)                 |
 >| Refactor    | ♻️     | 코드 리팩토링 (기능 변화 없이 구조 개선)                            |
 >| Hotfix     | 🚑     | 긴급 수정                          
-
 
 ### Pull Request
 > ### Title
@@ -211,35 +252,22 @@
 > ### Discussion
 > * 추후 논의할 점에 대해 작성해주세요.
 
-### Code Convention
->BE
-> - 패키지명 전체 소문자
-
-
-> FE
-> - ESLint, Prettier 사용하여 들여쓰기, 따옴표 통일
-> - 파일 및 폴더명: camelCase (ex. userProfile.tsx)
-> - 컴포넌트: PascalCase (ex. UserProfile.tsx)
-> - 변수 및 함수: camelCase (ex. fetchUserData)
-> - 상수:UPPER_SNAKE_CASE (ex. API_BASE_URL)
-> - 이벤트 핸들러:handleEventName (ex. handleClick)
-> - axios 기반 API 모듈화
-> - 전역 상태관리 : Zustand
-> - 서버 상태관리: React Query
-> - 불필요한 리렌더링 최소화
-
 ### Communication Rules
 > - Zep, Discord 활용
-> - 오전 10시 20분 정기 회의 (30분)
+> - 13시 정기 회의
 
 
 ## :clipboard: Documents
-> [📜 API 명세서 예시](https://docs.google.com/spreadsheets/d/1ynKVoqpdxPTjerqVMO59an5_LRWUg7ScV0sKOrcsWW8/edit?pli=1&gid=0#gid=0)
+> [📜 API 명세서](https://www.notion.so/API-1cfcaf5650aa80b6999bf3a2733a030f)
 > 
-> [📜 요구사항 정의서 예시](https://docs.google.com/spreadsheets/d/16NxIRtVKNKBIU6D6Txv1DGcBgbecE8WlzV_HuVEQ3kk/edit?gid=261493658#gid=261493658)
+> [📜 사업기획팀 요구사항 정의서](https://www.notion.so/1cecaf5650aa80c1ae32ff4f2efff850)
+> [📜 FE 요구사항 정의서](https://www.notion.so/1cecaf5650aa80c1ae32ff4f2efff850)
+> [📜 BE 요구사항 정의서](https://docs.google.com/document/d/1DVcntERD_Ypr-7SBBtSy8bu_6zjl6Ka7e1It-mRyq0U/edit?tab=t.0)
 > 
-> [📜 ERD 예시](https://dbdiagram.io/d/Feelody_ERD-67cff03775d75cc8449f7131)
+> [📜 ERD](https://www.erdcloud.com/d/4Qn2DHKPTvoSmR9BQ)
 > 
-> [📜 테이블 명세서 예시](https://docs.google.com/spreadsheets/d/1bEoNlzGVHw5u4WAybpD8CVNMAZ5UJqiEEv85K6HCZmo/edit?pli=1&gid=0#gid=0)
+> [📜 테이블 명세서](https://docs.google.com/spreadsheets/d/1MutR7L5QezUi0IUW9aGQy_QuUHMVsSGfpqtv0PHUV3s/edit?gid=0#gid=0)
 >
-> [📜 화면 정의서 예시](https://www.figma.com/design/zLikgH2MW0UQPEYPEwSQoX/Feelody-와이어프레임?node-id=0-1&p=f&t=I29TKVdnxzT7jAiN-0))
+> [📜 와이어프레임 및 화면정의서](https://www.figma.com/design/kcE3AdbnTxhmsYeaMLBWtH/1%ED%8C%80-%EC%82%AC%EB%B3%B8---%EC%8B%9C%EB%8B%88%EC%96%B4-%EB%82%B4%EC%9D%BC-%EC%99%80%EC%9D%B4%EC%96%B4%ED%94%84%EB%A0%88%EC%9E%84?node-id=92-5561&p=f&t=P4E3JUVuuh8WciXv-0))
+>
+> [📜 플로우차트](https://www.figma.com/design/kcE3AdbnTxhmsYeaMLBWtH/1%ED%8C%80-%EC%82%AC%EB%B3%B8---%EC%8B%9C%EB%8B%88%EC%96%B4-%EB%82%B4%EC%9D%BC-%EC%99%80%EC%9D%B4%EC%96%B4%ED%94%84%EB%A0%88%EC%9E%84?node-id=161-8740&p=f&t=P4E3JUVuuh8WciXv-0))
