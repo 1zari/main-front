@@ -1,18 +1,18 @@
 "use client";
-import React from "react";
 import Spinner from "@/components/common/Spinner";
 import ResumeList from "@/features/mypage/common/components/myResume/ResumeList";
 import { useGetResumeList } from "@/features/resume/api/useGetResumeList";
+import { use } from "react";
 
-interface ResumeListPageProps {
-  params: {
-    type: string;
-    userId: string;
-  };
-}
-
+type ResumeListPageProps = {
+  params: Promise<Params>;
+};
+type Params = {
+  type: string;
+  userId: string;
+};
 export default function ResumeListPage({ params }: ResumeListPageProps) {
-  const { type, userId } = params;
+  const { type, userId } = use(params); // ← 여기서 Promise 언래핑
 
   const { data: resumeResponse, isLoading, error } = useGetResumeList(type, userId);
 
