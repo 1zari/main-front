@@ -64,18 +64,37 @@ export default function RecommendedJobsPage() {
               <JobCard key={job.job_posting_id} job={job} />
             ))}
           </div>
-          <div className="flex justify-center gap-3 mt-8">
-            <button onClick={() => setPage((p) => Math.max(p - 1, 1))} disabled={page === 1}>
-              이전
+          <div className="flex justify-center items-center gap-4 mt-8">
+            <button
+              onClick={() => setPage(1)}
+              disabled={page === 1}
+              className="px-3 py-2 text-sm rounded border border-gray-300 disabled:opacity-50"
+            >
+              처음
             </button>
-            <span>
+            <button
+              onClick={() => setPage((p) => Math.max(p - 1, 1))}
+              disabled={page === 1}
+              className="px-3 py-2 text-sm rounded border border-gray-300 disabled:opacity-50"
+            >
+              ◀ 이전
+            </button>
+            <span className="text-sm font-medium text-gray-700">
               {page} / {totalPages}
             </span>
             <button
               onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
               disabled={page === totalPages}
+              className="px-3 py-2 text-sm rounded border border-gray-300 disabled:opacity-50"
             >
-              다음
+              다음 ▶
+            </button>
+            <button
+              onClick={() => setPage(totalPages)}
+              disabled={page === totalPages}
+              className="px-3 py-2 text-sm rounded border border-gray-300 disabled:opacity-50"
+            >
+              마지막
             </button>
           </div>
         </section>
