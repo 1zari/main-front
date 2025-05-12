@@ -9,6 +9,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { FaAngleDown, FaChevronLeft } from "react-icons/fa";
 
 export default function ApplyPage() {
@@ -124,7 +125,18 @@ export default function ApplyPage() {
               </button>
               <button
                 className="w-full bg-primary text-white p-4 rounded-md"
-                onClick={() => mutation.mutate()}
+                onClick={() => {
+                  mutation.mutate(undefined, {
+                    onSuccess: () => {
+                      toast.success("지원이 완료되었습니다!", {
+                        duration: 3000,
+                      });
+                      setTimeout(() => {
+                        window.location.href = "/jobs";
+                      }, 3000);
+                    },
+                  });
+                }}
               >
                 지원 완료하기
               </button>
