@@ -1,14 +1,11 @@
 "use client";
 
-import { jobPostApi } from "@/api/job";
 import ScrapBtn from "@/components/ScrapBtn";
 import type { JobPostsListResponseDto } from "@/types/api/job";
-import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
-function JobCard({ job }: { job: JobPostsListResponseDto["data"][number] }) {
+export function JobCard({ job }: { job: JobPostsListResponseDto["data"][number] }) {
   const router = useRouter();
   const { data: session } = useSession();
 
@@ -17,6 +14,7 @@ function JobCard({ job }: { job: JobPostsListResponseDto["data"][number] }) {
       <div className="bg-white shadow-sm rounded-lg p-4 transition duration-200 hover:shadow-md hover:-translate-y-1">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
+            <span>🏢</span>
             <p className="text-black/70">{job.company_name}</p>
           </div>
           <div onClick={(e) => e.stopPropagation()}>
@@ -32,31 +30,5 @@ function JobCard({ job }: { job: JobPostsListResponseDto["data"][number] }) {
         </div>
       </div>
     </div>
-  );
-}
-
-export default function JobCards() {
-  const [page, setPage] = useState(1);
-  const { data } = useQuery({
-    queryKey: ["jobPostList", page],
-    queryFn: () => jobPostApi.getJobPostList(page),
-    staleTime: 1000 * 60, // 1분 동안 캐시 유지
-  });
-
-  const jobs = data?.data ?? [];
-
-  return (
-    <>
-      {jobs.map((job) => (
-        <JobCard key={job.job_posting_id} job={job} />
-      ))}
-      <div className="flex justify-center gap-4 mt-6">
-        <button onClick={() => setPage((p) => Math.max(p - 1, 1))} disabled={page === 1}>
-          이전
-        </button>
-        <span>페이지 {page}</span>
-        <button onClick={() => setPage((p) => p + 1)}>다음</button>
-      </div>
-    </>
   );
 }

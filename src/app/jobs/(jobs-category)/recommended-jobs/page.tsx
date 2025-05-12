@@ -1,10 +1,30 @@
 "use client";
 
+import { JobCard } from "@/features/home/components/JobCard";
 import SelectedChips from "@/features/jobs/components/SelectedChips";
 import { useFilterTabStore } from "@/features/jobs/components/filter/stores/useJobFilterTabsStore";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import { useEffect, useState } from "react";
-import JobCard from "../../../../features/home/components/JobCard";
 import JobFilter from "../../../../features/jobs/components/JobFilter";
+
+interface JobPosting {
+  job_posting_id: string;
+  // add more fields if necessary
+}
+
+interface JobResponse {
+  data: JobPosting[];
+  message: string;
+  page: number;
+  total_pages: number;
+  total_results: number;
+}
+
+const fetchJobs = async (page: number): Promise<JobResponse> => {
+  const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/job-postings?page=${page}`);
+  return data;
+};
 
 export default function RecommendedJobsPage() {
   const setShowLocation = useFilterTabStore((state) => state.setShowLocation);
@@ -12,15 +32,16 @@ export default function RecommendedJobsPage() {
   const setShowOtherConditions = useFilterTabStore((state) => state.setShowOtherConditions);
 
   const [page, setPage] = useState(1);
-  const ITEMS_PER_PAGE = 20;
 
-  const allJobs = Array.from({ length: 1000 }).map((_, i) => ({
-    job_posting_id: `job-${i + 1}`,
-    title: `Job ${i + 1}`,
-  }));
+  const { data, isLoading } = useQuery({
+    queryKey: ["recommended-jobs", page],
+    queryFn: () => fetchJobs(page),
+    // keepPreviousData: true,
+    staleTime: 1000 * 60, // optional: 데이터 새로고침 방지
+  });
 
-  const paginatedJobs = allJobs.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
-  const totalPages = Math.ceil(allJobs.length / ITEMS_PER_PAGE);
+  const paginatedJobs = data?.data || [];
+  const totalPages = data?.total_pages || 1;
 
   useEffect(() => {
     setShowLocation(false);
