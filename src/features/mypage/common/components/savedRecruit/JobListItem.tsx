@@ -1,11 +1,11 @@
-import { formatDate, formatSalary, isPrevious } from "@/utils/format";
-import { Heading } from "@/components/ui/Heading";
 import ScrapBtn from "@/components/ScrapBtn";
+import { Heading } from "@/components/ui/Heading";
 import {
   JOB_LIST_STYLES,
   SALARY_TYPE_STYLES,
 } from "@/features/mypage/common/constants/savedJobListStyles";
 import type { SavedRecruit } from "@/features/mypage/common/types/savedRecruit.types";
+import { formatDate, formatSalary, isPrevious } from "@/utils/format";
 
 interface JobListItemProps {
   job: SavedRecruit;

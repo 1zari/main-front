@@ -3,14 +3,15 @@ interface Props {
   setShowUnreadOnly: (value: boolean) => void;
   selectedJobTitle: string;
   setSelectedJobTitle: (value: string) => void;
+  jobPostings: { job_posting_id: string; job_posting_title: string }[];
 }
-import { Applicants } from "../data/mockApplicants";
 
 export default function ApplicantsListControlArea({
   showUnreadOnly,
   setShowUnreadOnly,
   selectedJobTitle,
   setSelectedJobTitle,
+  jobPostings,
 }: Props) {
   return (
     <>
@@ -22,8 +23,8 @@ export default function ApplicantsListControlArea({
             onChange={(e) => setSelectedJobTitle(e.target.value)}
           >
             <option>채용공고 전체</option>
-            {Array.from(new Set(Applicants.map((a) => a.jobTitle))).map((title) => (
-              <option key={title}>{title}</option>
+            {jobPostings.map((post) => (
+              <option key={post.job_posting_id}>{post.job_posting_title}</option>
             ))}
           </select>
         </div>

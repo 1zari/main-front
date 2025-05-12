@@ -164,7 +164,15 @@ export default function SelectedChips() {
       <div className="flex justify-center gap-4 mt-4 mb-4">
         <button
           type="button"
-          onClick={() => {}}
+          onClick={() => {
+            setTowns([]);
+            setJobCats([]);
+            setEmploymentType(undefined);
+            setWorkExperiences([]);
+            setEducations([]);
+            setSelectedDays([]);
+            setDayNegotiable(false);
+          }}
           className="w-32 group flex justify-center items-center border gap-2  px-4 py-2 rounded-md text-sm text-gray-800 cursor-pointer"
         >
           <span className="group-hover:rotate-180 transform transition-transform duration-300">

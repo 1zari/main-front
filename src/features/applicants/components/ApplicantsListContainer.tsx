@@ -25,6 +25,7 @@ export default function ApplicantsListContainer() {
         setShowUnreadOnly={setShowUnreadOnly}
         selectedJobTitle={selectedJobTitle}
         setSelectedJobTitle={setSelectedJobTitle}
+        jobPostings={jobPostings}
       />
       <div></div>
       <p className="text-gray-500 mb-2">
@@ -61,7 +62,7 @@ export default function ApplicantsListContainer() {
                 <div>
                   <p className="font-medium">{applicant.name}</p>
                   <p className="">{applicant.resume_title}</p>
-                  <p className="text-sm text-gray-500">{applicant.resume_title}</p>
+                  <p className="text-sm text-gray-500">{applicant.summary}</p>
                 </div>
                 <div className="flex flex-col items-end">
                   <div className="text-sm text-gray-400">지원일</div>

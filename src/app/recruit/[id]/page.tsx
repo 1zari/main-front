@@ -1,5 +1,3 @@
-"use client";
-
 import JobDetailContent from "@/features/jobs/components/JobDetailContent";
 
 const RecruitEditPage = async ({ params }: { params: { id: string } }) => {

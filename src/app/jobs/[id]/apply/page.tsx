@@ -1,13 +1,58 @@
 "use client";
+import { applyApi } from "@/api/apply";
+import { resumeApi } from "@/api/resume";
 import { Heading } from "@/components/ui/Heading";
 import ResumeContainer from "@/features/resume/components/ResumeContainer";
-import { useState } from "react";
+import { mapToResumeFormData } from "@/features/resume/utils/mapToResumeFormData";
+import { ResumeFormData } from "@/features/resume/validation/resumeSchema";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { FaAngleDown, FaChevronLeft } from "react-icons/fa";
 
 export default function ApplyPage() {
   const [isOpen, setIsOpen] = useState(false);
-  const resumes = ["이력서 1", "이력서 2", "이력서 3"];
-  const [selectedResume, setSelectedResume] = useState(resumes[0]);
+  const { data: session } = useSession();
+  const accessToken = session?.accessToken || "";
+  const { data: resumes = [] } = useQuery({
+    queryKey: ["resumeList"],
+    queryFn: () => resumeApi.getList(accessToken).then((res) => res.resume_list),
+    enabled: !!accessToken,
+  });
+  const [selectedResumeId, setSelectedResumeId] = useState("");
+  const [resume, setResume] = useState<ResumeFormData | null>(null);
+
+  const params = useParams();
+  const jobPostingId = params.id as string;
+
+  const mutation = useMutation({
+    mutationFn: () =>
+      applyApi.getApplicant({
+        job_posting_id: jobPostingId,
+        resume_id: selectedResumeId,
+      }),
+    onSuccess: (res) => {
+      console.log("지원 성공:", res);
+    },
+    onError: (err) => {
+      console.error("지원 실패:", err);
+    },
+  });
+
+  useEffect(() => {
+    if (resumes.length > 0) {
+      setSelectedResumeId(resumes[0]?.resume_id || "");
+    }
+  }, [resumes]);
+
+  useEffect(() => {
+    if (selectedResumeId && session?.user.email) {
+      resumeApi.getDetail(selectedResumeId, accessToken).then((res) => {
+        setResume(mapToResumeFormData(res.resume, session.user.email ?? ""));
+      });
+    }
+  }, [selectedResumeId, accessToken, session?.user.email]);
 
   return (
     <>
@@ -32,7 +77,9 @@ export default function ApplyPage() {
           className="relative border rounded-lg px-4 py-3 shadow-sm cursor-pointer"
           onClick={() => setIsOpen(!isOpen)}
         >
-          <span className="font-bold">{selectedResume}</span>
+          <span className="font-bold">
+            {resumes.find((r) => r.resume_id === selectedResumeId)?.resume_title || ""}
+          </span>
           <span
             className={`absolute right-3 top-1/2 transform -translate-y-1/2 text-primary transition-transform duration-200 ${
               isOpen ? "rotate-180" : ""
@@ -44,26 +91,37 @@ export default function ApplyPage() {
             <ul className="absolute top-full left-0 mt-1 w-full bg-white border rounded-lg shadow-lg z-10">
               {resumes.map((resume) => (
                 <li
-                  key={resume}
+                  key={resume.resume_id}
                   className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();
-                    setSelectedResume(resume);
+                    setSelectedResumeId(resume.resume_id);
                     setIsOpen(false);
                   }}
                 >
-                  {resume}
+                  {resume.resume_title}
                 </li>
               ))}
             </ul>
           )}
         </div>
 
-        <ResumeContainer />
-        <div className="flex w-full gap-5">
-          <button className="w-full border border-gray-300  p-4 rounded-md">수정하기</button>
-          <button className="w-full bg-primary text-white p-4 rounded-md">지원 완료하기</button>
-        </div>
+        {resume && (
+          <>
+            <div className="w-full text-left">
+              <ResumeContainer resume={resume} />
+            </div>
+            <div className="flex w-full gap-5">
+              <button className="w-full border border-gray-300 p-4 rounded-md">수정하기</button>
+              <button
+                className="w-full bg-primary text-white p-4 rounded-md"
+                onClick={() => mutation.mutate()}
+              >
+                지원 완료하기
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </>
   );

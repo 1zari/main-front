@@ -73,6 +73,10 @@ export const API_ENDPOINTS = {
   },
   APPLICANT: {
     LIST: "submission/company/",
+    READ_RESUME: (id: string) => `submission/company/${id}/`,
+  },
+  APPLY: {
+    POST: "submission/",
   },
 } as const;
 
