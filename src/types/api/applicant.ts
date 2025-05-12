@@ -19,6 +19,8 @@ export interface ApplicantListWithJobPostingsResponseDto {
 export interface ApplicantResumeResponseDto {
   message: string;
   submission: {
+    email: string;
+    phone_number: string;
     job_category: string;
     name: string;
     resume_title: string;

@@ -27,12 +27,14 @@ export default function ApplicantsResume() {
     introduce,
     career_list,
     certification_list,
+    phone_number,
+    email,
   } = resume.submission;
 
   return (
     <div className="max-w-3xl my-7 m-auto">
       <div className="border b-gray-300 py-9 px-6 h-full flex flex-col gap-8 rounded-md">
-        <ResumeContactSection name={name} phone="-" email="-" />
+        <ResumeContactSection name={name} phone={phone_number} email={email} />
         <ResumeTableSection
           sectionTitle="학력 사항"
           items={[

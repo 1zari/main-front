@@ -1,11 +1,17 @@
+import { applicantListApi } from "@/api/applicant";
 import { FadeInUp } from "@/components/motion/FadeInUp";
 import { Heading } from "@/components/ui/Heading";
 import DashboardCard from "@/features/home/components/DashboardCard";
+import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 
 export default function CompanyDashboard({ className }: { className?: string }) {
   const jobCount = "2";
-  const applicantCount = "10";
+  const { data } = useQuery({
+    queryKey: ["applicantList"],
+    queryFn: applicantListApi.getApplicant,
+  });
+  const applicantCount = String(data?.submission_list?.length ?? 0);
 
   return (
     <div className={className}>
@@ -20,7 +26,7 @@ export default function CompanyDashboard({ className }: { className?: string }) 
             <DashboardCard title="채용 진행중 공고" value={jobCount} unit="건" />
           </Link>
           <Link href="/applicants">
-            <DashboardCard title="새로운 지원자" value={applicantCount} unit="명" />
+            <DashboardCard title="지원자" value={applicantCount} unit="명" />
           </Link>
         </div>
       </FadeInUp>

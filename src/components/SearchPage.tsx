@@ -3,14 +3,17 @@
 import { useSearchJobs } from "@/features/jobs/hooks/useSearchJobs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useSearchStore } from "@/store/useSearchStore";
 
 export default function SearchPage({ setIsOpen }: { setIsOpen: (value: boolean) => void }) {
   const [inputValue, setInputValue] = useState("");
   const router = useRouter();
   const { search } = useSearchJobs();
+  const { setKeyword } = useSearchStore();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setKeyword(inputValue);
     await search(inputValue);
     router.push("/jobs/searched");
     setIsOpen(false);

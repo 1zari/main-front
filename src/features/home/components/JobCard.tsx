@@ -1,6 +1,7 @@
 "use client";
 
 import { jobPostApi } from "@/api/job";
+import ScrapBtn from "@/components/ScrapBtn";
 import type { JobPostsListResponseDto } from "@/types/api/job";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";

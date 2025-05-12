@@ -1,8 +1,7 @@
 "use client";
 
-import { useSession } from "next-auth/react";
-import VoiceInput from "@/components/VoiceInput";
 import CompanyDashboard from "@/features/home/components/CompanyDashboard";
+import { useSession } from "next-auth/react";
 import JobsArea from "../features/home/components/JobsArea";
 import JobSearch from "../features/home/components/JobSearch";
 import LandingPartnerCompany from "../features/home/components/LandingPartnerCompany";
@@ -24,7 +23,7 @@ export default function Home() {
       <SavedJobsArea className="w-full bg-white" />
       <LandingReview className="w-full bg-gray-z" />
       <LandingPartnerCompany className="w-full bg-white" />
-      <VoiceInput className="fixed bottom-4 z-999 right-4" />
+      {/* <VoiceInput className="fixed bottom-4 z-999 right-4" /> */}
     </main>
   );
 }
