@@ -18,7 +18,7 @@ export function JobCardSearched({ job }: { job: SearchJobResult }) {
               <img
                 src={job.company_logo}
                 alt="회사 로고"
-                className="w-8 h-8 object-cover rounded-full"
+                className="w-8 h-8 object-cover rounded-lg p-1"
               />
             )}
             <p className="text-black/70">{job.company_name}</p>
