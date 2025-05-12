@@ -23,9 +23,11 @@ export default function ApplicantsListControlArea({
             onChange={(e) => setSelectedJobTitle(e.target.value)}
           >
             <option>채용공고 전체</option>
-            {jobPostings.map((post) => (
-              <option key={post.job_posting_id}>{post.job_posting_title}</option>
-            ))}
+            {[...new Map(jobPostings.map((post) => [post.job_posting_title, post])).values()].map(
+              (post) => (
+                <option key={post.job_posting_id}>{post.job_posting_title}</option>
+              ),
+            )}
           </select>
         </div>
         <div className="flex justify-end gap-4">
