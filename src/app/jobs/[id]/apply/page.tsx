@@ -112,7 +112,16 @@ export default function ApplyPage() {
               <ResumeContainer resume={resume} />
             </div>
             <div className="flex w-full gap-5">
-              <button className="w-full border border-gray-300 p-4 rounded-md">수정하기</button>
+              <button
+                className="w-full border border-gray-300 p-4 rounded-md"
+                onClick={() => {
+                  if (session?.user.id && selectedResumeId) {
+                    window.location.href = `/normal/mypage/${session.user.id}/resume/${selectedResumeId}/edit`;
+                  }
+                }}
+              >
+                수정하기
+              </button>
               <button
                 className="w-full bg-primary text-white p-4 rounded-md"
                 onClick={() => mutation.mutate()}
