@@ -5,8 +5,7 @@ import SelectedChips from "@/features/jobs/components/SelectedChips";
 import { useFilterTabStore } from "@/features/jobs/components/filter/stores/useJobFilterTabsStore";
 import { useSearchStore } from "@/store/useSearchStore";
 import useSearchedListStore from "@/store/useSearchedListStore";
-import { SearchJobResult } from "@/types/api/job";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import JobFilter from "../../../../features/jobs/components/JobFilter";
 
 export default function SearchedJobsListPage() {
@@ -20,17 +19,9 @@ export default function SearchedJobsListPage() {
     setShowOtherConditions(false);
   }, []);
 
-  const { searchedList } = useSearchedListStore();
-  console.log("searchedList", searchedList);
-  const [jobs, setJobs] = useState<SearchJobResult[]>([]);
-
-  useEffect(() => {
-    if (Array.isArray(searchedList)) {
-      setJobs(searchedList);
-    } else {
-      setJobs([]);
-    }
-  }, [searchedList]);
+  const searchedList = useSearchedListStore((state) => state.searchedList);
+  const jobs = searchedList?.results ?? [];
+  const totalResults = searchedList?.total_results ?? 0;
 
   const keyword = useSearchStore((state) => state.keyword);
 
@@ -43,7 +34,13 @@ export default function SearchedJobsListPage() {
       <div className="bg-gray-z-light py-6">
         <section className="w-full max-w-7xl mx-auto my-8 px-4 ">
           <div className="flex justify-between items-center py-6 mb-4">
-            <h2 className="text-2xl font-semibold">검색 된 채용공고</h2>
+            <h2 className="text-2xl font-semibold">
+              검색 된 채용공고{" "}
+              <span>
+                <span className="text-primary">{totalResults}</span>건
+              </span>
+            </h2>
+
             <span>검색키워드: {keyword || "없음"}</span>
           </div>
           {jobs.length > 0 ? (

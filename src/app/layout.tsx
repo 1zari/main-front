@@ -1,5 +1,6 @@
 import ConfirmModal from "@/components/common/ConfirmModal";
 import Script from "next/script";
+import { Toaster } from "react-hot-toast";
 import QueryProvider from "../components/providers/QueryProvider";
 import ClientLayout from "./ClientLayout";
 import "./globals.css";
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <QueryProvider>
           <ClientLayout>
+            <Toaster position="top-center" reverseOrder={false} />
             <main>{children}</main>
             <ConfirmModal />
           </ClientLayout>

@@ -1,15 +1,10 @@
 //채용 공고 리스트 조회 응답 DTO
 export interface JobPostsListResponseDto {
   message: string;
-  data: {
-    job_posting_id: string;
-    company_name: string;
-    company_address: string;
-    job_posting_title: string;
-    summary: string;
-    deadline: string;
-    is_bookmarked: boolean;
-  }[];
+  results: SearchJobResult[];
+  total_results: number;
+  page: number;
+  total_pages: number;
 }
 
 //채용공고 상세 조회 응답 Dto

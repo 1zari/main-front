@@ -39,7 +39,7 @@ export const jobPostSchema = z.object({
   // workingHourStart: z.string().min(1, "시작 시간을 입력해주세요.").optional(),
   // workingHourEnd: z.string().min(1, "종료 시간을 입력해주세요.").optional(),
   // workingHourNegotiable: z.boolean().optional(),
-  posting_type: z.boolean(),
+  posting_type: z.string(),
   jobSummary: z.string().max(50),
   jobDescription: z.string(),
   agreeTerms: z.boolean().refine((v) => v === true, { message: "이용약관에 동의해야 합니다." }),

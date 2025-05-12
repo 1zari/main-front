@@ -1,9 +1,9 @@
 "use client";
 
-import { FaChevronLeft } from "react-icons/fa6";
 import ScrapBtn from "@/components/ScrapBtn";
+import { FaChevronLeft } from "react-icons/fa6";
 
-export default function JobDetailNav() {
+export default function JobDetailNav({ join_type }: { join_type: string }) {
   return (
     <>
       <nav className="sticky top-0 z-10 p-4 text-black bg-white border-b border-gray-200">
@@ -15,7 +15,7 @@ export default function JobDetailNav() {
 
           <li>
             <div className="flex items-center gap-2">
-              <ScrapBtn showLabel />
+              {join_type === "normal" && <ScrapBtn showLabel />}
             </div>
           </li>
         </ul>

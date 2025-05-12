@@ -8,21 +8,34 @@ interface JobDetailSectionProps {
     label?: string;
     value: string | React.ReactNode;
   }[];
+  location?: { lat: number; lng: number };
 }
 
-export default function JobDetailSection({ title, items }: JobDetailSectionProps) {
-  // useEffect(() => {
-  //   if (title === "근무지") {
-  //     if (typeof window !== "undefined" && window.kakao && window.kakao.maps) {
-  //       const container = document.getElementById("kakao-map");
-  //       const options = {
-  //         center: new window.kakao.maps.LatLng(37.5665, 126.978), // default 서울 시청
-  //         level: 3,
-  //       };
-  //       const map = new window.kakao.maps.Map(container, options);
-  //     }
-  //   }
-  // }, [title]);
+import { useEffect } from "react";
+
+export default function JobDetailSection({ title, items, location }: JobDetailSectionProps) {
+  useEffect(() => {
+    console.log("JobDetailSection location:", location);
+    if (title !== "근무지" || typeof window === "undefined" || !location) return;
+
+    if (window.kakao && window.kakao.maps && window.kakao.maps.load) {
+      window.kakao.maps.load(() => {
+        const container = document.getElementById("kakao-map");
+        if (!container) return;
+
+        const options = {
+          center: new window.kakao.maps.LatLng(location.lat, location.lng),
+          level: 3,
+        };
+
+        const map = new window.kakao.maps.Map(container, options);
+        const marker = new window.kakao.maps.Marker({
+          position: map.getCenter(),
+        });
+        marker.setMap(map);
+      });
+    }
+  }, [title, location]);
 
   return (
     <div className="flex flex-col gap-4 mb-2">
@@ -35,7 +48,7 @@ export default function JobDetailSection({ title, items }: JobDetailSectionProps
         <>
           <div className="flex flex-col gap-2">
             <p className=" text-gray-700">{items[0].value}</p>
-            <div className="w-full h-48" id="kakao-map" />
+            <div id="kakao-map" style={{ width: "100%", height: "300px" }} />
           </div>
         </>
       ) : (
