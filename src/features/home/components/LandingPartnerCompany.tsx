@@ -1,7 +1,7 @@
 "use client";
 import { useRef } from "react";
 
-export default function LandingPartnerCompany() {
+export default function LandingPartnerCompany({ className }: { className?: string }) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scrollLeft = () => {
@@ -45,7 +45,7 @@ export default function LandingPartnerCompany() {
   ];
 
   return (
-    <>
+    <div className={className}>
       <section className="w-full max-w-7xl  mx-auto my-8 px-4">
         <div className="flex flex-col mb-6 items-center">
           <h2 className="text-2xl font-semibold py-6">함께하는 기업들이에요 😊</h2>
@@ -72,6 +72,6 @@ export default function LandingPartnerCompany() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }

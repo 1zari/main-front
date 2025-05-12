@@ -3,9 +3,9 @@
 import React from "react";
 
 interface CheckNegotiableProps {
-  id: string; 
-  checked: boolean; 
-  onChange: (checked: boolean) => void; 
+  id: string;
+  checked: boolean;
+  onChange: (checked: boolean) => void;
 }
 
 const CheckNegotiable = ({ id, checked, onChange }: CheckNegotiableProps) => {

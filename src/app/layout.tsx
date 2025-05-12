@@ -1,31 +1,40 @@
+import ConfirmModal from "@/components/common/ConfirmModal";
 import Script from "next/script";
-import Footer from "../components/Footer";
-import Navigation from "../components/Navigation";
-import { FontSizeProvider } from "../hooks/useFontSize";
+import QueryProvider from "../components/providers/QueryProvider";
+import ClientLayout from "./ClientLayout";
 import "./globals.css";
-
-export const metadata = {
-  title: "시니어내일",
-  description: "시니어를 위한 채용 플랫폼",
-};
+import { metadata } from "./metadata";
+//import CSRFInit from "./_components/CSRFInit";
+export { metadata };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
       <head>
         <link rel="icon" href="/images/favicon.ico" sizes="any" />
+        <link
+          rel="stylesheet"
+          as="style"
+          crossOrigin="anonymous"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+        />
         {/* ✅ Kakao SDK 스크립트 삽입 */}
         <Script
           src="https://developers.kakao.com/sdk/js/kakao.min.js"
           strategy="beforeInteractive"
         />
+        <Script
+          src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_JS_KEY}&libraries=services&autoload=false`}
+          strategy="beforeInteractive"
+        />
       </head>
       <body>
-        <FontSizeProvider>
-          <Navigation />
-          <main>{children}</main>
-          <Footer />
-        </FontSizeProvider>
+        <QueryProvider>
+          <ClientLayout>
+            <main>{children}</main>
+            <ConfirmModal />
+          </ClientLayout>
+        </QueryProvider>
       </body>
     </html>
   );

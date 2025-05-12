@@ -9,18 +9,13 @@ export type LoginTab = keyof typeof LOGIN_CONFIG;
 export function useLoginTab() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [activeTab, setActiveTab] = useState<LoginTab>(() => {
-    const tab = searchParams.get("tab");
-    return (tab === "company" ? "company" : "user") as LoginTab;
-  });
+  const [activeTab, setActiveTab] = useState<LoginTab>("normal");
 
   useEffect(() => {
     const tab = searchParams.get("tab");
-    const newTab = (tab === "company" ? "company" : "user") as LoginTab;
-    if (newTab !== activeTab) {
-      setActiveTab(newTab);
-    }
-  }, [searchParams, activeTab]);
+    const newTab = (tab === "company" ? "company" : "normal") as LoginTab;
+    setActiveTab(newTab);
+  }, [searchParams]);
 
   const handleTabChange = (tab: LoginTab) => {
     setActiveTab(tab);

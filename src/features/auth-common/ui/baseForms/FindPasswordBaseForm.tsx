@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { UseFormRegister, FieldErrors } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -9,7 +8,7 @@ import { FindCompanyPasswordFormValues } from "@/features/auth-company/validatio
 import AuthTypeTabs from "@/features/auth-common/components/AuthTypeTabs";
 
 interface FindPasswordBaseFormProps {
-  type: "user" | "company";
+  type: "normal" | "company";
   step: "input" | "complete";
   isVerified: boolean;
   showPassword: boolean;
@@ -32,18 +31,14 @@ export default function FindPasswordBaseForm({
   onTogglePassword,
 }: FindPasswordBaseFormProps) {
   const router = useRouter();
-  const phoneLabel = type === "user" ? "전화번호" : "담당자 전화번호";
-
-  const handleTabChange = (selectedType: "user" | "company") => {
-    router.push(`/auth/${selectedType}/find-password`);
-  };
+  const phoneLabel = type === "normal" ? "전화번호" : "담당자 전화번호";
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-start pt-20">
+    <div className="flex flex-col items-center justify-start min-h-screen pt-20 bg-gray-50">
       <div className="w-full sm:w-[600px] mx-auto px-4 sm:px-6 lg:px-8">
         <form onSubmit={onSubmit} className="bg-white rounded-lg shadow-md">
           <div className="p-6 sm:p-8">
-            <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8">
+            <h2 className="mb-8 text-2xl font-bold text-center sm:text-3xl">
               {step === "complete" ? "비밀번호 변경" : "비밀번호 찾기"}
             </h2>
 
@@ -52,10 +47,10 @@ export default function FindPasswordBaseForm({
             {step === "input" ? (
               <div className="space-y-6">
                 <div>
-                  <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg">
+                  <label className="block mb-3 ml-2 text-base font-semibold sm:text-lg">
                     이메일
                   </label>
-                  <div className="relative border-b border-gray-300 pb-1">
+                  <div className="relative pb-1 border-b border-gray-300">
                     <input
                       {...register("email")}
                       name="email"
@@ -64,7 +59,7 @@ export default function FindPasswordBaseForm({
                     />
                   </div>
                   {errors.email && (
-                    <p className="text-red-500 mt-1 text-sm sm:text-base">
+                    <p className="mt-1 text-sm text-red-500 sm:text-base">
                       {errors.email.message?.toString()}
                     </p>
                   )}
@@ -72,10 +67,10 @@ export default function FindPasswordBaseForm({
 
                 {type === "company" && (
                   <div>
-                    <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg">
+                    <label className="block mb-3 ml-2 text-base font-semibold sm:text-lg">
                       사업자등록번호
                     </label>
-                    <div className="relative border-b border-gray-300 pb-1">
+                    <div className="relative pb-1 border-b border-gray-300">
                       <input
                         {...register("businessNumber")}
                         name="businessNumber"
@@ -84,7 +79,7 @@ export default function FindPasswordBaseForm({
                       />
                     </div>
                     {errors.businessNumber && (
-                      <p className="text-red-500 mt-1 text-sm sm:text-base">
+                      <p className="mt-1 text-sm text-red-500 sm:text-base">
                         {errors.businessNumber.message?.toString()}
                       </p>
                     )}
@@ -92,11 +87,11 @@ export default function FindPasswordBaseForm({
                 )}
 
                 <div>
-                  <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg">
+                  <label className="block mb-3 ml-2 text-base font-semibold sm:text-lg">
                     {phoneLabel}
                   </label>
                   <div className="flex gap-2">
-                    <div className="relative flex-1 border-b border-gray-300 pb-1">
+                    <div className="relative flex-1 pb-1 border-b border-gray-300">
                       <input
                         {...register("phone")}
                         name="phone"
@@ -106,24 +101,24 @@ export default function FindPasswordBaseForm({
                     </div>
                     <button
                       type="button"
-                      className="px-4 py-2 text-white bg-primary rounded hover:bg-primary/80 transition-colors"
+                      className="px-4 py-2 text-white transition-colors rounded bg-primary hover:bg-primary/80"
                     >
                       인증
                     </button>
                   </div>
                   {errors.phone && (
-                    <p className="text-red-500 mt-1 text-sm sm:text-base">
+                    <p className="mt-1 text-sm text-red-500 sm:text-base">
                       {errors.phone.message?.toString()}
                     </p>
                   )}
                 </div>
 
                 <div>
-                  <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg">
+                  <label className="block mb-3 ml-2 text-base font-semibold sm:text-lg">
                     인증번호
                   </label>
                   <div className="flex gap-2">
-                    <div className="relative flex-1 border-b border-gray-300 pb-1">
+                    <div className="relative flex-1 pb-1 border-b border-gray-300">
                       <input
                         {...register("code")}
                         name="code"
@@ -133,24 +128,24 @@ export default function FindPasswordBaseForm({
                     </div>
                     <button
                       type="button"
-                      className="px-4 py-2 text-white bg-primary rounded hover:bg-primary/80 transition-colors"
+                      className="px-4 py-2 text-white transition-colors rounded bg-primary hover:bg-primary/80"
                       onClick={onVerifyCode}
                     >
                       확인
                     </button>
                   </div>
                   {errors.code && (
-                    <p className="text-red-500 mt-1 text-sm sm:text-base">
+                    <p className="mt-1 text-sm text-red-500 sm:text-base">
                       {errors.code.message?.toString()}
                     </p>
                   )}
                 </div>
 
                 <div>
-                  <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg">
+                  <label className="block mb-3 ml-2 text-base font-semibold sm:text-lg">
                     새 비밀번호
                   </label>
-                  <div className="relative border-b border-gray-300 pb-1">
+                  <div className="relative pb-1 border-b border-gray-300">
                     <input
                       {...register("newPassword")}
                       name="newPassword"
@@ -161,13 +156,13 @@ export default function FindPasswordBaseForm({
                     <button
                       type="button"
                       onClick={onTogglePassword}
-                      className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-500 cursor-pointer"
+                      className="absolute right-0 text-gray-500 -translate-y-1/2 cursor-pointer top-1/2"
                     >
                       {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
                     </button>
                   </div>
                   {errors.newPassword && (
-                    <p className="text-red-500 mt-1 text-sm sm:text-base">
+                    <p className="mt-1 text-sm text-red-500 sm:text-base">
                       {errors.newPassword.message?.toString()}
                     </p>
                   )}
@@ -184,11 +179,11 @@ export default function FindPasswordBaseForm({
                 </button>
               </div>
             ) : (
-              <div className="text-center space-y-8">
+              <div className="space-y-8 text-center">
                 <p className="text-gray-600">비밀번호가 성공적으로 변경되었습니다!</p>
                 <button
                   onClick={() => router.push(`/auth/login`)}
-                  className="w-full bg-primary text-white py-3 rounded hover:bg-primary/80 cursor-pointer"
+                  className="w-full py-3 text-white rounded cursor-pointer bg-primary hover:bg-primary/80"
                 >
                   로그인 페이지로 이동
                 </button>

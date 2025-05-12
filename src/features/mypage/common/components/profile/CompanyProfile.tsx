@@ -1,24 +1,67 @@
+"use client";
+
 import React, { useMemo } from "react";
+import { useSession } from "next-auth/react";
+import useSWR from "swr";
 import ProfileCard from "./ProfileCard";
-import { Heading } from "@/components/ui/Heading";
-import type { CompanyProfile as CompanyProfileType } from "@/types/company";
+import type { CompanyProfileResponseDto } from "@/types/api/company";
 import type { CompanyProfileItem } from "@/types/company";
+import { API_ENDPOINTS } from "@/constants/apiEndPoints";
+import { fetcher } from "@/lib/fetcher";
 
-interface CompanyProfileProps {}
+const fetchCompanyProfile = async (url: string, accessToken?: string) => {
+  try {
+    console.log("Fetching company profile from:", url);
+    console.log("Access token:", accessToken);
 
-const CompanyProfile = (props: CompanyProfileProps) => {
-  // 기업회원 더미 데이터
-  const companyProfileData: CompanyProfileType = {
-    companyId: "123",
-    company_name: "예시 기업",
-    manager_name: "김담당",
-    manager_phone_number: "010-9876-5432",
-    manager_email: "kim@example.com",
-    company_introduction: "우리 회사는 혁신적인 기술 솔루션을 제공하는 기업입니다.",
-    is_active: true,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  };
+    const response = await fetcher.get<CompanyProfileResponseDto>(url, {
+      secure: true,
+      headers: {
+        "Content-Type": "application/json",
+        ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
+      },
+    });
+    console.log("Company profile response:", response);
+    return response;
+  } catch (error) {
+    console.error("Error fetching company profile:", {
+      message: error.message,
+      status: error.response?.status,
+      data: error.response?.data,
+      headers: error.response?.headers,
+    });
+    throw error;
+  }
+};
+
+export default function CompanyProfile() {
+  const { data: session } = useSession();
+  console.log("Current session:", session);
+
+  const { data: companyProfileData, error } = useSWR(
+    session ? [API_ENDPOINTS.COMPANY.PROFILE, session.accessToken] : null,
+    ([url, token]) => fetchCompanyProfile(url, token),
+    {
+      onError: (err) => {
+        console.error("SWR error:", err);
+      },
+    },
+  );
+
+  if (error) {
+    console.error("Profile error state:", error);
+    return (
+      <div className="text-center text-red-500">
+        프로필을 불러오는데 실패했습니다.
+        <br />
+        {error.message || "알 수 없는 오류가 발생했습니다."}
+      </div>
+    );
+  }
+
+  if (!companyProfileData) {
+    return <div className="text-center">프로필을 불러오는 중...</div>;
+  }
 
   const { company_name, manager_name, manager_phone_number, manager_email, company_introduction } =
     companyProfileData;
@@ -35,9 +78,14 @@ const CompanyProfile = (props: CompanyProfileProps) => {
 
   return (
     <div>
-      <ProfileCard role="company" title={company_name} items={profileItems} />
+      <ProfileCard role="company" userId={companyProfileData.common_user_id} title={company_name}>
+        {profileItems.map((item, idx) => (
+          <ProfileCard.Item key={idx}>
+            <ProfileCard.Label>{item.labels.join(" ")}</ProfileCard.Label>
+            <ProfileCard.Value isDescription={item.isDescription}>{item.value}</ProfileCard.Value>
+          </ProfileCard.Item>
+        ))}
+      </ProfileCard>
     </div>
   );
-};
-
-export default React.memo(CompanyProfile);
+}

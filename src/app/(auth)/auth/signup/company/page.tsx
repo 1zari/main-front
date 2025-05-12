@@ -1,6 +1,6 @@
-"use client"
-import CompanySignup from "@/features/auth-company/ui/signup/CompanySignup"
+"use client";
+import CompanySignup from "@/features/auth-company/ui/signup/CompanySignup";
 
 export default function CompanySignupRoute() {
-  return <CompanySignup />
+  return <CompanySignup />;
 }

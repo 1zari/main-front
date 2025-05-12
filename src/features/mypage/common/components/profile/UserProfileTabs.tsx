@@ -1,74 +1,80 @@
+"use client";
 import React, { useState } from "react";
-import { Heading } from "@/components/ui/Heading";
-import ResumeList from "../resume/ResumeList";
-import type { Resume } from "@/types/resume";
+import { useParams } from "next/navigation";
+//import { useSession } from "next-auth/react";
+import ResumeList from "@/features/mypage/common/components/myResume/ResumeList";
+import SavedJobList from "@/features/mypage/common/components/savedRecruit/SavedRecruitList";
+import AppliedJobList from "@/features/mypage/common/components/applied/AppliedJobList";
+import { TABS, TAB_STYLES, type TabType } from "@/features/mypage/common/constants/myPageTab";
+import { dummySavedJobs } from "@/features/mypage/common/mock/savedJobs";
+import { dummyAppliedJobs } from "@/features/mypage/common/mock/appliedJobs";
+import { useGetResumeList } from "@/features/resume/api/useGetResumeList";
+//import type { ResumeListResponseDto } from "@/types/api/resume";
 
-interface EmptyContentProps {
-  title: string;
-  message: string;
-}
+export default function UserProfileTabs() {
+  //const { data: session } = useSession(); // 세션에서 accessToken 가져오기
+  const params = useParams();
+  const rawType = params.type;
+  const rawUserId = params.userId;
+  const userType = Array.isArray(rawType) ? rawType[0] : rawType!;
+  const userId = Array.isArray(rawUserId) ? rawUserId[0] : rawUserId!;
 
-const EmptyContent = ({ title, message }: EmptyContentProps) => (
-  <div className="p-6 bg-white border border-gray-100 shadow-lg rounded-xl">
-    <Heading sizeOffset={2} className="mb-4 font-semibold text-gray-800">
-      {title}
-    </Heading>
-    <Heading sizeOffset={2} className="text-gray-500">
-      {message}
-    </Heading>
-  </div>
-);
-
-interface UserProfileTabsProps {
-  resumes: Resume[] | null;
-  appliedJobs: React.ReactNode;
-  savedJobs: React.ReactNode;
-}
-
-type TabType = "resumes" | "applied" | "saved";
-
-const TABS = [
-  { id: "resumes", label: "내 이력서" },
-  { id: "applied", label: "지원한 공고" },
-  { id: "saved", label: "저장한 공고" },
-] as const;
-
-export default function UserProfileTabs({ resumes, appliedJobs, savedJobs }: UserProfileTabsProps) {
   const [activeTab, setActiveTab] = useState<TabType>("resumes");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [savedRecruit, setSavedRecruit] = useState(dummySavedJobs);
 
-  const tabStyle = "flex-1 px-4 py-2 cursor-pointer transition-colors text-center";
-  const activeTabStyle = `${tabStyle} text-primary font-semibold border-b-2 border-primary`;
-  const inactiveTabStyle = `${tabStyle} text-gray-600 hover:text-gray-800`;
+  const {
+    data: resumeResponse,
+    isLoading: isResumeLoading,
+    error: resumeError,
+  } = useGetResumeList(userType, userId);
+  const resumeList = resumeResponse?.resume_list ?? [];
 
-  const getTabContent = (tab: TabType) => {
-    switch (tab) {
+  const handleToggleSave = (jobId: string) => {
+    setSavedRecruit((prev) =>
+      prev.map((job) => (job.job_posting_id === jobId ? { ...job, isSaved: !job.isSaved } : job)),
+    );
+  };
+
+  const getTabContent = () => {
+    switch (activeTab) {
       case "resumes":
-        return <ResumeList resumes={resumes || []} />;
+        if (isResumeLoading) return <p>이력서 로딩 중…</p>;
+        if (resumeError) return <p className="text-red-500">이력서 불러오기 실패</p>;
+        return <ResumeList type={userType} userId={userId} resumes={resumeList} />;
+
       case "applied":
-        return <EmptyContent title="지원한 공고 목록" message="아직 지원한 공고가 없습니다." />;
+        return <AppliedJobList jobs={dummyAppliedJobs} />;
+
       case "saved":
-        return <EmptyContent title="저장한 공고 목록" message="아직 저장한 공고가 없습니다." />;
+        return (
+          <SavedJobList
+            jobs={savedRecruit}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+            onToggleSave={handleToggleSave}
+          />
+        );
     }
   };
 
   return (
-    <div className="w-[calc(100%-2rem)] sm:w-[36rem] md:w-[48rem] lg:w-[64rem] mx-auto mt-8">
-      <div className="border-b">
-        <div className="flex">
-          {TABS.map((tab) => (
-            <button
-              key={tab.id}
-              className={activeTab === tab.id ? activeTabStyle : inactiveTabStyle}
-              onClick={() => setActiveTab(tab.id as TabType)}
-            >
-              <Heading sizeOffset={2} className="font-semibold break-keep">
-                {tab.label}
-              </Heading>
-            </button>
-          ))}
-        </div>
+    <div className="w-[calc(100%-2rem)] mx-auto mt-8">
+      <div className="border-b flex">
+        {TABS.map((tab) => (
+          <button
+            key={tab.id}
+            className={`
+              ${TAB_STYLES.base}
+              ${activeTab === tab.id ? TAB_STYLES.active : TAB_STYLES.inactive}
+            `}
+            onClick={() => setActiveTab(tab.id as TabType)}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
-      <div className="py-6">{getTabContent(activeTab)}</div>
+      <div className="py-6">{getTabContent()}</div>
     </div>
   );
 }

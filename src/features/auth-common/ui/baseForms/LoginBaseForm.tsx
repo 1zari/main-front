@@ -9,22 +9,21 @@ import { loginSchema, LoginFormValues } from "@/features/auth-common/validation/
 import { EMAIL_DOMAINS, type EmailDomain } from "@/features/auth-user/constants/email";
 import KakaoLogo from "@/assets/images/social/KakaoLogo.png";
 import NaverLogo from "@/assets/images/social/NaverLogo.png";
+import { JoinType } from "@/types/commonUser";
 
 interface LoginBaseFormProps {
-  role: "user" | "employer";
+  join_type: JoinType;
   onEmailFind: () => void;
   onPasswordFind: () => void;
-  onSignup: () => void;
   showSocialLogin?: boolean;
   showEmailDomainSelect?: boolean;
 }
 
 export default function LoginBaseForm({
-  role,
+  join_type,
   onEmailFind,
   onPasswordFind,
-  onSignup,
-  showSocialLogin = true,
+  showSocialLogin = join_type === "normal",
   showEmailDomainSelect = true,
 }: LoginBaseFormProps) {
   const [showPassword, setShowPassword] = useState(false);
@@ -36,6 +35,7 @@ export default function LoginBaseForm({
     handleSubmit,
     watch,
     setValue,
+    setError,
     formState: { errors },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -53,43 +53,65 @@ export default function LoginBaseForm({
   };
 
   const handleLogin = async (data: LoginFormValues) => {
-    const result = await signIn("credentials", {
-      redirect: false,
-      email: data.email,
-      password: data.password,
-      role: role === "user" ? "user" : "employer",
-    });
+    const providerId = join_type === "normal" ? "user-credentials" : "company-credentials";
+    try {
+      const result = await signIn(providerId, {
+        email: data.email,
+        password: data.password,
+        join_type,
+        redirect: false,
+        callbackUrl: "/",
+      });
 
-    if (result?.ok) {
-      router.push("/");
-    } else {
-      alert("로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.");
+      if (result?.error) {
+        let message = result.error || "로그인에 실패했습니다. 잠시 후 다시 시도해주세요.";
+        if (result.status === 401) {
+          message = "이메일, 비밀번호, 회원 유형(개인/기업) 탭을 다시 확인해 주세요.";
+        } else if (result.status === 400) {
+          message = "입력값이 올바르지 않습니다. 다시 확인해 주세요.";
+        }
+        setError("root", { message });
+      } else if (result?.ok) {
+        window.location.href = result.url || "/";
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setError("root", {
+        message: "로그인 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+      });
     }
   };
 
   return (
     <form className="p-6 sm:p-8" onSubmit={handleSubmit(handleLogin)}>
-      <Image src="/images/logo.png" alt="로고" width={200} height={200} className="mx-auto mb-6" />
+      <Image
+        src="/images/logo.png"
+        alt="로고"
+        width={200}
+        height={50}
+        className="w-auto h-auto mx-auto mb-6"
+      />
 
       <div className="mb-6 text-left">
-        <label htmlFor="email" className="block mb-3 ml-2 font-semibold text-base sm:text-lg">
+        <label htmlFor="email" className="block mb-3 ml-2 text-base font-semibold sm:text-lg">
           이메일
         </label>
-        {role === "user" && showEmailDomainSelect ? (
-          <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-end">
-            <div className="w-full sm:flex-1 border-b border-gray-300 pb-1">
+        {join_type === "normal" && showEmailDomainSelect ? (
+          <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-end">
+            <div className="w-full pb-1 border-b border-gray-300 sm:flex-1">
               <input
                 {...register("email")}
                 id="email"
                 name="email"
                 type="text"
+                autoComplete="username"
                 placeholder="이메일을 입력해주세요."
-                className="w-full border-none outline-none px-2 py-3 bg-transparent leading-tight min-h-[2.75rem]"
+                className="min-h-[2.75rem] w-full border-none bg-transparent px-2 py-3 leading-tight outline-none"
               />
             </div>
-            <div className="relative w-full sm:w-[140px] border border-gray-300 rounded px-3 py-2">
+            <div className="relative w-full rounded border border-gray-300 px-3 py-2 sm:w-[140px]">
               <select
-                className="w-full bg-white text-gray-700 focus:outline-none appearance-none cursor-pointer text-base"
+                className="w-full text-base text-gray-700 bg-white appearance-none cursor-pointer focus:outline-none"
                 value={domainOption}
                 onChange={handleDomainChange}
               >
@@ -99,58 +121,60 @@ export default function LoginBaseForm({
                   </option>
                 ))}
               </select>
-              <div className="pointer-events-none absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">
+              <div className="absolute text-sm text-gray-500 transform -translate-y-1/2 pointer-events-none top-1/2 right-2">
                 ▼
               </div>
             </div>
           </div>
         ) : (
-          <div className="relative border-b border-gray-300 pb-1">
+          <div className="relative pb-1 border-b border-gray-300">
             <input
               {...register("email")}
               id="email"
               name="email"
               type="email"
+              autoComplete="username"
               placeholder="이메일을 입력해주세요."
-              className="w-full border-none outline-none px-2 py-3 bg-transparent leading-tight min-h-[2.75rem]"
+              className="min-h-[2.75rem] w-full border-none bg-transparent px-2 py-3 leading-tight outline-none"
             />
           </div>
         )}
         {errors.email && (
-          <p className="text-red-500 mt-1 text-sm sm:text-base">{errors.email.message}</p>
+          <p className="mt-1 text-sm text-red-500 sm:text-base">{errors.email.message}</p>
         )}
       </div>
 
       <div className="mb-6 text-left">
-        <label htmlFor="password" className="block mb-3 ml-2 font-semibold text-base sm:text-lg">
+        <label htmlFor="password" className="block mb-3 ml-2 text-base font-semibold sm:text-lg">
           비밀번호
         </label>
-        <div className="relative border-b border-gray-300 pb-1">
+        <div className="relative pb-1 border-b border-gray-300">
           <input
             {...register("password")}
             id="password"
             name="password"
             type={showPassword ? "text" : "password"}
+            autoComplete="current-password"
             placeholder="비밀번호를 입력해주세요."
-            className="w-full border-none outline-none px-2 py-3 pr-8 bg-transparent leading-tight min-h-[2.75rem]"
+            className="min-h-[2.75rem] w-full border-none bg-transparent px-2 py-3 pr-8 leading-tight outline-none"
           />
           <button
             type="button"
             onClick={() => setShowPassword((prev) => !prev)}
-            className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-500 cursor-pointer"
+            className="absolute right-0 text-gray-500 -translate-y-1/2 cursor-pointer top-1/2"
           >
             {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
           </button>
         </div>
         {errors.password && (
-          <p className="text-red-500 mt-1 text-sm sm:text-base">
+          <p className="mt-1 text-sm text-red-500 sm:text-base">
             비밀번호는 8자 이상 16자 이하이며, 영어 소문자, 숫자, 특수문자를 각각 1개 이상 포함해야
             합니다.
           </p>
         )}
       </div>
 
-      <div className="text-gray-400 mb-6 text-right">
+      <div className="mb-6 text-right text-gray-400">
         <span onClick={onEmailFind} className="cursor-pointer hover:text-gray-600">
           이메일 찾기
         </span>
@@ -160,27 +184,38 @@ export default function LoginBaseForm({
         </span>
       </div>
 
+      {errors.root && (
+        <div
+          className="p-3 mb-4 text-red-500 rounded-md bg-red-50"
+          style={{ whiteSpace: "pre-line" }}
+        >
+          {errors.root.message}
+        </div>
+      )}
+
       <button
         type="submit"
-        className="w-full bg-primary text-white py-3 rounded hover:bg-green-700 cursor-pointer mb-2"
+        className="w-full py-3 mb-2 text-white rounded cursor-pointer bg-primary hover:bg-green-700"
       >
         로그인
       </button>
 
-      <div className="w-full border-t border-gray-300 my-6" />
+      <div className="w-full my-6 border-t border-gray-300" />
 
-      {showSocialLogin && (
+      {join_type === "normal" && showSocialLogin && (
         <div className="mb-6">
           <button
-            onClick={() => signIn("kakao")}
-            className="w-full bg-[#FEE500] text-black py-3 rounded hover:bg-[#FFDC00] mb-3 flex items-center justify-center space-x-2 cursor-pointer"
+            type="button"
+            onClick={() => signIn("kakao", { callbackUrl: "/" })}
+            className="mb-3 flex w-full cursor-pointer items-center justify-center space-x-2 rounded bg-[#FEE500] py-3 text-black hover:bg-[#FFDC00]"
           >
             <Image src={KakaoLogo} alt="카카오 로고" width={22} height={22} className="mr-2" />
             <span>카카오로 로그인</span>
           </button>
           <button
-            onClick={() => signIn("naver")}
-            className="w-full bg-[#03C75A] text-white py-3 rounded hover:bg-[#02B152] flex items-center justify-center space-x-2 cursor-pointer"
+            type="button"
+            onClick={() => signIn("naver", { callbackUrl: "/" })}
+            className="flex w-full cursor-pointer items-center justify-center space-x-2 rounded bg-[#03C75A] py-3 text-white hover:bg-[#02B152]"
           >
             <Image src={NaverLogo} alt="네이버 로고" width={22} height={22} className="mr-2" />
             <span>네이버로 로그인</span>
@@ -192,7 +227,7 @@ export default function LoginBaseForm({
         <button
           type="button"
           onClick={() => router.push(`/auth/signup`)}
-          className="text-gray-500 hover:underline cursor-pointer"
+          className="text-gray-500 cursor-pointer hover:underline"
         >
           회원가입
         </button>

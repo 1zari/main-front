@@ -1,14 +1,22 @@
-"use client";
+import { Heading } from "@/components/ui/Heading";
+import RecruiteList from "@/features/recruit/components/RecruiteList";
 
-import RecruitForm from "../../features/recruit/components/Form";
-
-const NewRecruitPage = () => {
+async function NewRecruitPage() {
   return (
-    <main className="max-w-2xl mx-auto p-4">
-      <h1 className="m-10 text-2xl font-bold flex justify-center items-center">채용공고 등록</h1>
-      <RecruitForm mode="new" />
-    </main>
+    <div className="bg-gray-z-light pb-10">
+      <main className="w-full mx-auto">
+        <nav className="bg-white text-black sticky top-0 z-10">
+          <ul className="w-full max-w-7xl mx-auto flex flex-wrap justify-between items-center p-4  gap-5">
+            <li className="grow text-center font-bold ml-[-30px]">
+              <Heading sizeOffset={2} className="font-bold">
+                공고관리
+              </Heading>
+            </li>
+          </ul>
+        </nav>
+        <RecruiteList />
+      </main>
+    </div>
   );
-};
-
+}
 export default NewRecruitPage;

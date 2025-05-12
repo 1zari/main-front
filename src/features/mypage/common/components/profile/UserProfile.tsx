@@ -1,85 +1,47 @@
+"use client";
+
 import React, { useMemo } from "react";
+import { useSession } from "next-auth/react";
+import useSWR from "swr";
 import ProfileCard from "./ProfileCard";
 import UserProfileTabs from "./UserProfileTabs";
 import { Heading } from "@/components/ui/Heading";
 import { formatBirthDate } from "@/utils/format";
-import { UserProfile as UserProfileType } from "@/types/user";
-import type { Resume } from "@/types/resume";
-import type { UserProfileItem } from "@/types/user";
+import type { UserProfileResponseDto } from "@/types/api/user";
+import { API_ENDPOINTS } from "@/constants/apiEndPoints";
+import { fetcher } from "@/lib/fetcher";
 
-interface UserProfileProps {}
+// fetcher 함수를 컴포넌트 외부로 이동
+const fetchUserProfile = async (url: string, accessToken?: string) => {
+  try {
+    const response = await fetcher.get<UserProfileResponseDto>(url, {
+      secure: true,
+      headers: {
+        "Content-Type": "application/json",
+        ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error("Error fetching user profile:", error);
+    throw error;
+  }
+};
 
-export default function UserProfile(props: UserProfileProps) {
-  // 개인회원 더미 데이터
-  const userProfileData: UserProfileType = {
-    userId: "123",
-    name: "홍길동",
-    phone_number: "010-1234-5678",
-    birthday: "1990-01-01",
-    interest: ["바리스타", "제과제빵", "패스트푸드점"],
-    is_active: true,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  };
+export default function UserProfile() {
+  const { data: session } = useSession();
 
-  // 이력서 더미 데이터
-  const dummyResumes: Resume[] = [
-    {
-      resume_id: "1",
-      user_id: "123",
-      resume_title: "신입 바리스타 지원합니다",
-      job_category: "바리스타",
-      education: "고등학교 졸업",
-      introduce: "열정적인 바리스타가 되고 싶습니다.",
-      created_at: "2024-01-15T09:00:00.000Z",
-      updated_at: "2024-01-15T09:00:00.000Z",
-    },
-    {
-      resume_id: "2",
-      user_id: "123",
-      resume_title: "제과제빵 경력 2년",
-      job_category: "제과제빵",
-      education: "제과제빵 전문학교",
-      introduce: "맛있는 빵을 만들고 싶습니다.",
-      created_at: "2024-02-01T09:00:00.000Z",
-      updated_at: "2024-02-10T15:00:00.000Z",
-    },
-    {
-      resume_id: "3",
-      user_id: "123",
-      resume_title: "성실한 직원이 되겠습니다",
-      job_category: "패스트푸드점",
-      education: "대학교 재학",
-      introduce: "책임감 있게 일하겠습니다.",
-      created_at: "2024-03-01T09:00:00.000Z",
-      updated_at: "2024-03-01T09:00:00.000Z",
-    },
-    {
-      resume_id: "4",
-      user_id: "123",
-      resume_title: "성실한 직원이 되겠습니다",
-      job_category: "패스트푸드점",
-      education: "대학교 재학",
-      introduce: "책임감 있게 일하겠습니다.",
-      created_at: "2024-03-01T09:00:00.000Z",
-      updated_at: "2024-03-01T09:00:00.000Z",
-    },
-    // {
-    //   resume_id: "5",
-    //   user_id: "123",
-    //   resume_title: "제과제빵 경력 2년",
-    //   job_category: "제과제빵",
-    //   education: "제과제빵 전문학교",
-    //   introduce: "맛있는 빵을 만들고 싶습니다.",
-    //   created_at: "2024-03-01T09:00:00.000Z",
-    //   updated_at: "2024-03-01T09:00:00.000Z",
-    // },
-  ];
+  const { data: userProfileData, error } = useSWR(
+    session ? [API_ENDPOINTS.USER.PROFILE, session.accessToken] : null,
+    ([url, token]) => fetchUserProfile(url, token),
+  );
 
-  const { name, phone_number, birthday, interest } = userProfileData;
+  // 프로필 아이템 구성
+  const profileItems = useMemo(() => {
+    if (!userProfileData) return [];
 
-  const profileItems: UserProfileItem[] = useMemo(
-    () => [
+    const { phone_number, birthday, interest } = userProfileData;
+    return [
       { labels: ["전화번호"], value: phone_number },
       { labels: ["생년월일"], value: formatBirthDate(birthday) },
       {
@@ -90,7 +52,7 @@ export default function UserProfile(props: UserProfileProps) {
               <Heading
                 key={index}
                 sizeOffset={2}
-                className="bg-primary/5 text-primary px-3 py-1.5 rounded-full font-medium hover:bg-primary/10 transition-colors"
+                className="bg-primary/5 text-primary hover:bg-primary/10 rounded-full px-3 py-1.5 font-medium transition-colors"
               >
                 {item}
               </Heading>
@@ -101,14 +63,40 @@ export default function UserProfile(props: UserProfileProps) {
         ),
         isCustom: true,
       },
-    ],
-    [phone_number, birthday, interest],
-  );
+    ];
+  }, [userProfileData]);
+
+  // 에러 상태 처리
+  if (error) {
+    return (
+      <div className="text-center text-red-500">
+        프로필을 불러오는데 실패했습니다.
+        <br />
+        {error.message || "알 수 없는 오류가 발생했습니다."}
+      </div>
+    );
+  }
+
+  // 로딩 상태 처리
+  if (!userProfileData) {
+    return <div className="text-center">프로필을 불러오는 중...</div>;
+  }
 
   return (
     <div>
-      <ProfileCard role="user" title={name} items={profileItems} />
-      <UserProfileTabs resumes={dummyResumes} appliedJobs={null} savedJobs={null} />
+      <ProfileCard
+        role="normal"
+        userId={userProfileData.common_user_id}
+        title={userProfileData.name}
+      >
+        {profileItems.map((item, idx) => (
+          <ProfileCard.Item key={idx}>
+            <ProfileCard.Label>{item.labels.join(" ")}</ProfileCard.Label>
+            <ProfileCard.Value isDescription={item.isCustom}>{item.value}</ProfileCard.Value>
+          </ProfileCard.Item>
+        ))}
+      </ProfileCard>
+      <UserProfileTabs resumes={[]} />
     </div>
   );
 }
