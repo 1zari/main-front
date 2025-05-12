@@ -43,11 +43,11 @@ export function useSearchJobs() {
     mutationFn: async ({ searchKeyword }: { searchKeyword: string }) => {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/search/`, {
         params: {
-          city: city?.id,
-          district: district?.id,
-          town: towns.map((town) => town.id),
+          city_no: city?.id,
+          district_no: district?.id,
+          town_no: towns.map((town) => town.id),
           work_day: selectedDays,
-          posting_types: false,
+          posting_types: "false",
           employment_type: employmentType,
           education: educations,
           job_keyword_main: cat?.id,
