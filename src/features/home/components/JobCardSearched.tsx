@@ -10,10 +10,6 @@ interface Job {
   job_posting_title: string;
 }
 
-interface Props {
-  job: Job;
-}
-
 export function JobCardSearched({ job }: { job: SearchJobResult }) {
   const router = useRouter();
 
