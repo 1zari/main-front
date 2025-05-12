@@ -14,6 +14,7 @@ export function JobCard({ job }: { job: JobPostsListResponseDto["data"][number] 
       <div className="bg-white shadow-sm rounded-lg p-4 transition duration-200 hover:shadow-md hover:-translate-y-1">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
+            <span>🏢</span>
             <p className="text-black/70">{job.company_name}</p>
           </div>
           <div onClick={(e) => e.stopPropagation()}>
