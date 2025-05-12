@@ -19,9 +19,9 @@ function JobCard({ job }: { job: JobPostsListResponseDto["data"][number] }) {
             <p className="text-black/70">{job.company_name}</p>
           </div>
           <div onClick={(e) => e.stopPropagation()}>
-            {/* {session?.user?.join_type === "normal" && (
+            {session?.user?.join_type === "normal" && (
               <ScrapBtn initialIsBookmarked={job.is_bookmarked} jobPostingId={job.job_posting_id} />
-            )} */}
+            )}
           </div>
         </div>
         <h3 className="text-2 font-semibold py-2">{job.job_posting_title}</h3>

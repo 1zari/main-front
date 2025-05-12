@@ -13,11 +13,13 @@ import type {
 
 // 채용공고 리스트 조회
 export const jobPostApi = {
-  getJobPostList: (page: number) => {
-    const query = `?page=${page}`;
-    return fetcher.get<JobPostsListResponseDto>(`${API_ENDPOINTS.JOB_POST.LIST}${query}`);
+  // getJobPostList: (page: number) => {
+  //   const query = `?page=${page}`;
+  //   return fetcher.get<JobPostsListResponseDto>(`${API_ENDPOINTS.JOB_POST.LIST}${query}`);
+  // },
+  getJobPostList: () => {
+    return fetcher.get<JobPostsListResponseDto>(`${API_ENDPOINTS.JOB_POST.LIST}`);
   },
-
   getJobPostDetail: (id: string) => {
     return fetcher.get<JobPostDetailResponseDto>(API_ENDPOINTS.JOB_POST.DETAIL(id), {
       secure: true,

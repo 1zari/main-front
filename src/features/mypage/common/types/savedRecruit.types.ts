@@ -2,6 +2,7 @@ export type SalaryType = "시급" | "일급" | "월급";
 
 export interface SavedRecruit {
   job_posting_id: string;
+  company_id: string; // ✅ Add this line
   companyName: string;
   job_posting_title: string;
   location: string;

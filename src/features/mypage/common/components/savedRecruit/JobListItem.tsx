@@ -1,3 +1,4 @@
+import ScrapBtn from "@/components/ScrapBtn";
 import { Heading } from "@/components/ui/Heading";
 import {
   JOB_LIST_STYLES,
@@ -47,7 +48,7 @@ export default function JobListItem({
                 onToggleSave(job.job_posting_id);
               }}
             >
-              {/* <ScrapBtn /> */}
+              <ScrapBtn />
             </div>
           )}
         </div>
