@@ -30,7 +30,7 @@ export default function JobsByFieldPage() {
   const setShowJobs = useFilterTabStore((state) => state.setShowJobs);
   const [page, setPage] = useState(1);
 
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ["byfield-jobs", page],
     queryFn: () => fetchJobs(page),
     // keepPreviousData: true,

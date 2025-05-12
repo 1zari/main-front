@@ -31,7 +31,7 @@ export default function JobsByLocationPage() {
 
   const [page, setPage] = useState(1);
 
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ["bylocation-jobs", page],
     queryFn: () => fetchJobs(page),
     // keepPreviousData: true,

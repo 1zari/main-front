@@ -33,7 +33,7 @@ export default function RecommendedJobsPage() {
 
   const [page, setPage] = useState(1);
 
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ["recommended-jobs", page],
     queryFn: () => fetchJobs(page),
     // keepPreviousData: true,

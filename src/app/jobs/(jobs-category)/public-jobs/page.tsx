@@ -33,7 +33,7 @@ export default function PublicJobsPage() {
 
   const [page, setPage] = useState(1);
 
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ["public-jobs", page],
     queryFn: () => fetchJobs(page),
     // keepPreviousData: true,
