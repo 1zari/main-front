@@ -6,8 +6,6 @@ import { NextAuthOptions } from "next-auth";
 import KakaoProvider from "next-auth/providers/kakao";
 import NaverProvider from "next-auth/providers/naver";
 
-한 경우
-
 export const authOptions: NextAuthOptions = {
   providers: [
     createCredentialsProvider("user-credentials", "User Credentials", authApi.user.login),
