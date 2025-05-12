@@ -1,11 +1,12 @@
 // src/lib/auth/authOptions.ts
 import { authApi } from "@/api/auth";
+import { createCredentialsProvider } from "@/lib/auth/helpers";
 import type { JoinType } from "@/types/commonUser";
 import { NextAuthOptions } from "next-auth";
 import KakaoProvider from "next-auth/providers/kakao";
 import NaverProvider from "next-auth/providers/naver";
 
-import { createCredentialsProvider } from "./helpers"; // 너가 함수들을 분리한 경우
+한 경우
 
 export const authOptions: NextAuthOptions = {
   providers: [
