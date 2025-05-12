@@ -5,15 +5,27 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  format-code:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: npm install
+      - name: Format code with Prettier
+        run: npx prettier --write .
+
+  build-and-push:
+    needs: format-code
     runs-on: ubuntu-latest
     container: pandoc/latex
     steps:
       - uses: actions/checkout@v2
       - name: Install mustache (to update the date)
         run: apk add ruby && gem install mustache
-      - name: Format code with Prettier
-        run: npx prettier --write .
       - name: creates output
         run: sh ./build.sh
       - name: Pushes to another repository
