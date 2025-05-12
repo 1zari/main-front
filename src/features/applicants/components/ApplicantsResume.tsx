@@ -20,7 +20,7 @@ export default function ApplicantsResume() {
 
   const {
     name,
-    resume_title,
+    // resume_title,
     education_level,
     school_name,
     education_state,
