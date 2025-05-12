@@ -113,28 +113,43 @@
 
 ### BE
 <div align="center">
-  <img src="https://img.shields.io/badge/django-092E20?style=for-the-badge&logo=django&logoColor=white">
-  <img src="https://img.shields.io/badge/django REST framework-EE3B3B?style=for-the-badge&logo=django&logoColor=white">
-  <img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white">
+
+  <!-- 언어 & 프레임워크 -->
+  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white">
+  <img src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white">
   <br>
 
-  <img src="https://img.shields.io/badge/postgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white">
-  <img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white">
-  <img src="https://img.shields.io/badge/Oauth2.0-EB5424?style=for-the-badge&logo=oauth&logoColor=white">
+  <!-- 데이터베이스 -->
+  <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white">
+  <img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white">
   <br>
 
-  <img src="https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white">
-  <img src="https://img.shields.io/badge/AWS EC2-FF9900?style=for-the-badge&logo=amazon-ec2&logoColor=white">
-  <img src="https://img.shields.io/badge/AWS ACM-1D8102?style=for-the-badge&logo=amazonaws&logoColor=white">
+  <!-- 라이브러리 & 패키지 -->
+  <img src="https://img.shields.io/badge/Pydantic-2E86AB?style=for-the-badge&logo=pydantic&logoColor=white">
+  <img src="https://img.shields.io/badge/PostGIS-0099CC?style=for-the-badge&logo=postgresql&logoColor=white">
+  <img src="https://img.shields.io/badge/Gunicorn-499848?style=for-the-badge&logo=gunicorn&logoColor=white">
+  <img src="https://img.shields.io/badge/Boto3-569A31?style=for-the-badge&logo=amazonaws&logoColor=white">
+  <img src="https://img.shields.io/badge/django--storages-0C4B33?style=for-the-badge&logo=django&logoColor=white">
+  <img src="https://img.shields.io/badge/Pytest-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white">
+  <img src="https://img.shields.io/badge/unittest-6E6E6E?style=for-the-badge">
+  <br>
+
+  <!-- 배포 & 서버 -->
   <img src="https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white">
   <img src="https://img.shields.io/badge/Gunicorn-499848?style=for-the-badge">
-  <img src="https://img.shields.io/badge/Github Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white">
+  <img src="https://img.shields.io/badge/NCP-03C75A?style=for-the-badge&logo=naver&logoColor=white">
   <br>
 
-  <img src="https://img.shields.io/badge/Django Test Framework-003A70?style=for-the-badge">
-  <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white">
-  <img src="https://img.shields.io/badge/Github-181717?style=for-the-badge&logo=github&logoColor=white">
-  <img src="https://img.shields.io/badge/VSCode-007ACC?style=for-the-badge&logo=visual-studio-code&logoColor=white">
+  <!-- 협업 툴 -->
+  <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white">
+  <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white">
+  <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white">
+  <br>
+
+  <!-- CI/CD -->
+  <img src="https://img.shields.io/badge/GitHub Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white">
+  <img src="https://img.shields.io/badge/Zero Downtime Deployment-3B82F6?style=for-the-badge">
+
 </div>
 
 
@@ -144,14 +159,14 @@
 
 ### FE
 
-| <a href="https://github.com/KIMDOTS"><img src="https://avatars.githubusercontent.com/u/168804702?v=4" width=100px/><br/><sub><b>@KIMDOTS</b></sub></a><br/> | <a href="https://github.com/chiyo-an"><img src="https://avatars.githubusercontent.com/u/52526916?v=4" width=100px/><br/><sub><b>@chiyo-an</b></sub></a><br/> | <a href="https://github.com/minhui-p"><img src="https://avatars.githubusercontent.com/u/186126648?v=4" width=100px/><br/><sub><b>@minhui-p</b></sub></a><br/> |
+| <a href="https://github.com/KIMDOTS"><img src="https://avatars.githubusercontent.com/u/168804702?v=4" width=100px/><br/><sub><b>@KIMDOTS</b></sub></a><br/> | <a href="https://github.com/chiyo-an"><img src="https://avatars.githubusercontent.com/u/52526916?v=4" width=100px/><br/><sub><b>@chiyo-an</b></sub></a><br/> | <a href="https://github.com/sasha-designer"><img src="https://avatars.githubusercontent.com/u/186126648?v=4" width=100px/><br/><sub><b>@sasha-designer</b></sub></a><br/> |
 |:------------------------------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------:|
-| 김민정 | 안정은 | 박민희 |
+| 김민정 | 안정은 | 박정현 |
 ### BE
 
-| <a href="https://github.com/shinezeee"><img src="https://avatars.githubusercontent.com/u/188424203?v=4" width=100px/><br/><sub><b>@shinezeee</b></sub></a><br/> | <a href="https://github.com/rodzlen"><img src="https://avatars.githubusercontent.com/u/162860800?v=4" width=100px/><br/><sub><b>@rodzlen</b></sub></a><br/> | <a href="https://github.com/parkh12"><img src="https://avatars.githubusercontent.com/u/186007221?v=4" width=100px/><br/><sub><b>@parkh12</b></sub></a><br/> |
+| <a href="https://github.com/Anianim"><img src="https://avatars.githubusercontent.com/u/188424203?v=4" width=100px/><br/><sub><b>@Anianim</b></sub></a><br/> | <a href="https://github.com/rodzlen"><img src="https://avatars.githubusercontent.com/u/162860800?v=4" width=100px/><br/><sub><b>@rodzlen</b></sub></a><br/> | <a href="https://github.com/parkh12"><img src="https://avatars.githubusercontent.com/u/186007221?v=4" width=100px/><br/><sub><b>@parkh12</b></sub></a><br/> |
 |:-------------------------------------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------:|
-| 신혜지 | 김휘수 | 박현성 |
+| 고영주 | 김휘수 | 박현성 |
 
 ## 📑 프로젝트 규칙
 
