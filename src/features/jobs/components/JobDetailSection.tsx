@@ -1,6 +1,6 @@
 "use client";
 import SectionDivider from "@/components/ui/SectionDivider";
-import React, { useEffect } from "react";
+import React from "react";
 
 interface JobDetailSectionProps {
   title: string;
@@ -11,18 +11,18 @@ interface JobDetailSectionProps {
 }
 
 export default function JobDetailSection({ title, items }: JobDetailSectionProps) {
-  useEffect(() => {
-    if (title === "근무지") {
-      if (typeof window !== "undefined" && window.kakao && window.kakao.maps) {
-        const container = document.getElementById("kakao-map");
-        const options = {
-          center: new window.kakao.maps.LatLng(37.5665, 126.978), // default 서울 시청
-          level: 3,
-        };
-        const map = new window.kakao.maps.Map(container, options);
-      }
-    }
-  }, [title]);
+  // useEffect(() => {
+  //   if (title === "근무지") {
+  //     if (typeof window !== "undefined" && window.kakao && window.kakao.maps) {
+  //       const container = document.getElementById("kakao-map");
+  //       const options = {
+  //         center: new window.kakao.maps.LatLng(37.5665, 126.978), // default 서울 시청
+  //         level: 3,
+  //       };
+  //       const map = new window.kakao.maps.Map(container, options);
+  //     }
+  //   }
+  // }, [title]);
 
   return (
     <div className="flex flex-col gap-4 mb-2">

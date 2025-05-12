@@ -30,7 +30,7 @@ export interface ApplicantResumeResponseDto {
       company_name: string;
       position: string;
       employment_period_start: string; // ISO date string
-      employment_period_end: string;   // ISO date string
+      employment_period_end: string; // ISO date string
     }[];
     certification_list: {
       certification_name: string;

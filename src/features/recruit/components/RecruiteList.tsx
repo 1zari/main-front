@@ -5,8 +5,15 @@ import { format, isBefore } from "date-fns";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+interface JobPost {
+  job_posting_id: string;
+  job_posting_title: string;
+  summary: string;
+  deadline: string;
+}
+
 export default function RecruiteList() {
-  const [jobPosts, setJobPosts] = useState<any[]>([]);
+  const [jobPosts, setJobPosts] = useState<JobPost[]>([]);
 
   useEffect(() => {
     jobPostApi.getJobPostList().then((res) => {

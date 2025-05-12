@@ -171,8 +171,6 @@ export interface AddBookmarkRequestDto {
   job_posting_id: string;
 }
 
-
-
 // 검색 결과 응답 DTO
 export interface SearchJobResultResponseDto {
   results: SearchJobResult[];

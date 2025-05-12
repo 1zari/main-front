@@ -78,7 +78,7 @@ export default function JobDetailContent({ jobPostingId }: JobDetailContentProps
     company_name,
     manager_phone_number,
     manager_name,
-    company_logo,
+    // company_logo,
     salary_type,
   } = jobPosting;
 
