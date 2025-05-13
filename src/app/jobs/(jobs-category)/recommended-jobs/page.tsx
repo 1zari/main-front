@@ -10,7 +10,14 @@ import JobFilter from "../../../../features/jobs/components/JobFilter";
 
 interface JobPosting {
   job_posting_id: string;
-  // add more fields if necessary
+  company_name: string;
+  job_posting_title: string;
+  city: string;
+  district: string;
+  is_bookmarked: boolean;
+  deadline: string;
+  summary: string;
+  company_logo: string;
 }
 
 interface JobResponse {

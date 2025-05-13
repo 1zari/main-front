@@ -1,4 +1,4 @@
-import { UseFormRegister, FieldErrors } from "react-hook-form";
+import { FieldErrors, UseFormRegister } from "react-hook-form";
 
 // Common Types
 export type AuthType = "normal" | "company";
@@ -14,6 +14,7 @@ export type CommonFormFields = {
   businessNumber?: string;
   phone?: string;
   code?: string;
+  email: string;
 };
 
 // Find Email Types
@@ -38,7 +39,7 @@ export interface FindEmailBaseFormProps {
 export type FindPasswordStep = "input" | "verify" | "reset";
 
 export interface FindPasswordFormFields extends CommonFormFields {
-  email?: string;
+  email: string;
   newPassword?: string;
   confirmPassword?: string;
 }

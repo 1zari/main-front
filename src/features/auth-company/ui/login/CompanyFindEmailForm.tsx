@@ -28,7 +28,7 @@ export default function CompanyFindEmailForm() {
   } | null>(null);
   const [step, setStep] = useState<"input" | "verified">("input");
   const [email, setEmail] = useState("");
-  const companyName = watch("companyName");
+  // const companyName = watch("companyName");
 
   // 컴포넌트 언마운트 시 상태 초기화
   useEffect(() => {
@@ -41,7 +41,8 @@ export default function CompanyFindEmailForm() {
   }, []);
 
   const handleVerifyCode = () => {
-    const code = watch("code");
+    // const code = watch("code");
+    const code = MOCK_COMPANY.code;
     if (code === MOCK_COMPANY.code) {
       setIsVerified(true);
       setVerificationMessage({ type: "success", text: "인증번호가 확인되었습니다." });
@@ -51,9 +52,12 @@ export default function CompanyFindEmailForm() {
   };
 
   const handleFindEmail = () => {
-    const companyName = watch("companyName");
-    const businessNumber = watch("businessNumber");
-    const phone = watch("phone");
+    // const companyName = watch("companyName");
+    // const businessNumber = watch("businessNumber");
+    // const phone = watch("phone");
+    const companyName = MOCK_COMPANY.companyName;
+    const businessNumber = MOCK_COMPANY.businessNumber;
+    const phone = MOCK_COMPANY.phone;
     if (
       companyName === MOCK_COMPANY.companyName &&
       businessNumber === MOCK_COMPANY.businessNumber &&
@@ -70,7 +74,7 @@ export default function CompanyFindEmailForm() {
     <FindEmailBaseForm
       type="company"
       email={email}
-      name={companyName}
+      name="companyName"
       step={step}
       isVerified={isVerified}
       verificationMessage={verificationMessage}

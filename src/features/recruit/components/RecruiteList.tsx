@@ -8,10 +8,14 @@ import { useState } from "react";
 
 interface JobPosting {
   job_posting_id: string;
+  company_name: string;
   job_posting_title: string;
-  summary: string;
+  city: string;
+  district: string;
+  is_bookmarked: boolean;
   deadline: string;
-  // add more fields if necessary
+  summary: string;
+  company_logo: string;
 }
 interface JobResponse {
   data: JobPosting[];
@@ -67,7 +71,7 @@ export default function RecruiteList() {
 
       <ul className="space-y-4">
         {paginatedJobs.map((job) => (
-          <li key={job.job_posting_id} job={job}>
+          <li key={job.job_posting_id}>
             <Link href={`/recruit/${job.job_posting_id}`}>
               <div className="block p-4 border rounded-md shadow-sm hover:shadow-md transition bg-white">
                 <div className="font-semibold text-gray-900 mb-2">{job.job_posting_title}</div>

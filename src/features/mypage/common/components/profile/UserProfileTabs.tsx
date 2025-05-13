@@ -1,13 +1,13 @@
 "use client";
-import React, { useState } from "react";
 import { useParams } from "next/navigation";
+import { useState } from "react";
 //import { useSession } from "next-auth/react";
+import AppliedJobList from "@/features/mypage/common/components/applied/AppliedJobList";
 import ResumeList from "@/features/mypage/common/components/myResume/ResumeList";
 import SavedJobList from "@/features/mypage/common/components/savedRecruit/SavedRecruitList";
-import AppliedJobList from "@/features/mypage/common/components/applied/AppliedJobList";
 import { TABS, TAB_STYLES, type TabType } from "@/features/mypage/common/constants/myPageTab";
-import { dummySavedJobs } from "@/features/mypage/common/mock/savedJobs";
 import { dummyAppliedJobs } from "@/features/mypage/common/mock/appliedJobs";
+import { dummySavedJobs } from "@/features/mypage/common/mock/savedJobs";
 import { useGetResumeList } from "@/features/resume/api/useGetResumeList";
 //import type { ResumeListResponseDto } from "@/types/api/resume";
 

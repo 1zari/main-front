@@ -1,20 +1,20 @@
 "use client";
-import axios from "axios";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, FormProvider, Controller } from "react-hook-form";
-import {
-  companySignupSchema,
-  CompanyFormValues,
-} from "@/features/auth-company/validation/company-auth.schema";
-import FormInput from "@/features/auth-common/components/baseFields/FormInput";
+import { authApi } from "@/api/auth";
 import FormActionInput from "@/features/auth-common/components/baseFields/FormActionInput";
-import FormTextArea from "@/features/auth-common/components/baseFields/FormTextArea";
+import FormAddressSearch from "@/features/auth-common/components/baseFields/FormAddressSearch";
 import FormDatePicker from "@/features/auth-common/components/baseFields/FormDatePicker";
 import FormFileUpload from "@/features/auth-common/components/baseFields/FormFileUpload";
+import FormInput from "@/features/auth-common/components/baseFields/FormInput";
+import FormTextArea from "@/features/auth-common/components/baseFields/FormTextArea";
 import CompanyTermsAgreement from "@/features/auth-common/components/terms/CompanyTermsAgreement";
-import FormAddressSearch from "@/features/auth-common/components/baseFields/FormAddressSearch";
-import { authApi } from "@/api/auth";
+import {
+  CompanyFormValues,
+  companySignupSchema,
+} from "@/features/auth-company/validation/company-auth.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import "react-datepicker/dist/react-datepicker.css";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 
 export type CompanyStepTwoValues = CompanyFormValues;
 
@@ -97,7 +97,7 @@ export default function SignupStepTwoCompany({ onSubmit }: Props) {
       alert(res.valid ? "유효한 사업자 등록 정보입니다." : "유효하지 않은 사업자 등록 정보입니다.");
     } catch (err) {
       if (axios.isAxiosError(err)) {
-        console.error("요청 URL:", err.config.url);
+        console.error("요청 URL:", err.config?.url);
         console.error("응답 status:", err.response?.status);
         console.error("응답 data:", err.response?.data);
       } else {

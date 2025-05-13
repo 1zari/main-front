@@ -1,19 +1,19 @@
 "use client";
 
-import { UseFormRegister, FieldErrors } from "react-hook-form";
+import AuthTypeTabs from "@/features/auth-common/components/AuthTypeTabs";
+import { FindCompanyPasswordFormValues } from "@/features/auth-company/validation/company-auth.schema";
+import { FindUserPasswordFormValues } from "@/features/auth-user/validation/user-auth.schema";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { FindUserPasswordFormValues } from "@/features/auth-user/validation/user-auth.schema";
-import { FindCompanyPasswordFormValues } from "@/features/auth-company/validation/company-auth.schema";
-import AuthTypeTabs from "@/features/auth-common/components/AuthTypeTabs";
+import { FieldErrors, UseFormRegister } from "react-hook-form";
 
 interface FindPasswordBaseFormProps {
   type: "normal" | "company";
   step: "input" | "complete";
   isVerified: boolean;
   showPassword: boolean;
-  register: UseFormRegister<FindUserPasswordFormValues & FindCompanyPasswordFormValues>;
-  errors: FieldErrors<FindUserPasswordFormValues & FindCompanyPasswordFormValues>;
+  register: UseFormRegister<FindUserPasswordFormValues >;
+  errors: FieldErrors<FindUserPasswordFormValues>;
   onVerifyCode: () => void;
   onSubmit: (e: React.FormEvent) => void;
   onTogglePassword: () => void;

@@ -115,8 +115,8 @@ export default function JobLocationFilter({ open, setOpen }: JobLocationFilterPr
 
   const { towns, setTowns, district, setDistrict, city, setCity } = useFiltersStore();
 
-  const [selectedCity, setSelectedCity] = useState<City>(city);
-  const [selectedDistrict, setSelectedDistrict] = useState<District>(district);
+  const [selectedCity, setSelectedCity] = useState<City | undefined>(city);
+  const [selectedDistrict, setSelectedDistrict] = useState<District | undefined>(district);
   const [checkedTowns, setCheckedTowns] = useState<AllTown[]>(towns);
 
   /** 시.도 초기화 */
@@ -143,7 +143,7 @@ export default function JobLocationFilter({ open, setOpen }: JobLocationFilterPr
    * 시.군.구가 선택 되었을때 스토어에 저장
    */
   React.useEffect(() => {
-    if (!selectedCity) return;
+    if (!selectedCity || !selectedDistrict) return; // ✅ undefined 방어
     setDistrict(selectedDistrict);
   }, [selectedDistrict]);
 
