@@ -7,8 +7,13 @@ import { IoMdRefresh } from "react-icons/io";
 
 export default function SelectedChips() {
   const {
+    city,
+    setCity,
+    district,
+    setDistrict,
     towns,
     setTowns,
+    setCat,
     jobCats,
     setJobCats,
     // 고용형태
@@ -24,6 +29,7 @@ export default function SelectedChips() {
     setSelectedDays,
     dayNegotiable,
     setDayNegotiable,
+    setPostingType,
   } = useFiltersStore();
 
   // if (selectedFilters.length === 0) return null;
@@ -165,13 +171,17 @@ export default function SelectedChips() {
         <button
           type="button"
           onClick={() => {
+            setCity([]);
+            setDistrict([]);
             setTowns([]);
+            setCat([]);
             setJobCats([]);
             setEmploymentType(undefined);
             setWorkExperiences([]);
             setEducations([]);
             setSelectedDays([]);
             setDayNegotiable(false);
+            setPostingType(undefined);
           }}
           className="w-32 group flex justify-center items-center border gap-2  px-4 py-2 rounded-md text-sm text-gray-800 cursor-pointer"
         >

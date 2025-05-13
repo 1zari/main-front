@@ -37,6 +37,7 @@ export function useSearchJobs() {
     jobCats,
     workExperiences,
     dayNegotiable,
+    postingType,
   } = useFiltersStore();
   const [result, setResult] = useState<SearchJobResult[] | null>(null);
 
@@ -55,7 +56,7 @@ export function useSearchJobs() {
                 : {}),
           town_no: towns.map((town) => town.id),
           work_day: selectedDays,
-          posting_type: "공공",
+          posting_type: postingType,
           employment_type: employmentType,
           education: educations,
           job_keyword_main: cat?.name,
