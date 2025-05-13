@@ -1,13 +1,13 @@
 export const AUTH_ROUTES = {
   normal: {
-    emailFind: "/user/normal/find/email/",
-    passwordFind: "/user/normal/reset/password/",
-    signup: "/user/normal/signup/",
+    emailFind: "/auth/user/find-email/",
+    passwordFind: "/auth/user/find-password/",
+    signup: "/auth/user/signup/",
   },
   company: {
-    emailFind: "/user/company/find/email/",
-    passwordFind: "/user/company/reset/password/",
-    signup: "/user/company/signup/",
+    emailFind: "/auth/company/find-email/",
+    passwordFind: "/auth/company/find-password/",
+    signup: "/auth/company/signup/",
   },
 } as const;
 
