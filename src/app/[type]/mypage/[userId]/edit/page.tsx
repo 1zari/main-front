@@ -1,11 +1,11 @@
 "use client";
-import { useParams } from "next/navigation";
+import { API_ENDPOINTS } from "@/constants/apiEndPoints";
 import CompanyInformationEdit from "@/features/mypage/company/ui/edit/CompanyInformationEdit";
 import UserInformationEdit from "@/features/mypage/user/ui/edit/UserInformationEdit";
-import { useSession } from "next-auth/react";
-import useSWR from "swr";
 import { fetcher } from "@/lib/fetcher";
-import { API_ENDPOINTS } from "@/constants/apiEndPoints";
+import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
+import useSWR from "swr";
 
 const VALID_TYPES = ["normal", "company"] as const;
 

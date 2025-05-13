@@ -1,26 +1,25 @@
 "use client";
-import { useState, useEffect } from "react";
-import { useForm, FormProvider } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  userEditSchema,
-  userPasswordEditSchema,
-  UserEditFormValues,
-  UserPasswordEditFormValues,
-} from "@/features/mypage/user/validation/user-edit.schema";
-import FormInput from "@/features/auth-common/components/baseFields/FormInput";
+import ControlledCheckboxGroup from "@/features/auth-common/components/baseFields/ControlledCheckboxGroup";
 import FormActionInput from "@/features/auth-common/components/baseFields/FormActionInput";
 import FormDatePicker from "@/features/auth-common/components/baseFields/FormDatePicker";
-import ControlledCheckboxGroup from "@/features/auth-common/components/baseFields/ControlledCheckboxGroup";
+import FormInput from "@/features/auth-common/components/baseFields/FormInput";
+import {
+  UserEditFormValues,
+  userEditSchema,
+  UserPasswordEditFormValues,
+  userPasswordEditSchema,
+} from "@/features/mypage/user/validation/user-edit.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import PasswordChangeForm from "./PasswordChangeForm";
-import { MOCK_USER1 } from "@/features/auth-common/mock/auth.mock";
 
 export default function UserInformationEdit({
   onSubmit = (data) => console.log("수정 요청", data),
-  defaultValues = MOCK_USER1,
+  defaultValues,
 }: {
   onSubmit?: (data: UserEditFormValues) => void;
-  defaultValues?: typeof MOCK_USER1;
+  defaultValues?;
 }) {
   const [showPasswordChange, setShowPasswordChange] = useState(false);
   const [passwordChanged, setPasswordChanged] = useState(false);

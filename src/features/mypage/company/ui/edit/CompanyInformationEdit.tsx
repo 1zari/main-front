@@ -1,26 +1,25 @@
 "use client";
-import { useState } from "react";
-import { useForm, FormProvider } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  companyEditSchema,
-  companyPasswordEditSchema,
-  CompanyEditFormValues,
-  CompanyPasswordEditFormValues,
-} from "@/features/mypage/company/validation/company-edit.schema";
-import { MOCK_COMPANY1 } from "@/features/auth-common/mock/auth.mock";
-import FormInput from "@/features/auth-common/components/baseFields/FormInput";
-import FormTextArea from "@/features/auth-common/components/baseFields/FormTextArea";
 import FormDatePicker from "@/features/auth-common/components/baseFields/FormDatePicker";
 import FormFileUpload from "@/features/auth-common/components/baseFields/FormFileUpload";
+import FormInput from "@/features/auth-common/components/baseFields/FormInput";
+import FormTextArea from "@/features/auth-common/components/baseFields/FormTextArea";
+import {
+  CompanyEditFormValues,
+  companyEditSchema,
+  CompanyPasswordEditFormValues,
+  companyPasswordEditSchema,
+} from "@/features/mypage/company/validation/company-edit.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import PasswordChangeForm from "./PasswordChangeForm";
 
 export default function CompanyInformationEdit({
   onSubmit = (data) => console.log("기업 정보 수정 요청", data),
-  defaultValues = MOCK_COMPANY1,
+  defaultValues,
 }: {
   onSubmit?: (data: CompanyEditFormValues) => void;
-  defaultValues?: typeof MOCK_COMPANY1;
+  defaultValues?;
 }) {
   const [showPasswordChange, setShowPasswordChange] = useState(false);
   const [passwordChanged, setPasswordChanged] = useState(false);

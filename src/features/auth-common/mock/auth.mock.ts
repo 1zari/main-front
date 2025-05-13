@@ -45,16 +45,16 @@ export const MOCK_COMPANY1 = {
   companyLogo: undefined,
 };
 
-export const MOCK_USER_SESSION = {
-  user: {
-    role: "user" as const,
-    ...MOCK_USER1,
-  },
-};
+// export const MOCK_USER_SESSION = {
+//   user: {
+//     role: "user" as const,
+//     ...MOCK_USER1,
+//   },
+// };
 
-export const MOCK_COMPANY_SESSION = {
-  user: {
-    role: "company" as const,
-    ...MOCK_COMPANY1,
-  },
-};
+// export const MOCK_COMPANY_SESSION = {
+//   user: {
+//     role: "company" as const,
+//     ...MOCK_COMPANY1,
+//   },
+// };

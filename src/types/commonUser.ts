@@ -1,3 +1,5 @@
+import email from "next-auth/providers/email";
+
 export type JoinType = "normal" | "company";
 
 // 기존 UserRole 타입을 JoinType으로 대체
@@ -12,3 +14,5 @@ export interface UserBase {
   created_at: string;
   updated_at: string;
 }
+
+

@@ -1,5 +1,5 @@
 "use client";
-import { Controller, Control, FieldValues, Path } from "react-hook-form";
+import { Control, Controller, FieldValues, Path } from "react-hook-form";
 
 type Props<T extends FieldValues> = {
   label: string;
@@ -21,7 +21,7 @@ export default function ControlledCheckboxGroup<T extends FieldValues>({
       control={control}
       name={name}
       render={({ field }) => {
-        const selected = Array.isArray(field.value) ? field.value : [];
+        const selected = (Array.isArray(field.value) ? field.value : []) as string[];
 
         const toggleOption = (value: string) => {
           const updated = selected.includes(value)

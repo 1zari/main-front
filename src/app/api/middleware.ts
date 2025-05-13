@@ -1,6 +1,6 @@
 import { UserRole } from "@/types/commonUser";
-import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get("accessToken")?.value;
@@ -18,9 +18,9 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  if (pathname.startsWith("/admin") && role !== "admin") {
-    return NextResponse.redirect(new URL("/", request.url));
-  }
+  // if (pathname.startsWith("/admin") && role !== "admin") {
+  //   return NextResponse.redirect(new URL("/", request.url));
+  // }
 
   return NextResponse.next();
 }

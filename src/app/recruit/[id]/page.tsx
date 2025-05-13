@@ -1,7 +1,12 @@
 import JobDetailContent from "@/features/jobs/components/JobDetailContent";
+import { use } from "react";
 
-const RecruitEditPage = async ({ params }: { params: { id: string } }) => {
-  const jobPostingId = params.id;
+type Props = {
+  params: Promise<{ id: string }>;
+};
+
+const RecruitEditPage = ({ params }: Props) => {
+  const { id: jobPostingId } = use(params);
 
   if (!jobPostingId) return <p>잘못된 접근입니다.</p>;
 
