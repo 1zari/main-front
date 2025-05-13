@@ -9,6 +9,7 @@ import { JobLocationInput } from "@/features/recruit/components/inputs/JobLocati
 import { JobSummaryInput } from "@/features/recruit/components/inputs/JobSummaryInput";
 import { NumberOfRecruitsInput } from "@/features/recruit/components/inputs/NumberOfRecruitsInput";
 import { OccupationInput } from "@/features/recruit/components/inputs/OccupationInput";
+import { PostingType } from "@/features/recruit/components/inputs/PostingType";
 import { SalaryInput } from "@/features/recruit/components/inputs/SalaryInput";
 import { TitleInput } from "@/features/recruit/components/inputs/TitleInput";
 import { WorkingDaysCheckbox } from "@/features/recruit/components/inputs/WorkingDaysCheckbox";
@@ -118,7 +119,7 @@ export default function JobPostForm({
       //   type: "Point",
       //   coordinates: [127.123456, 37.123456],
       // },
-      location: [127.123456, 37.123456],
+      // location: [127.123456, 37.123456],
       workingDays: formData.workingDays,
       work_time_start: "09:00",
       work_time_end: "18:00",
@@ -204,12 +205,13 @@ export default function JobPostForm({
       <JobSummaryInput register={register} error={errors.jobSummary} />
       <JobDescriptionInput register={register} error={errors.jobDescription} />
 
-      <div className="flex items-center gap-2">
+      {/* <div className="flex items-center gap-2">
         <input type="checkbox" id="isPublicJob" {...register("posting_type")} className="w-4 h-4" />
         <label htmlFor="isPublicJob" className="text-sm">
           공공일자리 여부
         </label>
-      </div>
+      </div> */}
+      <PostingType register={register} />
 
       <AgreeTermsCheckbox register={register} error={errors.agreeTerms} />
       <button

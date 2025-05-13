@@ -63,7 +63,7 @@ export function useSearchJobs() {
           job_keyword_sub: jobCats?.map((cat) => cat?.name).filter(Boolean),
           search: searchKeyword,
           work_experience: workExperiences,
-          day_discussion: dayNegotiable,
+          ...(dayNegotiable ? { day_discussion: true } : {}),
         },
         paramsSerializer: (params) => {
           return qs.stringify(params, { arrayFormat: "repeat" });
