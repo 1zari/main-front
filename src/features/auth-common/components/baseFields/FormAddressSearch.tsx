@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { Controller, useFormContext, FieldPath, PathValue } from "react-hook-form";
+import { Controller, FieldPath, PathValue, useFormContext } from "react-hook-form";
 
 interface DaumPostcodeData {
   roadAddress: string;
@@ -14,7 +14,7 @@ interface DaumPostcodeData {
 
 declare global {
   interface Window {
-    daum?: {
+    daum: {
       Postcode: new (config: {
         oncomplete: (data: DaumPostcodeData) => void;
         onresize?: (size: { height: number }) => void;

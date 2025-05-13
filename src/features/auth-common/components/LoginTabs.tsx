@@ -1,10 +1,10 @@
 "use client";
 
-import React from "react";
-import { useRouter } from "next/navigation";
 import { AUTH_ROUTES, LOGIN_CONFIG } from "@/features/auth-common/constants/auth.config";
 import { useLoginTab } from "@/features/auth-common/hooks/useLoginTab";
 import LoginBaseForm from "@/features/auth-common/ui/baseForms/LoginBaseForm";
+import { useRouter } from "next/navigation";
+import React from "react";
 
 interface TabButtonProps {
   isActive: boolean;
@@ -57,7 +57,6 @@ export default function LoginTabs() {
           </div>
           <LoginBaseForm
             key={activeTab}
-            join_type={activeTab}
             {...config}
             onEmailFind={() => router.push(routes.emailFind)}
             onPasswordFind={() => router.push(routes.passwordFind)}
