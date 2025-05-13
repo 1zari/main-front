@@ -36,34 +36,32 @@ interface JobCategoryFilterState {
 }
 
 export type EmploymentType = "정규직" | "계약직" | "무관";
-interface ConditionFilterState {
-  employmentType: EmploymentType | undefined;
-  setEmploymentType: (employmentType: EmploymentType | undefined) => void;
-}
 
 export type WorkExperienceType = "경력" | "무관";
-
-interface ConditionFilterState {
-  workExperiences: WorkExperienceType[];
-  setWorkExperiences: (workExperiences: WorkExperienceType[]) => void;
-}
+export type PostingType = "기업" | "공공";
 
 export type EducationType = "고졸" | "대졸이상" | "무관";
 
+export type DayType = "월" | "화" | "수" | "목" | "금" | "토" | "일";
+
 interface ConditionFilterState {
+  employmentType: EmploymentType | undefined;
+  setEmploymentType: (employmentType: EmploymentType | undefined) => void;
+
+  workExperiences: WorkExperienceType[];
+  setWorkExperiences: (workExperiences: WorkExperienceType[]) => void;
+
   educations: EducationType[];
   setEducations: (educations: EducationType[]) => void;
-}
 
-export type DayType = "월" | "화" | "수" | "목" | "금" | "토" | "일";
-interface ConditionFilterState {
   selectedDays: string[];
   setSelectedDays: (selectedDays: string[]) => void;
-}
 
-interface ConditionFilterState {
   dayNegotiable: boolean;
   setDayNegotiable: (dayNegotiable: boolean) => void;
+
+  postingType?: PostingType;
+  setPostingType: (postingType: PostingType | undefined) => void;
 }
 
 const useFiltersStore = create<
@@ -105,6 +103,9 @@ const useFiltersStore = create<
     // 요일 협의
     dayNegotiable: false,
     setDayNegotiable: (dayNegotiable: boolean) => set({ dayNegotiable }),
+    //공공일자리
+    postingType: undefined,
+    setPostingType: (postingType: PostingType | undefined) => set({ postingType }),
   };
 });
 

@@ -4,6 +4,7 @@ import { FaCaretUp } from "react-icons/fa";
 import useFiltersStore, {
   EducationType,
   EmploymentType,
+  PostingType,
   WorkExperienceType,
 } from "./stores/useFiltersStore";
 
@@ -24,6 +25,8 @@ export default function JobConditionsFilter({ setShowOtherConditions, showOtherC
     // 요일 협의
     dayNegotiable,
     setDayNegotiable,
+    postingType,
+    setPostingType,
   } = useFiltersStore();
 
   return (
@@ -133,7 +136,23 @@ export default function JobConditionsFilter({ setShowOtherConditions, showOtherC
                 }}
               />
               요일 협의
-            </label>
+            </label>{" "}
+            <div className="flex gap-4 flex-wrap">
+              {["기업", "공공"].map((option: PostingType) => {
+                return (
+                  <label key={option} className="flex items-center gap-1">
+                    <input
+                      type="radio"
+                      checked={postingType === option}
+                      onChange={() => {
+                        setPostingType(option);
+                      }}
+                    />
+                    {option}
+                  </label>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>

@@ -37,6 +37,7 @@ export function useSearchJobs() {
     jobCats,
     workExperiences,
     dayNegotiable,
+    postingType,
   } = useFiltersStore();
   const [result, setResult] = useState<SearchJobResult[] | null>(null);
 
@@ -55,14 +56,14 @@ export function useSearchJobs() {
                 : {}),
           town_no: towns.map((town) => town.id),
           work_day: selectedDays,
-          posting_type: "공공",
+          posting_type: postingType,
           employment_type: employmentType,
           education: educations,
           job_keyword_main: cat?.name,
           job_keyword_sub: jobCats?.map((cat) => cat?.name).filter(Boolean),
           search: searchKeyword,
           work_experience: workExperiences,
-          day_discussion: dayNegotiable,
+          ...(dayNegotiable ? { day_discussion: true } : {}),
         },
         paramsSerializer: (params) => {
           return qs.stringify(params, { arrayFormat: "repeat" });

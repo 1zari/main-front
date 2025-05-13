@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { format, isBefore } from "date-fns";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -11,6 +12,7 @@ interface JobPosting {
   job_posting_title: string;
   summary: string;
   deadline: string;
+  company_name: string;
   // add more fields if necessary
 }
 interface JobResponse {
@@ -38,6 +40,7 @@ export default function RecruiteList() {
   };
 
   const [page, setPage] = useState(1);
+  const { data: session } = useSession();
 
   const { data } = useQuery({
     queryKey: ["byfield-jobs", page],
@@ -46,7 +49,9 @@ export default function RecruiteList() {
     staleTime: 1000 * 60, // optional: 데이터 새로고침 방지
   });
 
-  const paginatedJobs = data?.data || [];
+  const paginatedJobs = (data?.data || []).filter(
+    (job) => job.company_name === session?.user?.name,
+  );
   const totalPages = data?.total_pages || 1;
 
   return (
