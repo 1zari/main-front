@@ -7,7 +7,8 @@
     "build": "next build || true",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write ."
+    "format": "prettier --write . && eslint --fix .",
+    "check": "tsc --noEmit && next lint"
   },
   "dependencies": {
     "@auth/core": "^0.34.2",
@@ -38,6 +39,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.5",
+    "@types/eslint": "^9.6.1",
     "@types/node": "^22.14.0",
     "@types/qs": "^6.9.18",
     "@types/react": "^19.1.0",
@@ -46,7 +48,7 @@
     "@typescript-eslint/eslint-plugin": "^8.31.0",
     "@typescript-eslint/parser": "^8.31.0",
     "autoprefixer": "^10.4.21",
-    "eslint": "^9.25.1",
+    "eslint": "^9.26.0",
     "eslint-config-next": "^15.3.1",
     "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-prettier": "^5.2.6",
