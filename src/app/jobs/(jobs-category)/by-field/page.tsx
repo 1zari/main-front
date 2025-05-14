@@ -10,7 +10,14 @@ import JobFilter from "../../../../features/jobs/components/JobFilter";
 
 interface JobPosting {
   job_posting_id: string;
-  // add more fields if necessary
+  company_name: string;
+  job_posting_title: string;
+  city: string;
+  district: string;
+  is_bookmarked: boolean;
+  deadline: string;
+  summary: string;
+  company_logo: string;
 }
 
 interface JobResponse {
@@ -56,7 +63,7 @@ export default function JobsByFieldPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
             {paginatedJobs.map((job) => (
-              <JobCard key={job.job_posting_id} ={job} />
+              <JobCard key={job.job_posting_id} job={job} />
             ))}
           </div>
           <div className="flex justify-center items-center gap-4 mt-8">
