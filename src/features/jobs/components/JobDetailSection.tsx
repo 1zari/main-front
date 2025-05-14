@@ -1,7 +1,7 @@
 "use client";
 import SectionDivider from "@/components/ui/SectionDivider";
 import React from "react";
-
+/// <reference path="../../../types/kakao.d.ts" />
 interface JobDetailSectionProps {
   title: string;
   items: {
