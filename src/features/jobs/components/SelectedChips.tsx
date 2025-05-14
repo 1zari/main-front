@@ -7,9 +7,8 @@ import { IoMdRefresh } from "react-icons/io";
 
 export default function SelectedChips() {
   const {
-    city,
     setCity,
-    district,
+
     setDistrict,
     towns,
     setTowns,
