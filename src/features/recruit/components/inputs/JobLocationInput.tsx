@@ -6,21 +6,6 @@ import { JobPostFormValues } from "@/features/recruit/schemas/jobPostSchema";
 import { useEffect } from "react";
 import { FieldError, UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
 
-declare global {
-  interface Window {
-    daum: {
-      Postcode: new (options: {
-        oncomplete: (data: DaumPostcodeData) => void;
-        width?: string;
-        height?: string;
-      }) => {
-        embed?: (element: HTMLElement) => void;
-        open?: () => void;
-      };
-    };
-  }
-}
-
 interface DaumPostcodeData {
   address: string;
   addressType: string;
@@ -88,8 +73,8 @@ export function JobLocationInput({
             const result = await res.json();
             const coords = result.documents?.[0];
             if (coords) {
-              setValue("latitude", parseFloat(coords.y));
-              setValue("longitude", parseFloat(coords.x));
+              setValue("locationxy.0", parseFloat(coords.y));
+              setValue("locationxy.1", parseFloat(coords.x));
             }
           } catch (e) {
             console.error("좌표 변환 실패:", e);

@@ -1,15 +1,15 @@
 "use client";
 
-import React, { useMemo } from "react";
+import { Heading } from "@/components/ui/Heading";
+import { API_ENDPOINTS } from "@/constants/apiEndPoints";
+import { fetcher } from "@/lib/fetcher";
+import type { UserProfileResponseDto } from "@/types/api/user";
+import { formatBirthDate } from "@/utils/format";
 import { useSession } from "next-auth/react";
+import { useMemo } from "react";
 import useSWR from "swr";
 import ProfileCard from "./ProfileCard";
 import UserProfileTabs from "./UserProfileTabs";
-import { Heading } from "@/components/ui/Heading";
-import { formatBirthDate } from "@/utils/format";
-import type { UserProfileResponseDto } from "@/types/api/user";
-import { API_ENDPOINTS } from "@/constants/apiEndPoints";
-import { fetcher } from "@/lib/fetcher";
 
 // fetcher 함수를 컴포넌트 외부로 이동
 const fetchUserProfile = async (url: string, accessToken?: string) => {
@@ -96,7 +96,7 @@ export default function UserProfile() {
           </ProfileCard.Item>
         ))}
       </ProfileCard>
-      <UserProfileTabs resumes={[]} />
+      <UserProfileTabs />
     </div>
   );
 }

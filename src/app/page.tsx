@@ -23,7 +23,6 @@ export default function Home() {
       <SavedJobsArea className="w-full bg-white" />
       <LandingReview className="w-full bg-gray-z" />
       <LandingPartnerCompany className="w-full bg-white" />
-      {/* <VoiceInput className="fixed bottom-4 z-999 right-4" /> */}
     </main>
   );
 }

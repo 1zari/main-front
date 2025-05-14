@@ -21,16 +21,16 @@ export interface AllTown extends Town {
 
 interface LocationFiltersState {
   city?: City;
-  setCity: (city: City) => void;
+  setCity: (city: City | undefined) => void;
   district?: District;
-  setDistrict: (district: District) => void;
+  setDistrict: (district: District | undefined) => void;
   towns: AllTown[];
   setTowns: (towns: AllTown[]) => void;
 }
 
 interface JobCategoryFilterState {
   cat?: Category;
-  setCat: (category: Category) => void;
+  setCat: (category: Category | undefined) => void;
   jobCats?: JobCat[];
   setJobCats: (jobCats: JobCat[]) => void;
 }
@@ -72,15 +72,15 @@ const useFiltersStore = create<
     // Location Filter
     // 시.도, 시.군.구, 동
     city: undefined,
-    setCity: (city: City) => set({ city }),
+    setCity: (city: City | undefined) => set({ city }),
     district: undefined,
-    setDistrict: (district: District) => set({ district }),
+    setDistrict: (district: District | undefined) => set({ district }),
     towns: [],
     setTowns: (towns: AllTown[]) => set({ towns }),
     // 직종
     // 대분류, 중분류
     cat: undefined,
-    setCat: (category: Category) => set({ cat: category }),
+    setCat: (category: Category | undefined) => set({ cat: category }),
     jobCats: [],
     setJobCats: (jobCats: JobCat[]) => set({ jobCats }),
     //

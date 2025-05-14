@@ -94,7 +94,7 @@ export default function JobPostForm({
             numberOfRecruits: job_posting.number_of_positions ?? 0,
             salary: job_posting.salary ?? 0,
             salaryType: job_posting.salary_type || "",
-            posting_type: job_posting.posting_type === "true" ? true : false,
+            posting_type: job_posting.posting_type === "기업" ? "기업" : "공공",
           });
         } catch (error) {
           console.error("공고 데이터를 불러오는 중 에러 발생:", error);
@@ -109,17 +109,14 @@ export default function JobPostForm({
       job_posting_title: formData.title,
       occupation: formData.occupation,
       address: `${formData.location} ${formData.locationDetail}`,
-      // city: "",
-      // town: "",
-      // district: "",
-      // location: [2.3, 2.3],
-      // location: formData.locationxy,
-      // location: null,
-      // location: {
-      //   type: "Point",
-      //   coordinates: [127.123456, 37.123456],
-      // },
-      // location: [127.123456, 37.123456],
+      city: formData.city || "", // 추가
+      district: formData.district || "", // 추가
+      location: formData.locationxy // 추가 (예: [127.123456, 37.123456])
+        ? {
+            type: "Point",
+            coordinates: formData.locationxy,
+          }
+        : undefined,
       workingDays: formData.workingDays,
       work_time_start: "09:00",
       work_time_end: "18:00",

@@ -22,7 +22,7 @@ export default function JobFilter() {
 
   const navBtnSelectedClassName = "border-primary font-bold text-primary";
   const towns = useFiltersStore((state) => state.towns);
-  const jobCats = useFiltersStore((state) => state.jobCats);
+  const jobCats = useFiltersStore((state) => state.jobCats ?? []);
   const selectedDays = useFiltersStore((state) => state.selectedDays);
   const dayNegotiable = useFiltersStore((state) => state.dayNegotiable);
 

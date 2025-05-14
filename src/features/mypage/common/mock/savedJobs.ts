@@ -3,6 +3,7 @@ import type { SavedRecruit } from "@/features/mypage/common/types/savedRecruit.t
 export const dummySavedJobs: SavedRecruit[] = [
   {
     job_posting_id: "1",
+    company_id: "",
     companyName: "스타벅스코리아",
     job_posting_title: "[시니어 환영] 스타벅스 강남점 바리스타 모집",
     location: "서울 강남구",
@@ -13,6 +14,7 @@ export const dummySavedJobs: SavedRecruit[] = [
   },
   {
     job_posting_id: "2",
+    company_id: "",
     companyName: "이마트24",
     job_posting_title: "[주4일/시간협의] 편의점 야간 담당자 구함",
     location: "서울 서초구",
@@ -23,6 +25,7 @@ export const dummySavedJobs: SavedRecruit[] = [
   },
   {
     job_posting_id: "3",
+    company_id: "",
     companyName: "파리바게뜨",
     job_posting_title: "[경력무관] 제과제빵 보조 직원 모집",
     location: "서울 송파구",
@@ -33,6 +36,7 @@ export const dummySavedJobs: SavedRecruit[] = [
   },
   {
     job_posting_id: "4",
+    company_id: "",
     companyName: "맥도날드",
     job_posting_title: "[주5일/오전] 맥도날드 매장관리 및 캐셔",
     location: "서울 종로구",
@@ -43,6 +47,7 @@ export const dummySavedJobs: SavedRecruit[] = [
   },
   {
     job_posting_id: "5",
+    company_id: "",
     companyName: "롯데리아",
     job_posting_title: "[시간제] 롯데리아 주방 보조 알바생 구함",
     location: "서울 마포구",
@@ -53,6 +58,7 @@ export const dummySavedJobs: SavedRecruit[] = [
   },
   {
     job_posting_id: "6",
+    company_id: "",
     companyName: "GS25",
     job_posting_title: "[즉시채용] GS25 편의점 매니저 구인",
     location: "서울 영등포구",
@@ -63,6 +69,7 @@ export const dummySavedJobs: SavedRecruit[] = [
   },
   {
     job_posting_id: "7",
+    company_id: "",
     companyName: "버거킹",
     job_posting_title: "[주말알바] 버거킹 캐셔 및 주방 직원",
     location: "서울 강동구",
@@ -73,6 +80,7 @@ export const dummySavedJobs: SavedRecruit[] = [
   },
   {
     job_posting_id: "8",
+    company_id: "",
     companyName: "CU",
     job_posting_title: "[야간전담] CU 편의점 야간 매니저",
     location: "서울 용산구",
@@ -83,6 +91,7 @@ export const dummySavedJobs: SavedRecruit[] = [
   },
   {
     job_posting_id: "9",
+    company_id: "",
     companyName: "던킨도너츠",
     job_posting_title: "[신입가능] 던킨도너츠 제과 생산직",
     location: "서울 강서구",
@@ -93,6 +102,7 @@ export const dummySavedJobs: SavedRecruit[] = [
   },
   {
     job_posting_id: "10",
+    company_id: "",
     companyName: "KFC",
     job_posting_title: "[주5일] KFC 주방 및 서빙 스태프",
     location: "서울 성동구",
@@ -103,6 +113,7 @@ export const dummySavedJobs: SavedRecruit[] = [
   },
   {
     job_posting_id: "11",
+    company_id: "",
     companyName: "배스킨라빈스",
     job_posting_title: "[시니어우대] 아이스크림 제조 및 판매",
     location: "서울 중구",
@@ -113,6 +124,7 @@ export const dummySavedJobs: SavedRecruit[] = [
   },
   {
     job_posting_id: "12",
+    company_id: "",
     companyName: "서브웨이",
     job_posting_title: "[경력무관] 서브웨이 샌드위치 아티스트",
     location: "서울 광진구",

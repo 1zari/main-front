@@ -13,7 +13,7 @@ export default function SelectedChips() {
     towns,
     setTowns,
     setCat,
-    jobCats,
+    jobCats = [],
     setJobCats,
     // 고용형태
     employmentType,
@@ -85,7 +85,7 @@ export default function SelectedChips() {
             <span className="ml-1 text-sm">고용형태: {employmentType}</span>
             <button
               onClick={() => {
-                setEmploymentType(null);
+                setEmploymentType(undefined);
               }}
               className="ml-2 pb-1 text-gray-500 hover:font-bold hover:scale-105"
               aria-label={`Remove ${employmentType}`}
@@ -170,10 +170,10 @@ export default function SelectedChips() {
         <button
           type="button"
           onClick={() => {
-            setCity([]);
-            setDistrict([]);
+            setCity(undefined);
+            setDistrict(undefined);
             setTowns([]);
-            setCat([]);
+            setCat(undefined);
             setJobCats([]);
             setEmploymentType(undefined);
             setWorkExperiences([]);
@@ -190,7 +190,7 @@ export default function SelectedChips() {
           초기화
         </button>
         <button
-          onClick={() => search()}
+          onClick={() => search("")}
           className="w-44 md:w-32 grid-rows-5 bg-primary text-white  px-2 py-3 rounded-md flex justify-center items-center gap-2"
         >
           검색하기

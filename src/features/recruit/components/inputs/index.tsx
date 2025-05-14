@@ -5,7 +5,7 @@ import { ERROR_TEXT_CLASS, FIELD_WRAPPER_CLASS, LABEL_CLASS } from "../../consta
 type FormFieldProps = {
   label: string;
   children: React.ReactNode;
-  error?: FieldError;
+  error?: FieldError | FieldError[];
 };
 
 export function FormField({ label, children, error }: FormFieldProps) {
@@ -13,8 +13,8 @@ export function FormField({ label, children, error }: FormFieldProps) {
     <div className={FIELD_WRAPPER_CLASS}>
       <label className={LABEL_CLASS}>{label}</label>
       <div className="relative flex flex-col w-full">
+        {error && <ErrorMessage error={Array.isArray(error) ? error[0] : error} />}
         {children}
-        {error && <ErrorMessage error={error} />}
       </div>
     </div>
   );

@@ -34,11 +34,7 @@ export function WorkingHoursInput({
           />
         </div>
         <label>
-          <input
-            type="checkbox"
-            {...register("workingHourNegotiable", { valueAsBoolean: true })}
-            className="hidden peer"
-          />
+          <input type="checkbox" {...register("workingHourNegotiable")} className="hidden peer" />
           <div className="h-10 px-4 flex items-center justify-center border-1 rounded peer-checked:bg-white peer-checked:border-primary text-gray-700 peer-checked:text-primary">
             시간 협의
           </div>
