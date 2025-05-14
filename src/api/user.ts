@@ -1,18 +1,19 @@
-import { fetcher } from "@/lib/fetcher";
 import { API_ENDPOINTS } from "@/constants/apiEndPoints";
-import type { UserProfile } from "@/types/user";
+import { fetcher } from "@/lib/fetcher";
 import type {
+  PhoneVerificationRequestDto,
+  PhoneVerificationResponseDto,
   UpdateUserInfoRequestDto,
   UpdateUserInfoResponseDto,
   UserFindEmailRequestDto,
   UserFindEmailResponseDto,
+  UserProfileResponseDto,
   UserResetPasswordRequestDto,
   UserResetPasswordResponseDto,
-  PhoneVerificationRequestDto,
-  PhoneVerificationResponseDto,
   VerifyCodeRequestDto,
   VerifyCodeResponseDto,
 } from "@/types/api/user";
+import type { UserProfile } from "@/types/user";
 
 export const userApi = {
   getProfile: () => {
