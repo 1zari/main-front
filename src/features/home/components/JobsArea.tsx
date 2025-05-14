@@ -1,11 +1,18 @@
 import { JobCard } from "@/features/home/components/JobCard";
-import { FaChevronRight } from "react-icons/fa";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { FaChevronRight } from "react-icons/fa";
 
 interface JobPosting {
   job_posting_id: string;
-  // add more fields if needed
+  company_name: string;
+  job_posting_title: string;
+  city: string;
+  district: string;
+  is_bookmarked: boolean;
+  deadline: string;
+  summary: string;
+  company_logo: string;
 }
 
 interface JobResponse {
