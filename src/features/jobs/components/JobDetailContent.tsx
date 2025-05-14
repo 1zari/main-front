@@ -22,11 +22,11 @@ export default function JobDetailContent({ jobPostingId }: JobDetailContentProps
   const [isBottomVisible, setIsBottomVisible] = useState(false);
 
   // 카카오 초기화
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
-      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY!);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
+  //     window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY!);
+  //   }
+  // }, []);
 
   // 상세 공고 불러오기
   useEffect(() => {
