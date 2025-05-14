@@ -40,7 +40,15 @@ export const authApi = {
   // ─── 공통 인증 ───────────────────────────────────────────────
   // 액세스·리프레시 토큰 저장
   setTokens: (accessToken: string, refreshToken: string) => {
-    useAuthStore.getState().setAuth(accessToken, refreshToken, null);
+    useAuthStore.getState().setAuth(accessToken, refreshToken, {
+      id: "",
+      email: "",
+      join_type: "normal",
+      name: "",
+      user_id: "",
+      created_at: "",
+      updated_at: "",
+    });
   },
 
   // 로그아웃
