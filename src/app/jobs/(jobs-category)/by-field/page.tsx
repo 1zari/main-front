@@ -56,7 +56,7 @@ export default function JobsByFieldPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
             {paginatedJobs.map((job) => (
-              <JobCard key={job.job_posting_id} job={job} />
+              <JobCard key={job.job_posting_id} ={job} />
             ))}
           </div>
           <div className="flex justify-center items-center gap-4 mt-8">
