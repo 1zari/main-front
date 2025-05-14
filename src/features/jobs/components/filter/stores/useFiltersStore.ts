@@ -31,7 +31,7 @@ interface LocationFiltersState {
 interface JobCategoryFilterState {
   cat?: Category;
   setCat: (category: Category) => void;
-  jobCats?: JobCat[] | undefined;
+  jobCats?: JobCat[];
   setJobCats: (jobCats: JobCat[]) => void;
 }
 

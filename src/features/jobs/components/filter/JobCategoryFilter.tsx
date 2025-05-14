@@ -51,18 +51,18 @@ export default function JobCategoryFilter({ setShowJobs, showJobs }) {
   // jobCats가 변경될 때 checkedSubCat 동기화
   React.useEffect(() => {
     if (
-      jobCats.length !== checkedSubCat.length ||
-      jobCats.some((c, i) => c.id !== checkedSubCat[i]?.id)
+      (jobCats?.length ?? 0) !== checkedSubCat.length ||
+      jobCats?.some((c, i) => c.id !== checkedSubCat[i]?.id)
     ) {
-      setCheckedSubCat(jobCats);
+      setCheckedSubCat(jobCats ?? []);
     }
   }, [jobCats]);
 
   // checkedSubCat이 변경될 때 jobCats 동기화
   React.useEffect(() => {
     if (
-      checkedSubCat.length !== jobCats.length ||
-      checkedSubCat.some((c, i) => c.id !== jobCats[i]?.id)
+      checkedSubCat.length !== (jobCats?.length ?? 0) ||
+      checkedSubCat.some((c, i) => c.id !== jobCats?.[i]?.id)
     ) {
       setJobCats(checkedSubCat);
     }
