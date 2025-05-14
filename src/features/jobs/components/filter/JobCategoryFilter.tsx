@@ -23,8 +23,7 @@ export default function JobCategoryFilter({ setShowJobs, showJobs }) {
     jobCats,
     setJobCats,
   } = useFiltersStore();
-
-  const [selectedCat, setSelected] = useState<Category>(cat);
+  const [selectedCat, setSelected] = useState<Category | undefined>(cat);
   const [checkedSubCat, setCheckedSubCat] = useState<JobCat[]>(jobCats ?? []);
 
   // 대분류 초기화
