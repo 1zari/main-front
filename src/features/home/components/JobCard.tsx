@@ -5,7 +5,7 @@ import type { JobPostsListResponseDto } from "@/types/api/job";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-export function JobCard({ job }: { job: JobPostsListResponseDto["data"][number] }) {
+export function JobCard({ job }: { job: JobPostsListResponseDto["results"][number] }) {
   const router = useRouter();
   const { data: session } = useSession();
 
