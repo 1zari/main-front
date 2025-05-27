@@ -1,5 +1,5 @@
 "use client";
-import { useForm, FormProvider, useFieldArray } from "react-hook-form";
+import { useForm, FormProvider, useFieldArray, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { resumeSchema, ResumeFormData } from "@/features/resume/validation/resumeSchema";
 import { useRouter, useParams } from "next/navigation";
@@ -12,6 +12,8 @@ import Input from "@/features/resume/components/common/ui/Input";
 import TextArea from "@/features/resume/components/common/ui/TextArea";
 import DatePickerField from "@/features/resume/components/common/ui/DatePicker";
 import CustomSelect from "@/features/resume/components/common/ui/Select";
+import { useState, useCallback, useMemo } from "react";
+import { toast } from "react-hot-toast";
 
 interface ResumeFormProps {
   mode: "create" | "edit";
@@ -19,14 +21,56 @@ interface ResumeFormProps {
   defaultValues?: ResumeFormData;
 }
 
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center">
+    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+  </div>
+);
+
+const ErrorMessage = ({ message }: { message: string }) => (
+  <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">{message}</div>
+);
+
+// API 응답 타입 정의
+interface ResumeApiResponse {
+  resume: {
+    resume_id: string;
+    [key: string]: unknown;
+  };
+}
+
+// API 에러 타입 정의
+interface ApiError {
+  message?: string;
+  [key: string]: unknown;
+}
+
 export default function ResumeForm({ mode, resumeId, defaultValues }: ResumeFormProps) {
   const router = useRouter();
   const params = useParams<{ type: string; userId: string }>();
-  if (!params) {
-    router.replace("/auth/login");
-    return null;
-  }
   const qc = useQueryClient();
+
+  // 에러 상태 관리
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  // 파라미터 검증 개선
+  const isValidParams = useMemo(() => {
+    return params?.type && params?.userId;
+  }, [params]);
+
+  if (!isValidParams) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px] space-y-4">
+        <p className="text-red-600">잘못된 접근입니다.</p>
+        <button
+          onClick={() => router.replace("/auth/login")}
+          className="px-4 py-2 bg-primary text-white rounded hover:opacity-90"
+        >
+          로그인 페이지로 이동
+        </button>
+      </div>
+    );
+  }
 
   const methods = useForm<ResumeFormData>({
     resolver: zodResolver(resumeSchema),
@@ -52,6 +96,7 @@ export default function ResumeForm({ mode, resumeId, defaultValues }: ResumeForm
     watch,
     setValue,
     formState: { isSubmitting, errors },
+    trigger,
   } = methods;
 
   const { createResume, isLoading: isCreating, error: createError } = useCreateResume();
@@ -62,62 +107,164 @@ export default function ResumeForm({ mode, resumeId, defaultValues }: ResumeForm
     append: addExperience,
     remove: removeExperience,
   } = useFieldArray({ control, name: "experiences" });
+
   const {
     fields: certFields,
     append: addCertification,
     remove: removeCertification,
   } = useFieldArray({ control, name: "certifications" });
 
-  const selectedSchoolType = watch("schoolType");
-  const selectedGraduationStatus = watch("graduationStatus");
+  // watch 최적화
+  const watchedValues = watch(["schoolType", "graduationStatus"]);
+  const [selectedSchoolType, selectedGraduationStatus] = watchedValues;
 
-  const onSubmit = (data: ResumeFormData) => {
-    if (mode === "create") {
-      const dto = mapToCreateDto(data);
-      createResume(dto, {
-        onSuccess: (res) => {
-          const newId = res.resume.resume_id;
-          qc.invalidateQueries({ queryKey: ["resumeList"] });
-          qc.invalidateQueries({ queryKey: ["resumeDetail", newId] });
-          router.push(`/${params.type}/mypage/${params.userId}/resume/${newId}`);
-        },
-        onError: (err) => console.error("이력서 생성 실패:", err.message),
-      });
-    } else {
-      const dto = mapToUpdateDto(data, resumeId!);
-      updateResume(
-        { id: resumeId!, dto },
-        {
-          onSuccess: () => {
-            qc.invalidateQueries({ queryKey: ["resumeDetail", resumeId] });
-            router.push(`/${params.type}/mypage/${params.userId}/resume/${resumeId}`);
-          },
-          onError: (err) => console.error("이력서 수정 실패:", err.message),
-        },
-      );
-    }
-  };
+  // 성공/실패 핸들러 개선
+  const handleSuccess = useCallback(
+    (res: ResumeApiResponse) => {
+      setSubmitError(null);
+
+      if (mode === "create") {
+        const newId = res.resume.resume_id;
+        qc.invalidateQueries({ queryKey: ["resumeList"] });
+        qc.invalidateQueries({ queryKey: ["resumeDetail", newId] });
+        toast.success("이력서가 성공적으로 생성되었습니다!");
+        router.push(`/${params.type}/mypage/${params.userId}/resume/${newId}`);
+      } else {
+        qc.invalidateQueries({ queryKey: ["resumeDetail", resumeId] });
+        toast.success("이력서가 성공적으로 수정되었습니다!");
+        router.push(`/${params.type}/mypage/${params.userId}/resume/${resumeId}`);
+      }
+    },
+    [mode, qc, params, resumeId, router],
+  );
+
+  const handleError = useCallback(
+    (err: ApiError | Error | unknown) => {
+      let errorMessage = `이력서 ${mode === "create" ? "생성" : "수정"}에 실패했습니다.`;
+
+      if (err && typeof err === "object" && "message" in err && typeof err.message === "string") {
+        errorMessage = err.message;
+      }
+
+      setSubmitError(errorMessage);
+      toast.error(errorMessage);
+      console.error(`이력서 ${mode === "create" ? "생성" : "수정"} 실패:`, err);
+    },
+    [mode],
+  );
+
+  // 폼 제출 로직 개선 - SubmitHandler 타입 사용
+  const onSubmit: SubmitHandler<ResumeFormData> = useCallback(
+    async (data: ResumeFormData) => {
+      try {
+        setSubmitError(null);
+
+        // 클라이언트 사이드 검증
+        const isValid = await trigger();
+        if (!isValid) {
+          setSubmitError("입력 정보를 다시 확인해주세요.");
+          return;
+        }
+
+        if (mode === "create") {
+          const dto = mapToCreateDto(data);
+          createResume(dto, {
+            onSuccess: handleSuccess,
+            onError: handleError,
+          });
+        } else {
+          if (!resumeId) {
+            setSubmitError("이력서 ID가 없습니다.");
+            return;
+          }
+
+          const dto = mapToUpdateDto(data, resumeId);
+          updateResume(
+            { id: resumeId, dto },
+            {
+              onSuccess: handleSuccess,
+              onError: handleError,
+            },
+          );
+        }
+      } catch (error) {
+        handleError(error);
+      }
+    },
+    [mode, resumeId, trigger, createResume, updateResume, handleSuccess, handleError],
+  );
+
+  // 경력 추가 최적화
+  const handleAddExperience = useCallback(() => {
+    addExperience({
+      company: "",
+      position: "",
+      startDate: "",
+      endDate: "",
+      isCurrent: false,
+    });
+  }, [addExperience]);
+
+  // 자격증 추가 최적화
+  const handleAddCertification = useCallback(() => {
+    addCertification({
+      name: "",
+      issuer: "",
+      date: "",
+    });
+  }, [addCertification]);
+
+  // 경력 삭제 확인
+  const handleRemoveExperience = useCallback(
+    (index: number) => {
+      if (confirm("이 경력을 삭제하시겠습니까?")) {
+        removeExperience(index);
+      }
+    },
+    [removeExperience],
+  );
+
+  // 자격증 삭제 확인
+  const handleRemoveCertification = useCallback(
+    (index: number) => {
+      if (confirm("이 자격증을 삭제하시겠습니까?")) {
+        removeCertification(index);
+      }
+    },
+    [removeCertification],
+  );
 
   const isLoading = mode === "create" ? isCreating : isUpdating;
-  const error = mode === "create" ? createError : updateError;
+  const apiError = mode === "create" ? createError : updateError;
 
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center space-y-8">
         <div className="w-full max-w-[700px] space-y-6">
-          {error && <div className="text-red-500">{error.message}</div>}
+          {(submitError || apiError) && (
+            <ErrorMessage message={submitError || apiError?.message || "오류가 발생했습니다."} />
+          )}
 
-          <h3 className="text-xl font-semibold text-primary">직종</h3>
-          <Input name="jobCategory" label="" placeholder="ex) 웹디자이너" />
+          <section>
+            <h3 className="text-xl font-semibold text-primary mb-4">직종</h3>
+            <Input name="jobCategory" label="" placeholder="ex) 웹디자이너" aria-label="직종" />
+          </section>
 
-          <h3 className="text-xl font-semibold text-primary">이력서 제목</h3>
-          <Input name="title" label="" placeholder="이력서 제목을 입력하세요" />
+          <section>
+            <h3 className="text-xl font-semibold text-primary mb-4">이력서 제목</h3>
+            <Input
+              name="title"
+              label=""
+              placeholder="이력서 제목을 입력하세요"
+              aria-label="이력서 제목"
+            />
+          </section>
 
           <section className="space-y-4">
             <h3 className="text-xl font-semibold text-primary">기본 정보</h3>
             <Input label="이름" name="name" placeholder="홍길동" />
-            <Input label="전화번호" name="phone" placeholder="010-1234-5678" />
-            <Input label="이메일" name="email" placeholder="이메일 입력" />
+            <Input label="전화번호" name="phone" placeholder="010-1234-5678" type="tel" />
+            <Input label="이메일" name="email" placeholder="이메일 입력" type="email" />
           </section>
 
           <section className="space-y-4">
@@ -136,6 +283,7 @@ export default function ResumeForm({ mode, resumeId, defaultValues }: ResumeForm
                   { label: "대학원", value: "대학원" },
                 ]}
                 error={errors.schoolType?.message}
+                aria-label="학교 구분"
               />
               <Input label="학교명" name="schoolName" placeholder="학교명을 입력하세요" />
               <CustomSelect
@@ -151,18 +299,23 @@ export default function ResumeForm({ mode, resumeId, defaultValues }: ResumeForm
                   { label: "휴학", value: "휴학" },
                 ]}
                 error={errors.graduationStatus?.message}
+                aria-label="졸업 상태"
               />
             </div>
           </section>
 
           <section className="space-y-4">
             <h3 className="text-xl font-semibold text-primary">경력 사항</h3>
+            {expFields.length === 0 && (
+              <p className="text-gray-500 text-sm">경력 사항이 없습니다. 경력을 추가해보세요.</p>
+            )}
             {expFields.map((field, idx) => (
               <div key={field.id} className="relative space-y-4 p-4 rounded-xl border bg-gray-50">
                 <button
                   type="button"
-                  onClick={() => removeExperience(idx)}
-                  className="absolute top-4 right-4 text-red-500 border border-red-500 rounded-2xl px-2 text-sm"
+                  onClick={() => handleRemoveExperience(idx)}
+                  className="absolute top-4 right-4 text-red-500 border border-red-500 rounded-2xl px-2 text-sm hover:bg-red-50 transition-colors"
+                  aria-label={`${idx + 1}번째 경력 삭제`}
                 >
                   삭제
                 </button>
@@ -191,7 +344,7 @@ export default function ResumeForm({ mode, resumeId, defaultValues }: ResumeForm
                     disabled={watch(`experiences.${idx}.isCurrent`)}
                   />
                 </div>
-                <label className="flex items-center gap-2">
+                <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="checkbox"
                     {...methods.register(`experiences.${idx}.isCurrent`)}
@@ -203,16 +356,9 @@ export default function ResumeForm({ mode, resumeId, defaultValues }: ResumeForm
             ))}
             <button
               type="button"
-              onClick={() =>
-                addExperience({
-                  company: "",
-                  position: "",
-                  startDate: "",
-                  endDate: "",
-                  isCurrent: false,
-                })
-              }
-              className="w-full h-16 border border-primary rounded-lg font-semibold text-primary"
+              onClick={handleAddExperience}
+              className="w-full h-16 border border-primary rounded-lg font-semibold text-primary hover:bg-primary hover:text-white transition-colors"
+              aria-label="경력 추가"
             >
               + 경력 추가하기
             </button>
@@ -220,12 +366,16 @@ export default function ResumeForm({ mode, resumeId, defaultValues }: ResumeForm
 
           <section className="space-y-4">
             <h3 className="text-xl font-semibold text-primary">자격증</h3>
+            {certFields.length === 0 && (
+              <p className="text-gray-500 text-sm">자격증이 없습니다. 자격증을 추가해보세요.</p>
+            )}
             {certFields.map((field, idx) => (
               <div key={field.id} className="relative space-y-4 p-4 rounded-xl border bg-gray-50">
                 <button
                   type="button"
-                  onClick={() => removeCertification(idx)}
-                  className="absolute top-4 right-4 text-red-500 border border-red-500 rounded-2xl px-2 text-sm"
+                  onClick={() => handleRemoveCertification(idx)}
+                  className="absolute top-4 right-4 text-red-500 border border-red-500 rounded-2xl px-2 text-sm hover:bg-red-50 transition-colors"
+                  aria-label={`${idx + 1}번째 자격증 삭제`}
                 >
                   삭제
                 </button>
@@ -250,8 +400,9 @@ export default function ResumeForm({ mode, resumeId, defaultValues }: ResumeForm
             ))}
             <button
               type="button"
-              onClick={() => addCertification({ name: "", issuer: "", date: "" })}
-              className="w-full h-16 border border-primary rounded-lg font-semibold text-primary"
+              onClick={handleAddCertification}
+              className="w-full h-16 border border-primary rounded-lg font-semibold text-primary hover:bg-primary hover:text-white transition-colors"
+              aria-label="자격증 추가"
             >
               + 자격증 추가하기
             </button>
@@ -263,21 +414,26 @@ export default function ResumeForm({ mode, resumeId, defaultValues }: ResumeForm
               name="introduction"
               label=""
               placeholder="자기소개는 최대 500자까지 작성하실 수 있습니다."
+              aria-label="자기소개"
             />
           </section>
 
           <button
             type="submit"
-            className="w-full h-[60px] rounded bg-primary font-semibold text-white hover:opacity-90 transition"
+            className="w-full h-[60px] rounded bg-primary font-semibold text-white hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             disabled={isLoading || isSubmitting}
+            aria-label={`이력서 ${mode === "create" ? "작성" : "수정"} 완료`}
           >
-            {isLoading
-              ? mode === "create"
-                ? "작성 중..."
-                : "수정 중..."
-              : mode === "create"
-                ? "작성 완료"
-                : "수정 완료"}
+            {isLoading || isSubmitting ? (
+              <>
+                <LoadingSpinner />
+                {mode === "create" ? "작성 중..." : "수정 중..."}
+              </>
+            ) : mode === "create" ? (
+              "작성 완료"
+            ) : (
+              "수정 완료"
+            )}
           </button>
         </div>
       </form>
