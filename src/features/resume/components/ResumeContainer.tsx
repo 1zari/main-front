@@ -53,7 +53,7 @@ export default function ResumeContainer({ resume }: ResumeContainerProps) {
           />
         ))}
 
-        <ResumeSelfIntroductionSection title="자기 소개" content={resume.introduction} />
+        <ResumeSelfIntroductionSection title="자기 소개" content={resume.introduction ?? ""} />
       </div>
     </div>
   );
