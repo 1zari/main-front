@@ -140,6 +140,9 @@ export default function ResumeEditPage() {
       date: c.date_acquired,
     })),
     introduction: dto.introduce,
+    name: "",
+    phone: "",
+    email: "",
   };
 
   return (
