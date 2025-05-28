@@ -117,31 +117,49 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
             }
             onButtonClick={async () => {
               const rawPhone = getValues("phone");
-              if (!rawPhone) {
-                setError("phone", {
-                  type: "manual",
-                  message: "전화번호를 입력 후 인증을 진행해주세요.",
-                });
-                return;
-              }
+
               clearErrors("phone");
 
               const payload: PhoneVerificationRequestDto = {
-                phone_number: rawPhone.replace(/\D/g, ""),
+                phone_number: rawPhone || "", // 하이픈 포함해서 그대로 전송
                 join_type: "normal",
               };
-              await userApi.requestPhoneCode(payload);
 
-              setIsRequesting(true);
-              setTimeLeft(120);
-              setIsVerifyInputVisible(true);
-              setIsFadingOut(false);
-              showModal({
-                title: "인증번호가 발송되었습니다.",
-                message: "휴대폰 문자를 확인 후 \n 인증번호를 입력해주세요.",
-                confirmText: "확인",
-                onConfirm: () => {},
-              });
+              try {
+                await userApi.requestPhoneCode(payload);
+
+                setIsRequesting(true);
+                setTimeLeft(120);
+                setIsVerifyInputVisible(true);
+                setIsFadingOut(false);
+                showModal({
+                  title: "인증번호가 발송되었습니다.",
+                  message: "휴대폰 문자를 확인 후 \n 인증번호를 입력해주세요.",
+                  confirmText: "확인",
+                  onConfirm: () => {},
+                });
+              } catch (error: unknown) {
+                if (
+                  error &&
+                  typeof error === "object" &&
+                  "response" in error &&
+                  error.response &&
+                  typeof error.response === "object" &&
+                  "status" in error.response
+                ) {
+                  showModal({
+                    title: "⚠️",
+                    message: "이미 등록된 번호입니다. 다른번호를 입력해주세요",
+                    confirmText: "확인",
+                    onConfirm: () => {},
+                  });
+                } else {
+                  setError("phone", {
+                    type: "manual",
+                    message: "인증 요청 중 오류가 발생했습니다. 다시 시도해주세요.",
+                  });
+                }
+              }
             }}
           />
 
@@ -168,25 +186,60 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
 
                   const rawPhone = getValues("phone");
                   const payload: VerifyCodeRequestDto = {
-                    phone_number: rawPhone.replace(/\D/g, ""),
+                    phone_number: rawPhone || "",
                     code,
                     join_type: "normal",
                   };
-                  await userApi.verifyPhoneCode(payload);
 
-                  setIsVerified(true);
-                  setValue("verifyCode", code, { shouldValidate: true });
-                  setIsFadingOut(true);
-                  setTimeout(() => {
-                    setIsVerifyInputVisible(false);
-                    setIsRequesting(false);
-                  }, 100);
-                  showModal({
-                    title: "문자인증 성공",
-                    message: "인증이 완료되었습니다. \n 회원가입을 진행해주세요.",
-                    confirmText: "확인",
-                    onConfirm: () => {},
-                  });
+                  try {
+                    await userApi.verifyPhoneCode(payload);
+
+                    setIsVerified(true);
+                    setValue("verifyCode", code, { shouldValidate: true });
+                    setIsFadingOut(true);
+                    setTimeout(() => {
+                      setIsVerifyInputVisible(false);
+                      setIsRequesting(false);
+                    }, 100);
+                    showModal({
+                      title: "문자인증 성공",
+                      message: "인증이 완료되었습니다. \n 나머지 정보를 입력해주세요.",
+                      confirmText: "확인",
+                      onConfirm: () => {},
+                    });
+                  } catch (error: unknown) {
+                    if (
+                      error &&
+                      typeof error === "object" &&
+                      "response" in error &&
+                      error.response &&
+                      typeof error.response === "object" &&
+                      "status" in error.response
+                    ) {
+                      setError("verifyCode", {
+                        type: "manual",
+                        message: "인증번호가 일치하지 않습니다.",
+                      });
+                    } else if (
+                      error &&
+                      typeof error === "object" &&
+                      "response" in error &&
+                      error.response &&
+                      typeof error.response === "object" &&
+                      "status" in error.response &&
+                      error.response.status === 408
+                    ) {
+                      setError("verifyCode", {
+                        type: "manual",
+                        message: "인증 시간이 만료되었습니다. 다시 요청해주세요.",
+                      });
+                    } else {
+                      setError("verifyCode", {
+                        type: "manual",
+                        message: "인증 확인 중 오류가 발생했습니다. 다시 시도해주세요.",
+                      });
+                    }
+                  }
                 }}
               />
             </div>
