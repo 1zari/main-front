@@ -84,6 +84,7 @@ export default function ResumeEditPage() {
   }
 
   if (detailError) {
+    // 확인요망
     const getErrorMessage = (error: Error) => {
       if (error.message.includes("404")) {
         return "존재하지 않는 이력서이거나 삭제된 이력서입니다.";
