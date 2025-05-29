@@ -5,9 +5,6 @@ const isValidDate = (dateString: string): boolean => {
   return !isNaN(date.getTime()) && !!dateString.match(/^\d{4}-\d{2}-\d{2}$/);
 };
 
-const phoneRegex = /^010-\d{4}-\d{4}$/;
-const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
 const experienceSchema = z
   .object({
     company: z
@@ -98,17 +95,6 @@ export const resumeSchema = z.object({
     .string()
     .min(1, "이력서 제목을 입력해주세요.")
     .max(20, "이력서 제목은 20자 이하로 입력해주세요."),
-  name: z
-    .string()
-    .min(1, "이름을 입력해주세요.")
-    .max(20, "이름은 20자 이하로 입력해주세요.")
-    .refine((name) => name.trim().length >= 2, "이름은 최소 2자 이상 입력해주세요."),
-  phone: z.string().regex(phoneRegex, "010-1234-5678 형식으로 입력해주세요."),
-  email: z
-    .string()
-    .min(1, "이메일을 입력해주세요.")
-    .regex(emailRegex, "올바른 이메일 형식으로 입력해주세요.")
-    .max(100, "이메일은 100자 이하로 입력해주세요."),
   schoolType: z
     .string()
     .min(1, "학교 구분을 선택해주세요.")

@@ -30,6 +30,22 @@ type DatePickerFieldProps<T extends FieldValues> = {
   className?: string;
 } & VariantProps<typeof datePickerVariants>;
 
+const formatDateToLocalString = (date: Date): string => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
+const parseLocalDateString = (dateString: string): Date | null => {
+  if (!dateString) return null;
+
+  const [year, month, day] = dateString.split("-").map(Number);
+  if (!year || !month || !day) return null;
+
+  return new Date(year, month - 1, day);
+};
+
 export default function DatePickerField<T extends FieldValues>({
   label,
   name,
@@ -54,9 +70,9 @@ export default function DatePickerField<T extends FieldValues>({
         render={({ field }) => (
           <div className="relative w-full">
             <DatePicker
-              selected={field.value ? new Date(field.value) : null}
+              selected={parseLocalDateString(field.value)}
               onChange={(date: Date | null) => {
-                const formatted = date?.toISOString().split("T")[0] || "";
+                const formatted = date ? formatDateToLocalString(date) : "";
                 field.onChange(formatted);
               }}
               dateFormat="yyyy-MM-dd"

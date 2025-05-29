@@ -9,6 +9,9 @@ import {
   UseFormWatch,
   Path,
 } from "react-hook-form";
+import { useModalStore } from "@/store/useModalStore";
+import { useState, useCallback, useMemo } from "react";
+import { toast } from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { resumeSchema, ResumeFormData } from "@/features/resume/validation/resumeSchema";
 import { useRouter, useParams } from "next/navigation";
@@ -21,55 +24,26 @@ import Input from "@/features/resume/components/common/ui/Input";
 import TextArea from "@/features/resume/components/common/ui/TextArea";
 import DatePickerField from "@/features/resume/components/common/ui/DatePicker";
 import CustomSelect from "@/features/resume/components/common/ui/Select";
-import { useState, useCallback, useMemo } from "react";
-import { toast } from "react-hot-toast";
-
-interface ResumeFormProps {
-  mode: "create" | "edit";
-  resumeId?: string;
-  defaultValues?: ResumeFormData;
-}
-
-const LoadingSpinner = () => (
-  <div className="flex items-center justify-center">
-    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-  </div>
-);
-
-const ErrorMessage = ({ message }: { message: string }) => (
-  <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">{message}</div>
-);
-interface ResumeApiResponse {
-  resume: {
-    resume_id: string;
-    [key: string]: unknown;
-  };
-}
-
-interface ApiError {
-  message?: string;
-  [key: string]: unknown;
-}
-
-type ExperienceFormData = {
-  company: string;
-  position: string;
-  startDate: string;
-  endDate?: string;
-  isCurrent: boolean;
-};
-
-type CertificationFormData = {
-  name: string;
-  issuer: string;
-  date: string;
-};
+import { LoadingSpinner } from "@/features/resume/components/common/LoadingSpinner";
+import { ErrorMessage } from "@/features/resume/components/common/ErrorMessage";
+import {
+  SCHOOL_TYPE_OPTIONS,
+  GRADUATION_STATUS_OPTIONS,
+} from "@/features/resume/constants/options";
+import {
+  ResumeFormProps,
+  ResumeApiResponse,
+  ApiError,
+  ExperienceFormData,
+  CertificationFormData,
+} from "@/features/resume/types";
 
 function useExperienceField(control: Control<ResumeFormData>) {
   const { fields, append, remove } = useFieldArray({
     control,
     name: "experiences",
   });
+  const { showModal } = useModalStore();
 
   const handleAdd = useCallback(() => {
     const newExperience: ExperienceFormData = {
@@ -84,11 +58,14 @@ function useExperienceField(control: Control<ResumeFormData>) {
 
   const handleRemove = useCallback(
     (index: number) => {
-      if (window.confirm("이 경력을 삭제하시겠습니까?")) {
-        remove(index);
-      }
+      showModal({
+        title: "경력 삭제",
+        message: "이 경력을 삭제하시겠습니까?\n삭제된 내용은 복구할 수 없습니다.",
+        confirmText: "삭제",
+        onConfirm: () => remove(index),
+      });
     },
-    [remove],
+    [remove, showModal],
   );
 
   return { fields, handleAdd, handleRemove, isEmpty: fields.length === 0 };
@@ -99,6 +76,7 @@ function useCertificationField(control: Control<ResumeFormData>) {
     control,
     name: "certifications",
   });
+  const { showModal } = useModalStore();
 
   const handleAdd = useCallback(() => {
     const newCertification: CertificationFormData = {
@@ -111,15 +89,19 @@ function useCertificationField(control: Control<ResumeFormData>) {
 
   const handleRemove = useCallback(
     (index: number) => {
-      if (window.confirm("이 자격증을 삭제하시겠습니까?")) {
-        remove(index);
-      }
+      showModal({
+        title: "자격증 삭제",
+        message: "이 자격증을 삭제하시겠습니까?\n삭제된 내용은 복구할 수 없습니다.",
+        confirmText: "삭제",
+        onConfirm: () => remove(index),
+      });
     },
-    [remove],
+    [remove, showModal],
   );
 
   return { fields, handleAdd, handleRemove, isEmpty: fields.length === 0 };
 }
+
 interface ExperiencesSectionProps {
   fields: Record<"id", string>[];
   onAdd: () => void;
@@ -187,6 +169,7 @@ const ExperiencesSection = ({
     </button>
   </section>
 );
+
 interface CertificationsSectionProps {
   fields: Record<"id", string>[];
   onAdd: () => void;
@@ -273,9 +256,6 @@ export default function ResumeForm({ mode, resumeId, defaultValues }: ResumeForm
     defaultValues: defaultValues ?? {
       jobCategory: "",
       title: "",
-      name: "",
-      phone: "",
-      email: "",
       schoolType: "",
       schoolName: "",
       graduationStatus: "",
@@ -384,14 +364,13 @@ export default function ResumeForm({ mode, resumeId, defaultValues }: ResumeForm
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center space-y-8">
         <div className="w-full max-w-[700px] space-y-6">
-          {/* 에러 메시지 */}
           {(submitError || apiError) && (
             <ErrorMessage message={submitError || apiError?.message || "오류가 발생했습니다."} />
           )}
 
           <section>
             <h3 className="text-xl font-semibold text-primary mb-4">직종</h3>
-            <Input name="jobCategory" label="" placeholder="ex) 웹디자이너" aria-label="직종" />
+            <Input name="jobCategory" label="" placeholder="ex) 웹디자인" aria-label="직종" />
           </section>
 
           <section>
@@ -405,13 +384,6 @@ export default function ResumeForm({ mode, resumeId, defaultValues }: ResumeForm
           </section>
 
           <section className="space-y-4">
-            <h3 className="text-xl font-semibold text-primary">기본 정보</h3>
-            <Input label="이름" name="name" placeholder="홍길동" />
-            <Input label="전화번호" name="phone" placeholder="010-1234-5678" type="tel" />
-            <Input label="이메일" name="email" placeholder="이메일 입력" type="email" />
-          </section>
-
-          <section className="space-y-4">
             <h3 className="text-xl font-semibold text-primary">학력 사항</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <CustomSelect
@@ -420,12 +392,7 @@ export default function ResumeForm({ mode, resumeId, defaultValues }: ResumeForm
                 onChange={(val) =>
                   setValue("schoolType", val, { shouldValidate: true, shouldTouch: true })
                 }
-                options={[
-                  { label: "고등학교", value: "고등학교" },
-                  { label: "대학교(2,3년)", value: "대학교(2,3년)" },
-                  { label: "대학교(4년)", value: "대학교(4년)" },
-                  { label: "대학원", value: "대학원" },
-                ]}
+                options={SCHOOL_TYPE_OPTIONS}
                 error={errors.schoolType?.message}
                 aria-label="학교 구분"
               />
@@ -436,12 +403,7 @@ export default function ResumeForm({ mode, resumeId, defaultValues }: ResumeForm
                 onChange={(val) =>
                   setValue("graduationStatus", val, { shouldValidate: true, shouldTouch: true })
                 }
-                options={[
-                  { label: "졸업", value: "졸업" },
-                  { label: "재학", value: "재학" },
-                  { label: "중퇴", value: "중퇴" },
-                  { label: "휴학", value: "휴학" },
-                ]}
+                options={GRADUATION_STATUS_OPTIONS}
                 error={errors.graduationStatus?.message}
                 aria-label="졸업 상태"
               />
