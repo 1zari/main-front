@@ -6,6 +6,7 @@ import { SignupFormValues } from "@/features/auth-common/validation/signup-auth.
 import SignupStepTwoCompany, { CompanyStepTwoValues } from "./CompanySignupStepTwoForm";
 import { authApi } from "@/api/auth";
 import { useModalStore } from "@/store/useModalStore";
+import { SIGNUP_CONSTANTS } from "@/constants/signup";
 
 const toCompanyFormData = (payload: {
   common_user_id: string;
@@ -61,9 +62,9 @@ export default function SignupFormCompany() {
               } catch (err) {
                 console.error("1단계 회원가입 실패:", err);
                 showModal({
-                  title: "회원가입 실패",
-                  message: "회원정보 입력 중 오류가 발생했습니다. \n 잠시 후 다시 시도해주세요.",
-                  confirmText: "확인",
+                  title: SIGNUP_CONSTANTS.MESSAGES.ERROR.SIGNUP_FAILED,
+                  message: SIGNUP_CONSTANTS.MESSAGES.INFO.SIGNUP_ERROR_RETRY,
+                  confirmText: SIGNUP_CONSTANTS.MODAL_BUTTONS.CONFIRM,
                   onConfirm: () => router.push("/"),
                 });
               }
@@ -79,7 +80,7 @@ export default function SignupFormCompany() {
                 showModal({
                   title: "사업자등록증 미첨부",
                   message: "사업자등록증을 첨부해주세요.",
-                  confirmText: "확인",
+                  confirmText: SIGNUP_CONSTANTS.MODAL_BUTTONS.CONFIRM,
                   onConfirm: () => router.push("/"),
                 });
                 return;
@@ -90,7 +91,7 @@ export default function SignupFormCompany() {
                 showModal({
                   title: "개업년월일 미입력",
                   message: "개업년월일을 입력해주세요.",
-                  confirmText: "확인",
+                  confirmText: SIGNUP_CONSTANTS.MODAL_BUTTONS.CONFIRM,
                   onConfirm: () => router.push("/"),
                 });
                 return;
@@ -120,17 +121,17 @@ export default function SignupFormCompany() {
                 await authApi.company.completeSignup(formData);
                 console.log("기업회원 가입 최종 완료");
                 showModal({
-                  title: "회원가입 완료",
-                  message: `시니어내일에 오신 것을 환영합니다! \n ${data.companyName}님의 비즈니스 여정을 응원합니다 🤗🎉`,
-                  confirmText: "로그인 하러가기",
+                  title: SIGNUP_CONSTANTS.MESSAGES.SUCCESS.SIGNUP_COMPLETE,
+                  message: `${SIGNUP_CONSTANTS.MESSAGES.INFO.SIGNUP_WELCOME} \n ${data.companyName}${SIGNUP_CONSTANTS.MESSAGES.INFO.SIGNUP_BUSINESS_SUPPORT}`,
+                  confirmText: SIGNUP_CONSTANTS.MODAL_BUTTONS.GO_TO_LOGIN,
                   onConfirm: () => router.push("/auth/login?tab=company"),
                 });
               } catch (err) {
                 console.error("회원가입 최종 실패:", err);
                 showModal({
-                  title: "회원가입 실패",
-                  message: "회원정보 입력 중 오류가 발생했습니다. \n 잠시 후 다시 시도해주세요.",
-                  confirmText: "확인",
+                  title: SIGNUP_CONSTANTS.MESSAGES.ERROR.SIGNUP_FAILED,
+                  message: SIGNUP_CONSTANTS.MESSAGES.INFO.SIGNUP_ERROR_RETRY,
+                  confirmText: SIGNUP_CONSTANTS.MODAL_BUTTONS.CONFIRM,
                   onConfirm: () => router.push("/"),
                 });
               }

@@ -1,20 +1,20 @@
 "use client";
-import axios from "axios";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, FormProvider, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import { SIGNUP_CONSTANTS } from "@/constants/signup";
 import {
   companySignupSchema,
   CompanyFormValues,
 } from "@/features/auth-company/validation/company-auth.schema";
 import FormInput from "@/features/auth-common/components/baseFields/FormInput";
-import FormActionInput from "@/features/auth-common/components/baseFields/FormActionInput";
-import FormTextArea from "@/features/auth-common/components/baseFields/FormTextArea";
 import FormDatePicker from "@/features/auth-common/components/baseFields/FormDatePicker";
+import FormActionInput from "@/features/auth-common/components/baseFields/FormActionInput";
 import FormFileUpload from "@/features/auth-common/components/baseFields/FormFileUpload";
-import CompanyTermsAgreement from "@/features/auth-common/components/terms/CompanyTermsAgreement";
+import FormTextArea from "@/features/auth-common/components/baseFields/FormTextArea";
 import FormAddressSearch from "@/features/auth-common/components/baseFields/FormAddressSearch";
+import CompanyTermsAgreement from "@/features/auth-common/components/terms/CompanyTermsAgreement";
 import { authApi } from "@/api/auth";
-import "react-datepicker/dist/react-datepicker.css";
 
 export type CompanyStepTwoValues = CompanyFormValues;
 
@@ -94,16 +94,20 @@ export default function SignupStepTwoCompany({ onSubmit }: Props) {
       const res = await authApi.verify.checkBusiness(businessNumber, repName, formatted);
       console.log("사업자등록 인증 응답:", res);
 
-      alert(res.valid ? "유효한 사업자 등록 정보입니다." : "유효하지 않은 사업자 등록 정보입니다.");
+      alert(
+        res.valid
+          ? SIGNUP_CONSTANTS.MESSAGES.INFO.BUSINESS_VALID
+          : SIGNUP_CONSTANTS.MESSAGES.INFO.BUSINESS_INVALID,
+      );
     } catch (err) {
       if (axios.isAxiosError(err)) {
-        console.error("요청 URL:", err.config.url);
+        console.error("요청 URL:", err.config?.url);
         console.error("응답 status:", err.response?.status);
         console.error("응답 data:", err.response?.data);
       } else {
         console.error(err);
       }
-      alert("사업자 인증 요청 중 오류가 발생했습니다.");
+      alert(SIGNUP_CONSTANTS.MESSAGES.ERROR.BUSINESS_VERIFICATION_FAILED);
     }
   };
 
@@ -119,26 +123,26 @@ export default function SignupStepTwoCompany({ onSubmit }: Props) {
           <FormInput<CompanyFormValues>
             label="기업명"
             name="companyName"
-            placeholder="시니어내일"
+            placeholder={SIGNUP_CONSTANTS.PLACEHOLDERS.COMPANY_NAME}
           />
 
           <FormDatePicker<CompanyFormValues>
             label="개업년월일"
             name="startDate"
-            placeholder="달력에서 선택해 주세요."
+            placeholder={SIGNUP_CONSTANTS.PLACEHOLDERS.COMPANY_START_DATE}
           />
 
           <FormInput<CompanyFormValues>
             label="대표자 성함"
             name="representativeName"
-            placeholder="박오즈"
+            placeholder={SIGNUP_CONSTANTS.PLACEHOLDERS.COMPANY_REPRESENTATIVE}
           />
 
           <FormActionInput<CompanyFormValues>
             label="사업자등록번호"
             name="businessNumber"
-            placeholder="숫자만 입력"
-            buttonText="인증 확인"
+            placeholder={SIGNUP_CONSTANTS.PLACEHOLDERS.COMPANY_BUSINESS_NUMBER}
+            buttonText={SIGNUP_CONSTANTS.BUTTON_TEXT.VERIFY_BUSINESS}
             onButtonClick={handleBusinessCheck}
           />
 
@@ -149,7 +153,7 @@ export default function SignupStepTwoCompany({ onSubmit }: Props) {
           <FormTextArea<CompanyFormValues>
             label="기업 소개"
             name="companyIntro"
-            placeholder="기업 주요 사업 내용"
+            placeholder={SIGNUP_CONSTANTS.PLACEHOLDERS.COMPANY_INTRO}
           />
 
           <FormAddressSearch<CompanyFormValues>
@@ -161,19 +165,19 @@ export default function SignupStepTwoCompany({ onSubmit }: Props) {
           <FormInput<CompanyFormValues>
             label="담당자 성함"
             name="managerName"
-            placeholder="김오즈"
+            placeholder={SIGNUP_CONSTANTS.PLACEHOLDERS.COMPANY_MANAGER_NAME}
           />
 
           <FormInput<CompanyFormValues>
             label="담당자 전화번호"
             name="managerPhone"
-            placeholder="010-1234-5678"
+            placeholder={SIGNUP_CONSTANTS.PLACEHOLDERS.COMPANY_MANAGER_PHONE}
           />
 
           <FormInput<CompanyFormValues>
             label="담당자 이메일"
             name="managerEmail"
-            placeholder="manager@company.com"
+            placeholder={SIGNUP_CONSTANTS.PLACEHOLDERS.COMPANY_MANAGER_EMAIL}
           />
 
           <div className="mb-10">
@@ -194,7 +198,7 @@ export default function SignupStepTwoCompany({ onSubmit }: Props) {
             type="submit"
             className="w-full h-[60px] bg-primary text-white font-semibold rounded hover:opacity-90 transition mt-7"
           >
-            회원가입 완료
+            {SIGNUP_CONSTANTS.BUTTON_TEXT.COMPLETE_SIGNUP}
           </button>
         </div>
       </form>

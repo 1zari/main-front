@@ -9,6 +9,7 @@ import FormActionInput from "@/features/auth-common/components/baseFields/FormAc
 import FormInput from "@/features/auth-common/components/baseFields/FormInput";
 import FormDatePicker from "@/features/auth-common/components/baseFields/FormDatePicker";
 import UserTermsAgreement from "@/features/auth-common/components/terms/UserTermsAgreement";
+import { SIGNUP_CONSTANTS } from "@/constants/signup";
 
 import { userApi } from "@/api/user";
 import type { PhoneVerificationRequestDto, VerifyCodeRequestDto } from "@/types/api/user";
@@ -51,7 +52,7 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
   const [isRequesting, setIsRequesting] = useState(false);
   const [isVerifyInputVisible, setIsVerifyInputVisible] = useState(false);
   const [isFadingOut, setIsFadingOut] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(SIGNUP_CONSTANTS.TIMER.INITIAL_VALUE);
   const [isVerified, setIsVerified] = useState(false);
   const showModal = useModalStore((s) => s.showModal);
 
@@ -96,23 +97,27 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
       >
         <h2 className="text-3xl font-semibold">개인 회원정보</h2>
         <div className="w-full max-w-[700px] space-y-6">
-          <FormInput<UserFormValues> label="이름" name="name" placeholder="김오즈" />
+          <FormInput<UserFormValues>
+            label="이름"
+            name="name"
+            placeholder={SIGNUP_CONSTANTS.PLACEHOLDERS.USER_NAME}
+          />
 
           <FormDatePicker<UserFormValues>
             label="생년월일"
             name="birth"
-            placeholder="입력란을 클릭하여 생년월일을 선택해 주세요."
+            placeholder={SIGNUP_CONSTANTS.PLACEHOLDERS.USER_BIRTH}
           />
 
           <FormActionInput<UserFormValues>
             label="전화번호"
             name="phone"
-            placeholder="010-1234-5678"
-            buttonText="인증 요청"
+            placeholder={SIGNUP_CONSTANTS.PLACEHOLDERS.USER_PHONE}
+            buttonText={SIGNUP_CONSTANTS.BUTTON_TEXT.REQUEST_VERIFICATION}
             buttonDisabled={isRequesting}
             timerText={
               isRequesting
-                ? `${Math.floor(timeLeft / 60)}:${String(timeLeft % 60).padStart(2, "0")}`
+                ? `${Math.floor(timeLeft / SIGNUP_CONSTANTS.TIMER.SECONDS_PER_MINUTE)}:${String(timeLeft % SIGNUP_CONSTANTS.TIMER.SECONDS_PER_MINUTE).padStart(SIGNUP_CONSTANTS.SMS_VERIFICATION.TIMER_FORMAT.SECONDS_PADDING, "0")}`
                 : undefined
             }
             onButtonClick={async () => {
@@ -129,13 +134,13 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
                 await userApi.requestPhoneCode(payload);
 
                 setIsRequesting(true);
-                setTimeLeft(120);
+                setTimeLeft(SIGNUP_CONSTANTS.SMS_VERIFICATION.TIMEOUT_SECONDS);
                 setIsVerifyInputVisible(true);
                 setIsFadingOut(false);
                 showModal({
-                  title: "인증번호가 발송되었습니다.",
-                  message: "휴대폰 문자를 확인 후 \n 인증번호를 입력해주세요.",
-                  confirmText: "확인",
+                  title: SIGNUP_CONSTANTS.MESSAGES.SUCCESS.SMS_SENT,
+                  message: SIGNUP_CONSTANTS.MESSAGES.INFO.SMS_GUIDE,
+                  confirmText: SIGNUP_CONSTANTS.MODAL_BUTTONS.CONFIRM,
                   onConfirm: () => {},
                 });
               } catch (error: unknown) {
@@ -149,14 +154,14 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
                 ) {
                   showModal({
                     title: "⚠️",
-                    message: "이미 등록된 번호입니다. 다른번호를 입력해주세요",
-                    confirmText: "확인",
+                    message: SIGNUP_CONSTANTS.MESSAGES.ERROR.SMS_DUPLICATE,
+                    confirmText: SIGNUP_CONSTANTS.MODAL_BUTTONS.CONFIRM,
                     onConfirm: () => {},
                   });
                 } else {
                   setError("phone", {
                     type: "manual",
-                    message: "인증 요청 중 오류가 발생했습니다. 다시 시도해주세요.",
+                    message: SIGNUP_CONSTANTS.MESSAGES.ERROR.SMS_FAILED,
                   });
                 }
               }
@@ -165,15 +170,15 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
 
           {isVerifyInputVisible && (
             <div
-              className={`transition-opacity duration-100 ease-in ${
+              className={`transition-opacity duration-${SIGNUP_CONSTANTS.SMS_VERIFICATION.RETRY_DELAY} ease-in ${
                 isFadingOut ? "opacity-0" : "opacity-100"
               }`}
             >
               <FormActionInput<UserFormValues>
                 label="인증번호"
                 name="verifyCode"
-                placeholder="숫자 6자리"
-                buttonText="인증 확인"
+                placeholder={SIGNUP_CONSTANTS.PLACEHOLDERS.VERIFICATION_CODE}
+                buttonText={SIGNUP_CONSTANTS.BUTTON_TEXT.VERIFY_CODE}
                 onButtonClick={async () => {
                   const code = getValues("verifyCode");
                   if (!code) {
@@ -200,11 +205,11 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
                     setTimeout(() => {
                       setIsVerifyInputVisible(false);
                       setIsRequesting(false);
-                    }, 100);
+                    }, SIGNUP_CONSTANTS.SMS_VERIFICATION.RETRY_DELAY);
                     showModal({
-                      title: "문자인증 성공",
-                      message: "인증이 완료되었습니다. \n 나머지 정보를 입력해주세요.",
-                      confirmText: "확인",
+                      title: SIGNUP_CONSTANTS.MESSAGES.SUCCESS.SMS_VERIFIED,
+                      message: SIGNUP_CONSTANTS.MESSAGES.INFO.SMS_COMPLETE_GUIDE,
+                      confirmText: SIGNUP_CONSTANTS.MODAL_BUTTONS.CONFIRM,
                       onConfirm: () => {},
                     });
                   } catch (error: unknown) {
@@ -218,7 +223,7 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
                     ) {
                       setError("verifyCode", {
                         type: "manual",
-                        message: "인증번호가 일치하지 않습니다.",
+                        message: SIGNUP_CONSTANTS.MESSAGES.ERROR.SMS_INVALID_CODE,
                       });
                     } else if (
                       error &&
@@ -231,12 +236,12 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
                     ) {
                       setError("verifyCode", {
                         type: "manual",
-                        message: "인증 시간이 만료되었습니다. 다시 요청해주세요.",
+                        message: SIGNUP_CONSTANTS.MESSAGES.ERROR.SMS_TIMEOUT,
                       });
                     } else {
                       setError("verifyCode", {
                         type: "manual",
-                        message: "인증 확인 중 오류가 발생했습니다. 다시 시도해주세요.",
+                        message: SIGNUP_CONSTANTS.MESSAGES.ERROR.SMS_FAILED,
                       });
                     }
                   }

@@ -9,6 +9,7 @@ import {
 import { FadeInUp } from "@/components/motion/FadeInUp";
 import EmailInputWithCheck from "@/features/auth-common/components/fields/EmailInputWithCheck";
 import PasswordInput from "@/features/auth-common/components/fields/PasswordInput";
+import { SIGNUP_CONSTANTS } from "@/constants/signup";
 
 type Props = {
   onNext: (data: SignupFormValues) => void;
@@ -69,7 +70,7 @@ export default function SignupStepOneForm({ onNext, userType }: Props) {
                 !isEmailChecked ? " opacity-50 cursor-not-allowed" : ""
               }`}
             >
-              다음 단계로
+              {SIGNUP_CONSTANTS.BUTTON_TEXT.NEXT_STEP}
             </button>
           </FadeInUp>
         </div>
