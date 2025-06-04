@@ -6,10 +6,9 @@ import SignupStepTwoUser, {
   UserStepTwoValues,
 } from "@/features/auth-user/ui/signup/UserSignupStepTwoForm";
 import { SignupFormValues } from "@/features/auth-common/validation/signup-auth.schema";
-import { authApi } from "@/api/auth";
 import { useModalStore } from "@/store/useModalStore";
-import { handleSignupError, showUserSignupSuccessModal } from "@/utils/errorHandlers";
-import { convertUserSignupData } from "@/utils/formDataConverters";
+import { showUserSignupSuccessModal } from "@/utils/errorHandlers";
+import { useUserSignupStep1, useUserSignupStep2 } from "../../hooks/useUserSignup";
 
 export default function UserSignup() {
   const router = useRouter();
@@ -18,6 +17,22 @@ export default function UserSignup() {
   const [stepOneData, setStepOneData] = useState<SignupFormValues | null>(null);
   const [userId, setUserId] = useState<string>("");
 
+  // 1단계 회원가입
+  const {
+    mutate: signupStep1,
+    isPending: isStep1Loading,
+    error: step1Error,
+    reset: resetStep1,
+  } = useUserSignupStep1();
+
+  // 2단계 회원가입
+  const {
+    mutate: signupStep2,
+    isPending: isStep2Loading,
+    error: step2Error,
+    reset: resetStep2,
+  } = useUserSignupStep2();
+
   return (
     <div className="flex items-center justify-center flex-1">
       <div className="bg-white rounded-lg shadow-md px-10 py-[100px] w-full max-w-[1000px]">
@@ -25,20 +40,31 @@ export default function UserSignup() {
           <SignupStepOneForm
             userType="normal"
             onNext={async (data) => {
-              try {
-                const res = await authApi.user.signup({
+              signupStep1(
+                {
                   email: data.email,
                   password: data.password,
                   join_type: "normal",
-                });
-                console.log("1단계 회원가입 성공:", res);
-
-                setStepOneData(data);
-                setUserId(res.common_user_id);
-                setStep(2);
-              } catch (err) {
-                handleSignupError(err, showModal, router);
-              }
+                },
+                {
+                  onSuccess: (res) => {
+                    console.log("1단계 회원가입 성공:", res);
+                    setStepOneData(data);
+                    setUserId(res.common_user_id);
+                    setStep(2);
+                  },
+                  onError: (error) => {
+                    console.error("1단계 회원가입 실패:", error);
+                    showModal({
+                      title: "⚠️ 회원가입 실패",
+                      message:
+                        "회원정보 입력 중 오류가 발생했습니다. \n 잠시 후 다시 시도해주세요.",
+                      confirmText: "확인",
+                      onConfirm: () => router.push("/"),
+                    });
+                  },
+                },
+              );
             }}
           />
         ) : (
@@ -46,19 +72,74 @@ export default function UserSignup() {
             onSubmit={async (data: UserStepTwoValues) => {
               if (!stepOneData || !userId) return;
 
-              try {
-                const signupPayload = convertUserSignupData(data, userId);
-
-                console.log("일반 회원가입 요청 데이터:", signupPayload);
-
-                await authApi.user.completeSignup(signupPayload);
-                console.log("회원가입 최종 완료");
-                showUserSignupSuccessModal(data.name, showModal, router);
-              } catch (err) {
-                handleSignupError(err, showModal, router);
-              }
+              signupStep2(
+                { data, commonUserId: userId },
+                {
+                  onSuccess: () => {
+                    console.log("회원가입 최종 완료");
+                    showUserSignupSuccessModal(data.name, showModal, router);
+                  },
+                  onError: (error) => {
+                    console.error("회원가입 실패:", error);
+                    showModal({
+                      title: "⚠️ 회원가입 실패",
+                      message:
+                        "회원정보 입력 중 오류가 발생했습니다. \n 잠시 후 다시 시도해주세요.",
+                      confirmText: "확인",
+                      onConfirm: () => router.push("/"),
+                    });
+                  },
+                },
+              );
             }}
           />
+        )}
+
+        {(isStep1Loading || isStep2Loading) && (
+          <div className="mt-4 flex items-center justify-center p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600 mr-3" />
+            <p className="text-blue-800">
+              {isStep1Loading ? "회원정보를 등록 중입니다..." : "회원가입을 완료하는 중입니다..."}
+            </p>
+          </div>
+        )}
+
+        {step1Error && step === 1 && (
+          <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-red-800 font-medium">1단계 회원가입 중 오류가 발생했습니다</p>
+                <p className="text-red-600 text-sm mt-1">
+                  {step1Error?.message || "알 수 없는 오류가 발생했습니다."}
+                </p>
+              </div>
+              <button
+                onClick={() => resetStep1()}
+                className="ml-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+              >
+                다시 시도
+              </button>
+            </div>
+          </div>
+        )}
+
+        {step2Error && step === 2 && (
+          <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-red-800 font-medium">회원가입 완료 중 오류가 발생했습니다</p>
+                <p className="text-red-600 text-sm mt-1">
+                  {step2Error?.message || "알 수 없는 오류가 발생했습니다."}
+                </p>
+              </div>
+              <button
+                onClick={() => resetStep2()}
+                className="ml-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+              >
+                다시 시도
+              </button>
+            </div>
+          </div>
         )}
       </div>
     </div>

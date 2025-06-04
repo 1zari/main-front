@@ -8,7 +8,8 @@ import FormInput from "@/features/auth-common/components/baseFields/FormInput";
 import FormDatePicker from "@/features/auth-common/components/baseFields/FormDatePicker";
 import UserTermsAgreement from "@/features/auth-common/components/terms/UserTermsAgreement";
 import { SIGNUP_CONSTANTS } from "@/constants/signup";
-import { usePhoneVerification } from "@/hooks/usePhoneVerification";
+import { useSmsVerification } from "@/hooks/useSmsVerification";
+import { handleSmsVerificationError, handleSmsCodeVerificationError } from "@/utils/errorHandlers";
 
 export type UserStepTwoValues = UserFormValues;
 
@@ -45,16 +46,10 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
     formState: { errors },
   } = methods;
 
-  const phoneVerification = usePhoneVerification({
-    setError,
-    setValue,
-    clearErrors,
-    phoneFieldName: "phone",
-    codeFieldName: "verifyCode",
-  });
+  const smsVerification = useSmsVerification();
 
   const onFormSubmit = async (data: UserFormValues) => {
-    if (!phoneVerification.isVerified) {
+    if (!smsVerification.isVerified) {
       setError("phone", {
         type: "manual",
         message: "전화번호 인증을 완료해야 회원가입이 가능합니다.",
@@ -73,6 +68,55 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
     const isoBirth = birthDate.toISOString();
 
     await onSubmit({ ...data, birth: isoBirth });
+  };
+
+  const handleRequestVerification = async () => {
+    const rawPhone = getValues("phone");
+    if (!rawPhone) {
+      setError("phone", {
+        type: "manual",
+        message: "전화번호를 입력해주세요.",
+      });
+      return;
+    }
+
+    smsVerification.requestVerification(
+      { phone_number: rawPhone },
+      {
+        onSuccess: () => {
+          clearErrors("phone");
+          setValue("verifyCode", "");
+        },
+        onError: (error) => {
+          handleSmsVerificationError(error, setError, "phone", () => {});
+        },
+      },
+    );
+  };
+
+  const handleVerifyCode = async () => {
+    const code = getValues("verifyCode");
+    const rawPhone = getValues("phone");
+
+    if (!code) {
+      setError("verifyCode", {
+        type: "manual",
+        message: "인증번호를 입력해주세요.",
+      });
+      return;
+    }
+
+    smsVerification.verifyCode(
+      { phone_number: rawPhone, code: code },
+      {
+        onSuccess: () => {
+          clearErrors("verifyCode");
+        },
+        onError: (error) => {
+          handleSmsCodeVerificationError(error, setError, "verifyCode");
+        },
+      },
+    );
   };
 
   return (
@@ -100,34 +144,35 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
             label="전화번호"
             name="phone"
             placeholder={SIGNUP_CONSTANTS.PLACEHOLDERS.USER_PHONE}
-            buttonText={SIGNUP_CONSTANTS.BUTTON_TEXT.REQUEST_VERIFICATION}
-            buttonDisabled={phoneVerification.isRequesting}
-            timerText={phoneVerification.getTimerText()}
-            onButtonClick={async () => {
-              const rawPhone = getValues("phone");
-              await phoneVerification.requestVerification(rawPhone);
-            }}
+            buttonText={
+              smsVerification.isRequestingCode
+                ? "전송 중..."
+                : SIGNUP_CONSTANTS.BUTTON_TEXT.REQUEST_VERIFICATION
+            }
+            buttonDisabled={smsVerification.isRequestingCode}
+            timerText={
+              smsVerification.timeLeft > 0 ? `남은시간: ${smsVerification.formattedTime}` : ""
+            }
+            onButtonClick={handleRequestVerification}
           />
 
-          {phoneVerification.isVerifyInputVisible && (
-            <div
-              className={`transition-opacity duration-${phoneVerification.RETRY_DELAY} ease-in ${
-                phoneVerification.isFadingOut ? "opacity-0" : "opacity-100"
-              }`}
-            >
-              <FormActionInput<UserFormValues>
-                label="인증번호"
-                name="verifyCode"
-                placeholder={SIGNUP_CONSTANTS.PLACEHOLDERS.VERIFICATION_CODE}
-                buttonText={SIGNUP_CONSTANTS.BUTTON_TEXT.VERIFY_CODE}
-                onButtonClick={async () => {
-                  const code = getValues("verifyCode");
-                  const rawPhone = getValues("phone");
-                  await phoneVerification.verifyCode(rawPhone, code);
-                }}
-              />
-            </div>
+          {(smsVerification.timeLeft > 0 || smsVerification.isVerified) && (
+            <FormActionInput<UserFormValues>
+              label="인증번호"
+              name="verifyCode"
+              placeholder={SIGNUP_CONSTANTS.PLACEHOLDERS.VERIFICATION_CODE}
+              buttonText={
+                smsVerification.isVerifyingCode
+                  ? "확인 중..."
+                  : smsVerification.isVerified
+                    ? "인증 완료"
+                    : SIGNUP_CONSTANTS.BUTTON_TEXT.VERIFY_CODE
+              }
+              buttonDisabled={smsVerification.isVerifyingCode || smsVerification.isVerified}
+              onButtonClick={handleVerifyCode}
+            />
           )}
+
           <div className="mb-10">
             <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg">성별</label>
             <Controller
@@ -212,9 +257,12 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
 
           <button
             type="submit"
-            className="w-full h-[60px] font-semibold rounded mt-7 transition bg-primary text-white hover:opacity-90 cursor-pointer"
+            disabled={!smsVerification.isVerified}
+            className={`w-full h-[60px] bg-primary text-white font-semibold rounded transition cursor-pointer ${
+              !smsVerification.isVerified ? "opacity-50 cursor-not-allowed" : "hover:opacity-90"
+            }`}
           >
-            회원가입 완료
+            {SIGNUP_CONSTANTS.BUTTON_TEXT.COMPLETE_SIGNUP}
           </button>
         </div>
       </form>
@@ -227,13 +275,14 @@ type GenderButtonProps = {
   onClick: () => void;
   label: string;
 };
+
 const GenderButton = ({ selected, onClick, label }: GenderButtonProps) => (
   <button
     type="button"
+    className={`flex-1 h-[50px] border-2 rounded transition ${
+      selected ? "border-blue-500 bg-blue-50 text-blue-700" : "border-gray-300 text-gray-700"
+    }`}
     onClick={onClick}
-    className={`w-1/2 sm:w-[120px] h-[60px] rounded font-semibold border cursor-pointer ${
-      selected ? "bg-primary text-white border-primary" : "bg-white text-gray-700 border-gray-300"
-    } focus:outline-none focus:ring-0`}
   >
     {label}
   </button>
@@ -246,6 +295,7 @@ type ControlledCheckboxGroupProps<T extends FieldValues> = {
   control: Control<T>;
   error?: string;
 };
+
 function ControlledCheckboxGroup<T extends FieldValues>({
   label,
   name,
@@ -254,64 +304,43 @@ function ControlledCheckboxGroup<T extends FieldValues>({
   error,
 }: ControlledCheckboxGroupProps<T>) {
   return (
-    <Controller
-      control={control}
-      name={name}
-      render={({ field }) => {
-        const selected: string[] = Array.isArray(field.value) ? field.value : [];
-        const toggleOption = (value: string) => {
-          const exists = selected.includes(value);
-          const updated = exists ? selected.filter((v) => v !== value) : [...selected, value];
-          field.onChange(updated);
-        };
+    <div className="mb-10">
+      <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg">{label}</label>
+      <Controller
+        name={name}
+        control={control}
+        render={({ field }) => {
+          const selectedValues: string[] = field.value || [];
+          const toggleOption = (value: string) => {
+            const newValues = selectedValues.includes(value)
+              ? selectedValues.filter((v: string) => v !== value)
+              : [...selectedValues, value];
+            field.onChange(newValues);
+          };
 
-        return (
-          <div className="mb-12">
-            <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg whitespace-normal break-keep">
-              {label}
-            </label>
-            <div className="grid grid-cols-1 min-[500px]:grid-cols-2 sm:grid-cols-3 gap-3">
-              {options.map((option, idx) => {
-                const isChecked = selected.includes(option);
-                return (
-                  <div
-                    key={idx}
-                    onClick={() => toggleOption(option)}
-                    className={`flex items-center justify-between gap-2 px-4 py-[14px] min-w-[160px] h-auto rounded cursor-pointer font-medium border transition break-words text-center ${
-                      isChecked
-                        ? "bg-primary text-white border-primary"
-                        : "bg-white text-gray-700 border-gray-300"
+          return (
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {options.map((option) => (
+                  <button
+                    key={option}
+                    type="button"
+                    className={`p-3 border-2 rounded transition text-left ${
+                      selectedValues.includes(option)
+                        ? "border-blue-500 bg-blue-50 text-blue-700"
+                        : "border-gray-300 text-gray-700"
                     }`}
+                    onClick={() => toggleOption(option)}
                   >
-                    <span className="leading-tight flex items-center justify-center text-center w-full h-full whitespace-normal break-keep">
-                      {option}
-                    </span>
-                    <input
-                      type="checkbox"
-                      value={option}
-                      checked={isChecked}
-                      onChange={() => toggleOption(option)}
-                      className="hidden"
-                    />
-                    {isChecked && (
-                      <svg
-                        className="w-4 h-4 text-white shrink-0"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="3"
-                        viewBox="0 0 24 24"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                      </svg>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-            {error && <p className="text-red-500 mt-1 ml-2">{error}</p>}
-          </div>
-        );
-      }}
-    />
+                    {option}
+                  </button>
+                ))}
+              </div>
+              {error && <p className="text-red-500 mt-1 ml-2">{error}</p>}
+            </>
+          );
+        }}
+      />
+    </div>
   );
 }
