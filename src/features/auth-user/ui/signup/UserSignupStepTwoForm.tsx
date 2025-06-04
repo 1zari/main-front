@@ -10,6 +10,7 @@ import UserTermsAgreement from "@/features/auth-common/components/terms/UserTerm
 import { SIGNUP_CONSTANTS } from "@/constants/signup";
 import { useSmsVerification } from "@/hooks/useSmsVerification";
 import { handleSmsVerificationError, handleSmsCodeVerificationError } from "@/utils/errorHandlers";
+import { toast } from "react-hot-toast";
 
 export type UserStepTwoValues = UserFormValues;
 
@@ -40,7 +41,6 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
     handleSubmit,
     control,
     getValues,
-    setValue,
     setError,
     clearErrors,
     formState: { errors },
@@ -85,7 +85,7 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
       {
         onSuccess: () => {
           clearErrors("phone");
-          setValue("verifyCode", "");
+          toast.success("인증번호가 발송되었습니다. 확인 후 입력해주세요");
         },
         onError: (error) => {
           handleSmsVerificationError(error, setError, "phone", () => {});
@@ -111,6 +111,7 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
       {
         onSuccess: () => {
           clearErrors("verifyCode");
+          toast.success("전화번호 인증이 완료되었습니다!");
         },
         onError: (error) => {
           handleSmsCodeVerificationError(error, setError, "verifyCode");

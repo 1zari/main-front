@@ -8,6 +8,7 @@ import { useModalStore } from "@/store/useModalStore";
 import { handleFileValidationError, showSignupSuccessModal } from "@/utils/errorHandlers";
 import { validateDate } from "@/utils/formDataConverters";
 import { useCompanySignupStep1, useCompanySignupStep2 } from "../../hooks/useCompanySignup";
+import { toast } from "react-hot-toast";
 
 export default function SignupFormCompany() {
   const router = useRouter();
@@ -39,6 +40,7 @@ export default function SignupFormCompany() {
       setStepOneData(data);
       setCommonUserId(res.common_user_id);
       setStep(2);
+      toast.success("🎉 1단계 완료! 기업정보를 입력해주세요.");
     },
     [],
   );

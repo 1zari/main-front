@@ -3,6 +3,7 @@ import { useModalStore } from "@/store/useModalStore";
 import { SIGNUP_CONSTANTS } from "@/constants/signup";
 import { handleBusinessVerificationError } from "@/utils/errorHandlers";
 import { authApi } from "@/api/auth";
+import { toast } from "react-hot-toast";
 
 interface UseBusinessVerificationProps<T extends FieldValues> {
   setError: UseFormSetError<T>;
@@ -73,14 +74,16 @@ export const useBusinessVerification = <T extends FieldValues>({
 
       console.log("사업자등록 인증 응답:", response);
 
-      showModal({
-        title: response.valid ? "인증 성공" : "⚠️ 인증 실패",
-        message: response.valid
-          ? SIGNUP_CONSTANTS.MESSAGES.INFO.BUSINESS_VALID
-          : SIGNUP_CONSTANTS.MESSAGES.INFO.BUSINESS_INVALID,
-        confirmText: SIGNUP_CONSTANTS.MODAL_BUTTONS.CONFIRM,
-        onConfirm: () => {},
-      });
+      if (response.valid) {
+        toast.success("사업자 인증이 완료되었습니다!");
+      } else {
+        showModal({
+          title: "⚠️ 인증 실패",
+          message: SIGNUP_CONSTANTS.MESSAGES.INFO.BUSINESS_INVALID,
+          confirmText: SIGNUP_CONSTANTS.MODAL_BUTTONS.CONFIRM,
+          onConfirm: () => {},
+        });
+      }
 
       return response.valid;
     } catch (error) {

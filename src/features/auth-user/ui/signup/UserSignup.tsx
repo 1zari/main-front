@@ -9,6 +9,7 @@ import { SignupFormValues } from "@/features/auth-common/validation/signup-auth.
 import { useModalStore } from "@/store/useModalStore";
 import { showUserSignupSuccessModal } from "@/utils/errorHandlers";
 import { useUserSignupStep1, useUserSignupStep2 } from "../../hooks/useUserSignup";
+import { toast } from "react-hot-toast";
 
 export default function UserSignup() {
   const router = useRouter();
@@ -62,6 +63,7 @@ export default function UserSignup() {
             setStepOneData(data);
             setUserId(res.common_user_id);
             setStep(2);
+            toast.success("🎉 1단계 완료! 상세정보를 입력해주세요.");
           },
           onError: handleSignupError,
         },
