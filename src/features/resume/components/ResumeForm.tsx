@@ -120,53 +120,92 @@ const ExperiencesSection = ({
   isEmpty,
 }: ExperiencesSectionProps) => (
   <section className="space-y-4">
-    <h3 className="text-xl font-semibold text-primary">경력 사항</h3>
-    {isEmpty && <p className="text-gray-500 text-sm">경력 사항이 없습니다. 경력을 추가해보세요.</p>}
-    {fields.map((field, idx) => (
-      <div key={field.id} className="relative space-y-4 p-4 rounded-xl border bg-gray-50">
-        <button
-          type="button"
-          onClick={() => onRemove(idx)}
-          className="absolute top-4 right-4 text-red-500 border border-red-500 rounded-2xl px-2 text-sm hover:bg-red-50 transition-colors"
-          aria-label={`${idx + 1}번째 경력 삭제`}
+    <h3 id="experiences-heading" className="text-xl font-semibold text-primary">
+      경력 사항
+    </h3>
+    <div className="sr-only" aria-live="polite" id="experiences-status">
+      {isEmpty
+        ? "경력 사항이 없습니다. 경력 추가 버튼을 눌러 경력을 추가해보세요."
+        : `현재 ${fields.length}개의 경력이 등록되어 있습니다.`}
+    </div>
+
+    {isEmpty && (
+      <p className="text-gray-500 text-sm" aria-hidden="true">
+        경력 사항이 없습니다. 경력을 추가해보세요.
+      </p>
+    )}
+
+    <div role="group" aria-labelledby="experiences-heading" aria-describedby="experiences-status">
+      {fields.map((field, idx) => (
+        <div
+          key={field.id}
+          className="relative space-y-4 p-4 rounded-xl border bg-gray-50"
+          role="group"
+          aria-label={`${idx + 1}번째 경력 정보`}
         >
-          삭제
-        </button>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Input name={`experiences.${idx}.company`} label="회사명" placeholder="회사명 입력" />
-          <Input name={`experiences.${idx}.position`} label="직무" placeholder="직무 입력" />
+          <button
+            type="button"
+            onClick={() => onRemove(idx)}
+            className="absolute top-4 right-4 text-red-500 border border-red-500 rounded-2xl px-2 text-sm hover:bg-red-50 transition-colors"
+            aria-label={`${idx + 1}번째 경력 삭제`}
+            aria-describedby={`experience-${idx}-description`}
+          >
+            삭제
+          </button>
+
+          <div id={`experience-${idx}-description`} className="sr-only">
+            이 버튼을 누르면 {idx + 1}번째 경력 정보가 완전히 삭제됩니다.
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Input name={`experiences.${idx}.company`} label="회사명" placeholder="회사명 입력" />
+            <Input name={`experiences.${idx}.position`} label="직무" placeholder="직무 입력" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <DatePickerField
+              name={`experiences.${idx}.startDate`}
+              label="근무 시작일"
+              placeholder="YYYY-MM-DD"
+            />
+            <DatePickerField
+              name={`experiences.${idx}.endDate`}
+              label="근무 종료일"
+              placeholder="YYYY-MM-DD"
+              disabled={!!watch(`experiences.${idx}.isCurrent` as Path<ResumeFormData>)}
+            />
+          </div>
+          <fieldset className="flex items-center gap-2">
+            <legend className="sr-only">현재 근무 상태</legend>
+            <input
+              type="checkbox"
+              id={`current-work-${idx}`}
+              {...register(`experiences.${idx}.isCurrent` as Path<ResumeFormData>)}
+              className="w-5 h-5 accent-primary"
+              aria-describedby={`current-work-help-${idx}`}
+            />
+            <label htmlFor={`current-work-${idx}`} className="cursor-pointer">
+              현재 근무 중
+            </label>
+            <div id={`current-work-help-${idx}`} className="sr-only">
+              체크하면 근무 종료일 입력이 비활성화됩니다.
+            </div>
+          </fieldset>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <DatePickerField
-            name={`experiences.${idx}.startDate`}
-            label="근무 시작일"
-            placeholder="YYYY-MM-DD"
-          />
-          <DatePickerField
-            name={`experiences.${idx}.endDate`}
-            label="근무 종료일"
-            placeholder="YYYY-MM-DD"
-            disabled={!!watch(`experiences.${idx}.isCurrent` as Path<ResumeFormData>)}
-          />
-        </div>
-        <label className="flex items-center gap-2 cursor-pointer">
-          <input
-            type="checkbox"
-            {...register(`experiences.${idx}.isCurrent` as Path<ResumeFormData>)}
-            className="w-5 h-5 accent-primary"
-          />
-          <span>현재 근무 중</span>
-        </label>
-      </div>
-    ))}
+      ))}
+    </div>
+
     <button
       type="button"
       onClick={onAdd}
       className="w-full h-16 border border-primary rounded-lg font-semibold text-primary hover:bg-primary hover:text-white transition-colors"
       aria-label="경력 추가"
+      aria-describedby="add-experience-help"
     >
       + 경력 추가하기
     </button>
+    <div id="add-experience-help" className="sr-only">
+      새로운 경력 정보를 입력할 수 있는 섹션이 추가됩니다.
+    </div>
   </section>
 );
 
@@ -184,45 +223,80 @@ const CertificationsSection = ({
   isEmpty,
 }: CertificationsSectionProps) => (
   <section className="space-y-4">
-    <h3 className="text-xl font-semibold text-primary">자격증</h3>
-    {isEmpty && <p className="text-gray-500 text-sm">자격증이 없습니다. 자격증을 추가해보세요.</p>}
-    {fields.map((field, idx) => (
-      <div key={field.id} className="relative space-y-4 p-4 rounded-xl border bg-gray-50">
-        <button
-          type="button"
-          onClick={() => onRemove(idx)}
-          className="absolute top-4 right-4 text-red-500 border border-red-500 rounded-2xl px-2 text-sm hover:bg-red-50 transition-colors"
-          aria-label={`${idx + 1}번째 자격증 삭제`}
+    <h3 id="certifications-heading" className="text-xl font-semibold text-primary">
+      자격증
+    </h3>
+    <div className="sr-only" aria-live="polite" id="certifications-status">
+      {isEmpty
+        ? "자격증이 없습니다. 자격증 추가 버튼을 눌러 자격증을 추가해보세요."
+        : `현재 ${fields.length}개의 자격증이 등록되어 있습니다.`}
+    </div>
+
+    {isEmpty && (
+      <p className="text-gray-500 text-sm" aria-hidden="true">
+        자격증이 없습니다. 자격증을 추가해보세요.
+      </p>
+    )}
+
+    <div
+      role="group"
+      aria-labelledby="certifications-heading"
+      aria-describedby="certifications-status"
+    >
+      {fields.map((field, idx) => (
+        <div
+          key={field.id}
+          className="relative space-y-4 p-4 rounded-xl border bg-gray-50"
+          role="group"
+          aria-label={`${idx + 1}번째 자격증 정보`}
         >
-          삭제
-        </button>
-        <Input
-          name={`certifications.${idx}.name`}
-          label="자격증명"
-          placeholder="자격증명을 입력하세요"
-        />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <button
+            type="button"
+            onClick={() => onRemove(idx)}
+            className="absolute top-4 right-4 text-red-500 border border-red-500 rounded-2xl px-2 text-sm hover:bg-red-50 transition-colors"
+            aria-label={`${idx + 1}번째 자격증 삭제`}
+            aria-describedby={`certification-${idx}-description`}
+          >
+            삭제
+          </button>
+
+          <div id={`certification-${idx}-description`} className="sr-only">
+            이 버튼을 누르면 {idx + 1}번째 자격증 정보가 완전히 삭제됩니다.
+          </div>
+
           <Input
-            name={`certifications.${idx}.issuer`}
-            label="발급기관"
-            placeholder="발급기관을 입력하세요"
+            name={`certifications.${idx}.name`}
+            label="자격증명"
+            placeholder="자격증명을 입력하세요"
           />
-          <DatePickerField
-            name={`certifications.${idx}.date`}
-            label="취득일자"
-            placeholder="YYYY-MM-DD"
-          />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Input
+              name={`certifications.${idx}.issuer`}
+              label="발급기관"
+              placeholder="발급기관을 입력하세요"
+            />
+            <DatePickerField
+              name={`certifications.${idx}.date`}
+              label="취득일자"
+              placeholder="YYYY-MM-DD"
+            />
+          </div>
         </div>
-      </div>
-    ))}
+      ))}
+    </div>
+
     <button
       type="button"
       onClick={onAdd}
       className="w-full h-16 border border-primary rounded-lg font-semibold text-primary hover:bg-primary hover:text-white transition-colors"
       aria-label="자격증 추가"
+      aria-describedby="add-certification-help"
     >
       + 자격증 추가하기
     </button>
+    <div id="add-certification-help" className="sr-only">
+      새로운 자격증 정보를 입력할 수 있는 섹션이 추가됩니다.
+    </div>
   </section>
 );
 
@@ -362,19 +436,35 @@ export default function ResumeForm({ mode, resumeId, defaultValues }: ResumeForm
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center space-y-8">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col items-center space-y-8"
+        role="form"
+        aria-label={`이력서 ${mode === "create" ? "작성" : "수정"} 폼`}
+      >
         <div className="w-full max-w-[700px] space-y-6">
+          <div className="sr-only" aria-live="polite" id="form-instructions">
+            이력서 {mode === "create" ? "작성" : "수정"} 폼입니다. 모든 필드를 입력한 후 완료 버튼을
+            눌러주세요.
+          </div>
+
           {(submitError || apiError) && (
-            <ErrorMessage message={submitError || apiError?.message || "오류가 발생했습니다."} />
+            <div role="alert" aria-live="assertive">
+              <ErrorMessage message={submitError || apiError?.message || "오류가 발생했습니다."} />
+            </div>
           )}
 
-          <section>
-            <h3 className="text-xl font-semibold text-primary mb-4">직종</h3>
+          <section role="group" aria-labelledby="job-category-heading">
+            <h3 id="job-category-heading" className="text-xl font-semibold text-primary mb-4">
+              직종
+            </h3>
             <Input name="jobCategory" label="" placeholder="ex) 웹디자인" aria-label="직종" />
           </section>
 
-          <section>
-            <h3 className="text-xl font-semibold text-primary mb-4">이력서 제목</h3>
+          <section role="group" aria-labelledby="title-heading">
+            <h3 id="title-heading" className="text-xl font-semibold text-primary mb-4">
+              이력서 제목
+            </h3>
             <Input
               name="title"
               label=""
@@ -383,8 +473,10 @@ export default function ResumeForm({ mode, resumeId, defaultValues }: ResumeForm
             />
           </section>
 
-          <section className="space-y-4">
-            <h3 className="text-xl font-semibold text-primary">학력 사항</h3>
+          <section className="space-y-4" role="group" aria-labelledby="education-heading">
+            <h3 id="education-heading" className="text-xl font-semibold text-primary">
+              학력 사항
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <CustomSelect
                 label="학교 구분"
@@ -410,24 +502,30 @@ export default function ResumeForm({ mode, resumeId, defaultValues }: ResumeForm
             </div>
           </section>
 
-          <ExperiencesSection
-            fields={experiencesField.fields}
-            onAdd={experiencesField.handleAdd}
-            onRemove={experiencesField.handleRemove}
-            isEmpty={experiencesField.isEmpty}
-            watch={watch}
-            register={register}
-          />
+          <div role="group" aria-labelledby="experiences-heading">
+            <ExperiencesSection
+              fields={experiencesField.fields}
+              onAdd={experiencesField.handleAdd}
+              onRemove={experiencesField.handleRemove}
+              isEmpty={experiencesField.isEmpty}
+              watch={watch}
+              register={register}
+            />
+          </div>
 
-          <CertificationsSection
-            fields={certificationsField.fields}
-            onAdd={certificationsField.handleAdd}
-            onRemove={certificationsField.handleRemove}
-            isEmpty={certificationsField.isEmpty}
-          />
+          <div role="group" aria-labelledby="certifications-heading">
+            <CertificationsSection
+              fields={certificationsField.fields}
+              onAdd={certificationsField.handleAdd}
+              onRemove={certificationsField.handleRemove}
+              isEmpty={certificationsField.isEmpty}
+            />
+          </div>
 
-          <section className="space-y-4">
-            <h3 className="text-xl font-semibold text-primary">자기소개</h3>
+          <section className="space-y-4" role="group" aria-labelledby="introduction-heading">
+            <h3 id="introduction-heading" className="text-xl font-semibold text-primary">
+              자기소개
+            </h3>
             <TextArea
               name="introduction"
               label=""
@@ -441,6 +539,7 @@ export default function ResumeForm({ mode, resumeId, defaultValues }: ResumeForm
             className="w-full h-[60px] rounded bg-primary font-semibold text-white hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             disabled={isLoading || isSubmitting}
             aria-label={`이력서 ${mode === "create" ? "작성" : "수정"} 완료`}
+            aria-describedby="form-instructions"
           >
             {isLoading || isSubmitting ? (
               <>
