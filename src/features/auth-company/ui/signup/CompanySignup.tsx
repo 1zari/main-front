@@ -40,7 +40,7 @@ export default function SignupFormCompany() {
       setStepOneData(data);
       setCommonUserId(res.common_user_id);
       setStep(2);
-      toast.success("🎉 1단계 완료! 기업정보를 입력해주세요.");
+      toast.success("이메일, 비밀번호 등록 완료! 상세정보를 입력해주세요.");
     },
     [],
   );

@@ -57,7 +57,7 @@ export default function SignupStepOneForm({ onNext, userType }: Props) {
           aria-describedby="signup-step-info"
         >
           <div id="signup-step-info" className="sr-only" aria-live="polite">
-            1단계: 이메일과 비밀번호를 입력해주세요. 이메일 중복 확인이 필요합니다.
+            이메일과 비밀번호를 입력해주세요. 이메일 중복 확인이 필요합니다.
           </div>
 
           <FadeInUp delay={0.2}>
@@ -89,7 +89,7 @@ export default function SignupStepOneForm({ onNext, userType }: Props) {
               aria-label={
                 !isEmailChecked
                   ? "이메일 중복 확인을 먼저 완료해주세요"
-                  : `${userTypeText} 회원가입 2단계로 이동`
+                  : `${userTypeText} 상세정보 입력 페이지로 이동합니다`
               }
               aria-describedby="next-button-help"
             >

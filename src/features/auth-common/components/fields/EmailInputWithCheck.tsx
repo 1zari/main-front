@@ -41,7 +41,7 @@ export default function EmailInputWithCheck({
       if (res.message === "Email is available.") {
         clearErrors("email");
         onCheckSuccess();
-        toast.success("✅ 사용 가능한 이메일입니다!");
+        toast.success("사용 가능한 이메일입니다!");
       } else {
         setError("email", {
           type: "manual",
