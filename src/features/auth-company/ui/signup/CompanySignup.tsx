@@ -33,12 +33,15 @@ export default function SignupFormCompany() {
   } = useCompanySignupStep2();
 
   // 1단계 성공 콜백 메모이제이션
-  const handleStep1Success = useCallback((res: any, data: SignupFormValues) => {
-    console.log("1단계 회원가입 성공:", res);
-    setStepOneData(data);
-    setCommonUserId(res.common_user_id);
-    setStep(2);
-  }, []);
+  const handleStep1Success = useCallback(
+    (res: { common_user_id: string }, data: SignupFormValues) => {
+      console.log("1단계 회원가입 성공:", res);
+      setStepOneData(data);
+      setCommonUserId(res.common_user_id);
+      setStep(2);
+    },
+    [],
+  );
 
   // 1단계 에러 콜백 메모이제이션
   const handleStep1Error = useCallback(
@@ -145,7 +148,6 @@ export default function SignupFormCompany() {
           <SignupStepTwoCompany onSubmit={handleStep2Submit} />
         )}
 
-        {/* 로딩 상태 표시 */}
         {(isStep1Loading || isStep2Loading) && (
           <div className="mt-4 flex items-center justify-center p-4 bg-blue-50 border border-blue-200 rounded-lg">
             <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary mr-3" />
