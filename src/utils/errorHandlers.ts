@@ -31,7 +31,7 @@ export const handleSmsVerificationError = <T extends FieldValues>(
     message: string;
     confirmText: string;
     onConfirm: () => void;
-  }) => void
+  }) => void,
 ) => {
   if (
     error &&
@@ -96,7 +96,15 @@ export const handleSmsCodeVerificationError = <T extends FieldValues>(
 };
 
 // 사업자 인증 에러 처리
-export const handleBusinessVerificationError = (error: unknown) => {
+export const handleBusinessVerificationError = (
+  error: unknown,
+  showModal: (options: {
+    title: string;
+    message: string;
+    confirmText: string;
+    onConfirm: () => void;
+  }) => void,
+) => {
   if (error && typeof error === "object" && "isAxiosError" in error && error.isAxiosError) {
     const axiosError = error as {
       config?: { url?: string };
@@ -110,7 +118,12 @@ export const handleBusinessVerificationError = (error: unknown) => {
     console.error(error);
   }
 
-  alert(SIGNUP_CONSTANTS.MESSAGES.ERROR.BUSINESS_VERIFICATION_FAILED);
+  showModal({
+    title: "⚠️ 인증 오류",
+    message: SIGNUP_CONSTANTS.MESSAGES.ERROR.BUSINESS_VERIFICATION_FAILED,
+    confirmText: SIGNUP_CONSTANTS.MODAL_BUTTONS.CONFIRM,
+    onConfirm: () => {},
+  });
 };
 
 // 파일 검증 에러 처리

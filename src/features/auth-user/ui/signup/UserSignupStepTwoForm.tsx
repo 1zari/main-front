@@ -1,19 +1,14 @@
 "use client";
-import { useState, useEffect } from "react";
 import { useForm, FormProvider, Controller, FieldValues, Path, Control } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import "react-datepicker/dist/react-datepicker.css";
-import { useModalStore } from "@/store/useModalStore";
 import { userSignupSchema, UserFormValues } from "@/features/auth-user/validation/user-auth.schema";
 import FormActionInput from "@/features/auth-common/components/baseFields/FormActionInput";
 import FormInput from "@/features/auth-common/components/baseFields/FormInput";
 import FormDatePicker from "@/features/auth-common/components/baseFields/FormDatePicker";
 import UserTermsAgreement from "@/features/auth-common/components/terms/UserTermsAgreement";
 import { SIGNUP_CONSTANTS } from "@/constants/signup";
-import { handleSmsVerificationError, handleSmsCodeVerificationError } from "@/utils/errorHandlers";
-
-import { userApi } from "@/api/user";
-import type { PhoneVerificationRequestDto, VerifyCodeRequestDto } from "@/types/api/user";
+import { usePhoneVerification } from "@/hooks/usePhoneVerification";
 
 export type UserStepTwoValues = UserFormValues;
 
@@ -50,25 +45,16 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
     formState: { errors },
   } = methods;
 
-  const [isRequesting, setIsRequesting] = useState(false);
-  const [isVerifyInputVisible, setIsVerifyInputVisible] = useState(false);
-  const [isFadingOut, setIsFadingOut] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(SIGNUP_CONSTANTS.TIMER.INITIAL_VALUE);
-  const [isVerified, setIsVerified] = useState(false);
-  const showModal = useModalStore((s) => s.showModal);
-
-  useEffect(() => {
-    if (!isRequesting) return;
-    if (timeLeft <= 0) {
-      setIsRequesting(false);
-      return;
-    }
-    const timer = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
-    return () => clearInterval(timer);
-  }, [isRequesting, timeLeft]);
+  const phoneVerification = usePhoneVerification({
+    setError,
+    setValue,
+    clearErrors,
+    phoneFieldName: "phone",
+    codeFieldName: "verifyCode",
+  });
 
   const onFormSubmit = async (data: UserFormValues) => {
-    if (!isVerified) {
+    if (!phoneVerification.isVerified) {
       setError("phone", {
         type: "manual",
         message: "전화번호 인증을 완료해야 회원가입이 가능합니다.",
@@ -115,45 +101,18 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
             name="phone"
             placeholder={SIGNUP_CONSTANTS.PLACEHOLDERS.USER_PHONE}
             buttonText={SIGNUP_CONSTANTS.BUTTON_TEXT.REQUEST_VERIFICATION}
-            buttonDisabled={isRequesting}
-            timerText={
-              isRequesting
-                ? `${Math.floor(timeLeft / SIGNUP_CONSTANTS.TIMER.SECONDS_PER_MINUTE)}:${String(timeLeft % SIGNUP_CONSTANTS.TIMER.SECONDS_PER_MINUTE).padStart(SIGNUP_CONSTANTS.SMS_VERIFICATION.TIMER_FORMAT.SECONDS_PADDING, "0")}`
-                : undefined
-            }
+            buttonDisabled={phoneVerification.isRequesting}
+            timerText={phoneVerification.getTimerText()}
             onButtonClick={async () => {
               const rawPhone = getValues("phone");
-
-              clearErrors("phone");
-
-              const payload: PhoneVerificationRequestDto = {
-                phone_number: rawPhone || "", // 하이픈 포함해서 그대로 전송
-                join_type: "normal",
-              };
-
-              try {
-                await userApi.requestPhoneCode(payload);
-
-                setIsRequesting(true);
-                setTimeLeft(SIGNUP_CONSTANTS.SMS_VERIFICATION.TIMEOUT_SECONDS);
-                setIsVerifyInputVisible(true);
-                setIsFadingOut(false);
-                showModal({
-                  title: SIGNUP_CONSTANTS.MESSAGES.SUCCESS.SMS_SENT,
-                  message: SIGNUP_CONSTANTS.MESSAGES.INFO.SMS_GUIDE,
-                  confirmText: SIGNUP_CONSTANTS.MODAL_BUTTONS.CONFIRM,
-                  onConfirm: () => {},
-                });
-              } catch (error: unknown) {
-                handleSmsVerificationError(error, setError, "phone", showModal);
-              }
+              await phoneVerification.requestVerification(rawPhone);
             }}
           />
 
-          {isVerifyInputVisible && (
+          {phoneVerification.isVerifyInputVisible && (
             <div
-              className={`transition-opacity duration-${SIGNUP_CONSTANTS.SMS_VERIFICATION.RETRY_DELAY} ease-in ${
-                isFadingOut ? "opacity-0" : "opacity-100"
+              className={`transition-opacity duration-${phoneVerification.RETRY_DELAY} ease-in ${
+                phoneVerification.isFadingOut ? "opacity-0" : "opacity-100"
               }`}
             >
               <FormActionInput<UserFormValues>
@@ -163,40 +122,8 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
                 buttonText={SIGNUP_CONSTANTS.BUTTON_TEXT.VERIFY_CODE}
                 onButtonClick={async () => {
                   const code = getValues("verifyCode");
-                  if (!code) {
-                    setError("verifyCode", {
-                      type: "manual",
-                      message: "인증번호 6자리를 입력해주세요.",
-                    });
-                    return;
-                  }
-
                   const rawPhone = getValues("phone");
-                  const payload: VerifyCodeRequestDto = {
-                    phone_number: rawPhone || "",
-                    code,
-                    join_type: "normal",
-                  };
-
-                  try {
-                    await userApi.verifyPhoneCode(payload);
-
-                    setIsVerified(true);
-                    setValue("verifyCode", code, { shouldValidate: true });
-                    setIsFadingOut(true);
-                    setTimeout(() => {
-                      setIsVerifyInputVisible(false);
-                      setIsRequesting(false);
-                    }, SIGNUP_CONSTANTS.SMS_VERIFICATION.RETRY_DELAY);
-                    showModal({
-                      title: SIGNUP_CONSTANTS.MESSAGES.SUCCESS.SMS_VERIFIED,
-                      message: SIGNUP_CONSTANTS.MESSAGES.INFO.SMS_COMPLETE_GUIDE,
-                      confirmText: SIGNUP_CONSTANTS.MODAL_BUTTONS.CONFIRM,
-                      onConfirm: () => {},
-                    });
-                  } catch (error: unknown) {
-                    handleSmsCodeVerificationError(error, setError, "verifyCode");
-                  }
+                  await phoneVerification.verifyCode(rawPhone, code);
                 }}
               />
             </div>

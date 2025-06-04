@@ -2,7 +2,7 @@
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SIGNUP_CONSTANTS } from "@/constants/signup";
-import { handleBusinessVerificationError } from "@/utils/errorHandlers";
+import { useBusinessVerification } from "@/hooks/useBusinessVerification";
 import {
   companySignupSchema,
   CompanyFormValues,
@@ -14,7 +14,6 @@ import FormFileUpload from "@/features/auth-common/components/baseFields/FormFil
 import FormTextArea from "@/features/auth-common/components/baseFields/FormTextArea";
 import FormAddressSearch from "@/features/auth-common/components/baseFields/FormAddressSearch";
 import CompanyTermsAgreement from "@/features/auth-common/components/terms/CompanyTermsAgreement";
-import { authApi } from "@/api/auth";
 
 export type CompanyStepTwoValues = CompanyFormValues;
 
@@ -55,53 +54,15 @@ export default function SignupStepTwoCompany({ onSubmit }: Props) {
   const businessNumber = watch("businessNumber");
   const startDate = watch("startDate");
 
+  const businessVerification = useBusinessVerification({
+    setError,
+    representativeNameField: "representativeName",
+    businessNumberField: "businessNumber",
+    startDateField: "startDate",
+  });
+
   const handleBusinessCheck = async () => {
-    let hasError = false;
-    if (!repName) {
-      setError("representativeName", {
-        type: "manual",
-        message: "대표자 성함을 입력해주세요.",
-      });
-      hasError = true;
-    }
-    if (!businessNumber) {
-      setError("businessNumber", {
-        type: "manual",
-        message: "사업자등록번호를 입력해주세요.",
-      });
-      hasError = true;
-    }
-    if (!startDate) {
-      setError("startDate", {
-        type: "manual",
-        message: "개업년월일을 선택해주세요.",
-      });
-      hasError = true;
-    }
-    if (hasError) return;
-
-    try {
-      const d = new Date(startDate);
-      if (isNaN(d.getTime())) throw new Error("Invalid date");
-      const formatted = d.toISOString().split("T")[0];
-
-      console.log("사업자 인증 요청 payload:", {
-        b_no: businessNumber,
-        p_nm: repName,
-        start_dt: formatted,
-      });
-
-      const res = await authApi.verify.checkBusiness(businessNumber, repName, formatted);
-      console.log("사업자등록 인증 응답:", res);
-
-      alert(
-        res.valid
-          ? SIGNUP_CONSTANTS.MESSAGES.INFO.BUSINESS_VALID
-          : SIGNUP_CONSTANTS.MESSAGES.INFO.BUSINESS_INVALID,
-      );
-    } catch (err) {
-      handleBusinessVerificationError(err);
-    }
+    await businessVerification.verifyBusiness(repName, businessNumber, startDate);
   };
 
   return (
