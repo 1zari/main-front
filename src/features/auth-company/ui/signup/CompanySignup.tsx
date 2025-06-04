@@ -1,33 +1,14 @@
 "use client";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import SignupStepOneForm from "@/features/auth-common/ui/signup/CommonSignupStepOneForm";
 import { SignupFormValues } from "@/features/auth-common/validation/signup-auth.schema";
 import SignupStepTwoCompany, { CompanyStepTwoValues } from "./CompanySignupStepTwoForm";
-import { authApi } from "@/api/auth";
 import { useModalStore } from "@/store/useModalStore";
-
-const toCompanyFormData = (payload: {
-  common_user_id: string;
-  company_name: string;
-  establishment: string;
-  company_address: string;
-  business_registration_number: string;
-  company_introduction: string;
-  certificate_image: File;
-  company_logo?: File;
-  ceo_name: string;
-  manager_name: string;
-  manager_phone_number: string;
-  manager_email: string;
-}): FormData => {
-  const formData = new FormData();
-  Object.entries(payload).forEach(([key, value]) => {
-    if (value == null) return;
-    formData.append(key, value instanceof File ? value : String(value));
-  });
-  return formData;
-};
+import { handleFileValidationError, showSignupSuccessModal } from "@/utils/errorHandlers";
+import { validateDate } from "@/utils/formDataConverters";
+import { useCompanySignupStep1, useCompanySignupStep2 } from "../../hooks/useCompanySignup";
+import { toast } from "react-hot-toast";
 
 export default function SignupFormCompany() {
   const router = useRouter();
@@ -36,106 +17,184 @@ export default function SignupFormCompany() {
   const [stepOneData, setStepOneData] = useState<SignupFormValues | null>(null);
   const [commonUserId, setCommonUserId] = useState<string | null>(null);
 
+  // 1단계 회원가입
+  const {
+    mutate: signupStep1,
+    isPending: isStep1Loading,
+    error: step1Error,
+    reset: resetStep1,
+  } = useCompanySignupStep1();
+
+  // 2단계 회원가입
+  const {
+    mutate: signupStep2,
+    isPending: isStep2Loading,
+    error: step2Error,
+    reset: resetStep2,
+  } = useCompanySignupStep2();
+
+  // 1단계 성공 콜백 메모이제이션
+  const handleStep1Success = useCallback(
+    (res: { common_user_id: string }, data: SignupFormValues) => {
+      console.log("1단계 회원가입 성공:", res);
+      setStepOneData(data);
+      setCommonUserId(res.common_user_id);
+      setStep(2);
+      toast.success("이메일, 비밀번호 등록 완료! 상세정보를 입력해주세요.");
+    },
+    [],
+  );
+
+  // 1단계 에러 콜백 메모이제이션
+  const handleStep1Error = useCallback(
+    (error: unknown) => {
+      console.error("1단계 회원가입 실패:", error);
+      showModal({
+        title: "⚠️ 회원가입 실패",
+        message: "회원정보 입력 중 오류가 발생했습니다. \n 잠시 후 다시 시도해주세요.",
+        confirmText: "확인",
+        onConfirm: () => router.push("/"),
+      });
+    },
+    [showModal, router],
+  );
+
+  // 2단계 성공 콜백 메모이제이션
+  const handleStep2Success = useCallback(
+    (companyName: string) => {
+      console.log("기업회원 가입 최종 완료");
+      showSignupSuccessModal(companyName, showModal, router);
+    },
+    [showModal, router],
+  );
+
+  // 2단계 에러 콜백 메모이제이션
+  const handleStep2Error = useCallback(
+    (error: unknown) => {
+      console.error("기업회원 가입 실패:", error);
+      showModal({
+        title: "⚠️ 회원가입 실패",
+        message: "회원정보 입력 중 오류가 발생했습니다. \n 잠시 후 다시 시도해주세요.",
+        confirmText: "확인",
+        onConfirm: () => router.push("/"),
+      });
+    },
+    [showModal, router],
+  );
+
+  // 1단계 제출 핸들러 메모이제이션
+  const handleStep1Submit = useCallback(
+    (data: SignupFormValues) => {
+      signupStep1(
+        {
+          email: data.email,
+          password: data.password,
+          join_type: "company",
+          company_name: "-",
+          business_number: "-",
+          representative_name: "-",
+          phone_number: "-",
+        },
+        {
+          onSuccess: (res) => handleStep1Success(res, data),
+          onError: handleStep1Error,
+        },
+      );
+    },
+    [signupStep1, handleStep1Success, handleStep1Error],
+  );
+
+  // 2단계 제출 핸들러 메모이제이션
+  const handleStep2Submit = useCallback(
+    (data: CompanyStepTwoValues) => {
+      if (!stepOneData || !commonUserId) return;
+
+      // 파일 검증
+      const businessFile = data.businessFile?.[0];
+      if (!businessFile) {
+        handleFileValidationError("business", showModal, router);
+        return;
+      }
+
+      // 날짜 검증
+      if (!validateDate(data.startDate)) {
+        handleFileValidationError("birth", showModal, router);
+        return;
+      }
+
+      signupStep2(
+        { data, commonUserId },
+        {
+          onSuccess: () => handleStep2Success(data.companyName),
+          onError: handleStep2Error,
+        },
+      );
+    },
+    [
+      stepOneData,
+      commonUserId,
+      signupStep2,
+      handleStep2Success,
+      handleStep2Error,
+      showModal,
+      router,
+    ],
+  );
+
   return (
     <div className="flex justify-center items-center flex-1">
       <div className="bg-white rounded-lg shadow-md px-10 py-[100px] w-full max-w-[1000px]">
         {step === 1 ? (
-          <SignupStepOneForm
-            userType="company"
-            onNext={async (data) => {
-              try {
-                const res = await authApi.company.signup({
-                  email: data.email,
-                  password: data.password,
-                  join_type: "company",
-                  company_name: "-",
-                  business_number: "-",
-                  representative_name: "-",
-                  phone_number: "-",
-                });
-                console.log("1단계 회원가입 성공:", res);
-
-                setStepOneData(data);
-                setCommonUserId(res.common_user_id);
-                setStep(2);
-              } catch (err) {
-                console.error("1단계 회원가입 실패:", err);
-                showModal({
-                  title: "회원가입 실패",
-                  message: "회원정보 입력 중 오류가 발생했습니다. \n 잠시 후 다시 시도해주세요.",
-                  confirmText: "확인",
-                  onConfirm: () => router.push("/"),
-                });
-              }
-            }}
-          />
+          <SignupStepOneForm userType="company" onNext={handleStep1Submit} />
         ) : (
-          <SignupStepTwoCompany
-            onSubmit={async (data: CompanyStepTwoValues) => {
-              if (!stepOneData || !commonUserId) return;
+          <SignupStepTwoCompany onSubmit={handleStep2Submit} />
+        )}
 
-              const businessFile = data.businessFile?.[0];
-              if (!businessFile) {
-                showModal({
-                  title: "사업자등록증 미첨부",
-                  message: "사업자등록증을 첨부해주세요.",
-                  confirmText: "확인",
-                  onConfirm: () => router.push("/"),
-                });
-                return;
-              }
+        {(isStep1Loading || isStep2Loading) && (
+          <div className="mt-4 flex items-center justify-center p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary mr-3" />
+            <p className="text-blue-800">
+              {isStep1Loading ? "회원정보를 등록 중입니다..." : "회원가입을 완료하는 중입니다..."}
+            </p>
+          </div>
+        )}
 
-              const dateObj = new Date(data.startDate);
-              if (isNaN(dateObj.getTime())) {
-                showModal({
-                  title: "개업년월일 미입력",
-                  message: "개업년월일을 입력해주세요.",
-                  confirmText: "확인",
-                  onConfirm: () => router.push("/"),
-                });
-                return;
-              }
-              const isoDate = dateObj.toISOString();
+        {step1Error && step === 1 && (
+          <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-red-800 font-medium">1단계 회원가입 중 오류가 발생했습니다</p>
+                <p className="text-red-600 text-sm mt-1">
+                  {step1Error?.message || "알 수 없는 오류가 발생했습니다."}
+                </p>
+              </div>
+              <button
+                onClick={() => resetStep1()}
+                className="ml-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+              >
+                다시 시도
+              </button>
+            </div>
+          </div>
+        )}
 
-              const formData = toCompanyFormData({
-                common_user_id: commonUserId,
-                company_name: data.companyName,
-                establishment: isoDate,
-                company_address: `${data.companyAddress} ${data.detailAddress}`,
-                business_registration_number: data.businessNumber,
-                company_introduction: data.companyIntro,
-                certificate_image: businessFile,
-                company_logo: data.companyLogo?.[0],
-                ceo_name: data.representativeName,
-                manager_name: data.managerName,
-                manager_phone_number: data.managerPhone,
-                manager_email: data.managerEmail,
-              });
-
-              for (const [key, val] of formData.entries()) {
-                console.log("FormData:", key, val);
-              }
-
-              try {
-                await authApi.company.completeSignup(formData);
-                console.log("기업회원 가입 최종 완료");
-                showModal({
-                  title: "회원가입 완료",
-                  message: `시니어내일에 오신 것을 환영합니다! \n ${data.companyName}님의 비즈니스 여정을 응원합니다 🤗🎉`,
-                  confirmText: "로그인 하러가기",
-                  onConfirm: () => router.push("/auth/login?tab=company"),
-                });
-              } catch (err) {
-                console.error("회원가입 최종 실패:", err);
-                showModal({
-                  title: "회원가입 실패",
-                  message: "회원정보 입력 중 오류가 발생했습니다. \n 잠시 후 다시 시도해주세요.",
-                  confirmText: "확인",
-                  onConfirm: () => router.push("/"),
-                });
-              }
-            }}
-          />
+        {step2Error && step === 2 && (
+          <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-red-800 font-medium">회원가입 완료 중 오류가 발생했습니다</p>
+                <p className="text-red-600 text-sm mt-1">
+                  {step2Error?.message || "알 수 없는 오류가 발생했습니다."}
+                </p>
+              </div>
+              <button
+                onClick={() => resetStep2()}
+                className="ml-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+              >
+                다시 시도
+              </button>
+            </div>
+          </div>
         )}
       </div>
     </div>

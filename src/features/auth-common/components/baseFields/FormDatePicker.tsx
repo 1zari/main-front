@@ -1,5 +1,4 @@
 "use client";
-
 import { Controller, useFormContext, FieldValues, Path } from "react-hook-form";
 import { CalendarIcon } from "lucide-react";
 import DatePicker from "react-datepicker";
@@ -25,6 +24,13 @@ export default function FormDatePicker<T extends FieldValues>({
     formState: { errors },
   } = useFormContext<T>();
 
+  const formatDateToLocal = (date: Date): string => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
   return (
     <div className="w-full">
       <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg">{label}</label>
@@ -36,7 +42,7 @@ export default function FormDatePicker<T extends FieldValues>({
             <DatePicker
               selected={field.value ? new Date(field.value) : null}
               onChange={(date: Date | null) => {
-                const formatted = date?.toISOString().split("T")[0] || "";
+                const formatted = date ? formatDateToLocal(date) : "";
                 field.onChange(formatted);
               }}
               dateFormat="yyyy-MM-dd"
