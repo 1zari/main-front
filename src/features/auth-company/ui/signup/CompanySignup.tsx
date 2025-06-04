@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import SignupStepOneForm from "@/features/auth-common/ui/signup/CommonSignupStepOneForm";
 import { SignupFormValues } from "@/features/auth-common/validation/signup-auth.schema";
@@ -32,83 +32,117 @@ export default function SignupFormCompany() {
     reset: resetStep2,
   } = useCompanySignupStep2();
 
+  // 1단계 성공 콜백 메모이제이션
+  const handleStep1Success = useCallback((res: any, data: SignupFormValues) => {
+    console.log("1단계 회원가입 성공:", res);
+    setStepOneData(data);
+    setCommonUserId(res.common_user_id);
+    setStep(2);
+  }, []);
+
+  // 1단계 에러 콜백 메모이제이션
+  const handleStep1Error = useCallback(
+    (error: unknown) => {
+      console.error("1단계 회원가입 실패:", error);
+      showModal({
+        title: "⚠️ 회원가입 실패",
+        message: "회원정보 입력 중 오류가 발생했습니다. \n 잠시 후 다시 시도해주세요.",
+        confirmText: "확인",
+        onConfirm: () => router.push("/"),
+      });
+    },
+    [showModal, router],
+  );
+
+  // 2단계 성공 콜백 메모이제이션
+  const handleStep2Success = useCallback(
+    (companyName: string) => {
+      console.log("기업회원 가입 최종 완료");
+      showSignupSuccessModal(companyName, showModal, router);
+    },
+    [showModal, router],
+  );
+
+  // 2단계 에러 콜백 메모이제이션
+  const handleStep2Error = useCallback(
+    (error: unknown) => {
+      console.error("기업회원 가입 실패:", error);
+      showModal({
+        title: "⚠️ 회원가입 실패",
+        message: "회원정보 입력 중 오류가 발생했습니다. \n 잠시 후 다시 시도해주세요.",
+        confirmText: "확인",
+        onConfirm: () => router.push("/"),
+      });
+    },
+    [showModal, router],
+  );
+
+  // 1단계 제출 핸들러 메모이제이션
+  const handleStep1Submit = useCallback(
+    (data: SignupFormValues) => {
+      signupStep1(
+        {
+          email: data.email,
+          password: data.password,
+          join_type: "company",
+          company_name: "-",
+          business_number: "-",
+          representative_name: "-",
+          phone_number: "-",
+        },
+        {
+          onSuccess: (res) => handleStep1Success(res, data),
+          onError: handleStep1Error,
+        },
+      );
+    },
+    [signupStep1, handleStep1Success, handleStep1Error],
+  );
+
+  // 2단계 제출 핸들러 메모이제이션
+  const handleStep2Submit = useCallback(
+    (data: CompanyStepTwoValues) => {
+      if (!stepOneData || !commonUserId) return;
+
+      // 파일 검증
+      const businessFile = data.businessFile?.[0];
+      if (!businessFile) {
+        handleFileValidationError("business", showModal, router);
+        return;
+      }
+
+      // 날짜 검증
+      if (!validateDate(data.startDate)) {
+        handleFileValidationError("birth", showModal, router);
+        return;
+      }
+
+      signupStep2(
+        { data, commonUserId },
+        {
+          onSuccess: () => handleStep2Success(data.companyName),
+          onError: handleStep2Error,
+        },
+      );
+    },
+    [
+      stepOneData,
+      commonUserId,
+      signupStep2,
+      handleStep2Success,
+      handleStep2Error,
+      showModal,
+      router,
+    ],
+  );
+
   return (
     <div className="flex justify-center items-center flex-1">
       <div className="bg-white rounded-lg shadow-md px-10 py-[100px] w-full max-w-[1000px]">
         {step === 1 ? (
-          <SignupStepOneForm
-            userType="company"
-            onNext={async (data) => {
-              signupStep1(
-                {
-                  email: data.email,
-                  password: data.password,
-                  join_type: "company",
-                  company_name: "-",
-                  business_number: "-",
-                  representative_name: "-",
-                  phone_number: "-",
-                },
-                {
-                  onSuccess: (res) => {
-                    console.log("1단계 회원가입 성공:", res);
-                    setStepOneData(data);
-                    setCommonUserId(res.common_user_id);
-                    setStep(2);
-                  },
-                  onError: (error) => {
-                    console.error("1단계 회원가입 실패:", error);
-                    showModal({
-                      title: "⚠️ 회원가입 실패",
-                      message:
-                        "회원정보 입력 중 오류가 발생했습니다. \n 잠시 후 다시 시도해주세요.",
-                      confirmText: "확인",
-                      onConfirm: () => router.push("/"),
-                    });
-                  },
-                },
-              );
-            }}
-          />
+          <SignupStepOneForm userType="company" onNext={handleStep1Submit} />
         ) : (
-          <SignupStepTwoCompany
-            onSubmit={async (data: CompanyStepTwoValues) => {
-              if (!stepOneData || !commonUserId) return;
-
-              // 파일 검증
-              const businessFile = data.businessFile?.[0];
-              if (!businessFile) {
-                handleFileValidationError("business", showModal, router);
-                return;
-              }
-
-              // 날짜 검증
-              if (!validateDate(data.startDate)) {
-                handleFileValidationError("birth", showModal, router);
-                return;
-              }
-
-              signupStep2(
-                { data, commonUserId },
-                {
-                  onSuccess: () => {
-                    console.log("기업회원 가입 최종 완료");
-                    showSignupSuccessModal(data.companyName, showModal, router);
-                  },
-                  onError: (error) => {
-                    console.error("기업회원 가입 실패:", error);
-                    showModal({
-                      title: "⚠️ 회원가입 실패",
-                      message:
-                        "회원정보 입력 중 오류가 발생했습니다. \n 잠시 후 다시 시도해주세요.",
-                      confirmText: "확인",
-                      onConfirm: () => router.push("/"),
-                    });
-                  },
-                },
-              );
-            }}
-          />
+          <SignupStepTwoCompany onSubmit={handleStep2Submit} />
         )}
 
         {/* 로딩 상태 표시 */}

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import SignupStepOneForm from "@/features/auth-common/ui/signup/CommonSignupStepOneForm";
 import SignupStepTwoUser, {
@@ -33,66 +33,69 @@ export default function UserSignup() {
     reset: resetStep2,
   } = useUserSignupStep2();
 
+  // 공통 에러 핸들러 메모이제이션
+  const handleSignupError = useCallback(
+    (error: unknown) => {
+      console.error("회원가입 실패:", error);
+      showModal({
+        title: "⚠️ 회원가입 실패",
+        message: "회원정보 입력 중 오류가 발생했습니다. \n 잠시 후 다시 시도해주세요.",
+        confirmText: "확인",
+        onConfirm: () => router.push("/"),
+      });
+    },
+    [showModal, router],
+  );
+
+  // 1단계 제출 핸들러 메모이제이션
+  const handleStep1Submit = useCallback(
+    (data: SignupFormValues) => {
+      signupStep1(
+        {
+          email: data.email,
+          password: data.password,
+          join_type: "normal",
+        },
+        {
+          onSuccess: (res) => {
+            console.log("1단계 회원가입 성공:", res);
+            setStepOneData(data);
+            setUserId(res.common_user_id);
+            setStep(2);
+          },
+          onError: handleSignupError,
+        },
+      );
+    },
+    [signupStep1, handleSignupError],
+  );
+
+  // 2단계 제출 핸들러 메모이제이션
+  const handleStep2Submit = useCallback(
+    (data: UserStepTwoValues) => {
+      if (!stepOneData || !userId) return;
+
+      signupStep2(
+        { data, commonUserId: userId },
+        {
+          onSuccess: () => {
+            console.log("회원가입 최종 완료");
+            showUserSignupSuccessModal(data.name, showModal, router);
+          },
+          onError: handleSignupError,
+        },
+      );
+    },
+    [stepOneData, userId, signupStep2, showModal, router, handleSignupError],
+  );
+
   return (
     <div className="flex items-center justify-center flex-1">
       <div className="bg-white rounded-lg shadow-md px-10 py-[100px] w-full max-w-[1000px]">
         {step === 1 ? (
-          <SignupStepOneForm
-            userType="normal"
-            onNext={async (data) => {
-              signupStep1(
-                {
-                  email: data.email,
-                  password: data.password,
-                  join_type: "normal",
-                },
-                {
-                  onSuccess: (res) => {
-                    console.log("1단계 회원가입 성공:", res);
-                    setStepOneData(data);
-                    setUserId(res.common_user_id);
-                    setStep(2);
-                  },
-                  onError: (error) => {
-                    console.error("1단계 회원가입 실패:", error);
-                    showModal({
-                      title: "⚠️ 회원가입 실패",
-                      message:
-                        "회원정보 입력 중 오류가 발생했습니다. \n 잠시 후 다시 시도해주세요.",
-                      confirmText: "확인",
-                      onConfirm: () => router.push("/"),
-                    });
-                  },
-                },
-              );
-            }}
-          />
+          <SignupStepOneForm userType="normal" onNext={handleStep1Submit} />
         ) : (
-          <SignupStepTwoUser
-            onSubmit={async (data: UserStepTwoValues) => {
-              if (!stepOneData || !userId) return;
-
-              signupStep2(
-                { data, commonUserId: userId },
-                {
-                  onSuccess: () => {
-                    console.log("회원가입 최종 완료");
-                    showUserSignupSuccessModal(data.name, showModal, router);
-                  },
-                  onError: (error) => {
-                    console.error("회원가입 실패:", error);
-                    showModal({
-                      title: "⚠️ 회원가입 실패",
-                      message:
-                        "회원정보 입력 중 오류가 발생했습니다. \n 잠시 후 다시 시도해주세요.",
-                      confirmText: "확인",
-                      onConfirm: () => router.push("/"),
-                    });
-                  },
-                },
-              );
-            }}
-          />
+          <SignupStepTwoUser onSubmit={handleStep2Submit} />
         )}
 
         {(isStep1Loading || isStep2Loading) && (

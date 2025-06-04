@@ -125,9 +125,21 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
         onSubmit={handleSubmit(onFormSubmit)}
         className="flex flex-col items-center space-y-8"
         noValidate
+        role="form"
+        aria-label="개인 회원가입 2단계 폼"
       >
-        <h2 className="text-3xl font-semibold">개인 회원정보</h2>
-        <div className="w-full max-w-[700px] space-y-6">
+        <h2 className="text-3xl font-semibold" id="user-signup-title">
+          개인 회원정보
+        </h2>
+        <div
+          className="w-full max-w-[700px] space-y-6"
+          role="group"
+          aria-labelledby="user-signup-title"
+          aria-describedby="user-signup-step-info"
+        >
+          <div id="user-signup-step-info" className="sr-only" aria-live="polite">
+            2단계: 개인정보와 전화번호 인증을 완료해주세요. 모든 필드는 필수 입력사항입니다.
+          </div>
           <FormInput<UserFormValues>
             label="이름"
             name="name"
