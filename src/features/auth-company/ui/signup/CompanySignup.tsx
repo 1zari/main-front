@@ -11,28 +11,11 @@ import {
   handleFileValidationError,
   showSignupSuccessModal,
 } from "@/utils/errorHandlers";
-
-const toCompanyFormData = (payload: {
-  common_user_id: string;
-  company_name: string;
-  establishment: string;
-  company_address: string;
-  business_registration_number: string;
-  company_introduction: string;
-  certificate_image: File;
-  company_logo?: File;
-  ceo_name: string;
-  manager_name: string;
-  manager_phone_number: string;
-  manager_email: string;
-}): FormData => {
-  const formData = new FormData();
-  Object.entries(payload).forEach(([key, value]) => {
-    if (value == null) return;
-    formData.append(key, value instanceof File ? value : String(value));
-  });
-  return formData;
-};
+import {
+  convertCompanySignupData,
+  convertToCompanyFormData,
+  validateDate,
+} from "@/utils/formDataConverters";
 
 export default function SignupFormCompany() {
   const router = useRouter();
@@ -79,33 +62,19 @@ export default function SignupFormCompany() {
                 return;
               }
 
-              const dateObj = new Date(data.startDate);
-              if (isNaN(dateObj.getTime())) {
+              if (!validateDate(data.startDate)) {
                 handleFileValidationError("birth", showModal, router);
                 return;
               }
-              const isoDate = dateObj.toISOString();
-
-              const formData = toCompanyFormData({
-                common_user_id: commonUserId,
-                company_name: data.companyName,
-                establishment: isoDate,
-                company_address: `${data.companyAddress} ${data.detailAddress}`,
-                business_registration_number: data.businessNumber,
-                company_introduction: data.companyIntro,
-                certificate_image: businessFile,
-                company_logo: data.companyLogo?.[0],
-                ceo_name: data.representativeName,
-                manager_name: data.managerName,
-                manager_phone_number: data.managerPhone,
-                manager_email: data.managerEmail,
-              });
-
-              for (const [key, val] of formData.entries()) {
-                console.log("FormData:", key, val);
-              }
 
               try {
+                const signupPayload = convertCompanySignupData(data, commonUserId);
+                const formData = convertToCompanyFormData(signupPayload);
+
+                for (const [key, val] of formData.entries()) {
+                  console.log("FormData:", key, val);
+                }
+
                 await authApi.company.completeSignup(formData);
                 console.log("기업회원 가입 최종 완료");
                 showSignupSuccessModal(data.companyName, showModal, router);

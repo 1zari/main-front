@@ -8,6 +8,8 @@ import SignupStepTwoUser, {
 import { SignupFormValues } from "@/features/auth-common/validation/signup-auth.schema";
 import { authApi } from "@/api/auth";
 import { useModalStore } from "@/store/useModalStore";
+import { handleSignupError, showUserSignupSuccessModal } from "@/utils/errorHandlers";
+import { convertUserSignupData } from "@/utils/formDataConverters";
 
 export default function UserSignup() {
   const router = useRouter();
@@ -35,13 +37,7 @@ export default function UserSignup() {
                 setUserId(res.common_user_id);
                 setStep(2);
               } catch (err) {
-                console.error("1단계 회원가입 실패:", err);
-                showModal({
-                  title: "회원가입 실패",
-                  message: "회원정보 입력 중 오류가 발생했습니다. \n 잠시 후 다시 시도해주세요.",
-                  confirmText: "확인",
-                  onConfirm: () => router.push("/"),
-                });
+                handleSignupError(err, showModal, router);
               }
             }}
           />
@@ -50,39 +46,16 @@ export default function UserSignup() {
             onSubmit={async (data: UserStepTwoValues) => {
               if (!stepOneData || !userId) return;
 
-              const birthDate = new Date(data.birth);
-              if (isNaN(birthDate.getTime())) {
-                return;
-              }
-              const isoBirth = birthDate.toISOString();
-              console.log("birth (ISO):", isoBirth);
-
               try {
-                await authApi.user.completeSignup({
-                  common_user_id: userId,
-                  name: data.name,
-                  phone_number: data.phone,
-                  gender: data.gender!,
-                  birthday: isoBirth,
-                  interest: data.interests || [],
-                  purpose_subscription: data.purposes,
-                  route: data.channels,
-                });
+                const signupPayload = convertUserSignupData(data, userId);
+
+                console.log("일반 회원가입 요청 데이터:", signupPayload);
+
+                await authApi.user.completeSignup(signupPayload);
                 console.log("회원가입 최종 완료");
-                showModal({
-                  title: "회원가입 완료",
-                  message: `시니어내일에 오신 것을 환영합니다! \n ${data.name}님의 내일을 응원해요 🤗🎉`,
-                  confirmText: "로그인 하러가기",
-                  onConfirm: () => router.push("/auth/login?tab=user"),
-                });
+                showUserSignupSuccessModal(data.name, showModal, router);
               } catch (err) {
-                console.error("회원가입 최종 실패:", err);
-                showModal({
-                  title: "회원가입 실패",
-                  message: "회원정보 입력 중 오류가 발생했습니다. \n 잠시 후 다시 시도해주세요.",
-                  confirmText: "확인",
-                  onConfirm: () => router.push("/"),
-                });
+                handleSignupError(err, showModal, router);
               }
             }}
           />

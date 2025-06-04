@@ -155,7 +155,7 @@ export const handleFileValidationError = (
   });
 };
 
-// 회원가입 성공 모달 표시
+// 회원가입 성공 모달 - 기업회원
 export const showSignupSuccessModal = (
   companyName: string,
   showModal: (options: {
@@ -171,5 +171,24 @@ export const showSignupSuccessModal = (
     message: `${SIGNUP_CONSTANTS.MESSAGES.INFO.SIGNUP_WELCOME} \n ${companyName}${SIGNUP_CONSTANTS.MESSAGES.INFO.SIGNUP_BUSINESS_SUPPORT}`,
     confirmText: SIGNUP_CONSTANTS.MODAL_BUTTONS.GO_TO_LOGIN,
     onConfirm: () => router.push("/auth/login?tab=company"),
+  });
+};
+
+// 회원가입 성공 모달 - 일반회원
+export const showUserSignupSuccessModal = (
+  userName: string,
+  showModal: (options: {
+    title: string;
+    message: string;
+    confirmText: string;
+    onConfirm: () => void;
+  }) => void,
+  router: { push: (path: string) => void },
+) => {
+  showModal({
+    title: SIGNUP_CONSTANTS.MESSAGES.SUCCESS.SIGNUP_COMPLETE,
+    message: `${SIGNUP_CONSTANTS.MESSAGES.INFO.SIGNUP_WELCOME} \n ${userName}님의 내일을 응원해요 🤗🎉`,
+    confirmText: SIGNUP_CONSTANTS.MODAL_BUTTONS.GO_TO_LOGIN,
+    onConfirm: () => router.push("/auth/login?tab=user"),
   });
 };
