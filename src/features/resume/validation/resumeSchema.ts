@@ -1,28 +1,36 @@
 import { z } from "zod";
+import {
+  RESUME_VALIDATION_LIMITS,
+  DATE_VALIDATION,
+  RESUME_VALIDATION_MESSAGES,
+} from "@/features/resume/constants/validation";
 
 const isValidDate = (dateString: string): boolean => {
   const date = new Date(dateString);
-  return !isNaN(date.getTime()) && !!dateString.match(/^\d{4}-\d{2}-\d{2}$/);
+  return !isNaN(date.getTime()) && !!dateString.match(DATE_VALIDATION.FORMAT_REGEX);
 };
 
 const experienceSchema = z
   .object({
     company: z
       .string()
-      .min(1, "회사명을 입력해주세요.")
-      .max(50, "회사명은 50자 이하로 입력해주세요."),
-    position: z.string().min(1, "직무를 입력해주세요.").max(50, "직무는 50자 이하로 입력해주세요."),
+      .min(RESUME_VALIDATION_LIMITS.MIN_LENGTH, RESUME_VALIDATION_MESSAGES.COMPANY_NAME.REQUIRED)
+      .max(
+        RESUME_VALIDATION_LIMITS.COMPANY_NAME_MAX,
+        RESUME_VALIDATION_MESSAGES.COMPANY_NAME.MAX_LENGTH,
+      ),
+    position: z
+      .string()
+      .min(RESUME_VALIDATION_LIMITS.MIN_LENGTH, RESUME_VALIDATION_MESSAGES.POSITION.REQUIRED)
+      .max(RESUME_VALIDATION_LIMITS.POSITION_MAX, RESUME_VALIDATION_MESSAGES.POSITION.MAX_LENGTH),
     startDate: z
       .string()
-      .min(1, "근무 시작일을 입력해주세요.")
-      .refine(isValidDate, "올바른 날짜 형식(YYYY-MM-DD)으로 입력해주세요."),
+      .min(RESUME_VALIDATION_LIMITS.MIN_LENGTH, RESUME_VALIDATION_MESSAGES.DATE.REQUIRED_START)
+      .refine(isValidDate, RESUME_VALIDATION_MESSAGES.DATE.INVALID_FORMAT),
     endDate: z
       .string()
       .optional()
-      .refine(
-        (date) => !date || isValidDate(date),
-        "올바른 날짜 형식(YYYY-MM-DD)으로 입력해주세요.",
-      ),
+      .refine((date) => !date || isValidDate(date), RESUME_VALIDATION_MESSAGES.DATE.INVALID_FORMAT),
     isCurrent: z.boolean(),
   })
   .refine(
@@ -40,7 +48,7 @@ const experienceSchema = z
       }
 
       const today = new Date();
-      today.setHours(0, 0, 0, 0);
+      today.setHours(...DATE_VALIDATION.TIME_RESET.START_OF_DAY);
 
       if (data.startDate) {
         const startDate = new Date(data.startDate);
@@ -59,8 +67,7 @@ const experienceSchema = z
       return true;
     },
     {
-      message:
-        "날짜를 올바르게 입력해주세요. (현재 근무 중이 아닌 경우 종료일 필수, 시작일 < 종료일, 미래 날짜 불가)",
+      message: RESUME_VALIDATION_MESSAGES.DATE.INVALID_RANGE,
       path: ["endDate"],
     },
   );
@@ -68,54 +75,78 @@ const experienceSchema = z
 const certificationSchema = z.object({
   name: z
     .string()
-    .min(1, "자격증명을 입력해주세요.")
-    .max(100, "자격증명은 100자 이하로 입력해주세요."),
+    .min(
+      RESUME_VALIDATION_LIMITS.MIN_LENGTH,
+      RESUME_VALIDATION_MESSAGES.CERTIFICATION.NAME_REQUIRED,
+    )
+    .max(
+      RESUME_VALIDATION_LIMITS.CERTIFICATION_NAME_MAX,
+      RESUME_VALIDATION_MESSAGES.CERTIFICATION.NAME_MAX_LENGTH,
+    ),
   issuer: z
     .string()
-    .min(1, "발급기관을 입력해주세요.")
-    .max(100, "발급기관은 100자 이하로 입력해주세요."),
+    .min(
+      RESUME_VALIDATION_LIMITS.MIN_LENGTH,
+      RESUME_VALIDATION_MESSAGES.CERTIFICATION.ISSUER_REQUIRED,
+    )
+    .max(
+      RESUME_VALIDATION_LIMITS.CERTIFICATION_ISSUER_MAX,
+      RESUME_VALIDATION_MESSAGES.CERTIFICATION.ISSUER_MAX_LENGTH,
+    ),
   date: z
     .string()
-    .min(1, "취득일자를 입력해주세요.")
-    .refine(isValidDate, "올바른 날짜 형식(YYYY-MM-DD)으로 입력해주세요.")
+    .min(RESUME_VALIDATION_LIMITS.MIN_LENGTH, RESUME_VALIDATION_MESSAGES.DATE.REQUIRED_CERT)
+    .refine(isValidDate, RESUME_VALIDATION_MESSAGES.DATE.INVALID_FORMAT)
     .refine((date) => {
       const certDate = new Date(date);
       const today = new Date();
-      today.setHours(23, 59, 59, 999); // 오늘까지는 허용
+      today.setHours(...DATE_VALIDATION.TIME_RESET.END_OF_DAY);
       return certDate <= today;
-    }, "미래 날짜는 입력할 수 없습니다."),
+    }, RESUME_VALIDATION_MESSAGES.DATE.FUTURE_NOT_ALLOWED),
 });
 
 export const resumeSchema = z.object({
   jobCategory: z
     .string()
-    .min(1, "직종을 입력해주세요. ex) IT, 디자인, 마케팅")
-    .max(20, "직종은 20자 이하로 입력해주세요."),
+    .min(RESUME_VALIDATION_LIMITS.MIN_LENGTH, RESUME_VALIDATION_MESSAGES.JOB_CATEGORY.REQUIRED)
+    .max(
+      RESUME_VALIDATION_LIMITS.JOB_CATEGORY_MAX,
+      RESUME_VALIDATION_MESSAGES.JOB_CATEGORY.MAX_LENGTH,
+    ),
   title: z
     .string()
-    .min(1, "이력서 제목을 입력해주세요.")
-    .max(20, "이력서 제목은 20자 이하로 입력해주세요."),
+    .min(RESUME_VALIDATION_LIMITS.MIN_LENGTH, RESUME_VALIDATION_MESSAGES.TITLE.REQUIRED)
+    .max(RESUME_VALIDATION_LIMITS.TITLE_MAX, RESUME_VALIDATION_MESSAGES.TITLE.MAX_LENGTH),
   schoolType: z
     .string()
-    .min(1, "학교 구분을 선택해주세요.")
+    .min(RESUME_VALIDATION_LIMITS.MIN_LENGTH, RESUME_VALIDATION_MESSAGES.SCHOOL.TYPE_REQUIRED)
     .refine(
       (type) => ["고등학교", "대학교(2,3년)", "대학교(4년)", "대학원"].includes(type),
-      "올바른 학교 구분을 선택해주세요.",
+      RESUME_VALIDATION_MESSAGES.SCHOOL.TYPE_INVALID,
     ),
   schoolName: z
     .string()
-    .min(1, "학교명을 입력해주세요.")
-    .max(50, "학교명은 50자 이하로 입력해주세요."),
+    .min(RESUME_VALIDATION_LIMITS.MIN_LENGTH, RESUME_VALIDATION_MESSAGES.SCHOOL.NAME_REQUIRED)
+    .max(
+      RESUME_VALIDATION_LIMITS.SCHOOL_NAME_MAX,
+      RESUME_VALIDATION_MESSAGES.SCHOOL.NAME_MAX_LENGTH,
+    ),
   graduationStatus: z
     .string()
-    .min(1, "졸업 상태를 선택해주세요.")
+    .min(RESUME_VALIDATION_LIMITS.MIN_LENGTH, RESUME_VALIDATION_MESSAGES.SCHOOL.STATUS_REQUIRED)
     .refine(
       (status) => ["졸업", "재학", "중퇴", "휴학"].includes(status),
-      "올바른 졸업 상태를 선택해주세요.",
+      RESUME_VALIDATION_MESSAGES.SCHOOL.STATUS_INVALID,
     ),
   experiences: z.array(experienceSchema).optional(),
   certifications: z.array(certificationSchema).optional(),
-  introduction: z.string().max(500, "자기소개는 최대 500자까지 작성할 수 있습니다.").optional(),
+  introduction: z
+    .string()
+    .max(
+      RESUME_VALIDATION_LIMITS.INTRODUCTION_MAX,
+      RESUME_VALIDATION_MESSAGES.INTRODUCTION.MAX_LENGTH,
+    )
+    .optional(),
 });
 
 export type ResumeFormData = z.infer<typeof resumeSchema>;
