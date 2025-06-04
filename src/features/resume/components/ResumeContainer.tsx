@@ -1,6 +1,6 @@
-import ResumeContactSection from "@/features/resume/components/ResumeContactSection";
-import ResumeSelfIntroductionSection from "@/features/resume/components/ResumeSelfIntroductionSection";
-import ResumeTableSection from "@/features/resume/components/ResumeTableSection";
+import ResumeContactSection from "@/features/resume/components/sections/ResumeContactSection";
+import ResumeSelfIntroductionSection from "@/features/resume/components/sections/ResumeSelfIntroductionSection";
+import ResumeTableSection from "@/features/resume/components/sections/ResumeTableSection";
 import { ResumeFormData } from "@/features/resume/validation/resumeSchema";
 
 type ResumeContainerProps = {
@@ -53,7 +53,7 @@ export default function ResumeContainer({ resume }: ResumeContainerProps) {
           />
         ))}
 
-        <ResumeSelfIntroductionSection title="자기 소개" content={resume.introduction} />
+        <ResumeSelfIntroductionSection title="자기 소개" content={resume.introduction ?? ""} />
       </div>
     </div>
   );

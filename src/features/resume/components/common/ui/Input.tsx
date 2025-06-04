@@ -10,6 +10,7 @@ const inputVariants = cva(
       variant: {
         default: "border-gray-300 bg-white focus:border-2 focus:border-primary",
         disabled: "border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed",
+        error: "border-red-500 bg-white focus:border-2 focus:border-red-500",
       },
     },
     defaultVariants: {
@@ -25,6 +26,8 @@ type InputProps<T extends FieldValues> = {
   placeholder?: string;
   disabled?: boolean;
   value?: string;
+  "aria-label"?: string;
+  "aria-describedby"?: string;
 } & VariantProps<typeof inputVariants>;
 
 export default function Input<T extends FieldValues>({
@@ -35,26 +38,62 @@ export default function Input<T extends FieldValues>({
   disabled = false,
   value,
   variant,
+  "aria-label": ariaLabel,
+  "aria-describedby": ariaDescribedBy,
 }: InputProps<T>) {
   const {
     register,
     formState: { errors },
   } = useFormContext<T>();
 
+  const error = errors[name];
+  const hasError = !!error;
+  const errorId = `${name}-error`;
+  const helpId = `${name}-help`;
+
+  // aria-describedby 조합
+  const describedBy = [ariaDescribedBy, hasError ? errorId : null, helpId]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <div className="w-full">
-      <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg text-[#28562c]">
-        {label}
-      </label>
+      {label && (
+        <label
+          htmlFor={name}
+          className="block mb-3 ml-2 font-semibold text-base sm:text-lg text-[#28562c]"
+        >
+          {label}
+          <span className="sr-only">(필수 입력)</span>
+        </label>
+      )}
       <input
+        id={name}
         type={type}
         placeholder={placeholder}
         disabled={disabled}
         value={disabled ? value : undefined}
         {...register(name)}
-        className={cn(inputVariants({ variant: disabled ? "disabled" : (variant ?? "default") }))}
+        className={cn(
+          inputVariants({
+            variant: disabled ? "disabled" : hasError ? "error" : (variant ?? "default"),
+          }),
+        )}
+        aria-label={ariaLabel}
+        aria-describedby={describedBy || undefined}
+        aria-invalid={hasError}
+        aria-required="true"
       />
-      {errors[name] && <p className="text-red-500 mt-1 ml-2">{String(errors[name]?.message)}</p>}
+
+      <div id={helpId} className="sr-only">
+        {placeholder && `예시: ${placeholder}`}
+      </div>
+
+      {hasError && (
+        <p id={errorId} className="text-red-500 mt-1 ml-2" role="alert" aria-live="polite">
+          {String(error?.message)}
+        </p>
+      )}
     </div>
   );
 }

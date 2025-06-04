@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import Spinner from "@/components/common/Spinner";
 import ResumeSelect from "@/features/resume/components/common/ui/ResumeSelect";
 import ResumeContainer from "@/features/resume/components/ResumeContainer";
-import ResumeActionButtons from "@/features/resume/components/ResumeActionButton";
+import ResumeActionButtons from "@/features/resume/components/sections/ResumeActionButton";
 import { useGetResumeDetail } from "@/features/resume/api/useGetResumeDetail";
 import { useGetResumeList } from "@/features/resume/api/useGetResumeList";
 import { mapToResumeFormData } from "@/features/resume/utils/mapToResumeFormData";
