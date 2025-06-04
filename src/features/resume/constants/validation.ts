@@ -1,4 +1,3 @@
-// 이력서 폼 검증 상수
 export const RESUME_VALIDATION_LIMITS = {
   // 길이 제한
   COMPANY_NAME_MAX: 50,
