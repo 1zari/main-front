@@ -10,6 +10,7 @@ import FormInput from "@/features/auth-common/components/baseFields/FormInput";
 import FormDatePicker from "@/features/auth-common/components/baseFields/FormDatePicker";
 import UserTermsAgreement from "@/features/auth-common/components/terms/UserTermsAgreement";
 import { SIGNUP_CONSTANTS } from "@/constants/signup";
+import { handleSmsVerificationError, handleSmsCodeVerificationError } from "@/utils/errorHandlers";
 
 import { userApi } from "@/api/user";
 import type { PhoneVerificationRequestDto, VerifyCodeRequestDto } from "@/types/api/user";
@@ -144,26 +145,7 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
                   onConfirm: () => {},
                 });
               } catch (error: unknown) {
-                if (
-                  error &&
-                  typeof error === "object" &&
-                  "response" in error &&
-                  error.response &&
-                  typeof error.response === "object" &&
-                  "status" in error.response
-                ) {
-                  showModal({
-                    title: "⚠️",
-                    message: SIGNUP_CONSTANTS.MESSAGES.ERROR.SMS_DUPLICATE,
-                    confirmText: SIGNUP_CONSTANTS.MODAL_BUTTONS.CONFIRM,
-                    onConfirm: () => {},
-                  });
-                } else {
-                  setError("phone", {
-                    type: "manual",
-                    message: SIGNUP_CONSTANTS.MESSAGES.ERROR.SMS_FAILED,
-                  });
-                }
+                handleSmsVerificationError(error, setError, "phone", showModal);
               }
             }}
           />
@@ -213,37 +195,7 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
                       onConfirm: () => {},
                     });
                   } catch (error: unknown) {
-                    if (
-                      error &&
-                      typeof error === "object" &&
-                      "response" in error &&
-                      error.response &&
-                      typeof error.response === "object" &&
-                      "status" in error.response
-                    ) {
-                      setError("verifyCode", {
-                        type: "manual",
-                        message: SIGNUP_CONSTANTS.MESSAGES.ERROR.SMS_INVALID_CODE,
-                      });
-                    } else if (
-                      error &&
-                      typeof error === "object" &&
-                      "response" in error &&
-                      error.response &&
-                      typeof error.response === "object" &&
-                      "status" in error.response &&
-                      error.response.status === 408
-                    ) {
-                      setError("verifyCode", {
-                        type: "manual",
-                        message: SIGNUP_CONSTANTS.MESSAGES.ERROR.SMS_TIMEOUT,
-                      });
-                    } else {
-                      setError("verifyCode", {
-                        type: "manual",
-                        message: SIGNUP_CONSTANTS.MESSAGES.ERROR.SMS_FAILED,
-                      });
-                    }
+                    handleSmsCodeVerificationError(error, setError, "verifyCode");
                   }
                 }}
               />

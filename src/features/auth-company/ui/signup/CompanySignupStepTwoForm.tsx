@@ -1,8 +1,8 @@
 "use client";
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import { SIGNUP_CONSTANTS } from "@/constants/signup";
+import { handleBusinessVerificationError } from "@/utils/errorHandlers";
 import {
   companySignupSchema,
   CompanyFormValues,
@@ -100,14 +100,7 @@ export default function SignupStepTwoCompany({ onSubmit }: Props) {
           : SIGNUP_CONSTANTS.MESSAGES.INFO.BUSINESS_INVALID,
       );
     } catch (err) {
-      if (axios.isAxiosError(err)) {
-        console.error("요청 URL:", err.config?.url);
-        console.error("응답 status:", err.response?.status);
-        console.error("응답 data:", err.response?.data);
-      } else {
-        console.error(err);
-      }
-      alert(SIGNUP_CONSTANTS.MESSAGES.ERROR.BUSINESS_VERIFICATION_FAILED);
+      handleBusinessVerificationError(err);
     }
   };
 

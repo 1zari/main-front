@@ -6,7 +6,11 @@ import { SignupFormValues } from "@/features/auth-common/validation/signup-auth.
 import SignupStepTwoCompany, { CompanyStepTwoValues } from "./CompanySignupStepTwoForm";
 import { authApi } from "@/api/auth";
 import { useModalStore } from "@/store/useModalStore";
-import { SIGNUP_CONSTANTS } from "@/constants/signup";
+import {
+  handleSignupError,
+  handleFileValidationError,
+  showSignupSuccessModal,
+} from "@/utils/errorHandlers";
 
 const toCompanyFormData = (payload: {
   common_user_id: string;
@@ -60,13 +64,7 @@ export default function SignupFormCompany() {
                 setCommonUserId(res.common_user_id);
                 setStep(2);
               } catch (err) {
-                console.error("1단계 회원가입 실패:", err);
-                showModal({
-                  title: SIGNUP_CONSTANTS.MESSAGES.ERROR.SIGNUP_FAILED,
-                  message: SIGNUP_CONSTANTS.MESSAGES.INFO.SIGNUP_ERROR_RETRY,
-                  confirmText: SIGNUP_CONSTANTS.MODAL_BUTTONS.CONFIRM,
-                  onConfirm: () => router.push("/"),
-                });
+                handleSignupError(err, showModal, router);
               }
             }}
           />
@@ -77,23 +75,13 @@ export default function SignupFormCompany() {
 
               const businessFile = data.businessFile?.[0];
               if (!businessFile) {
-                showModal({
-                  title: "사업자등록증 미첨부",
-                  message: "사업자등록증을 첨부해주세요.",
-                  confirmText: SIGNUP_CONSTANTS.MODAL_BUTTONS.CONFIRM,
-                  onConfirm: () => router.push("/"),
-                });
+                handleFileValidationError("business", showModal, router);
                 return;
               }
 
               const dateObj = new Date(data.startDate);
               if (isNaN(dateObj.getTime())) {
-                showModal({
-                  title: "개업년월일 미입력",
-                  message: "개업년월일을 입력해주세요.",
-                  confirmText: SIGNUP_CONSTANTS.MODAL_BUTTONS.CONFIRM,
-                  onConfirm: () => router.push("/"),
-                });
+                handleFileValidationError("birth", showModal, router);
                 return;
               }
               const isoDate = dateObj.toISOString();
@@ -120,20 +108,9 @@ export default function SignupFormCompany() {
               try {
                 await authApi.company.completeSignup(formData);
                 console.log("기업회원 가입 최종 완료");
-                showModal({
-                  title: SIGNUP_CONSTANTS.MESSAGES.SUCCESS.SIGNUP_COMPLETE,
-                  message: `${SIGNUP_CONSTANTS.MESSAGES.INFO.SIGNUP_WELCOME} \n ${data.companyName}${SIGNUP_CONSTANTS.MESSAGES.INFO.SIGNUP_BUSINESS_SUPPORT}`,
-                  confirmText: SIGNUP_CONSTANTS.MODAL_BUTTONS.GO_TO_LOGIN,
-                  onConfirm: () => router.push("/auth/login?tab=company"),
-                });
+                showSignupSuccessModal(data.companyName, showModal, router);
               } catch (err) {
-                console.error("회원가입 최종 실패:", err);
-                showModal({
-                  title: SIGNUP_CONSTANTS.MESSAGES.ERROR.SIGNUP_FAILED,
-                  message: SIGNUP_CONSTANTS.MESSAGES.INFO.SIGNUP_ERROR_RETRY,
-                  confirmText: SIGNUP_CONSTANTS.MODAL_BUTTONS.CONFIRM,
-                  onConfirm: () => router.push("/"),
-                });
+                handleSignupError(err, showModal, router);
               }
             }}
           />
