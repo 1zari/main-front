@@ -5,6 +5,7 @@ export interface ModalProps {
   message: string;
   confirmText?: string;
   onConfirm?: () => void;
+  hideCancelButton?: boolean;
 }
 
 interface ModalState extends ModalProps {
@@ -19,6 +20,7 @@ export const useModalStore = create<ModalState>((set) => ({
   message: "",
   confirmText: "확인",
   onConfirm: undefined,
+  hideCancelButton: false,
 
   showModal: (props) =>
     set({
@@ -27,6 +29,7 @@ export const useModalStore = create<ModalState>((set) => ({
       message: props.message,
       confirmText: props.confirmText ?? "확인",
       onConfirm: props.onConfirm,
+      hideCancelButton: props.hideCancelButton ?? false,
     }),
 
   closeModal: () =>
@@ -36,5 +39,6 @@ export const useModalStore = create<ModalState>((set) => ({
       message: "",
       confirmText: "확인",
       onConfirm: undefined,
+      hideCancelButton: false,
     }),
 }));

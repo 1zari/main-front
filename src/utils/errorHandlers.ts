@@ -31,6 +31,7 @@ export const handleSmsVerificationError = <T extends FieldValues>(
     message: string;
     confirmText: string;
     onConfirm: () => void;
+    hideCancelButton?: boolean;
   }) => void,
 ) => {
   if (
@@ -47,6 +48,7 @@ export const handleSmsVerificationError = <T extends FieldValues>(
       message: SIGNUP_CONSTANTS.MESSAGES.ERROR.SMS_DUPLICATE,
       confirmText: SIGNUP_CONSTANTS.MODAL_BUTTONS.CONFIRM,
       onConfirm: () => {},
+      hideCancelButton: true,
     });
   } else {
     // 일반적인 SMS 요청 실패

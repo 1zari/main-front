@@ -68,9 +68,11 @@ export const SIGNUP_CONSTANTS = {
     },
     ERROR: {
       SMS_FAILED: "인증 요청 중 오류가 발생했습니다. 다시 시도해주세요.",
-      SMS_DUPLICATE: "이미 등록된 번호입니다. 다른번호를 입력해주세요",
+      SMS_DUPLICATE: "이미 등록된 번호입니다.\n다른번호를 입력해주세요",
       SMS_INVALID_CODE: "인증번호가 일치하지 않습니다.",
       SMS_TIMEOUT: "인증 시간이 만료되었습니다. 다시 요청해주세요.",
+      EMAIL_DUPLICATE: "이미 등록된 이메일입니다.\n다른 이메일을 입력해주세요.",
+      EMAIL_CHECK_FAILED: "이메일 확인 중 오류가 발생했습니다.",
       SIGNUP_FAILED: "회원가입 실패",
       BUSINESS_VERIFICATION_FAILED: "사업자 인증 요청 중 오류가 발생했습니다.",
     },

@@ -3,7 +3,8 @@ import { useModalStore } from "@/store/useModalStore";
 import { useEffect } from "react";
 
 export default function ConfirmModal() {
-  const { isOpen, title, message, confirmText, onConfirm, closeModal } = useModalStore();
+  const { isOpen, title, message, confirmText, onConfirm, closeModal, hideCancelButton } =
+    useModalStore();
 
   const handleConfirm = () => {
     onConfirm?.();
@@ -39,17 +40,21 @@ export default function ConfirmModal() {
       <div className="relative bg-white rounded-lg shadow-lg p-6 w-full max-w-sm">
         <h2 className="text-xl font-semibold mb-2 text-center text-primary">{title}</h2>
         <p className="text-base mb-7 mt-3 whitespace-pre-line text-center">{message}</p>
-        <div className="flex gap-3">
+        <div className={hideCancelButton ? "flex" : "flex gap-3"}>
+          {!hideCancelButton && (
+            <button
+              type="button"
+              className="flex-1 h-12 bg-gray-200 text-gray-700 font-medium rounded-sm hover:bg-gray-300 transition-colors"
+              onClick={closeModal}
+            >
+              취소
+            </button>
+          )}
           <button
             type="button"
-            className="flex-1 h-12 bg-gray-200 text-gray-700 font-medium rounded-sm hover:bg-gray-300 transition-colors"
-            onClick={closeModal}
-          >
-            취소
-          </button>
-          <button
-            type="button"
-            className="flex-1 h-12 bg-primary text-white font-medium rounded-sm hover:opacity-90 transition-opacity"
+            className={`h-12 bg-primary text-white font-medium rounded-sm hover:opacity-90 transition-opacity ${
+              hideCancelButton ? "w-full" : "flex-1"
+            }`}
             onClick={handleConfirm}
           >
             {confirmText}

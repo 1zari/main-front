@@ -10,6 +10,7 @@ import UserTermsAgreement from "@/features/auth-common/components/terms/UserTerm
 import { SIGNUP_CONSTANTS } from "@/constants/signup";
 import { useSmsVerification } from "@/hooks/useSmsVerification";
 import { handleSmsVerificationError, handleSmsCodeVerificationError } from "@/utils/errorHandlers";
+import { useModalStore } from "@/store/useModalStore";
 import { toast } from "react-hot-toast";
 
 export type UserStepTwoValues = UserFormValues;
@@ -47,6 +48,7 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
   } = methods;
 
   const smsVerification = useSmsVerification();
+  const { showModal } = useModalStore();
 
   const onFormSubmit = async (data: UserFormValues) => {
     if (!smsVerification.isVerified) {
@@ -88,7 +90,7 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
           toast.success("인증번호가 발송되었습니다. 확인 후 입력해주세요");
         },
         onError: (error) => {
-          handleSmsVerificationError(error, setError, "phone", () => {});
+          handleSmsVerificationError(error, setError, "phone", showModal);
         },
       },
     );
@@ -193,7 +195,7 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
               control={control}
               render={({ field }) => (
                 <>
-                  <div className="flex flex-col sm:flex-row w-full sm:gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <GenderButton
                       selected={field.value === "male"}
                       onClick={() => field.onChange("male")}
@@ -292,8 +294,8 @@ type GenderButtonProps = {
 const GenderButton = ({ selected, onClick, label }: GenderButtonProps) => (
   <button
     type="button"
-    className={`flex-1 h-[50px] border-2 rounded transition ${
-      selected ? "border-blue-500 bg-blue-50 text-blue-700" : "border-gray-300 text-gray-700"
+    className={`p-3 border rounded transition text-center ${
+      selected ? "border-primary bg-primary text-white" : "border-gray-300 text-gray-700"
     }`}
     onClick={onClick}
   >
@@ -338,9 +340,9 @@ function ControlledCheckboxGroup<T extends FieldValues>({
                   <button
                     key={option}
                     type="button"
-                    className={`p-3 border-2 rounded transition text-left ${
+                    className={`p-3 border rounded transition text-center ${
                       selectedValues.includes(option)
-                        ? "border-blue-500 bg-blue-50 text-blue-700"
+                        ? "border-primary bg-primary text-white"
                         : "border-gray-300 text-gray-700"
                     }`}
                     onClick={() => toggleOption(option)}

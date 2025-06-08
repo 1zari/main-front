@@ -63,7 +63,7 @@ export default function UserSignup() {
             setStepOneData(data);
             setUserId(res.common_user_id);
             setStep(2);
-            toast.success("이메일, 비밀번호 등록 완료! 상세정보를 입력해주세요.");
+            toast.success("이메일, 비밀번호 등록완료!");
           },
           onError: handleSignupError,
         },
@@ -101,11 +101,13 @@ export default function UserSignup() {
         )}
 
         {(isStep1Loading || isStep2Loading) && (
-          <div className="mt-4 flex items-center justify-center p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600 mr-3" />
-            <p className="text-blue-800">
-              {isStep1Loading ? "회원정보를 등록 중입니다..." : "회원가입을 완료하는 중입니다..."}
-            </p>
+          <div className="mt-4 w-full max-w-[700px] mx-auto">
+            <div className="w-full h-[60px] flex items-center justify-center bg-primary/10 border border-primary rounded">
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary mr-3" />
+              <p className="text-primary font-medium">
+                {isStep1Loading ? "회원정보를 등록 중입니다..." : "회원가입을 완료하는 중입니다..."}
+              </p>
+            </div>
           </div>
         )}
 
