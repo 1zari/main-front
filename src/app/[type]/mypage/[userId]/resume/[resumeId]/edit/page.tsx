@@ -121,6 +121,7 @@ export default function ResumeEditPage() {
   }
 
   const dto = detailData!.resume;
+  // 2025.06.08)불필요한 name, phone, email 속성 제거하여 타입 에러 해결
   const defaultValues: ResumeFormData = {
     jobCategory: dto.job_category,
     title: dto.resume_title,
@@ -140,9 +141,6 @@ export default function ResumeEditPage() {
       date: c.date_acquired,
     })),
     introduction: dto.introduce,
-    name: "",
-    phone: "",
-    email: "",
   };
 
   return (

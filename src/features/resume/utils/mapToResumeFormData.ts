@@ -20,9 +20,6 @@ export function mapToResumeFormData(
     return {
       jobCategory: dto.job_category || "",
       title: dto.resume_title || "",
-      name: dto.user?.name || "",
-      phone: dto.user?.phone_number || "",
-      email: userEmail.trim(),
       schoolType: dto.education_level || "",
       schoolName: dto.school_name || "",
       graduationStatus: dto.education_state || "",

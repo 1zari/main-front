@@ -2,12 +2,14 @@ import ResumeContactSection from "@/features/resume/components/sections/ResumeCo
 import ResumeSelfIntroductionSection from "@/features/resume/components/sections/ResumeSelfIntroductionSection";
 import ResumeTableSection from "@/features/resume/components/sections/ResumeTableSection";
 import { ResumeFormData } from "@/features/resume/validation/resumeSchema";
+import { useSession } from "next-auth/react";
 
 type ResumeContainerProps = {
   resume: ResumeFormData;
 };
 
 export default function ResumeContainer({ resume }: ResumeContainerProps) {
+  const { data: session } = useSession();
   return (
     <div className="max-w-3xl m-auto">
       <div className="ml-4 inline-block text-xl bg-primary/5 text-primary hover:bg-primary/10 rounded-full px-3 py-1.5 font-medium transition-colors">
@@ -15,7 +17,11 @@ export default function ResumeContainer({ resume }: ResumeContainerProps) {
       </div>
 
       <div className="py-5 px-6 h-full flex flex-col gap-8 rounded-md">
-        <ResumeContactSection name={resume.name} phone={resume.phone} email={resume.email} />
+        <ResumeContactSection
+          name={session?.user?.name || ""}
+          phone={""}
+          email={session?.user?.email || ""}
+        />
 
         <ResumeTableSection
           sectionTitle="학력 사항"

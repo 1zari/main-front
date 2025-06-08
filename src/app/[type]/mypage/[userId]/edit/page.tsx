@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import { fetcher } from "@/lib/fetcher";
 import { API_ENDPOINTS } from "@/constants/apiEndPoints";
+import { MOCK_COMPANY1, MOCK_USER1 } from "@/features/auth-common/mock/auth.mock";
 
 const VALID_TYPES = ["normal", "company"] as const;
 
@@ -51,10 +52,17 @@ export default function InformationEditPage() {
     return <p className="text-center text-red-500">잘못된 접근입니다. (userId mismatch)</p>;
   }
 
+  // 2025.06.08) API 데이터를 사용하되 없을 경우 기본값 제공
   return (
     <>
-      {role === "company" && profile && <CompanyInformationEdit defaultValues={profile} />}
-      {role === "normal" && profile && <UserInformationEdit defaultValues={profile} />}
+      {role === "company" && (
+        <CompanyInformationEdit
+          defaultValues={(profile as typeof MOCK_COMPANY1) || MOCK_COMPANY1}
+        />
+      )}
+      {role === "normal" && (
+        <UserInformationEdit defaultValues={(profile as typeof MOCK_USER1) || MOCK_USER1} />
+      )}
     </>
   );
 }

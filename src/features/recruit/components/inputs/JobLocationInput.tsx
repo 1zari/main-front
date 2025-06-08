@@ -6,28 +6,19 @@ import { JobPostFormValues } from "@/features/recruit/schemas/jobPostSchema";
 import { useEffect } from "react";
 import { FieldError, UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
 
-declare global {
-  interface Window {
-    daum: {
-      Postcode: new (options: {
-        oncomplete: (data: DaumPostcodeData) => void;
-        width?: string;
-        height?: string;
-      }) => {
-        embed?: (element: HTMLElement) => void;
-        open?: () => void;
-      };
+// DaumPostcode 타입이 다른 파일에서 정의되어 있으므로 여기서는 any로 우회
+declare const window: Window & {
+  daum: {
+    Postcode: new (options: {
+      oncomplete: (data: unknown) => void;
+      width?: string;
+      height?: string;
+    }) => {
+      embed?: (element: HTMLElement) => void;
+      open?: () => void;
     };
-  }
-}
-
-interface DaumPostcodeData {
-  address: string;
-  addressType: string;
-  bname: string;
-  buildingName: string;
-  zonecode: string;
-}
+  };
+};
 
 export function JobLocationInput({
   register,
@@ -72,8 +63,8 @@ export function JobLocationInput({
       document.body.appendChild(elementLayer);
 
       new window.daum.Postcode({
-        oncomplete: async function (data: DaumPostcodeData) {
-          const address = data.address;
+        oncomplete: async function (data: unknown) {
+          const address = (data as { address: string }).address;
           setValue("location", address);
 
           try {
@@ -88,8 +79,14 @@ export function JobLocationInput({
             const result = await res.json();
             const coords = result.documents?.[0];
             if (coords) {
-              setValue("latitude", parseFloat(coords.y));
-              setValue("longitude", parseFloat(coords.x));
+              (setValue as (field: string, value: number) => void)(
+                "latitude",
+                parseFloat(coords.y),
+              );
+              (setValue as (field: string, value: number) => void)(
+                "longitude",
+                parseFloat(coords.x),
+              );
             }
           } catch (e) {
             console.error("좌표 변환 실패:", e);
@@ -101,33 +98,41 @@ export function JobLocationInput({
         height: "100%",
       }).embed(elementLayer);
     } else {
-      new window.daum.Postcode({
-        oncomplete: async function (data: DaumPostcodeData) {
-          const address = data.address;
-          setValue("location", address);
+      (
+        new window.daum.Postcode({
+          oncomplete: async function (data: unknown) {
+            const address = (data as { address: string }).address;
+            setValue("location", address);
 
-          try {
-            const res = await fetch(
-              `https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(address)}`,
-              {
-                headers: {
-                  Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}`,
+            try {
+              const res = await fetch(
+                `https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(address)}`,
+                {
+                  headers: {
+                    Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}`,
+                  },
                 },
-              },
-            );
-            const result = await res.json();
-            const coords = result.documents?.[0];
-            if (coords) {
-              setValue("latitude", parseFloat(coords.y));
-              setValue("longitude", parseFloat(coords.x));
+              );
+              const result = await res.json();
+              const coords = result.documents?.[0];
+              if (coords) {
+                (setValue as (field: string, value: number) => void)(
+                  "latitude",
+                  parseFloat(coords.y),
+                );
+                (setValue as (field: string, value: number) => void)(
+                  "longitude",
+                  parseFloat(coords.x),
+                );
+              }
+            } catch (e) {
+              console.error("좌표 변환 실패:", e);
             }
-          } catch (e) {
-            console.error("좌표 변환 실패:", e);
-          }
-        },
-        width: "100%",
-        height: "100%",
-      }).open();
+          },
+          width: "100%",
+          height: "100%",
+        }) as unknown as { open: () => void }
+      ).open();
     }
   };
 
