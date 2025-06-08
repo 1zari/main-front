@@ -1,5 +1,6 @@
 "use client";
 
+import { Category, City, District } from "@/api/filter";
 import useFiltersStore from "@/features/jobs/components/filter/stores/useFiltersStore";
 import { useSearchJobs } from "@/features/jobs/hooks/useSearchJobs";
 
@@ -7,9 +8,7 @@ import { IoMdRefresh } from "react-icons/io";
 
 export default function SelectedChips() {
   const {
-    city,
     setCity,
-    district,
     setDistrict,
     towns,
     setTowns,
@@ -60,7 +59,8 @@ export default function SelectedChips() {
             </div>
           ))}
         {/* // 직군 */}
-        {jobCats.length > 0 &&
+        {jobCats &&
+          jobCats.length > 0 &&
           jobCats.map((cat) => (
             <div
               key={cat.id}
@@ -71,7 +71,7 @@ export default function SelectedChips() {
               </span>
               <button
                 onClick={() => {
-                  setJobCats(jobCats.filter((c) => c.id !== cat.id));
+                  setJobCats(jobCats?.filter((c) => c.id !== cat.id) || []);
                 }}
                 className="ml-2 pb-1 text-gray-500 hover:font-bold hover:scale-105"
                 aria-label={`Remove ${cat.name}`}
@@ -86,7 +86,7 @@ export default function SelectedChips() {
             <span className="ml-1 text-sm">고용형태: {employmentType}</span>
             <button
               onClick={() => {
-                setEmploymentType(null);
+                setEmploymentType(undefined);
               }}
               className="ml-2 pb-1 text-gray-500 hover:font-bold hover:scale-105"
               aria-label={`Remove ${employmentType}`}
@@ -171,10 +171,10 @@ export default function SelectedChips() {
         <button
           type="button"
           onClick={() => {
-            setCity([]);
-            setDistrict([]);
+            setCity(undefined as unknown as City);
+            setDistrict(undefined as unknown as District);
             setTowns([]);
-            setCat([]);
+            setCat(undefined as unknown as Category);
             setJobCats([]);
             setEmploymentType(undefined);
             setWorkExperiences([]);
@@ -191,7 +191,7 @@ export default function SelectedChips() {
           초기화
         </button>
         <button
-          onClick={() => search()}
+          onClick={() => search("")}
           className="w-44 md:w-32 grid-rows-5 bg-primary text-white  px-2 py-3 rounded-md flex justify-center items-center gap-2"
         >
           검색하기
