@@ -72,7 +72,7 @@ export default function RecruiteList() {
 
       <ul className="space-y-4">
         {paginatedJobs.map((job) => (
-          <li key={job.job_posting_id} job={job}>
+          <li key={job.job_posting_id}>
             <Link href={`/recruit/${job.job_posting_id}`}>
               <div className="block p-4 border rounded-md shadow-sm hover:shadow-md transition bg-white">
                 <div className="font-semibold text-gray-900 mb-2">{job.job_posting_title}</div>

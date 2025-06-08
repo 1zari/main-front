@@ -12,18 +12,21 @@ interface DaumPostcodeData {
   apartment: "Y" | "N";
 }
 
+// 2025.06.08) 타입 충돌 해결을 위해 명시적 타입 선언
+interface DaumPostcode {
+  Postcode: new (config: {
+    oncomplete: (data: DaumPostcodeData) => void;
+    onresize?: (size: { height: number }) => void;
+    width?: string;
+    height?: string;
+  }) => {
+    embed: (element: HTMLElement) => void;
+  };
+}
+
 declare global {
   interface Window {
-    daum?: {
-      Postcode: new (config: {
-        oncomplete: (data: DaumPostcodeData) => void;
-        onresize?: (size: { height: number }) => void;
-        width?: string;
-        height?: string;
-      }) => {
-        embed: (element: HTMLElement) => void;
-      };
-    };
+    daum: DaumPostcode | undefined;
   }
 }
 

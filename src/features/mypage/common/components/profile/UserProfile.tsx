@@ -43,7 +43,7 @@ export default function UserProfile() {
     const { phone_number, birthday, interest } = userProfileData;
     return [
       { labels: ["전화번호"], value: phone_number },
-      { labels: ["생년월일"], value: formatBirthDate(birthday) },
+      { labels: ["생년월일"], value: birthday ? formatBirthDate(birthday) : "미입력" },
       {
         labels: ["관심분야"],
         value: interest?.length ? (
@@ -96,7 +96,7 @@ export default function UserProfile() {
           </ProfileCard.Item>
         ))}
       </ProfileCard>
-      <UserProfileTabs resumes={[]} />
+      <UserProfileTabs />
     </div>
   );
 }

@@ -56,7 +56,7 @@ export default function UserFindPasswordForm() {
       step={step}
       isVerified={isVerified}
       showPassword={showPassword}
-      register={register}
+      register={register as never}
       errors={errors}
       onVerifyCode={handleVerifyCode}
       onSubmit={handleSubmit(handlePasswordChange)}

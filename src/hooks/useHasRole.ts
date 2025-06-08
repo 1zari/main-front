@@ -5,5 +5,5 @@ export const useHasRole = (roles: UserRole[]) => {
   const user = useAuthStore((state) => state.user);
 
   if (!user) return false;
-  return roles.includes(user.role);
+  return roles.includes(user.join_type);
 };

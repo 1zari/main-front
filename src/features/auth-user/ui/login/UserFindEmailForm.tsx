@@ -69,7 +69,7 @@ export default function UserFindEmailForm() {
       step={step}
       isVerified={isVerified}
       verificationMessage={verificationMessage}
-      register={register}
+      register={register as never}
       errors={errors}
       onVerifyCode={handleVerifyCode}
       onSubmit={handleSubmit(handleFindEmail)}

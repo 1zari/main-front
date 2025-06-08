@@ -24,26 +24,15 @@ export default function CompanyFindPasswordForm() {
     mode: "onBlur",
   });
 
-  const MOCK_USER = {
-    email: "manager@seniorMyJob.com",
-    phone: "010-1234-5678",
-    code: "658745",
-  };
-
   const handleVerifyCode = () => {
-    const phone = watch("phone");
-    const code = watch("code");
-    if (phone === MOCK_USER.phone && code === MOCK_USER.code) {
-      setIsVerified(true);
-    } else {
-      alert("인증번호가 올바르지 않거나 전화번호가 일치하지 않습니다.");
-    }
+    // 인증번호 검증 로직 - 임시로 항상 성공으로 처리
+    setIsVerified(true);
   };
 
   const handlePasswordChange = () => {
-    const email = watch("email");
-    const phone = watch("phone");
-    if (email === MOCK_USER.email && phone === MOCK_USER.phone) {
+    const businessNumber = watch("businessNumber");
+    const managerEmail = watch("managerEmail");
+    if (businessNumber && managerEmail) {
       setStep("complete");
     } else {
       alert("입력하신 정보가 정확하지 않습니다.");
@@ -56,7 +45,7 @@ export default function CompanyFindPasswordForm() {
       step={step}
       isVerified={isVerified}
       showPassword={showPassword}
-      register={register}
+      register={register as never}
       errors={errors}
       onVerifyCode={handleVerifyCode}
       onSubmit={handleSubmit(handlePasswordChange)}

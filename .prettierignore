@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+yarn.lock
+package-lock.json
+
+# Build outputs
+.next/
+out/
+dist/
+build/
+
+# Documentation
+README.md
+*.md
+
+# Config files
+.env*
+.gitignore
+tsconfig.json
+next.config.js
+tailwind.config.js
+postcss.config.cjs
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log 

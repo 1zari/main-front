@@ -3,24 +3,21 @@ import { z } from "zod";
 export const jobPostSchema = z.object({
   title: z.string().min(1, "공고 제목을 입력해주세요.").max(50, "50자 이내로 작성해주세요."),
   occupation: z.array(z.string()).min(1, "직종을 1개 이상 선택해주세요."),
-  employmentType: z
-    .union([z.enum(["정규직", "계약직"]), z.null()])
-    .refine((val) => val !== null, { message: "고용형태를 선택해주세요." }),
+  employmentType: z.enum(["정규직", "계약직"], { message: "고용형태를 선택해주세요." }),
   numberOfRecruits: z
     .number({ invalid_type_error: "모집인원을 숫자로 입력해주세요." })
     .positive("1명 이상 입력해주세요."),
-  career: z
-    .union([z.enum(["경력", "경력무관"]), z.null()])
-    .refine((val) => val !== null, { message: "경력여부를 선택해주세요." }),
-  education: z
-    .union([z.enum(["고졸", "대졸", "학력무관"]), z.null()])
-    .refine((val) => val !== null, { message: "학력을 선택해주세요." }),
+  career: z.enum(["경력", "경력무관"], { message: "경력여부를 선택해주세요." }),
+  education: z.enum(["고졸", "대졸", "학력무관"], { message: "학력을 선택해주세요." }),
   location: z.string().min(1, "주소를 입력해주세요."),
   locationDetail: z.string().min(1, "상세주소를 입력해주세요."),
   deadline: z.string(),
   salaryType: z.string(),
   salary: z.number({ invalid_type_error: "급여를 숫자로 입력해주세요." }),
   workingDays: z.array(z.enum(["월", "화", "수", "목", "금", "토", "일", "요일협의"])),
+  workTimeStart: z.string().optional(),
+  workTimeEnd: z.string().optional(),
+  timeDiscussion: z.boolean().optional(),
   // workingHours: z
   //   .object({
   //     start: z.string().optional(),
