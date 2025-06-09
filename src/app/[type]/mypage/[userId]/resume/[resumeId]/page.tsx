@@ -51,6 +51,13 @@ export default function ResumeViewPage() {
 
   const resume: ResumeFormData = mapToResumeFormData(detailData!.resume, session!.user.email ?? "");
 
+  // 사용자 정보 추출
+  const userInfo = {
+    name: detailData!.resume.user.name,
+    phone: detailData!.resume.user.phone_number,
+    email: session!.user.email ?? "",
+  };
+
   const options = listData!.resume_list.map((r) => ({
     label: r.resume_title,
     value: r.resume_id,
@@ -69,7 +76,7 @@ export default function ResumeViewPage() {
 
       <div className="bg-white rounded-lg shadow-md px-5 py-20 w-full max-w-[1000px]">
         <h1 className="text-3xl font-bold mb-10 text-center text-primary">{resume.title}</h1>
-        <ResumeContainer resume={resume} />
+        <ResumeContainer resume={resume} userInfo={userInfo} />
         <ResumeActionButtons resumeId={selectedId} />
       </div>
     </div>

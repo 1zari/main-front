@@ -87,7 +87,7 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
       {
         onSuccess: () => {
           clearErrors("phone");
-          toast.success("인증번호가 발송되었습니다. 확인 후 입력해주세요");
+          toast.success("입력하신 휴대폰 번호로 \n 인증번호가 발송되었습니다.");
         },
         onError: (error) => {
           handleSmsVerificationError(error, setError, "phone", showModal);

@@ -6,10 +6,21 @@ import { useSession } from "next-auth/react";
 
 type ResumeContainerProps = {
   resume: ResumeFormData;
+  userInfo?: {
+    name?: string;
+    phone?: string;
+    email?: string;
+  };
 };
 
-export default function ResumeContainer({ resume }: ResumeContainerProps) {
+export default function ResumeContainer({ resume, userInfo }: ResumeContainerProps) {
   const { data: session } = useSession();
+
+  // userInfo가 제공되면 우선 사용, 없으면 세션에서 가져오기
+  const displayName = userInfo?.name || session?.user?.name || "";
+  const displayPhone = userInfo?.phone || "";
+  const displayEmail = userInfo?.email || session?.user?.email || "";
+
   return (
     <div className="max-w-3xl m-auto">
       <div className="ml-4 inline-block text-xl bg-primary/5 text-primary hover:bg-primary/10 rounded-full px-3 py-1.5 font-medium transition-colors">
@@ -17,11 +28,7 @@ export default function ResumeContainer({ resume }: ResumeContainerProps) {
       </div>
 
       <div className="py-5 px-6 h-full flex flex-col gap-8 rounded-md">
-        <ResumeContactSection
-          name={session?.user?.name || ""}
-          phone={""}
-          email={session?.user?.email || ""}
-        />
+        <ResumeContactSection name={displayName} phone={displayPhone} email={displayEmail} />
 
         <ResumeTableSection
           sectionTitle="학력 사항"
