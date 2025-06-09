@@ -100,6 +100,9 @@ function createCredentialsProvider(id: string, name: string, loginFn: LoginFn) {
       join_type: { label: "가입 유형", type: "text" },
     },
     async authorize(credentials) {
+      if (!credentials) {
+        throw new Error("인증 정보가 없습니다.");
+      }
       return authorizeUserLogin({
         credentials,
         loginFn,
@@ -108,7 +111,8 @@ function createCredentialsProvider(id: string, name: string, loginFn: LoginFn) {
   });
 }
 
-export const authOptions: NextAuthOptions = {
+// 2025.06.08) route 파일 export 규칙 변경으로 authOptions를 내부로 이동
+const authOptions: NextAuthOptions = {
   providers: [
     createCredentialsProvider("user-credentials", "User Credentials", authApi.user.login),
     createCredentialsProvider("company-credentials", "Company Credentials", authApi.company.login),

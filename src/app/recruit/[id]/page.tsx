@@ -1,7 +1,8 @@
 import JobDetailContent from "@/features/jobs/components/JobDetailContent";
 
-const RecruitEditPage = async ({ params }: { params: { id: string } }) => {
-  const jobPostingId = params.id;
+// 2025.06.08) params가 Promise 타입으로 변경되어 async/await 적용
+const RecruitEditPage = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id: jobPostingId } = await params;
 
   if (!jobPostingId) return <p>잘못된 접근입니다.</p>;
 

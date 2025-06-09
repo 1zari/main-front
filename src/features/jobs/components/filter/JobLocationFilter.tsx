@@ -11,22 +11,22 @@ import useFiltersStore, { AllTown } from "./stores/useFiltersStore";
  */
 function CityComponent({
   cities,
-  selectedCity,
-  setSelectedCity,
+  selectedCities,
+  onCityClick,
 }: {
   cities: City[];
-  selectedCity?: City;
-  setSelectedCity: (city: City) => void;
+  selectedCities: City[];
+  onCityClick: (city: City) => void;
 }) {
   return (
     <div className="w-60 max-h-80 border-r overflow-y-auto p-2 scroll-auto">
       {cities.map((city) => (
         <div
           key={city.id}
-          className={`p-2 cursor-pointer ${selectedCity?.id === city.id ? "text-green-700 font-bold" : ""}`}
-          onClick={() => {
-            setSelectedCity(city);
-          }}
+          className={`p-2 cursor-pointer ${
+            selectedCities.some((c) => c.id === city.id) ? "text-green-700 font-bold" : ""
+          }`}
+          onClick={() => onCityClick(city)}
         >
           {city.name} &rsaquo;
         </div>
@@ -41,24 +41,47 @@ function CityComponent({
  */
 function DistrictComponent({
   districts,
-  selectedDistrict,
-  setSelectedDistrict,
+  selectedDistricts,
+  onDistrictClick,
+  currentCity,
 }: {
   districts: District[];
-  selectedDistrict?: District;
-  setSelectedDistrict: (d: District) => void;
+  selectedDistricts: District[];
+  onDistrictClick: (district: District) => void;
+  currentCity?: City;
 }) {
   return (
     <div className="w-60 max-h-80 border-r overflow-y-auto p-2 scroll-auto">
-      {districts.map((d) => (
-        <div
-          key={d.id}
-          className={`p-2 cursor-pointer ${selectedDistrict?.id === d.id ? "text-green-700 font-bold" : ""}`}
-          onClick={() => setSelectedDistrict(d)}
-        >
-          {d.name} &rsaquo;
-        </div>
-      ))}
+      {/* 2025.6.9 수정/안) 현재 선택된 지역의 전체 옵션과 구 목록 표시 */}
+      {currentCity ? (
+        <>
+          <div
+            className="p-2 cursor-pointer text-primary font-semibold border-b"
+            onClick={() =>
+              onDistrictClick({
+                id: currentCity.id,
+                name: `${currentCity.name} 전체`,
+                towns: [],
+              } as District)
+            }
+          >
+            {currentCity.name} 전체 &rsaquo;
+          </div>
+          {districts.map((d) => (
+            <div
+              key={d.id}
+              className={`p-2 cursor-pointer pl-4 ${
+                selectedDistricts.some((sd) => sd.id === d.id) ? "text-green-700 font-bold" : ""
+              }`}
+              onClick={() => onDistrictClick(d)}
+            >
+              {d.name} &rsaquo;
+            </div>
+          ))}
+        </>
+      ) : (
+        <div className="p-4 text-gray-500">지역을 먼저 선택해주세요.</div>
+      )}
     </div>
   );
 }
@@ -113,39 +136,64 @@ export default function JobLocationFilter({ open, setOpen }: JobLocationFilterPr
     staleTime: 1000 * 60 * 5, // 5분 캐시
   });
 
-  const { towns, setTowns, district, setDistrict, city, setCity } = useFiltersStore();
+  // 2025.6.9 수정/안) 멀티 지역 선택 지원 - 배열로 변경
+  const {
+    towns,
+    setTowns,
+    districts,
+    addDistrict,
+    removeDistrict,
+    cities: selectedCities,
+    addCity,
+    removeCity,
+    // 2025.6.9 수정/안) 가장 최근 선택된 지역 추적
+    lastSelectedCity,
+    setLastSelectedCity,
+  } = useFiltersStore();
 
-  const [selectedCity, setSelectedCity] = useState<City>(city);
-  const [selectedDistrict, setSelectedDistrict] = useState<District>(district);
-  const [checkedTowns, setCheckedTowns] = useState<AllTown[]>(towns);
+  const [checkedTowns, setCheckedTowns] = useState<AllTown[]>(towns as AllTown[]);
 
-  /** 시.도 초기화 */
-  React.useEffect(() => {
-    if (cities.length > 0 && !selectedCity) {
-      setSelectedCity(cities[0]);
+  const handleCityClick = (city: City) => {
+    // 2025.6.9 수정/안) 지역 클릭 시 누적 선택 또는 제거
+    const isSelected = selectedCities.some((c) => c.id === city.id);
+    if (isSelected) {
+      removeCity(city.id);
+      // 해당 지역의 구/동도 제거
+      const cityDistricts = districts.filter((d) => city.districts.some((cd) => cd.id === d.id));
+      cityDistricts.forEach((d) => removeDistrict(d.id));
+      // 2025.6.9 수정/안) 제거된 지역이 마지막 선택 지역이었다면 다른 지역으로 변경
+      if (lastSelectedCity?.id === city.id) {
+        const remainingCities = selectedCities.filter((c) => c.id !== city.id);
+        setLastSelectedCity(
+          remainingCities.length > 0 ? remainingCities[remainingCities.length - 1] : undefined,
+        );
+      }
+    } else {
+      addCity(city);
+      // 2025.6.9 수정/안) 새로 선택된 지역을 최근 선택 지역으로 설정
+      setLastSelectedCity(city);
     }
-  }, [cities]);
+  };
 
-  /** 시.군.구 선택 되었을때 */
-  React.useEffect(() => {
-    // 시.군.구가 선택되면 동을 초기화
-    setSelectedDistrict(undefined);
-    if (!selectedCity) return;
-    // store 에 저장
-    setCity(selectedCity);
-    // 시.군.구가 선택되면 동을 첫번째 걸루 초기화
-    if (selectedCity.districts.length > 0) {
-      setSelectedDistrict(selectedCity.districts[0]);
+  const handleDistrictClick = (district: District) => {
+    // 2025.6.9 수정/안) 구 클릭 시 누적 선택 또는 제거
+    const isSelected = districts.some((d) => d.id === district.id);
+    if (isSelected) {
+      removeDistrict(district.id);
+    } else {
+      addDistrict(district);
     }
-  }, [selectedCity]);
+    // 구 선택 시 동을 초기화
+    setTowns([]);
+    setCheckedTowns([]);
+  };
 
-  /**
-   * 시.군.구가 선택 되었을때 스토어에 저장
-   */
-  React.useEffect(() => {
-    if (!selectedCity) return;
-    setDistrict(selectedDistrict);
-  }, [selectedDistrict]);
+  // 2025.6.9 수정/안) 가장 최근 선택된 지역의 구만 표시 (UX 개선)
+  const displayDistricts = lastSelectedCity ? lastSelectedCity.districts : [];
+
+  // 2025.6.9 수정/안) 선택된 구가 있는 경우만 동 목록 표시
+  const selectedDistrictsForTowns = districts.filter((d) => d.towns && d.towns.length > 0);
+  const availableTowns = selectedDistrictsForTowns.flatMap((d) => d.towns);
 
   React.useEffect(() => {
     // towns와 checkedTowns가 다를 때만 set
@@ -177,55 +225,67 @@ export default function JobLocationFilter({ open, setOpen }: JobLocationFilterPr
         {/* 시군구 */}
         <CityComponent
           cities={cities}
-          selectedCity={selectedCity}
-          setSelectedCity={setSelectedCity}
+          selectedCities={selectedCities}
+          onCityClick={handleCityClick}
         />
 
-        {/* 구 */}
+        {/* 구 - 2025.6.9 수정/안) 최근 선택된 지역의 구만 표시 */}
         <DistrictComponent
-          districts={selectedCity?.districts || []}
-          selectedDistrict={selectedDistrict}
-          setSelectedDistrict={setSelectedDistrict}
+          districts={displayDistricts}
+          selectedDistricts={districts}
+          onDistrictClick={handleDistrictClick}
+          currentCity={lastSelectedCity}
         />
 
         {/* 동 */}
-        <TownComponent
-          towns={
-            selectedDistrict
-              ? // [
-                //     { id: selectedDistrict.id, name: `${selectedDistrict.name} 전체` },
-                //     ...selectedDistrict.towns,
-                // ]
-                selectedDistrict.towns
-              : []
-          }
-          checkedTowns={checkedTowns}
-          onHandleTownClick={(town) => {
-            setCheckedTowns((prev) => {
-              // 이미 체크되어있는지 확인
-              const isChecked = prev.some((t) => t.id === town.id);
-              if (isChecked) {
-                // 만약에 체크 되어있다면 체크 해제
-                return prev.filter((t) => t.id !== town.id);
-              } else {
-                return [
-                  ...prev,
-                  {
-                    ...town,
-                    district: {
-                      id: selectedDistrict?.id || "",
-                      name: selectedDistrict?.name || "",
+        {/* 2025.6.9 수정/안) 선택된 구가 있을 때만 동 목록 표시 */}
+        {selectedDistrictsForTowns.length > 0 ? (
+          <TownComponent
+            towns={availableTowns}
+            checkedTowns={checkedTowns}
+            onHandleTownClick={(town) => {
+              setCheckedTowns((prev) => {
+                // 이미 체크되어있는지 확인
+                const isChecked = prev.some((t) => t.id === town.id);
+                if (isChecked) {
+                  // 만약에 체크 되어있다면 체크 해제
+                  return prev.filter((t) => t.id !== town.id);
+                } else {
+                  // 해당 동이 속한 구와 지역 정보 찾기
+                  const parentDistrict = selectedDistrictsForTowns.find((d) =>
+                    d.towns.some((t) => t.id === town.id),
+                  );
+                  const parentCity = selectedCities.find((c) =>
+                    c.districts.some((d) => d.id === parentDistrict?.id),
+                  );
+
+                  return [
+                    ...prev,
+                    {
+                      ...town,
+                      district: {
+                        id: parentDistrict?.id || "",
+                        name: parentDistrict?.name || "",
+                      },
+                      city: {
+                        id: parentCity?.id || "",
+                        name: parentCity?.name || "",
+                      },
                     },
-                    city: {
-                      id: selectedCity?.id || "",
-                      name: selectedCity?.name || "",
-                    },
-                  },
-                ];
-              }
-            });
-          }}
-        />
+                  ];
+                }
+              });
+            }}
+          />
+        ) : (
+          <div className="w-full p-4 flex items-center justify-center text-gray-500">
+            {selectedCities.length === 0
+              ? "지역을 선택해주세요."
+              : lastSelectedCity
+                ? "구/군을 선택하면 세부 지역을 선택할 수 있습니다."
+                : "지역을 선택해주세요."}
+          </div>
+        )}
       </div>
       <CloseButton open={open} setOpen={setOpen} />
     </>

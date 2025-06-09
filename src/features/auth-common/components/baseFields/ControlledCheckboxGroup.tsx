@@ -21,7 +21,8 @@ export default function ControlledCheckboxGroup<T extends FieldValues>({
       control={control}
       name={name}
       render={({ field }) => {
-        const selected = Array.isArray(field.value) ? field.value : [];
+        // 2025.06.08)타입 명시로 never[] 추론 문제 해결
+        const selected: string[] = Array.isArray(field.value) ? field.value : [];
 
         const toggleOption = (value: string) => {
           const updated = selected.includes(value)

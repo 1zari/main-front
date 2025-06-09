@@ -94,7 +94,7 @@ export default function JobPostForm({
             numberOfRecruits: job_posting.number_of_positions ?? 0,
             salary: job_posting.salary ?? 0,
             salaryType: job_posting.salary_type || "",
-            posting_type: job_posting.posting_type === "true" ? true : false,
+            posting_type: job_posting.posting_type || "false",
           });
         } catch (error) {
           console.error("공고 데이터를 불러오는 중 에러 발생:", error);
@@ -109,17 +109,9 @@ export default function JobPostForm({
       job_posting_title: formData.title,
       occupation: formData.occupation,
       address: `${formData.location} ${formData.locationDetail}`,
-      // city: "",
-      // town: "",
-      // district: "",
-      // location: [2.3, 2.3],
-      // location: formData.locationxy,
-      // location: null,
-      // location: {
-      //   type: "Point",
-      //   coordinates: [127.123456, 37.123456],
-      // },
-      // location: [127.123456, 37.123456],
+      city: formData.city || "",
+      district: formData.district || "",
+      location: formData.locationxy || [0, 0],
       workingDays: formData.workingDays,
       work_time_start: "09:00",
       work_time_end: "18:00",
@@ -127,15 +119,15 @@ export default function JobPostForm({
       employment_type: formData.employmentType,
       work_experience: formData.career,
       job_keyword_main: "",
-      job_keyword_sub: formData.occupation,
+      job_keyword_sub: formData.occupation.join(","),
       number_of_positions: Number(formData.numberOfRecruits),
       education: formData.education,
       deadline: formData.deadline,
-      time_discussion: true,
-      day_discussion: true,
-      work_day: formData.workingDays,
+      time_discussion: "true",
+      day_discussion: "true",
+      work_day: formData.workingDays.join(","),
       salary_type: formData.salaryType!,
-      salary: Number(formData.salary),
+      salary: String(formData.salary),
       summary: formData.jobSummary,
       content: formData.jobDescription,
     };
@@ -174,7 +166,8 @@ export default function JobPostForm({
       <TitleInput register={register} error={errors.title} />
       <SectionTitle title="채용조건" />
 
-      <OccupationInput register={register} error={errors.occupation} setValue={setValue} />
+      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+      <OccupationInput register={register} error={errors.occupation as any} setValue={setValue} />
       <EmploymentTypeSelect register={register} error={errors.employmentType} />
       <NumberOfRecruitsInput register={register} error={errors.numberOfRecruits} />
       <CareerRadio register={register} error={errors.career} />
@@ -197,10 +190,7 @@ export default function JobPostForm({
         error={Array.isArray(errors.workingDays) ? errors.workingDays : undefined}
       />
 
-      <WorkingHoursInput
-        register={register}
-        error={errors.workingHourStart || errors.workingHourEnd || errors.workingHourNegotiable}
-      />
+      <WorkingHoursInput register={register} error={{}} />
       <SectionTitle title="공고상세" />
       <JobSummaryInput register={register} error={errors.jobSummary} />
       <JobDescriptionInput register={register} error={errors.jobDescription} />

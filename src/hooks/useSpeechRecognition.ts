@@ -3,23 +3,43 @@ import { useEffect, useRef, useState } from "react";
 
 declare global {
   interface Window {
-    webkitSpeechRecognition: new () => SpeechRecognition;
+    webkitSpeechRecognition: new () => WebkitSpeechRecognition;
   }
 
-  interface SpeechRecognition extends EventTarget {
+  interface WebkitSpeechRecognition extends EventTarget {
     lang: string;
     continuous: boolean;
     interimResults: boolean;
     start(): void;
     stop(): void;
-    onresult: (event: SpeechRecognitionEvent) => void;
-    onerror: (event: SpeechRecognitionErrorEvent) => void;
+    onresult: (event: WebkitSpeechRecognitionEvent) => void;
+    onerror: (event: WebkitSpeechRecognitionErrorEvent) => void;
+  }
+
+  interface WebkitSpeechRecognitionEvent extends Event {
+    results: WebkitSpeechRecognitionResultList;
+  }
+
+  interface WebkitSpeechRecognitionErrorEvent extends Event {
+    error: string;
+  }
+
+  interface WebkitSpeechRecognitionResultList {
+    [index: number]: WebkitSpeechRecognitionResult;
+  }
+
+  interface WebkitSpeechRecognitionResult {
+    [index: number]: WebkitSpeechRecognitionAlternative;
+  }
+
+  interface WebkitSpeechRecognitionAlternative {
+    transcript: string;
   }
 }
 
 export function useSpeechRecognition() {
   const [transcript, setTranscript] = useState("");
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const recognitionRef = useRef<WebkitSpeechRecognition | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined" || !("webkitSpeechRecognition" in window)) return;
@@ -29,12 +49,12 @@ export function useSpeechRecognition() {
     recognition.continuous = false;
     recognition.interimResults = false;
 
-    recognition.onresult = (event: SpeechRecognitionEvent) => {
+    recognition.onresult = (event: WebkitSpeechRecognitionEvent) => {
       const result = event.results[0][0].transcript;
       setTranscript(result);
     };
 
-    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+    recognition.onerror = (event: WebkitSpeechRecognitionErrorEvent) => {
       console.error("음성 인식 에러", event);
     };
 
