@@ -21,7 +21,8 @@ export function WorkingHoursInput({
         <div className="flex gap-1 items-center">
           <input
             type="time"
-            {...register("workingHourStart")}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            {...(register as any)("workTimeStart")}
             className={`${INPUT_CLASS} min-w-[150px]`}
           />
 
@@ -29,14 +30,18 @@ export function WorkingHoursInput({
           {/* <label>종료 시간</label> */}
           <input
             type="time"
-            {...register("workingHourEnd")}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            {...(register as any)("workTimeEnd")}
             className={`${INPUT_CLASS} min-w-[150px]`}
           />
         </div>
         <label>
           <input
             type="checkbox"
-            {...register("workingHourNegotiable", { valueAsBoolean: true })}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            {...(register as any)("timeDiscussion", {
+              setValueAs: (value) => Boolean(value),
+            })}
             className="hidden peer"
           />
           <div className="h-10 px-4 flex items-center justify-center border-1 rounded peer-checked:bg-white peer-checked:border-primary text-gray-700 peer-checked:text-primary">

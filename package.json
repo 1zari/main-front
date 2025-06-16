@@ -4,10 +4,11 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build --no-lint",
+    "build": "next build",
     "start": "next start",
-    "lint": "echo 'skipped lint check'",
-    "format": "prettier --write ."
+    "lint": "next lint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@auth/core": "^0.34.2",

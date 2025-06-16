@@ -51,7 +51,9 @@ export default function JobFilter() {
               onClick={() => setShowJobs(!showJobs)}
             >
               직종
-              {jobCats.length > 0 && <span className="text-primary">{jobCats.length}</span>}
+              {(jobCats?.length || 0) > 0 && (
+                <span className="text-primary">{jobCats?.length}</span>
+              )}
               <span className={`transition-transform duration-300 ${showJobs ? "rotate-180" : ""}`}>
                 <FaCaretDown />
               </span>

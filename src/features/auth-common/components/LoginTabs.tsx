@@ -57,7 +57,6 @@ export default function LoginTabs() {
           </div>
           <LoginBaseForm
             key={activeTab}
-            join_type={activeTab}
             {...config}
             onEmailFind={() => router.push(routes.emailFind)}
             onPasswordFind={() => router.push(routes.passwordFind)}

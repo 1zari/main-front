@@ -2,7 +2,7 @@ import useFiltersStore from "@/features/jobs/components/filter/stores/useFilters
 import useSearchedListStore from "@/store/useSearchedListStore";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import qs from "qs";
 import { useState } from "react";
 
@@ -27,8 +27,8 @@ type SearchJobResult = {
 
 export function useSearchJobs() {
   const {
-    city,
-    district,
+    cities,
+    districts,
     towns,
     selectedDays,
     employmentType,
@@ -37,32 +37,43 @@ export function useSearchJobs() {
     jobCats,
     workExperiences,
     dayNegotiable,
+    postingType,
   } = useFiltersStore();
   const [result, setResult] = useState<SearchJobResult[] | null>(null);
 
   const { setSearchedList } = useSearchedListStore();
   const router = useRouter();
+  const pathname = usePathname();
   const mutation = useMutation({
     mutationFn: async ({ searchKeyword }: { searchKeyword: string }) => {
+      const locationParams: { [key: string]: string[] } = {};
+
+      if (towns.length > 0) {
+        locationParams.town_no = towns.map((town) => town.id);
+      } else {
+        if (districts.length > 0) {
+          locationParams.district_no = districts.map((district) => district.id);
+        }
+        const citiesWithoutDistricts = cities.filter(
+          (city) => !districts.some((d) => city.districts.some((cd) => cd.id === d.id)),
+        );
+        if (citiesWithoutDistricts.length > 0) {
+          locationParams.city_no = citiesWithoutDistricts.map((city) => city.id);
+        }
+      }
+
       const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/search/`, {
         params: {
-          ...(towns.length > 0
-            ? {}
-            : district
-              ? { district_no: district.id }
-              : city
-                ? { city_no: city.id }
-                : {}),
-          town_no: towns.map((town) => town.id),
+          ...locationParams,
           work_day: selectedDays,
-          posting_type: "공공",
+          posting_type: postingType,
           employment_type: employmentType,
           education: educations,
           job_keyword_main: cat?.name,
           job_keyword_sub: jobCats?.map((cat) => cat?.name).filter(Boolean),
           search: searchKeyword,
           work_experience: workExperiences,
-          day_discussion: dayNegotiable,
+          ...(dayNegotiable ? { day_discussion: true } : {}),
         },
         paramsSerializer: (params) => {
           return qs.stringify(params, { arrayFormat: "repeat" });
@@ -73,7 +84,9 @@ export function useSearchJobs() {
     onSuccess: (data) => {
       setResult(data.data);
       setSearchedList(data);
-      router.push("/jobs/searched");
+      if (pathname !== "/jobs/searched") {
+        router.push("/jobs/searched");
+      }
     },
   });
 
@@ -81,6 +94,6 @@ export function useSearchJobs() {
     result,
     isLoading: mutation.isPending,
     error: mutation.error,
-    search: (keyword: string) => mutation.mutate({ searchKeyword: keyword }), // 검색 실행 함수
+    search: (keyword: string) => mutation.mutate({ searchKeyword: keyword }),
   };
 }

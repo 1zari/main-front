@@ -23,6 +23,11 @@ export default function ApplyPage() {
   });
   const [selectedResumeId, setSelectedResumeId] = useState("");
   const [resume, setResume] = useState<ResumeFormData | null>(null);
+  const [userInfo, setUserInfo] = useState<{
+    name?: string;
+    phone?: string;
+    email?: string;
+  } | null>(null);
 
   const params = useParams();
   const jobPostingId = params.id as string;
@@ -51,6 +56,11 @@ export default function ApplyPage() {
     if (selectedResumeId && session?.user.email) {
       resumeApi.getDetail(selectedResumeId, accessToken).then((res) => {
         setResume(mapToResumeFormData(res.resume, session.user.email ?? ""));
+        setUserInfo({
+          name: res.resume.user.name,
+          phone: res.resume.user.phone_number,
+          email: session.user.email ?? "",
+        });
       });
     }
   }, [selectedResumeId, accessToken, session?.user.email]);
@@ -110,7 +120,7 @@ export default function ApplyPage() {
         {resume && (
           <>
             <div className="w-full text-left">
-              <ResumeContainer resume={resume} />
+              <ResumeContainer resume={resume} userInfo={userInfo || undefined} />
             </div>
             <div className="flex w-full gap-5">
               <button

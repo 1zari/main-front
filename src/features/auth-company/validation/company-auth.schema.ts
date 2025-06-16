@@ -176,3 +176,43 @@ export const companySignupSchema = z.object({
 });
 
 export type CompanyFormValues = z.infer<typeof companySignupSchema>;
+
+// 2025.06.08) 빌드 에러 수정 - 누락된 이메일 찾기 스키마 추가
+export const findCompanyEmailSchema = z.object({
+  businessNumber: z
+    .string()
+    .min(10, "사업자등록번호는 필수입니다.")
+    .regex(
+      COMPANY_VALIDATION.businessRegistrationNumber.pattern,
+      COMPANY_VALIDATION.businessRegistrationNumber.message,
+    ),
+  representativeName: z
+    .string()
+    .regex(
+      COMPANY_VALIDATION.signup.representativeName.pattern,
+      COMPANY_VALIDATION.signup.representativeName.message,
+    ),
+  managerPhone: z
+    .string()
+    .min(11, "전화번호는 필수입니다.")
+    .regex(
+      COMPANY_VALIDATION.signup.managerPhone.pattern,
+      COMPANY_VALIDATION.signup.managerPhone.message,
+    ),
+});
+
+// 2025.06.08) 빌드 에러 수정 - 누락된 비밀번호 찾기 스키마 추가
+export const findCompanyPasswordSchema = z.object({
+  businessNumber: z
+    .string()
+    .min(10, "사업자등록번호는 필수입니다.")
+    .regex(
+      COMPANY_VALIDATION.businessRegistrationNumber.pattern,
+      COMPANY_VALIDATION.businessRegistrationNumber.message,
+    ),
+  managerEmail: z.string().email(COMPANY_VALIDATION.signup.managerEmail.message),
+});
+
+// 2025.06.08) 이메일/비밀번호 찾기 폼 타입 추가
+export type FindCompanyEmailFormValues = z.infer<typeof findCompanyEmailSchema>;
+export type FindCompanyPasswordFormValues = z.infer<typeof findCompanyPasswordSchema>;

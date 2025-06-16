@@ -3,6 +3,8 @@ import { useFormContext, type UseFormRegister } from "react-hook-form";
 import { fetcher } from "@/lib/fetcher";
 import { API_ENDPOINTS } from "@/constants/apiEndPoints";
 import type { SignupFormValues } from "@/features/auth-common/validation/signup-auth.schema";
+import { toast } from "react-hot-toast";
+import { SIGNUP_CONSTANTS } from "@/constants/signup";
 import { useModalStore } from "@/store/useModalStore";
 
 type Props = {
@@ -19,7 +21,7 @@ export default function EmailInputWithCheck({
   onEmailChange,
 }: Props) {
   const { getValues, setError, clearErrors } = useFormContext<SignupFormValues>();
-  const showModal = useModalStore((s) => s.showModal);
+  const { showModal } = useModalStore();
 
   const handleCheckEmail = async () => {
     const email = getValues("email");
@@ -42,23 +44,22 @@ export default function EmailInputWithCheck({
       if (res.message === "Email is available.") {
         clearErrors("email");
         onCheckSuccess();
-        showModal({
-          title: "이메일 체크성공",
-          message: "사용가능한 이메일 입니다. \n 회원가입을 진행해주세요.",
-          confirmText: "확인",
-          onConfirm: () => {},
-        });
+        toast.success("사용 가능한 이메일입니다!");
       } else {
-        setError("email", {
-          type: "manual",
-          message: res.message,
+        // 이메일 중복인 경우 모달로 처리
+        showModal({
+          title: "⚠️",
+          message: SIGNUP_CONSTANTS.MESSAGES.ERROR.EMAIL_DUPLICATE,
+          confirmText: SIGNUP_CONSTANTS.MODAL_BUTTONS.CONFIRM,
+          onConfirm: () => {},
+          hideCancelButton: true,
         });
       }
     } catch (err) {
       console.error("이메일 중복확인 실패", err);
       setError("email", {
         type: "manual",
-        message: "이메일 확인 중 오류가 발생했습니다.",
+        message: SIGNUP_CONSTANTS.MESSAGES.ERROR.EMAIL_CHECK_FAILED,
       });
     }
   };

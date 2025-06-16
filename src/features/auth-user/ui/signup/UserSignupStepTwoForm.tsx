@@ -1,17 +1,17 @@
 "use client";
-import { useState, useEffect } from "react";
 import { useForm, FormProvider, Controller, FieldValues, Path, Control } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import "react-datepicker/dist/react-datepicker.css";
-import { useModalStore } from "@/store/useModalStore";
 import { userSignupSchema, UserFormValues } from "@/features/auth-user/validation/user-auth.schema";
 import FormActionInput from "@/features/auth-common/components/baseFields/FormActionInput";
 import FormInput from "@/features/auth-common/components/baseFields/FormInput";
 import FormDatePicker from "@/features/auth-common/components/baseFields/FormDatePicker";
 import UserTermsAgreement from "@/features/auth-common/components/terms/UserTermsAgreement";
-
-import { userApi } from "@/api/user";
-import type { PhoneVerificationRequestDto, VerifyCodeRequestDto } from "@/types/api/user";
+import { SIGNUP_CONSTANTS } from "@/constants/signup";
+import { useSmsVerification } from "@/hooks/useSmsVerification";
+import { handleSmsVerificationError, handleSmsCodeVerificationError } from "@/utils/errorHandlers";
+import { useModalStore } from "@/store/useModalStore";
+import { toast } from "react-hot-toast";
 
 export type UserStepTwoValues = UserFormValues;
 
@@ -42,31 +42,16 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
     handleSubmit,
     control,
     getValues,
-    setValue,
     setError,
     clearErrors,
     formState: { errors },
   } = methods;
 
-  const [isRequesting, setIsRequesting] = useState(false);
-  const [isVerifyInputVisible, setIsVerifyInputVisible] = useState(false);
-  const [isFadingOut, setIsFadingOut] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(0);
-  const [isVerified, setIsVerified] = useState(false);
-  const showModal = useModalStore((s) => s.showModal);
-
-  useEffect(() => {
-    if (!isRequesting) return;
-    if (timeLeft <= 0) {
-      setIsRequesting(false);
-      return;
-    }
-    const timer = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
-    return () => clearInterval(timer);
-  }, [isRequesting, timeLeft]);
+  const smsVerification = useSmsVerification();
+  const { showModal } = useModalStore();
 
   const onFormSubmit = async (data: UserFormValues) => {
-    if (!isVerified) {
+    if (!smsVerification.isVerified) {
       setError("phone", {
         type: "manual",
         message: "전화번호 인증을 완료해야 회원가입이 가능합니다.",
@@ -87,110 +72,122 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
     await onSubmit({ ...data, birth: isoBirth });
   };
 
+  const handleRequestVerification = async () => {
+    const rawPhone = getValues("phone");
+    if (!rawPhone) {
+      setError("phone", {
+        type: "manual",
+        message: "전화번호를 입력해주세요.",
+      });
+      return;
+    }
+
+    smsVerification.requestVerification(
+      { phone_number: rawPhone },
+      {
+        onSuccess: () => {
+          clearErrors("phone");
+          toast.success("입력하신 휴대폰 번호로 \n 인증번호가 발송되었습니다.");
+        },
+        onError: (error) => {
+          handleSmsVerificationError(error, setError, "phone", showModal);
+        },
+      },
+    );
+  };
+
+  const handleVerifyCode = async () => {
+    const code = getValues("verifyCode");
+    const rawPhone = getValues("phone");
+
+    if (!code) {
+      setError("verifyCode", {
+        type: "manual",
+        message: "인증번호를 입력해주세요.",
+      });
+      return;
+    }
+
+    smsVerification.verifyCode(
+      { phone_number: rawPhone, code: code },
+      {
+        onSuccess: () => {
+          clearErrors("verifyCode");
+          toast.success("전화번호 인증이 완료되었습니다!");
+        },
+        onError: (error) => {
+          handleSmsCodeVerificationError(error, setError, "verifyCode");
+        },
+      },
+    );
+  };
+
   return (
     <FormProvider {...methods}>
       <form
         onSubmit={handleSubmit(onFormSubmit)}
         className="flex flex-col items-center space-y-8"
         noValidate
+        role="form"
+        aria-label="개인 회원가입 2단계 폼"
       >
-        <h2 className="text-3xl font-semibold">개인 회원정보</h2>
-        <div className="w-full max-w-[700px] space-y-6">
-          <FormInput<UserFormValues> label="이름" name="name" placeholder="김오즈" />
+        <h2 className="text-3xl font-semibold" id="user-signup-title">
+          개인 회원정보
+        </h2>
+        <div
+          className="w-full max-w-[700px] space-y-6"
+          role="group"
+          aria-labelledby="user-signup-title"
+          aria-describedby="user-signup-step-info"
+        >
+          <div id="user-signup-step-info" className="sr-only" aria-live="polite">
+            2단계: 개인정보와 전화번호 인증을 완료해주세요. 모든 필드는 필수 입력사항입니다.
+          </div>
+          <FormInput<UserFormValues>
+            label="이름"
+            name="name"
+            placeholder={SIGNUP_CONSTANTS.PLACEHOLDERS.USER_NAME}
+          />
 
           <FormDatePicker<UserFormValues>
             label="생년월일"
             name="birth"
-            placeholder="입력란을 클릭하여 생년월일을 선택해 주세요."
+            placeholder={SIGNUP_CONSTANTS.PLACEHOLDERS.USER_BIRTH}
           />
 
           <FormActionInput<UserFormValues>
             label="전화번호"
             name="phone"
-            placeholder="010-1234-5678"
-            buttonText="인증 요청"
-            buttonDisabled={isRequesting}
-            timerText={
-              isRequesting
-                ? `${Math.floor(timeLeft / 60)}:${String(timeLeft % 60).padStart(2, "0")}`
-                : undefined
+            placeholder={SIGNUP_CONSTANTS.PLACEHOLDERS.USER_PHONE}
+            buttonText={
+              smsVerification.isRequestingCode
+                ? "전송 중..."
+                : SIGNUP_CONSTANTS.BUTTON_TEXT.REQUEST_VERIFICATION
             }
-            onButtonClick={async () => {
-              const rawPhone = getValues("phone");
-              if (!rawPhone) {
-                setError("phone", {
-                  type: "manual",
-                  message: "전화번호를 입력 후 인증을 진행해주세요.",
-                });
-                return;
-              }
-              clearErrors("phone");
-
-              const payload: PhoneVerificationRequestDto = {
-                phone_number: rawPhone.replace(/\D/g, ""),
-                join_type: "normal",
-              };
-              await userApi.requestPhoneCode(payload);
-
-              setIsRequesting(true);
-              setTimeLeft(120);
-              setIsVerifyInputVisible(true);
-              setIsFadingOut(false);
-              showModal({
-                title: "인증번호가 발송되었습니다.",
-                message: "휴대폰 문자를 확인 후 \n 인증번호를 입력해주세요.",
-                confirmText: "확인",
-                onConfirm: () => {},
-              });
-            }}
+            buttonDisabled={smsVerification.isRequestingCode}
+            timerText={
+              smsVerification.timeLeft > 0 ? `남은시간: ${smsVerification.formattedTime}` : ""
+            }
+            onButtonClick={handleRequestVerification}
           />
 
-          {isVerifyInputVisible && (
-            <div
-              className={`transition-opacity duration-100 ease-in ${
-                isFadingOut ? "opacity-0" : "opacity-100"
-              }`}
-            >
-              <FormActionInput<UserFormValues>
-                label="인증번호"
-                name="verifyCode"
-                placeholder="숫자 6자리"
-                buttonText="인증 확인"
-                onButtonClick={async () => {
-                  const code = getValues("verifyCode");
-                  if (!code) {
-                    setError("verifyCode", {
-                      type: "manual",
-                      message: "인증번호 6자리를 입력해주세요.",
-                    });
-                    return;
-                  }
-
-                  const rawPhone = getValues("phone");
-                  const payload: VerifyCodeRequestDto = {
-                    phone_number: rawPhone.replace(/\D/g, ""),
-                    code,
-                    join_type: "normal",
-                  };
-                  await userApi.verifyPhoneCode(payload);
-
-                  setIsVerified(true);
-                  setValue("verifyCode", code, { shouldValidate: true });
-                  setIsFadingOut(true);
-                  setTimeout(() => {
-                    setIsVerifyInputVisible(false);
-                    setIsRequesting(false);
-                  }, 100);
-                  showModal({
-                    title: "문자인증 성공",
-                    message: "인증이 완료되었습니다. \n 회원가입을 진행해주세요.",
-                    confirmText: "확인",
-                    onConfirm: () => {},
-                  });
-                }}
-              />
-            </div>
+          {(smsVerification.timeLeft > 0 || smsVerification.isVerified) && (
+            <FormActionInput<UserFormValues>
+              label="인증번호"
+              name="verifyCode"
+              placeholder={SIGNUP_CONSTANTS.PLACEHOLDERS.VERIFICATION_CODE}
+              buttonText={
+                smsVerification.isVerifyingCode
+                  ? "확인 중..."
+                  : smsVerification.isVerified
+                    ? "인증 완료"
+                    : SIGNUP_CONSTANTS.BUTTON_TEXT.VERIFY_CODE
+              }
+              buttonDisabled={smsVerification.isVerifyingCode || smsVerification.isVerified}
+              onButtonClick={handleVerifyCode}
+            />
           )}
+
           <div className="mb-10">
             <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg">성별</label>
             <Controller
@@ -198,7 +195,7 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
               control={control}
               render={({ field }) => (
                 <>
-                  <div className="flex flex-col sm:flex-row w-full sm:gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <GenderButton
                       selected={field.value === "male"}
                       onClick={() => field.onChange("male")}
@@ -275,9 +272,12 @@ export default function SignupStepTwoUser({ onSubmit }: Props) {
 
           <button
             type="submit"
-            className="w-full h-[60px] font-semibold rounded mt-7 transition bg-primary text-white hover:opacity-90 cursor-pointer"
+            disabled={!smsVerification.isVerified}
+            className={`w-full h-[60px] bg-primary text-white font-semibold rounded transition cursor-pointer ${
+              !smsVerification.isVerified ? "opacity-50 cursor-not-allowed" : "hover:opacity-90"
+            }`}
           >
-            회원가입 완료
+            {SIGNUP_CONSTANTS.BUTTON_TEXT.COMPLETE_SIGNUP}
           </button>
         </div>
       </form>
@@ -290,13 +290,14 @@ type GenderButtonProps = {
   onClick: () => void;
   label: string;
 };
+
 const GenderButton = ({ selected, onClick, label }: GenderButtonProps) => (
   <button
     type="button"
+    className={`p-3 border rounded transition text-center ${
+      selected ? "border-primary bg-primary text-white" : "border-gray-300 text-gray-700"
+    }`}
     onClick={onClick}
-    className={`w-1/2 sm:w-[120px] h-[60px] rounded font-semibold border cursor-pointer ${
-      selected ? "bg-primary text-white border-primary" : "bg-white text-gray-700 border-gray-300"
-    } focus:outline-none focus:ring-0`}
   >
     {label}
   </button>
@@ -309,6 +310,7 @@ type ControlledCheckboxGroupProps<T extends FieldValues> = {
   control: Control<T>;
   error?: string;
 };
+
 function ControlledCheckboxGroup<T extends FieldValues>({
   label,
   name,
@@ -317,64 +319,43 @@ function ControlledCheckboxGroup<T extends FieldValues>({
   error,
 }: ControlledCheckboxGroupProps<T>) {
   return (
-    <Controller
-      control={control}
-      name={name}
-      render={({ field }) => {
-        const selected: string[] = Array.isArray(field.value) ? field.value : [];
-        const toggleOption = (value: string) => {
-          const exists = selected.includes(value);
-          const updated = exists ? selected.filter((v) => v !== value) : [...selected, value];
-          field.onChange(updated);
-        };
+    <div className="mb-10">
+      <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg">{label}</label>
+      <Controller
+        name={name}
+        control={control}
+        render={({ field }) => {
+          const selectedValues: string[] = field.value || [];
+          const toggleOption = (value: string) => {
+            const newValues = selectedValues.includes(value)
+              ? selectedValues.filter((v: string) => v !== value)
+              : [...selectedValues, value];
+            field.onChange(newValues);
+          };
 
-        return (
-          <div className="mb-12">
-            <label className="block mb-3 ml-2 font-semibold text-base sm:text-lg whitespace-normal break-keep">
-              {label}
-            </label>
-            <div className="grid grid-cols-1 min-[500px]:grid-cols-2 sm:grid-cols-3 gap-3">
-              {options.map((option, idx) => {
-                const isChecked = selected.includes(option);
-                return (
-                  <div
-                    key={idx}
-                    onClick={() => toggleOption(option)}
-                    className={`flex items-center justify-between gap-2 px-4 py-[14px] min-w-[160px] h-auto rounded cursor-pointer font-medium border transition break-words text-center ${
-                      isChecked
-                        ? "bg-primary text-white border-primary"
-                        : "bg-white text-gray-700 border-gray-300"
+          return (
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {options.map((option) => (
+                  <button
+                    key={option}
+                    type="button"
+                    className={`p-3 border rounded transition text-center ${
+                      selectedValues.includes(option)
+                        ? "border-primary bg-primary text-white"
+                        : "border-gray-300 text-gray-700"
                     }`}
+                    onClick={() => toggleOption(option)}
                   >
-                    <span className="leading-tight flex items-center justify-center text-center w-full h-full whitespace-normal break-keep">
-                      {option}
-                    </span>
-                    <input
-                      type="checkbox"
-                      value={option}
-                      checked={isChecked}
-                      onChange={() => toggleOption(option)}
-                      className="hidden"
-                    />
-                    {isChecked && (
-                      <svg
-                        className="w-4 h-4 text-white shrink-0"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="3"
-                        viewBox="0 0 24 24"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                      </svg>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-            {error && <p className="text-red-500 mt-1 ml-2">{error}</p>}
-          </div>
-        );
-      }}
-    />
+                    {option}
+                  </button>
+                ))}
+              </div>
+              {error && <p className="text-red-500 mt-1 ml-2">{error}</p>}
+            </>
+          );
+        }}
+      />
+    </div>
   );
 }

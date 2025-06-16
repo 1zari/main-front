@@ -45,9 +45,9 @@ export const MOCK_COMPANY1 = {
   companyLogo: undefined,
 };
 
+// 2025.06.08) role 중복 제거하여 타입 에러 해결
 export const MOCK_USER_SESSION = {
   user: {
-    role: "user" as const,
     ...MOCK_USER1,
   },
 };

@@ -10,7 +10,7 @@ export function WorkingDaysCheckbox({
   error?: FieldError | FieldError[] | undefined;
 }) {
   return (
-    <FormField label="근무요일" error={error}>
+    <FormField label="근무요일" error={Array.isArray(error) ? error[0] : error}>
       <div className="flex gap-2 flex-wrap">
         {["월", "화", "수", "목", "금", "토", "일", "요일협의"].map((day) => (
           <label key={day}>
