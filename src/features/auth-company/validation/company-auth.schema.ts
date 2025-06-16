@@ -62,6 +62,22 @@ export const COMPANY_VALIDATION = {
   },
 };
 
+export const findCompanyEmailSchema = z.object({
+  email: z.string().email("이메일 형식을 확인해주세요."),
+});
+
+// ✅ 스키마 타입 추론값
+export type FindCompanyEmailFormValues = z.infer<typeof findCompanyEmailSchema>;
+
+// 이메일 + 회사명 기반 비밀번호 찾기 스키마
+export const findCompanyPasswordSchema = z.object({
+  email: z.string().email("올바른 이메일 형식을 입력해주세요."),
+  companyName: z.string().min(1, "회사명을 입력해주세요."),
+});
+
+// 타입 추론 (필요 시)
+export type FindCompanyPasswordFormValues = z.infer<typeof findCompanyPasswordSchema>;
+
 export const companySignupSchema = z.object({
   companyName: z
     .string()

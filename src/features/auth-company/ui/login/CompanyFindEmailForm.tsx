@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  findCompanyEmailSchema,
-  FindCompanyEmailFormValues,
-} from "@/features/auth-company/validation/company-auth.schema";
-import FindEmailBaseForm from "@/features/auth-common/ui/baseForms/FindEmailBaseForm";
 import { MOCK_COMPANY } from "@/features/auth-common/mock/auth.mock";
+import FindEmailBaseForm from "@/features/auth-common/ui/baseForms/FindEmailBaseForm";
+import {
+  FindCompanyEmailFormValues,
+  findCompanyEmailSchema,
+} from "@/features/auth-company/validation/company-auth.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
 export default function CompanyFindEmailForm() {
   const {
